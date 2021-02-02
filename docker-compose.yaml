@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  postgis:
+    image: mdillon/postgis
+    ports:
+      - "5430:5432"
+    volumes:
+      - db-data:/data
+    environment:
+      - POSTGRES_DB=mb-initiative
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASS=initititit!
+
+
+  mb-api:
+    build: backend/.
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+        - ./backend:/app
+        - ./backend/static:/static
+        - .backend/media:/media
+    ports:
+        - "8000:8000"
+    depends_on:
+        - postgis
+
+volumes:
+  db-data:
+
