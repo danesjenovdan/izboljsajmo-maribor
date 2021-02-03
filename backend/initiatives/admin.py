@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.gis import admin as gis_admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext as _
 
@@ -59,7 +60,7 @@ class OrganizationAdmin(admin.ModelAdmin):
     inlines = (UserOrganizationInline, )
 
 
-class ZoneAdmin(admin.ModelAdmin):
+class ZoneAdmin(gis_admin.GeoModelAdmin):
     search_fields = ['name']
     list_display = [
         'name',

@@ -1,0 +1,98 @@
+{
+	"info": {
+		"_postman_id": "b8c7a221-5a16-43c5-a220-5deec113960c",
+		"name": "izboljsamo-maribor",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "registration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"ivan123\",\n    \"password\": \"123\",\n    \"email\": \"asdasd@email.si\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/v1/users/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"ivan123\",\n    \"password\": \"123\",\n    \"client_id\":\"kIZWxeodL29mfaKSIGQWPUuuck8CXv3m58XuJ8Y7\",\n    \"client_secret\": \"54pWmrpj1y9FiwkUDofjeP4B5tbLQ4wW6F2wqsMT3JuQN4ApIqcveKlzOC1laQIJp8JpVi99EheHCkumEJ0o81J9f2uHK3eXjUdxprzDnWlsTuZM6cgv1Eo35KSr7Mfg\",\n    \"grant_type\": \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/auth/token/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"auth",
+						"token",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "facebook login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"grant_type\": \"convert_token\",\n    \"client_id\": \"kIZWxeodL29mfaKSIGQWPUuuck8CXv3m58XuJ8Y7\",\n    \"client_secret\": \"54pWmrpj1y9FiwkUDofjeP4B5tbLQ4wW6F2wqsMT3JuQN4ApIqcveKlzOC1laQIJp8JpVi99EheHCkumEJ0o81J9f2uHK3eXjUdxprzDnWlsTuZM6cgv1Eo35KSr7Mfg\",\n    \"backend\": \"facebook\",\n    \"token\": \"EAAEIRAZB2JY0BAPLVWP42d6KPIcLDQgAAwNA9vHhdncle5VRQCi56eNji9oTsGtEkKYhfBBuvZCnwyrvDxy5ltFXyZCwU9fF1tNBAGOgi4CnnU5vZAFyFkEbXEZCE5v6lwHhDJkoZBgkrpWqWZBjTJiBoZAZCCKHzZApwZD\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/auth/convert-token/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"auth",
+						"convert-token",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

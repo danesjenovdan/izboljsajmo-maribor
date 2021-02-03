@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.utils import timezone
 from django.utils.translation import gettext as _
+from django.core import validators
 
 from behaviors.behaviors import Timestamped, Authored
 
@@ -181,7 +182,6 @@ class Vote(Timestamped, Authored):
         on_delete=models.CASCADE,
         related_name='votes')
 
-
 class User(AbstractUser, Timestamped):
     note = models.TextField(
         _('Note'),
@@ -208,6 +208,13 @@ class User(AbstractUser, Timestamped):
         blank=True,
         related_name='users',
         verbose_name=_('Competent service'))
+    # a username field that allows a space
+    username = models.CharField(_('username'), max_length=30, unique=True,
+        help_text=_('Required. 30 characters or fewer. Letters, digits and '
+                    '@/./+/-/_ only.'),
+        validators=[
+            validators.RegexValidator(r'^[\w.@+ -]+$', _('Enter a valid username.'), 'invalid')
+        ])
 
 
 class Organization(Timestamped):
