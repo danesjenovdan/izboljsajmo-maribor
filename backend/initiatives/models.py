@@ -65,7 +65,8 @@ class Initiative(Timestamped, Authored):
         null=True,
         blank=True)
     in_review = models.BooleanField(
-        _('In review'))
+        _('In review'),
+        default=False)
 
     def __str__(self):
         return self.title
@@ -113,6 +114,14 @@ class StatusInitiative(Timestamped):
         blank=True,
         verbose_name=_('Rejection'),
         on_delete=models.SET_NULL)
+
+    competent_service = models.ForeignKey(
+        'CompetentService',
+        null=True,
+        blank=True,
+        verbose_name=_('CompetentService'),
+        related_name='initiative_statuses',
+        on_delete=models.CASCADE) 
 
 
 class Status(Timestamped):
@@ -165,10 +174,6 @@ class Comment(Timestamped, Authored):
         max_length=2,
         choices=CommentStatus.choices,
         default=CommentStatus.PENDING)
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='comments')
 
 
 class Vote(Timestamped, Authored):
@@ -177,10 +182,7 @@ class Vote(Timestamped, Authored):
         verbose_name=_('Initiative'),
         related_name='votes',
         on_delete=models.CASCADE)
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='votes')
+
 
 class User(AbstractUser, Timestamped):
     note = models.TextField(
@@ -268,12 +270,14 @@ class File(Timestamped):
         'Initiative',
         verbose_name=_('Initiative'),
         on_delete=models.CASCADE,
+        related_name='files',
         null=True,
         blank=True)
-    Status_initiative = models.ForeignKey(
+    status_initiative = models.ForeignKey(
         'StatusInitiative',
         verbose_name=_('Status Initiative'),
         on_delete=models.CASCADE,
+        related_name='files',
         null=True,
         blank=True)
     name = models.CharField(

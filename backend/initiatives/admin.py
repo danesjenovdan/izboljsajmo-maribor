@@ -4,7 +4,8 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext as _
 
 from .models import (
-    User, Organization, Zone, CompetentService, Initiative, Area
+    User, Organization, Zone, CompetentService, Initiative, Area, Status, StatusInitiative,
+    File
 )
 
 
@@ -103,3 +104,6 @@ admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(Zone, ZoneAdmin)
 admin.site.register(Area, AreaAdmin)
 admin.site.register(CompetentService, CompetentServiceAdmin)
+admin.site.register(Status)
+admin.site.register(StatusInitiative)
+admin.site.register(File)
