@@ -44,7 +44,7 @@ class Initiative(Timestamped, Authored):
     location = geo_models.PointField()
     address = models.CharField(
         _("Address of initiative"),
-        max_length=10)
+        max_length=100)
     zone = models.ForeignKey(
         'Zone',
         verbose_name=_('GEO Zone of initiative'),

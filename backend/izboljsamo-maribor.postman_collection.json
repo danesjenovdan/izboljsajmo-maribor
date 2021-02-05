@@ -93,6 +93,28 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "get initiative",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/v1/initiatives/1/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"initiatives",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
