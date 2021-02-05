@@ -104,6 +104,7 @@ class Command(BaseCommand):
             author=user,
             zone=zone,
             area=area,
+            address='Ulica heroja Staneta 1, 2000 Maribor',
             location=GEOSGeometry('POINT(5 23)')
         )
         initiative.save()
@@ -117,7 +118,7 @@ class Command(BaseCommand):
         models.StatusInitiative(
             initiative=initiative,
             status=statuses[2]['obj'],
-            note='Pa nemorš mi tega delat'
+            competent_service=competent_service
         ).save()
 
         models.Comment(

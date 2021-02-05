@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Initiative, File, StatusInitiative
+from .models import User, Initiative, File, StatusInitiative, CompetentService
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,9 +16,15 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
+class GetCompetentService(serializers.ModelSerializer):
+    class Meta:
+        model = CompetentService
+        fields = ('id', 'name')
+
+
 class StatusInitiativeSerializer(serializers.ModelSerializer):
     status = serializers.SerializerMethodField()
-    competent_service = serializers.SerializerMethodField()
+    competent_service = GetCompetentService()
     class Meta:
         model = StatusInitiative
         fields = (
@@ -44,6 +50,8 @@ class FileSerializer(serializers.ModelSerializer):
 class InitiativeDetailsSerializer(serializers.ModelSerializer):
     statuses = StatusInitiativeSerializer(source='initiative_statuses', many=True)
     uploaded_files = FileSerializer(source='files', many=True)
+    author = serializers.SerializerMethodField()
+    area = serializers.SerializerMethodField()
     class Meta:
         model = Initiative
         fields = (
@@ -52,7 +60,16 @@ class InitiativeDetailsSerializer(serializers.ModelSerializer):
             'title',
             'area',
             'location',
+            'author',
             'cover_image',
             'cover_image_after',
             'uploaded_files',
-            'statuses')
+            'statuses',
+            'created',
+            'address')
+
+    def get_author(self, obj):
+        return obj.author.username
+
+    def get_area(self, obj):
+        return obj.area.name

@@ -42,6 +42,9 @@ class Initiative(Timestamped, Authored):
         on_delete=models.CASCADE,
         related_name='initiatives')
     location = geo_models.PointField()
+    address = models.CharField(
+        _("Address of initiative"),
+        max_length=10)
     zone = models.ForeignKey(
         'Zone',
         verbose_name=_('GEO Zone of initiative'),
