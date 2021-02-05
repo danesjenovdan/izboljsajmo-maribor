@@ -35,6 +35,35 @@
 			"response": []
 		},
 		{
+			"name": "registration for organization",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"user iz organizacije\",\n    \"password\": \"123\",\n    \"email\": \"asdasd123@email.si\",\n    \"number_of_members\": 12,\n    \"organization_name\": \"Biznis\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/v1/organizations/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"organizations",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "login",
 			"request": {
 				"method": "POST",
