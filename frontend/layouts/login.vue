@@ -1,6 +1,6 @@
 <template>
   <b-container fluid class="login-container">
-    <img src="~/assets/img/izboljsajmo_maribor_logo.png" class="position-absolute p-4" />
+    <img src="~/assets/img/izboljsajmo_maribor_logo.png" class="position-absolute p-4" alt="">
     <b-row class="vh-100 justify-content-center align-items-center">
       <div class="login-window">
         <Nuxt />
@@ -125,6 +125,10 @@ form {
   .form-note {
     font-size: 0.75rem;
     font-style: italic;
+  }
+
+  .error-message {
+    color: red;
   }
 
   .form-group {

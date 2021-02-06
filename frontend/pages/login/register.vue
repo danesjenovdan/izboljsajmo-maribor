@@ -32,6 +32,8 @@ export default {
       }
     }
   },
+  computed: {
+  },
   methods: {
     onSubmit (event) {
       event.preventDefault()
