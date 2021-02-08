@@ -26,29 +26,29 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .navigation {
-    padding: 1rem 2rem;
-    box-shadow: 3px 3px 7px #d4d9e1, -3px -3px 7px #ffffff;
-    background-color: #f8f8f8;
+.navigation {
+  padding: 1rem 2rem;
+  box-shadow: 3px 3px 7px #d4d9e1, -3px -3px 7px #ffffff;
+  background-color: #f8f8f8;
 
-    img {
-      height: 40px;
+  img {
+    height: 40px;
+  }
+
+  a {
+    color: #606060;
+    margin-left: 1rem;
+    padding: 0.5rem 1rem;
+
+    &:hover {
+      text-decoration: none;
+      color: #ef7782;
     }
 
-    a {
-      color: #606060;
-      margin-left: 1rem;
-      padding: 0.5rem 1rem;
-
-      &:hover {
-        text-decoration: none;
-        color: #ef7782;
-      }
-
-      &.login {
-        background-color: rgba(239, 119, 130, 0.3);
-        border-radius: 1rem;
-      }
+    &.login {
+      background-color: rgba(239, 119, 130, 0.3);
+      border-radius: 1rem;
     }
   }
+}
 </style>
