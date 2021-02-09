@@ -169,6 +169,7 @@ class Comment(Timestamped, Authored):
     initiative = models.ForeignKey(
         'Initiative',
         verbose_name=_('Initiative'),
+        related_name='initiative_comments',
         on_delete=models.CASCADE)
     content = models.TextField(
         _('Comment'))
