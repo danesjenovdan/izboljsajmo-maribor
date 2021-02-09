@@ -1,41 +1,18 @@
 <template>
   <div>
+    <Navigation />
     <Nuxt />
+    <Footer />
   </div>
 </template>
 
 <style lang="scss">
 
-button {
-  font-size: 30px;
-}
-
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-
-  &:hover {
-    color: #fff;
-    background-color: #3b8070;
-  }
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
-}
 </style>
+<script>
+import Navigation from '~/components/Navigation'
+import Footer from '~/components/Footer'
+export default {
+  components: { Footer, Navigation }
+}
+</script>

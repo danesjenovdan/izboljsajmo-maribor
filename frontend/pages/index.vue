@@ -1,9 +1,8 @@
 <template>
   <div class="container">
     <div>
-      <Logo />
       <h1 class="title">
-        izboljsajmo-mariborlalalalal
+        {{ accessToken }}
       </h1>
       <div class="links">
         <a
@@ -28,7 +27,13 @@
 </template>
 
 <script>
-export default {}
+export default {
+  computed: {
+    accessToken () {
+      return this.$store.getters.token
+    }
+  }
+}
 </script>
 
 <style>

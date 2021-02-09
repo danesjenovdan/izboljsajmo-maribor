@@ -1,29 +1,36 @@
 <template>
-  <b-form @submit.prevent="onSubmit">
+  <b-form @submit.prevent="login">
+    <p v-if="errorLogin" class="error-message text-center mt-4">
+      Prijava ni uspela.
+    </p>
     <b-form-group
       id="username-input-group"
       label="E-naslov ali uporabniško ime"
       label-for="username"
+      :class="{ 'error-message': errorUsername }"
     >
       <b-form-input
         id="username"
-        v-model="form.email"
+        v-model.trim="form.username"
         name="username"
         type="text"
         required
+        @blur="checkUsername"
       />
     </b-form-group>
     <b-form-group
       id="password-input-group"
       label="Geslo"
       label-for="password"
+      :class="{ 'error-message': errorPassword }"
     >
       <b-form-input
         id="password"
-        v-model="form.password"
+        v-model.trim="form.password"
         name="password"
         type="password"
         required
+        @blur="checkPassword"
       />
     </b-form-group>
     <div class="text-right">
@@ -48,19 +55,38 @@
 </template>
 
 <script>
+
 export default {
   data () {
     return {
       rememberMe: false,
       form: {
-        email: '',
+        username: '',
         password: ''
-      }
+      },
+      errorUsername: false,
+      errorPassword: false,
+      errorLogin: false
     }
   },
+  computed: {
+  },
   methods: {
-    onSubmit (event) {
-      alert(JSON.stringify(this.form))
+    checkUsername () {
+      this.errorUsername = this.form.username.length === 0
+    },
+    checkPassword () {
+      this.errorPassword = this.form.password.length === 0
+    },
+    async login (event) {
+      // console.log(JSON.stringify(this.form))
+      try {
+        await this.$store.dispatch('login', { form: this.form })
+        await this.$router.push('/')
+      } catch (err) {
+        this.errorLogin = true
+        console.log(err)
+      }
     }
   }
 }
