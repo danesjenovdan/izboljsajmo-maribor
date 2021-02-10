@@ -5,7 +5,7 @@ from django.utils.translation import gettext as _
 
 from .models import (
     User, Organization, Zone, CompetentService, Initiative, Area, Status, StatusInitiative,
-    File
+    File, Comment
 )
 
 
@@ -52,6 +52,13 @@ class UserCompetentServiceInline(admin.TabularInline):
     extra = 1
 
 
+class CommentInline(admin.TabularInline):
+    readonly_fields = ['author', 'created']
+    fields = ['author', 'content', 'created', 'status']
+    model = Comment
+    extra = 0
+
+
 class OrganizationAdmin(admin.ModelAdmin):
     search_fields = ['name']
     list_display = [
@@ -96,6 +103,7 @@ class InitiativeAdmin(admin.ModelAdmin):
         'comment_count',
         'vote_count'
     ]
+    inlines = (CommentInline, )
 
 
 admin.site.register(Initiative, InitiativeAdmin)

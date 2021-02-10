@@ -1,5 +1,8 @@
 from rest_framework import serializers
-from .models import User, Initiative, File, StatusInitiative, CompetentService, Organization, Comment
+from .models import User, Initiative, File, StatusInitiative, CompetentService, Organization, Comment, CommentStatus, Description
+
+from drf_writable_nested.serializers import WritableNestedModelSerializer
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -95,17 +98,32 @@ class CommentSerializer(serializers.ModelSerializer):
             'content',
             'author',
             'created')
+        extra_kwargs = {
+            'author': {'read_only': False},
+            'created': {'read_only': True},
+        }
 
     def get_author(self, obj):
         return obj.author.username
 
 
-class InitiativeDetailsSerializer(serializers.ModelSerializer):
-    statuses = StatusInitiativeSerializer(source='initiative_statuses', many=True)
-    uploaded_files = FileSerializer(source='files', many=True)
+class DescriptionSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Description
+        fields = (
+            'content',
+            'field',
+            'title',
+            'order')
+
+
+class InitiativeDetailsSerializer(WritableNestedModelSerializer):
+    statuses = StatusInitiativeSerializer(source='initiative_statuses', many=True, required=False)
+    uploaded_files = FileSerializer(source='files', many=True, required=False)
     author = serializers.SerializerMethodField()
     area = serializers.SerializerMethodField()
-    comments = CommentSerializer(source='initiative_comments', many=True)
+    comments = serializers.SerializerMethodField()
+    descriptions = DescriptionSerializers(many=True)
     class Meta:
         model = Initiative
         fields = (
@@ -121,12 +139,27 @@ class InitiativeDetailsSerializer(serializers.ModelSerializer):
             'statuses',
             'created',
             'address',
-            'comments')
+            'comments',
+            'descriptions')
+        extra_kwargs = {
+            'author': {'read_only': False},
+            'cover_image_after': {'read_only': True},
+            'statuses': {'read_only': True},
+            'created': {'read_only': True},
+            'comments': {'read_only': True},
+        }
 
     def get_author(self, obj):
         return obj.author.username
 
     def get_area(self, obj):
         return obj.area.name
+
+    def get_comments(self, obj):
+        qs = Comment.objects.filter(initiative=obj, status=CommentStatus.PUBLISHED)
+        serializer = CommentSerializer(instance=qs, many=True)
+        return serializer.data
+
+
 
 

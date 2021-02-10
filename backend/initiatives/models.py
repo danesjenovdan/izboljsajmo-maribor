@@ -145,6 +145,10 @@ class Description(Timestamped):
     field = models.CharField(
         _('Description type'),
         max_length=50)
+    title =  models.CharField(
+        _('Description title'),
+        max_length=100)
+    order = models.IntegerField(default=0)
     content = models.TextField(
         _('Description content'))
 

@@ -144,6 +144,88 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "create initiative",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Nova pobuda\",\n    \"type\": \"II\",\n    \"area\": 1,\n    \"address\": \"Županova ulica\",\n    \"location\": {\n        \"type\": \"Point\",\n        \"coordinates\": [-123.0208, 44.0464]\n    },\n    \"descriptions\": [\n        {\n            \"title\": \"To je nek title\",\n            \"field\": \"to_bo_nek_kljuc\",\n            \"content\": \"To pa content od človeka :)\"\n        },\n        {\n            \"title\": \"To je nek title 2\",\n            \"field\": \"to_bo_nek_kljuc 2\",\n            \"content\": \"To pa content od človeka drugic :)\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/initiatives/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"initiatives",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create comment",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"content\": \"WooHoo To je zakon!!!\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/initiatives/1/comments/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"initiatives",
+						"1",
+						"comments",
+						""
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
