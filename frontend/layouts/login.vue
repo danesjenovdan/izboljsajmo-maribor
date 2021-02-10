@@ -1,6 +1,10 @@
 <template>
   <b-container fluid class="login-container">
-    <img src="~/assets/img/izboljsajmo_maribor_logo.png" class="position-absolute p-4" alt="">
+    <img
+      src="~/assets/img/izboljsajmo_maribor_logo.png"
+      class="position-absolute p-4"
+      alt=""
+    >
     <b-row class="vh-100 justify-content-center align-items-center">
       <div class="login-window">
         <Nuxt />
@@ -53,28 +57,12 @@
     hr {
       width: calc(450px + 4rem);
       margin-left: -2rem;
-      margin-top: 0;
-      margin-bottom: 1px;
-
-      &.hr-upper {
-        margin-top: 1.5rem;
-        border-color: #e8e8e8;
-      }
-
-      &.hr-lower {
-        margin-bottom: 1.5rem;
-        border-color: white;
-      }
     }
 
     form {
       .form-note {
         font-size: 0.75rem;
         font-style: italic;
-      }
-
-      .error-message {
-        color: red;
       }
 
       .form-group {
@@ -90,20 +78,12 @@
           background-color: #f8f8f8;
         }
       }
-
-      .btn {
-        background-color: #ef7782;
-        box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
-        border-radius: 1.5rem;
-        border: none;
-        color: black;
-        font-style: italic;
-        font-weight: 700;
-        letter-spacing: 0.1rem;
-        margin: 1rem 0;
-      }
     }
   }
+}
+
+.error-message {
+  color: red;
 }
 
 .custom-radio {
