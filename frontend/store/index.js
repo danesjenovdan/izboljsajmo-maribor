@@ -39,7 +39,7 @@ export const actions = {
       grant_type: context.getters.grant_type
     }
     // console.log(loginData)
-    const response = await this.$axios.post('http://localhost:8000/auth/token/', loginData)
+    const response = await this.$axios.post('auth/token/', loginData)
     const responseData = await response.data
 
     if (response.status === 200) {
@@ -60,7 +60,7 @@ export const actions = {
       phone_number: payload.form.phone
     }
     console.log(loginData)
-    const response = await this.$axios.post('http://localhost:8000/v1/users/', loginData)
+    const response = await this.$axios.post('v1/users/', loginData)
     const responseData = await response.data
 
     if (response.status === 200) {
@@ -79,7 +79,20 @@ export const actions = {
       organization_name: payload.form.username
     }
     // console.log(loginData)
-    const response = await this.$axios.post('http://localhost:8000/v1/organizations/', loginData)
+    const response = await this.$axios.post('v1/organizations/', loginData)
+    const responseData = await response.data
+
+    if (response.status === 200) {
+    } else {
+      console.log('ni ok', responseData)
+      // throw error
+    }
+  },
+  async postComment (context, payload) {
+    const newComment = {
+      content: payload.content
+    }
+    const response = await this.$axios.post(`initiatives/${payload.id}/comment`, newComment)
     const responseData = await response.data
 
     if (response.status === 200) {
