@@ -146,6 +146,48 @@
 			"response": []
 		},
 		{
+			"name": "get initiatives",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/v1/initiatives/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"initiatives",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get areas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/v1/areas/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"areas",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "create initiative",
 			"request": {
 				"auth": {

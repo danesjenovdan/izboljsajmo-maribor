@@ -1,5 +1,8 @@
 from rest_framework import serializers
-from .models import User, Initiative, File, StatusInitiative, CompetentService, Organization, Comment, CommentStatus, Description
+from .models import (
+    User, Initiative, File, StatusInitiative, CompetentService, Organization, Comment,
+    CommentStatus, Description, Area
+)
 
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 
@@ -59,15 +62,21 @@ class OrganizationSerializer(serializers.ModelSerializer):
         return user
 
 
-class GetCompetentService(serializers.ModelSerializer):
+class CompetentServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = CompetentService
         fields = ('id', 'name')
 
 
+class AreaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Area
+        fields = ('id', 'name')
+
+
 class StatusInitiativeSerializer(serializers.ModelSerializer):
     status = serializers.SerializerMethodField()
-    competent_service = GetCompetentService()
+    competent_service = CompetentServiceSerializer()
     class Meta:
         model = StatusInitiative
         fields = (
@@ -118,7 +127,7 @@ class DescriptionSerializers(serializers.ModelSerializer):
 
 
 class InitiativeListSerializer(serializers.ModelSerializer):
-    area = serializers.SerializerMethodField()
+    area = AreaSerializer()
     author = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
     class Meta:
@@ -135,9 +144,6 @@ class InitiativeListSerializer(serializers.ModelSerializer):
             'status',
             'author',
             'description')
-
-    def get_area(self, obj):
-        return obj.area.name
 
     def get_author(self, obj):
         return obj.author.username
@@ -182,7 +188,7 @@ class InitiativeDetailsSerializer(WritableNestedModelSerializer):
         return obj.author.username
 
     def get_area(self, obj):
-        return obj.area.name
+        return AreaSerializer(obj.area).data
 
     def get_comments(self, obj):
         qs = Comment.objects.filter(initiative=obj, status=CommentStatus.PUBLISHED)

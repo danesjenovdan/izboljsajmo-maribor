@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from .serializers import (
     UserSerializer, InitiativeDetailsSerializer, OrganizationSerializer,
-    CommentSerializer, InitiativeListSerializer
+    CommentSerializer, InitiativeListSerializer, AreaSerializer
 )
 from .models import Initiative, Zone, Area
 
@@ -19,6 +19,12 @@ class UserViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
 class OrganizationViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
     permission_classes = [permissions.AllowAny, ]
     serializer_class = OrganizationSerializer
+
+
+class AreaViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
+    permission_classes = [permissions.AllowAny, ]
+    serializer_class = AreaSerializer
+    queryset = Area.objects.all()
 
 
 class InitiativeViewSet(
