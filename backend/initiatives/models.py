@@ -5,8 +5,11 @@ from django.conf import settings
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.core import validators
+from django.utils.html import mark_safe
 
 from behaviors.behaviors import Timestamped, Authored
+
+from urllib.parse import urlparse, parse_qs
 
 # TODO o izboljšamo maribor naredi podobno kot je na mauticu.
 # Elementi novice so lahko [video, slika, text, naslov...?], na seznamu lahko urejaš vrstni red.
@@ -21,6 +24,15 @@ class CommentStatus(models.TextChoices):
     PUBLISHED = 'PU', 'PUBLISHED'
     DELETED = 'D', 'DELETED'
     PENDING = 'PE', 'PENDING'
+
+
+class AboutType(models.TextChoices):
+    TITLE = 'H2', _('Title')
+    TITLE2 = 'H3', _('Title2')
+    TEXT = 'TXT', _('Text')
+    IMAGE = 'IMG', _('Image')
+    YOUTUBE_EMBED = 'YT', _('YoutubeEmbed')
+    LINK = 'LINK', _('Link')
 
 
 class Initiative(Timestamped, Authored):
@@ -299,3 +311,52 @@ class File(Timestamped):
 
     def __str__(self):
         return self.name
+
+
+class About(Timestamped):
+    order = models.IntegerField(_("Order"), default=1)
+    type = models.CharField(
+        _('About section type'),
+        max_length=5,
+        choices=AboutType.choices,
+        default=AboutType.TITLE)
+    content = models.TextField(_("Content"), null=True, blank=True)
+    image = models.ImageField(
+        _('Image'),
+        null=True,
+        blank=True)
+    url = models.URLField(null=True, blank=True)
+    description = models.CharField(
+        _('Description of section'),
+        max_length=50)
+
+    def preview(self):
+        content = ''
+        if self.type == AboutType.IMAGE:
+            content = mark_safe(
+                f'<img src="{self.image.url if self.image else self.url}" max-width="200" height="100">'
+            )
+        elif self.type == AboutType.TITLE:
+            content = mark_safe(
+                f'<h3>{self.content}</h3>'
+            )
+        elif self.type == AboutType.TITLE2:
+            content = mark_safe(
+                f'<h4>{self.content}</h4>'
+            )
+        elif self.type == AboutType.TEXT:
+            content = mark_safe(
+                f'{self.content}'
+            )
+        elif self.type == AboutType.YOUTUBE_EMBED:
+            parsed_url = urlparse(self.url)
+            video_id = parse_qs(parsed_url.query)['v'][0]
+
+            content = mark_safe(
+                f'<img src="https://img.youtube.com/vi/{video_id}/0.jpg" max-width="200" height="100">'
+            )
+        elif self.type == AboutType.LINK:
+            content = mark_safe(
+                f'<a href="{self.url}">{self.url}</a>'
+            )
+        return content

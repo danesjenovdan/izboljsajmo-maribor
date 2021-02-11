@@ -37,3 +37,4 @@ drf-social-oauth2==1.0.8
 django-cors-headers==3.7.0
 drf-writable-nested==0.6.2
 djangorestframework-gis==0.17
+django-admin-ordering==0.13.1

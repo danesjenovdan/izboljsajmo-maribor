@@ -188,6 +188,27 @@
 			"response": []
 		},
 		{
+			"name": "get about",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/v1/about/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"about",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "create initiative",
 			"request": {
 				"auth": {

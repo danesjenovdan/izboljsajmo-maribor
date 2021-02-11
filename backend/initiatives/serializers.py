@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import (
     User, Initiative, File, StatusInitiative, CompetentService, Organization, Comment,
-    CommentStatus, Description, Area
+    CommentStatus, Description, Area, About
 )
 
 from drf_writable_nested.serializers import WritableNestedModelSerializer
@@ -124,6 +124,17 @@ class DescriptionSerializers(serializers.ModelSerializer):
             'field',
             'title',
             'order')
+
+
+class AboutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = About
+        fields = (
+            'type',
+            'content',
+            'image',
+            'url')
+
 
 
 class InitiativeListSerializer(serializers.ModelSerializer):
