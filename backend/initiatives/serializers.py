@@ -117,6 +117,35 @@ class DescriptionSerializers(serializers.ModelSerializer):
             'order')
 
 
+class InitiativeListSerializer(serializers.ModelSerializer):
+    area = serializers.SerializerMethodField()
+    author = serializers.SerializerMethodField()
+    description = serializers.SerializerMethodField()
+    class Meta:
+        model = Initiative
+        fields = (
+            'type',
+            'title',
+            'location',
+            'created',
+            'cover_image',
+            'area',
+            'comment_count',
+            'vote_count',
+            'status',
+            'author',
+            'description')
+
+    def get_area(self, obj):
+        return obj.area.name
+
+    def get_author(self, obj):
+        return obj.author.username
+
+    # TODO
+    def get_description(self, obj):
+        return 'Dummy text'
+
 class InitiativeDetailsSerializer(WritableNestedModelSerializer):
     statuses = StatusInitiativeSerializer(source='initiative_statuses', many=True, required=False)
     uploaded_files = FileSerializer(source='files', many=True, required=False)

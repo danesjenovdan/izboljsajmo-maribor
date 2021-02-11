@@ -74,16 +74,17 @@ class Initiative(Timestamped, Authored):
     def __str__(self):
         return self.title
 
-    # TODO
     def comment_count(self):
-        return 1
+        return self.initiative_comments.filter(status=CommentStatus.PUBLISHED).count()
 
     def status(self):
-        return 'dummy'
+        try:
+            return self.initiative_statuses.latest('created').status.name
+        except:
+            return None
 
-    # TODO
     def vote_count(self):
-        return 1
+        return self.votes.count()
 
     def is_archived(self):
         return self.archived is not None

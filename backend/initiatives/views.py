@@ -4,7 +4,10 @@ from rest_framework import viewsets, mixins, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .serializers import UserSerializer, InitiativeDetailsSerializer, OrganizationSerializer, CommentSerializer
+from .serializers import (
+    UserSerializer, InitiativeDetailsSerializer, OrganizationSerializer,
+    CommentSerializer, InitiativeListSerializer
+)
 from .models import Initiative, Zone, Area
 
 
@@ -18,10 +21,20 @@ class OrganizationViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
     serializer_class = OrganizationSerializer
 
 
-class InitiativeViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.CreateModelMixin):
+class InitiativeViewSet(
+    viewsets.GenericViewSet,
+    mixins.RetrieveModelMixin,
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
     serializer_class = InitiativeDetailsSerializer
     queryset = Initiative.objects.all()
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return InitiativeListSerializer
+        return InitiativeDetailsSerializer
+
 
     def create(self, request, *args, **kwargs):
         area = request.data['area']
