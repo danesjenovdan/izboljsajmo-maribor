@@ -28,6 +28,7 @@
 
 <script>
 export default {
+  middleware: 'auth',
   computed: {
     accessToken () {
       return this.$store.getters.token

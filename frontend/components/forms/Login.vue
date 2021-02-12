@@ -44,13 +44,13 @@
       >
         Zapomni si me.
       </b-form-checkbox>
-      <b-button type="submit" class="w-100">
-        VSTOPI<span class="float-right"><img src="~/assets/img/icons/arrow-right.png"></span>
-      </b-button>
-      <div class="form-note text-center">
-        Nimaš računa? <a href="/login/register">Registriraj se</a>
-      </div>
     </b-form-group>
+    <b-button type="submit" class="w-100">
+      VSTOPI<span class="float-right"><img src="~/assets/img/icons/arrow-right.png"></span>
+    </b-button>
+    <div class="form-note text-center">
+      Nimaš računa? <a href="/login/register">Registriraj se</a>
+    </div>
   </b-form>
 </template>
 
