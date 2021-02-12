@@ -25,25 +25,7 @@ export default {
   layout: 'login',
   data () {
     return {
-      registrationForm: 'posameznik',
-      form: {
-        email: '',
-        password: ''
-      }
-    }
-  },
-  computed: {
-  },
-  methods: {
-    onSubmit (event) {
-      event.preventDefault()
-      alert(JSON.stringify(this.form))
-    },
-    onReset (event) {
-      event.preventDefault()
-      // Reset our form values
-      this.form.email = ''
-      this.form.password = ''
+      registrationForm: 'posameznik'
     }
   }
 }

@@ -53,14 +53,14 @@ export const actions = {
     // context.commit('setAuth', { isAuth: false })
   },
   async register (context, payload) {
-    const loginData = {
+    const registerData = {
       username: payload.form.username,
       email: payload.form.email,
       password: payload.form.password,
       phone_number: payload.form.phone
     }
-    console.log(loginData)
-    const response = await this.$axios.post('v1/users/', loginData)
+    console.log(registerData)
+    const response = await this.$axios.post('v1/users/', registerData)
     const responseData = await response.data
 
     if (response.status === 200) {
@@ -70,16 +70,16 @@ export const actions = {
     }
   },
   async registerOrganization (context, payload) {
-    const loginData = {
+    const registerData = {
+      organization_name: payload.form.username,
       username: payload.form.name,
       email: payload.form.email,
       password: payload.form.password,
       phone_number: payload.form.phone,
-      number_of_members: payload.form.membersNumber,
-      organization_name: payload.form.username
+      number_of_members: payload.form.membersNumber
     }
-    // console.log(loginData)
-    const response = await this.$axios.post('v1/organizations/', loginData)
+    // console.log(registerData)
+    const response = await this.$axios.post('v1/organizations/', registerData)
     const responseData = await response.data
 
     if (response.status === 200) {

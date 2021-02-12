@@ -1,11 +1,13 @@
 <template>
   <b-container fluid class="login-container">
-    <img
-      src="~/assets/img/izboljsajmo_maribor_logo.png"
-      class="position-absolute p-4"
-      alt=""
-    >
-    <b-row class="vh-100 justify-content-center align-items-center">
+    <div class="logo">
+      <img
+        src="~/assets/img/izboljsajmo_maribor_logo.png"
+        class="p-4"
+        alt="Izboljšajmo Maribor logo"
+      >
+    </div>
+    <b-row class="justify-content-center align-items-md-center">
       <div class="login-window">
         <Nuxt />
       </div>
@@ -20,18 +22,33 @@
   background-size: cover;
   background-position: center;
 
+  &>.row {
+    @media (min-width: 768px) {
+      height: 100vh;
+    }
+  }
+
+  .logo {
+    text-align: center;
+
+    @media (min-width: 768px) {
+      position: absolute;
+    }
+  }
+
   .login-window {
     background-color: #f8f8f8;
     padding: 2rem;
-    border-radius: 10px;
-    width: 450px;
-    max-height: 80%;
     overflow-y: scroll;
+
+    @media (min-width: 768px) {
+      max-height: 80%;
+      border-radius: 10px;
+    }
 
     h1 {
       font-weight: 700;
       text-align: center;
-      //margin-bottom: 1.5rem;
     }
 
     a {

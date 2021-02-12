@@ -80,6 +80,12 @@ textarea.form-control {
 
 .error-message {
   color: #ab2131;
+  font-size: 0.8rem;
+  padding-left: 1rem;
+}
+
+.error-input {
+  border: 1px solid #ab2131 !important;
 }
 
 .custom-radio {

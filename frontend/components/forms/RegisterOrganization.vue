@@ -3,91 +3,80 @@
     <p v-if="errorRegister" class="error-message text-center mt-4">
       Registracija ni uspela.
     </p>
-    <b-form-group
-      id="username-input-group"
-      label="Ime skupine ali organizacije (uporabniško ime)"
-      label-for="username"
-      :class="{ 'error-message': errorUsername }"
-    >
+    <div class="form-group">
+      <label for="username">Ime skupine ali organizacije (uporabniško ime)</label>
+      <span v-if="errorUsername" class="error-message">Vpiši uporabniško ime.</span>
       <b-form-input
         id="username"
         v-model="form.username"
+        :class="{ 'error-input': errorUsername }"
+        name="username"
         type="text"
         required
-        @blur="checkUsername"
+        @keyup="checkUsername"
       />
-    </b-form-group>
-    <b-form-group
-      id="name-input-group"
-      label="Ime in priimek odgovorne osebe"
-      label-for="name"
-      :class="{ 'error-message': errorName }"
-    >
+    </div>
+    <div class="form-group">
+      <label for="name">Ime in priimek odgovorne osebe</label>
+      <span v-if="errorName" class="error-message">Vpiši ime in priimek.</span>
       <b-form-input
         id="name"
         v-model="form.name"
+        :class="{ 'error-input': errorName }"
+        name="name"
         type="text"
         required
-        @blur="checkName"
+        @keyup="checkName"
       />
-    </b-form-group>
-    <b-form-group
-      id="members-input-group"
-      label="Število oseb v skupini ali število organizacij"
-      label-for="no-of-members"
-      :class="{ 'error-message': errorMembers }"
-    >
+    </div>
+    <div class="form-group">
+      <label for="no-of-members">Število oseb v skupini ali število organizacij</label>
+      <span v-if="errorMembers" class="error-message">Vpiši število oseb.</span>
       <b-form-input
         id="no-of-members"
         v-model="form.membersNumber"
+        :class="{ 'error-input': errorMembers }"
         type="number"
         min="1"
         required
-        @blur="checkMembers"
       />
-    </b-form-group>
-    <b-form-group
-      id="email-input-group"
-      label="E-naslov"
-      label-for="email"
-      :class="{ 'error-message': errorEmail }"
-    >
+    </div>
+    <div class="form-group">
+      <label for="email">E-naslov</label>
+      <span v-if="errorEmail" class="error-message">Vpiši e-naslov.</span>
       <b-form-input
         id="email"
-        v-model="form.email"
+        v-model.trim="form.email"
+        :class="{ 'error-input': errorEmail }"
         type="email"
         required
-        @blur="checkEmail"
+        @keyup="checkEmail"
       />
-    </b-form-group>
-    <b-form-group
-      id="phone-input-group"
-      label="Telefonska številka"
-      label-for="phone"
-      :class="{ 'error-message': errorPhone }"
-    >
+    </div>
+    <div class="form-group">
+      <label for="phone">Telefonska številka</label>
+      <span v-if="errorPhone" class="error-message">Vpiši telefonsko številko.</span>
       <b-form-input
         id="phone"
         v-model="form.phone"
+        :class="{ 'error-input': errorPhone }"
         type="tel"
         required
-        @blur="checkPhone"
+        @keyup="checkPhone"
       />
-    </b-form-group>
-    <b-form-group
-      id="password-input-group"
-      label="Geslo"
-      label-for="password"
-      :class="{ 'error-message': errorPassword }"
-    >
+    </div>
+    <div class="form-group">
+      <label for="password">Geslo</label>
+      <span v-if="errorPassword" class="error-message">Vpiši geslo.</span>
       <b-form-input
         id="password"
         v-model="form.password"
+        :class="{ 'error-input': errorPassword }"
         type="password"
         required
-        @blur="checkPassword"
+        @keyup="checkPassword"
       />
-    </b-form-group>
+    </div>
     <b-button type="submit" class="w-100">
       ZAKLJUČI REGISTRACIJO<span class="float-right"><img src="~/assets/img/icons/arrow-right.png"></span>
     </b-button>
@@ -125,7 +114,6 @@ export default {
     checkName () {
       this.errorName = this.form.name.length === 0
     },
-    checkMembers () {},
     checkEmail () {
       this.errorEmail = this.form.email.length === 0
     },
@@ -136,7 +124,6 @@ export default {
       this.errorPassword = this.form.password.length === 0
     },
     async register (event) {
-      alert(JSON.stringify(this.form))
       try {
         await this.$store.dispatch('registerOrganization', { form: this.form })
         await this.$router.push('/login')

@@ -275,15 +275,6 @@ hr {
   font-style: italic;
 }
 
-.error-message {
-  font-size: 0.8rem;
-  padding-left: 1rem;
-}
-
-.error-input {
-  border: 1px solid #ab2131;
-}
-
 .initiative-location-input {
   button {
     margin: 0 1rem;
