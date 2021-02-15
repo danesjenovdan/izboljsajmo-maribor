@@ -55,13 +55,13 @@ textarea.form-control,
 }
 
 textarea.form-control {
-  font-size: 0.8rem;
-  font-weight: 300;
   padding: 0.5rem 1rem;
   resize: none;
 
   &::placeholder {
     font-style: italic;
+    font-size: 0.8rem;
+    font-weight: 300;
   }
 }
 
@@ -143,34 +143,53 @@ textarea.form-control {
 .dropzone {
   border: 1px dashed #8cade2;
   border-radius: 1rem;
-  padding: 1.5rem;
-
-  .drop-circle {
-    background-color: #ef7782;
-    width: 2rem;
-    min-width: 2rem;
-    height: 2rem;
-    border-radius: 1rem;
-    margin: 0 1rem 0 0;
-    cursor: pointer;
-
-    &:hover {
-      background-color: #5a6268;
-    }
-
-    img {
-      width: 50%;
-      height: 50%;
-    }
-  }
-
-  p {
-    font-style: italic;
-    font-size: 0.8rem;
-    margin: 0;
-  }
+  padding: 1rem 1.5rem;
 
   &.drop-active {
     border: 4px solid #8cade2;
+  }
+
+  .filenames {
+    font-style: normal;
+
+    img {
+      height: 1.2rem;
+    }
+  }
+
+  div hr {
+    width: 100%;
+    margin: 0;
+    &.hr-upper {
+      margin-top: 0.75rem
+    }
+    &.hr-lower {
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  label {
+    margin-top: 0;
+    font-weight: normal;
+    cursor: pointer;
+
+    .drop-circle {
+      width: 2rem;
+      min-width: 2rem;
+      height: 2rem;
+      margin: 0 1rem 0 0;
+      padding: 0;
+
+      img {
+        width: 50%;
+        height: 50%;
+      }
+    }
+
+    p {
+      font-style: italic;
+      font-size: 0.8rem;
+      margin: 0;
+    }
   }
 }

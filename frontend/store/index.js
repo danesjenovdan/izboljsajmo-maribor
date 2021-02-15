@@ -92,7 +92,17 @@ export const actions = {
     const newComment = {
       content: payload.content
     }
-    const response = await this.$axios.post(`initiatives/${payload.id}/comment`, newComment)
+    const response = await this.$axios.post(`v1/initiatives/${payload.id}/comments/`, newComment)
+    const responseData = await response.data
+
+    if (response.status === 200) {
+    } else {
+      console.log('ni ok', responseData)
+      // throw error
+    }
+  },
+  async postInitiative (context, payload) {
+    const response = await this.$axios.post('v1/initiatives/', payload)
     const responseData = await response.data
 
     if (response.status === 200) {
