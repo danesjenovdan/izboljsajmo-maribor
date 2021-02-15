@@ -6,6 +6,7 @@ from oauth2_provider.models import Application
 from datetime import datetime
 
 from initiatives import models
+from about.models import About
 
 
 class Command(BaseCommand):
@@ -148,31 +149,31 @@ class Command(BaseCommand):
             note='Daj nea mi guši s takimi forami'
         ).save()
 
-        models.About(
+        About(
             order=1,
             type=models.AboutType.TITLE,
             content='O izboljšajmo Maribor',
             description='To je naslov'
         ).save()
-        models.About(
+        About(
             order=2,
             type=models.AboutType.TEXT,
             content='Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?',
             description='To je content'
         ).save()
-        models.About(
+        About(
             order=3,
             type=models.AboutType.IMAGE,
             url='https://img.youtube.com/vi/FcktgZewUok/0.jpg',
             description='To je slika'
         ).save()
-        models.About(
+        About(
             order=4,
             type=models.AboutType.TITLE2,
             content='Kako uporabljati platformo?',
             description='To je naslov'
         ).save()
-        models.About(
+        About(
             order=5,
             type=models.AboutType.YOUTUBE_EMBED,
             url='https://www.youtube.com/watch?v=GRLbU2JbBHY',

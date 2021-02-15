@@ -1,14 +1,14 @@
 from django.shortcuts import render, get_object_or_404
-
 from rest_framework import viewsets, mixins, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .serializers import (
     UserSerializer, InitiativeDetailsSerializer, OrganizationSerializer,
-    CommentSerializer, InitiativeListSerializer, AreaSerializer, AboutSerializer
+    CommentSerializer, InitiativeListSerializer, AreaSerializer,
+    FAQSerializer
 )
-from .models import Initiative, Zone, Area, About
+from .models import Initiative, Zone, Area, FAQ
 
 
 class UserViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
@@ -71,7 +71,7 @@ class InitiativeViewSet(
             return Response(serializer.data)
 
 
-class AboutViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
+class FAQViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     permission_classes = [permissions.AllowAny, ]
-    serializer_class = AboutSerializer
-    queryset = About.objects.all().order_by('order')
+    serializer_class = FAQSerializer
+    queryset = FAQ.objects.all().order_by('order')
