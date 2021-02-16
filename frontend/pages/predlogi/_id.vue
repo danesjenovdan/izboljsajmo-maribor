@@ -5,7 +5,7 @@
         <div class="predlog-info">
           <div class="tags mb-2">
             <span>Imam idejo!</span>
-            <span>{{ data.area }}</span>
+            <span>{{ data.area.name }}</span>
           </div>
           <h1>{{ data.title }}</h1>
           <p class="posted">
@@ -78,7 +78,7 @@
             <hr class="hr-lower">
             <b-row class="justify-content-center mb-5">
               <b-col cols="9">
-                <CommentForm :id="id"/>
+                <CommentForm :id="id" />
                 <div v-for="comment in data.comments" :key="comment.author" class="comment">
                   <hr class="hr-upper">
                   <hr class="hr-lower">

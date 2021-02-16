@@ -3,36 +3,32 @@
     <p v-if="errorLogin" class="error-message text-center mt-4">
       Prijava ni uspela.
     </p>
-    <b-form-group
-      id="username-input-group"
-      label="E-naslov ali uporabniško ime"
-      label-for="username"
-      :class="{ 'error-message': errorUsername }"
-    >
+    <div class="form-group">
+      <label for="username">E-naslov ali uporabniško ime</label>
+      <span v-if="errorUsername" class="error-message">Vpiši uporabniško ime.</span>
       <b-form-input
         id="username"
         v-model.trim="form.username"
+        :class="{ 'error-input': errorUsername }"
         name="username"
         type="text"
         required
-        @blur="checkUsername"
+        @keyup="checkUsername"
       />
-    </b-form-group>
-    <b-form-group
-      id="password-input-group"
-      label="Geslo"
-      label-for="password"
-      :class="{ 'error-message': errorPassword }"
-    >
+    </div>
+    <div class="form-group">
+      <label for="password">Geslo</label>
+      <span v-if="errorPassword" class="error-message">Vpiši geslo.</span>
       <b-form-input
         id="password"
         v-model.trim="form.password"
+        :class="{ 'error-input': errorPassword }"
         name="password"
         type="password"
         required
-        @blur="checkPassword"
+        @keyup="checkPassword"
       />
-    </b-form-group>
+    </div>
     <div class="text-right">
       <a href="/">Pozabljeno geslo?</a>
     </div>
@@ -44,13 +40,13 @@
       >
         Zapomni si me.
       </b-form-checkbox>
-      <b-button type="submit" class="w-100">
-        VSTOPI<span class="float-right"><img src="~/assets/img/icons/arrow-right.png"></span>
-      </b-button>
-      <div class="form-note text-center">
-        Nimaš računa? <a href="/login/register">Registriraj se</a>
-      </div>
     </b-form-group>
+    <b-button type="submit" class="w-100">
+      VSTOPI<span class="float-right"><img src="~/assets/img/icons/arrow-right.png"></span>
+    </b-button>
+    <div class="form-note text-center">
+      Nimaš računa? <a href="/login/register">Registriraj se</a>
+    </div>
   </b-form>
 </template>
 

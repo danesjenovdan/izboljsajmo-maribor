@@ -25,9 +25,9 @@
 <script>
 
 export default {
-  props: [
-    'id'
-  ],
+  props: {
+    id: String
+  },
   data () {
     return {
       content: '',
@@ -62,22 +62,6 @@ export default {
 
 h5 {
   font-weight: 600;
-}
-
-textarea {
-  border-radius: 1rem;
-  background-color: #f8f8f8;
-  box-shadow: 3px 3px 4px rgba(208, 212, 220, 0.35), -3px -3px 4px #ffffff, inset 0 3px 4px rgba(208, 212, 220, 0.5);
-  font-size: 0.8rem;
-  font-weight: 300;
-
-  &::placeholder {
-    font-style: italic;
-  }
-
-  &:focus {
-    background-color: #f8f8f8;
-  }
 }
 
 button {

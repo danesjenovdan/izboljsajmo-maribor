@@ -1,71 +1,64 @@
 <template>
-  <b-form @submit.prevent="register">
+  <form @submit.prevent="register">
     <p v-if="errorRegister" class="error-message text-center mt-4">
       Registracija ni uspela.
     </p>
-    <b-form-group
-      id="username-input-group"
-      label="Ime in priimek (uporabniško ime)"
-      label-for="username"
-      :class="{ 'error-message': errorUsername }"
-    >
+    <div class="form-group">
+      <label for="username">Ime in priimek (uporabniško ime)</label>
+      <span v-if="errorUsername" class="error-message">Vpiši uporabniško ime.</span>
       <b-form-input
         id="username"
         v-model="form.username"
+        :class="{ 'error-input': errorUsername }"
+        name="username"
         type="text"
         required
-        @blur="checkUsername"
+        @keyup="checkUsername"
       />
-    </b-form-group>
-    <b-form-group
-      id="email-input-group"
-      label="E-naslov"
-      label-for="email"
-      :class="{ 'error-message': errorEmail }"
-    >
+    </div>
+    <div class="form-group">
+      <label for="email">E-naslov</label>
+      <span v-if="errorEmail" class="error-message">Vpiši e-naslov.</span>
       <b-form-input
         id="email"
-        v-model="form.email"
+        v-model.trim="form.email"
+        :class="{ 'error-input': errorEmail }"
         type="email"
         required
-        @blur="checkEmail"
+        @keyup="checkEmail"
       />
-    </b-form-group>
-    <b-form-group
-      id="number-input-group"
-      label="Telefonska številka"
-      label-for="phone"
-      :class="{ 'error-message': errorPhone }"
-    >
+    </div>
+    <div class="form-group">
+      <label for="phone">Telefonska številka</label>
+      <span v-if="errorPhone" class="error-message">Vpiši telefonsko številko.</span>
       <b-form-input
         id="phone"
         v-model="form.phone"
+        :class="{ 'error-input': errorPhone }"
         type="tel"
         required
-        @blur="checkPhone"
+        @keyup="checkPhone"
       />
-    </b-form-group>
-    <b-form-group
-      id="password-input-group"
-      label="Geslo"
-      label-for="password"
-      :class="{ 'error-message': errorPassword }"
-    >
+    </div>
+    <div class="form-group">
+      <label for="password">Geslo</label>
+      <span v-if="errorPassword" class="error-message">Vpiši geslo.</span>
       <b-form-input
         id="password"
         v-model="form.password"
+        :class="{ 'error-input': errorPassword }"
         type="password"
         required
-        @blur="checkPassword"
+        @keyup="checkPassword"
       />
-    </b-form-group>
+    </div>
     <b-button type="submit" class="w-100">
-      ZAKLJUČI REGISTRACIJO<span class="float-right"><img src="~/assets/img/icons/arrow-right.png"></span>
+      ZAKLJUČI REGISTRACIJO<span class="float-right"><img src="~/assets/img/icons/arrow-right.png" alt="arrow icon"></span>
     </b-button>
     <div class="form-note text-center">
       Že imaš račun? <NuxtLink to="/login">Prijavi se</NuxtLink>
     </div>
-  </b-form>
+  </form>
 </template>
 
 <script>
@@ -99,7 +92,6 @@ export default {
       this.errorPassword = this.form.password.length === 0
     },
     async register (event) {
-      alert(JSON.stringify(this.form))
       try {
         await this.$store.dispatch('register', { form: this.form })
         await this.$router.push('login')
