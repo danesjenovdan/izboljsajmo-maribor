@@ -48,8 +48,10 @@ INSTALLED_APPS = [
     'drf_social_oauth2',
     'corsheaders',
     'admin_ordering',
+    'import_export',
 
     'initiatives',
+    'about',
 ]
 
 MIDDLEWARE = [

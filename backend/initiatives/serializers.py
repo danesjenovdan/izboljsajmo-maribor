@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import (
     User, Initiative, File, StatusInitiative, CompetentService, Organization, Comment,
-    CommentStatus, Description, Area, About
+    CommentStatus, Description, Area, FAQ, Image
 )
 
 from drf_writable_nested.serializers import WritableNestedModelSerializer
@@ -71,7 +71,7 @@ class CompetentServiceSerializer(serializers.ModelSerializer):
 class AreaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Area
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'note')
 
 
 class StatusInitiativeSerializer(serializers.ModelSerializer):
@@ -96,7 +96,17 @@ class StatusInitiativeSerializer(serializers.ModelSerializer):
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File
-        fields = ('file', 'name')
+        fields = ('id', 'file', 'name')
+        extra_kwargs = {
+            'file': {'read_only': True},
+            'name': {'read_only': True},
+        }
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ('id', 'image')
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -123,24 +133,23 @@ class DescriptionSerializers(serializers.ModelSerializer):
             'content',
             'field',
             'title',
-            'order')
+            'order',
+            'id')
 
 
-class AboutSerializer(serializers.ModelSerializer):
+class FAQSerializer(serializers.ModelSerializer):
     class Meta:
-        model = About
+        model = FAQ
         fields = (
-            'type',
-            'content',
-            'image',
-            'url')
-
+            'question',
+            'answer')
 
 
 class InitiativeListSerializer(serializers.ModelSerializer):
     area = AreaSerializer()
     author = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
+    cover_image = ImageSerializer()
     class Meta:
         model = Initiative
         fields = (
@@ -170,6 +179,8 @@ class InitiativeDetailsSerializer(WritableNestedModelSerializer):
     area = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()
     descriptions = DescriptionSerializers(many=True)
+    cover_image = ImageSerializer(required=False)
+    cover_image_after = ImageSerializer(required=False)
     class Meta:
         model = Initiative
         fields = (

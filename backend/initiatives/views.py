@@ -1,14 +1,15 @@
 from django.shortcuts import render, get_object_or_404
-
 from rest_framework import viewsets, mixins, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
 
 from .serializers import (
     UserSerializer, InitiativeDetailsSerializer, OrganizationSerializer,
-    CommentSerializer, InitiativeListSerializer, AreaSerializer, AboutSerializer
+    CommentSerializer, InitiativeListSerializer, AreaSerializer,
+    FAQSerializer, FileSerializer, ImageSerializer
 )
-from .models import Initiative, Zone, Area, About
+from .models import Initiative, Zone, Area, FAQ
 
 
 class UserViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
@@ -27,11 +28,26 @@ class AreaViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     queryset = Area.objects.all()
 
 
+class FilesViewSet(viewsets.GenericViewSet,
+                   mixins.CreateModelMixin):
+    serializer_class = FileSerializer
+    parser_classes = (MultiPartParser, FormParser,)
+    permission_classes = [permissions.IsAuthenticated,]
+
+
+class ImagesViewSet(viewsets.GenericViewSet,
+                   mixins.CreateModelMixin):
+    serializer_class = ImageSerializer
+    parser_classes = (MultiPartParser, FormParser,)
+    permission_classes = [permissions.IsAuthenticated,]
+
+
 class InitiativeViewSet(
     viewsets.GenericViewSet,
     mixins.RetrieveModelMixin,
     mixins.CreateModelMixin,
-    mixins.ListModelMixin):
+    mixins.ListModelMixin,
+    mixins.UpdateModelMixin):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
     serializer_class = InitiativeDetailsSerializer
     queryset = Initiative.objects.all()
@@ -71,7 +87,7 @@ class InitiativeViewSet(
             return Response(serializer.data)
 
 
-class AboutViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
+class FAQViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     permission_classes = [permissions.AllowAny, ]
-    serializer_class = AboutSerializer
-    queryset = About.objects.all().order_by('order')
+    serializer_class = FAQSerializer
+    queryset = FAQ.objects.all().order_by('order')

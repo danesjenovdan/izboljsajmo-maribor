@@ -2,13 +2,24 @@ from django.contrib import admin
 from django.contrib.gis import admin as gis_admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext as _
+from django.utils.html import format_html
+from django.urls import reverse
 
 from .models import (
     User, Organization, Zone, CompetentService, Initiative, Area, Status, StatusInitiative,
-    File, Comment, About, AboutType
+    File, Comment, Comment, FAQ, StatusInitiativeHear, Rejection,
+    StatusInitiativeHear, StatusInitiativeEditing, StatusInitiativeProgress,
+    StatusInitiativeFinished, StatusInitiativeDone, StatusInitiativeRejected, Description
 )
+from .forms import (
+    HearStatusInlineForm, EditingStatusInlineForm, ProgressStatusInlineForm, DoneStatusInlineForm,
+    FinishedStatusInlineForm, RejectedStatusInlineForm
+)
+from .export_resources import InitiativeResource
 
 from admin_ordering.admin import OrderableAdmin
+from import_export.admin import ImportExportModelAdmin
+
 
 class MBUserAdmin(UserAdmin):
     search_fields = ['username']
@@ -55,6 +66,7 @@ class UserCompetentServiceInline(admin.TabularInline):
 
 class CommentInline(admin.TabularInline):
     readonly_fields = ['author', 'created']
+    classes = ['collapse']
     fields = ['author', 'content', 'created', 'status']
     model = Comment
     extra = 0
@@ -62,8 +74,105 @@ class CommentInline(admin.TabularInline):
 
 class StatusInitiativeInline(admin.TabularInline):
     readonly_fields = []
+    classes = ['collapse']
     fields = ['status', 'note', 'email_content', 'reason_for_rejection', 'competent_service']
     model = StatusInitiative
+    extra = 0
+
+
+class StatusInitiativeHearInline(admin.TabularInline):
+    form = HearStatusInlineForm
+    readonly_fields = ['status', 'created']
+    fields = ['status', 'created', 'email_content']
+    classes = ['collapse']
+    model = StatusInitiativeHear
+    extra = 0
+
+    def save_model(self, request, obj, form, change):
+        obj.status = Status.objects.get(name='Slišimo')
+        super().save_model(request, obj, form, change)
+
+
+class StatusInitiativeEditingInline(admin.TabularInline):
+    form = EditingStatusInlineForm
+    readonly_fields = ['created']
+    autocomplete_fields = ['competent_service']
+    fields = ['created', 'email_content', 'competent_service']
+    classes = ['collapse']
+    model = StatusInitiativeEditing
+    extra = 0
+
+    def save_model(self, request, obj, form, change):
+        obj.status = Status.objects.get(name='Urejamo')
+        super().save_model(request, obj, form, change)
+
+
+class StatusInitiativeProgressInline(admin.TabularInline):
+    form = ProgressStatusInlineForm
+    readonly_fields = ['created']
+    fields = ['created', 'email_content']
+    classes = ['collapse']
+    model = StatusInitiativeProgress
+    extra = 0
+
+    def save_model(self, request, obj, form, change):
+        obj.status = Status.objects.get(name='V izvajanju')
+        super().save_model(request, obj, form, change)
+
+
+class StatusInitiativeFinishedInline(admin.TabularInline):
+    form = FinishedStatusInlineForm
+    readonly_fields = ['created']
+    fields = ['created', 'email_content']
+    classes = ['collapse']
+    model = StatusInitiativeFinished
+    extra = 0
+
+    def save_model(self, request, obj, form, change):
+        obj.status = Status.objects.get(name='Zaključeno')
+        super().save_model(request, obj, form, change)
+
+
+class StatusInitiativeDoneInline(admin.TabularInline):
+    form = DoneStatusInlineForm
+    readonly_fields = ['created']
+    fields = ['created', 'email_content']
+    classes = ['collapse']
+    model = StatusInitiativeDone
+    extra = 0
+
+    def save_model(self, request, obj, form, change):
+        obj.status = Status.objects.get(name='Izvedeno')
+        super().save_model(request, obj, form, change)
+
+
+class StatusInitiativeRejectedInline(admin.TabularInline):
+    form = RejectedStatusInlineForm
+    readonly_fields = ['created']
+    fields = ['created', 'email_content', 'reason_for_rejection']
+    autocomplete_fields = ['reason_for_rejection']
+    classes = ['collapse']
+    model = StatusInitiativeRejected
+    extra = 0
+
+    def save_model(self, request, obj, form, change):
+        obj.status = Status.objects.get(name='Zavrnjeno')
+        super().save_model(request, obj, form, change)
+
+
+class DescriptionInline(admin.TabularInline):
+    search_fields = ['title']
+    fields = ['field', 'title', 'content']
+    classes = ['collapse']
+    model = Description
+    extra = 0
+
+
+class FileInline(admin.TabularInline):
+    search_fields = ['name']
+    fields = ['name', 'file']
+    classes = ['collapse']
+    model = File
     extra = 0
 
 
@@ -74,6 +183,13 @@ class OrganizationAdmin(admin.ModelAdmin):
         'number_of_members',
     ]
     inlines = (UserOrganizationInline, )
+
+
+class RejectionAdmin(admin.ModelAdmin):
+    search_fields = ['name']
+    list_display = [
+        'name',
+    ]
 
 
 class ZoneAdmin(gis_admin.GeoModelAdmin):
@@ -96,9 +212,10 @@ class AreaAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 
-class InitiativeAdmin(admin.ModelAdmin):
+class InitiativeAdmin(ImportExportModelAdmin):
     search_fields = ['name']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone']
+    list_filter = ['statuses', 'zone', 'area', 'type']
     list_display = [
         'title',
         'author',
@@ -111,44 +228,39 @@ class InitiativeAdmin(admin.ModelAdmin):
         'comment_count',
         'vote_count'
     ]
-    inlines = (CommentInline, StatusInitiativeInline)
+    inlines = (
+        DescriptionInline,
+        FileInline,
+        StatusInitiativeHearInline,
+        StatusInitiativeEditingInline,
+        StatusInitiativeProgressInline,
+        StatusInitiativeFinishedInline,
+        StatusInitiativeDoneInline,
+        StatusInitiativeRejectedInline,
+        CommentInline)
+
+    resource_class = InitiativeResource
 
 
-class AboutAdmin(OrderableAdmin, admin.ModelAdmin):
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['id', 'initiative_obj', "content", "author", "status", 'created']
+    list_editable = ["status"]
+
+    list_filter = ['status']
+
+    def initiative_obj(self, obj):
+        link = reverse("admin:initiatives_initiative_change", args=[obj.initiative.id])
+        return format_html(f'<a href="{link}">{obj.initiative}</a>')
+
+    initiative_obj.allow_tags = True
+    initiative_obj.short_description = _('Initiatives')
+
+
+
+class FAQAdmin(OrderableAdmin, admin.ModelAdmin):
+    list_display = ["question", "answer", "order"]
     ordering_field = "order"
-
-    list_display = ["description", "order", "preview"]
     list_editable = ["order"]
-
-    def get_fieldsets(self, request, obj=None):
-        """
-        Different fieldset for the admin form
-        """
-        self.fieldsets = self.dynamic_fieldset() #add logic to add the dynamic fieldset with fields
-        return super().get_fieldsets(request, obj)
-
-    def dynamic_fieldset(self):
-        """
-        get the dynamic field sets
-        """
-        sections = {
-            'Global': ['type', 'order', 'description'],
-            'Titles, Text': ['content', 'description'],
-            'Youtube, Image': ['url'],
-            'Image': ['image'],
-            }
-        fieldsets = []
-        for group in sections.keys(): #logic to get the field set group
-            fields = []
-            for field in sections[group]: #logic to get the group fields
-                fields.append(field)
-
-            fieldset_values = {"fields": tuple(fields), "classes": []}
-            fieldsets.append((group, fieldset_values))
-
-        fieldsets = tuple(fieldsets)
-
-        return fieldsets
 
 
 
@@ -161,4 +273,6 @@ admin.site.register(CompetentService, CompetentServiceAdmin)
 admin.site.register(Status)
 admin.site.register(StatusInitiative)
 admin.site.register(File)
-admin.site.register(About, AboutAdmin)
+admin.site.register(Comment, CommentAdmin)
+admin.site.register(FAQ, FAQAdmin)
+admin.site.register(Rejection, RejectionAdmin)
