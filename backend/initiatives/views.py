@@ -2,11 +2,12 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets, mixins, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
 
 from .serializers import (
     UserSerializer, InitiativeDetailsSerializer, OrganizationSerializer,
     CommentSerializer, InitiativeListSerializer, AreaSerializer,
-    FAQSerializer
+    FAQSerializer, FileSerializer, ImageSerializer
 )
 from .models import Initiative, Zone, Area, FAQ
 
@@ -27,11 +28,26 @@ class AreaViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     queryset = Area.objects.all()
 
 
+class FilesViewSet(viewsets.GenericViewSet,
+                   mixins.CreateModelMixin):
+    serializer_class = FileSerializer
+    parser_classes = (MultiPartParser, FormParser,)
+    permission_classes = [permissions.IsAuthenticated,]
+
+
+class ImagesViewSet(viewsets.GenericViewSet,
+                   mixins.CreateModelMixin):
+    serializer_class = ImageSerializer
+    parser_classes = (MultiPartParser, FormParser,)
+    permission_classes = [permissions.IsAuthenticated,]
+
+
 class InitiativeViewSet(
     viewsets.GenericViewSet,
     mixins.RetrieveModelMixin,
     mixins.CreateModelMixin,
-    mixins.ListModelMixin):
+    mixins.ListModelMixin,
+    mixins.UpdateModelMixin):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
     serializer_class = InitiativeDetailsSerializer
     queryset = Initiative.objects.all()

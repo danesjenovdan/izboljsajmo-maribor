@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import (
     User, Initiative, File, StatusInitiative, CompetentService, Organization, Comment,
-    CommentStatus, Description, Area, FAQ
+    CommentStatus, Description, Area, FAQ, Image
 )
 
 from drf_writable_nested.serializers import WritableNestedModelSerializer
@@ -96,7 +96,17 @@ class StatusInitiativeSerializer(serializers.ModelSerializer):
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File
-        fields = ('file', 'name')
+        fields = ('id', 'file', 'name')
+        extra_kwargs = {
+            'file': {'read_only': True},
+            'name': {'read_only': True},
+        }
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ('id', 'image')
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -123,7 +133,8 @@ class DescriptionSerializers(serializers.ModelSerializer):
             'content',
             'field',
             'title',
-            'order')
+            'order',
+            'id')
 
 
 class FAQSerializer(serializers.ModelSerializer):
@@ -138,6 +149,7 @@ class InitiativeListSerializer(serializers.ModelSerializer):
     area = AreaSerializer()
     author = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
+    cover_image = ImageSerializer()
     class Meta:
         model = Initiative
         fields = (
@@ -167,6 +179,8 @@ class InitiativeDetailsSerializer(WritableNestedModelSerializer):
     area = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()
     descriptions = DescriptionSerializers(many=True)
+    cover_image = ImageSerializer(required=False)
+    cover_image_after = ImageSerializer(required=False)
     class Meta:
         model = Initiative
         fields = (

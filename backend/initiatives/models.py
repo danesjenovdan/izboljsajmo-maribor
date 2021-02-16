@@ -57,12 +57,18 @@ class Initiative(Timestamped, Authored):
         related_name='published_initiatives',
         null=True,
         blank=True)
-    cover_image = models.ImageField(
-        _('Cover image before'),
+    cover_image = models.ForeignKey(
+        'Image',
+        verbose_name=_('Cover image before'),
+        on_delete=models.CASCADE,
+        related_name='initiative_before',
         null=True,
         blank=True)
-    cover_image_after = models.ImageField(
-        _('Cover image after'),
+    cover_image_after = models.ForeignKey(
+        'Image',
+        verbose_name=_('Cover image after'),
+        on_delete=models.CASCADE,
+        related_name='initiative_after',
         null=True,
         blank=True)
     archived = models.DateTimeField(
@@ -368,5 +374,15 @@ class File(Timestamped):
         upload_to='files',
         max_length=100)
 
+    def __str__(self):
+        return self.name
+
+
+class Image(Timestamped):
+    image = models.ImageField(
+        _('Image'),
+        upload_to='images',
+        null=True,
+        blank=True)
     def __str__(self):
         return self.name
