@@ -97,6 +97,13 @@ class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File
         fields = ('id', 'file', 'name')
+
+
+
+class FileDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = File
+        fields = ('id', 'file', 'name')
         extra_kwargs = {
             'file': {'read_only': True},
             'name': {'read_only': True},
@@ -174,7 +181,7 @@ class InitiativeListSerializer(serializers.ModelSerializer):
 
 class InitiativeDetailsSerializer(WritableNestedModelSerializer):
     statuses = StatusInitiativeSerializer(source='initiative_statuses', many=True, required=False)
-    uploaded_files = FileSerializer(source='files', many=True, required=False)
+    uploaded_files = FileDetailsSerializer(source='files', many=True, required=False)
     author = serializers.SerializerMethodField()
     area = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()
