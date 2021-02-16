@@ -74,7 +74,7 @@ class Initiative(Timestamped, Authored):
     archived = models.DateTimeField(
         null=True,
         blank=True)
-    in_review = models.BooleanField(
+    is_draft = models.BooleanField(
         _('In review'),
         default=False)
 
@@ -385,4 +385,4 @@ class Image(Timestamped):
         null=True,
         blank=True)
     def __str__(self):
-        return self.name
+        return self.image.url

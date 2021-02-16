@@ -197,7 +197,8 @@ class InitiativeDetailsSerializer(WritableNestedModelSerializer):
             'created',
             'address',
             'comments',
-            'descriptions')
+            'descriptions',
+            'is_draft')
         extra_kwargs = {
             'author': {'read_only': False},
             'cover_image_after': {'read_only': True},

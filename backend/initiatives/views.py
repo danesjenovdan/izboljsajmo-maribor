@@ -10,6 +10,7 @@ from .serializers import (
     FAQSerializer, FileSerializer, ImageSerializer
 )
 from .models import Initiative, Zone, Area, FAQ
+from .permissions import IsOwnerOrReadOnly
 
 
 class UserViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
@@ -48,7 +49,7 @@ class InitiativeViewSet(
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
     mixins.UpdateModelMixin):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
+    permission_classes = [IsOwnerOrReadOnly, ]
     serializer_class = InitiativeDetailsSerializer
     queryset = Initiative.objects.all()
 
@@ -85,6 +86,20 @@ class InitiativeViewSet(
         if serializer.is_valid(raise_exception=False):
             serializer.save(author = request.user, initiative = initiative)
             return Response(serializer.data)
+
+    @action(
+        methods=['get'],
+        detail=False,
+        url_path='my',
+        url_name='my',
+        permission_classes=[permissions.IsAuthenticated,])
+    def my_initiatives(self, request, pk=None):
+        initiatives = Initiative.objects.filter(author=request.user)
+        drafts = initiatives.filter(is_draft=True)
+        published = initiatives.filter(is_draft=False)
+        draft_serializer = InitiativeListSerializer(drafts, many=True)
+        serializer = InitiativeListSerializer(published, many=True)
+        return Response({'drafts': draft_serializer.data, 'published': serializer.data})
 
 
 class FAQViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):

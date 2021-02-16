@@ -208,6 +208,38 @@
 			"response": []
 		},
 		{
+			"name": "get my initiatives",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/v1/initiatives/my/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"initiatives",
+						"my",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "get areas",
 			"request": {
 				"method": "GET",
