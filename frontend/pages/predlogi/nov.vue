@@ -2,7 +2,7 @@
   <b-container fluid>
     <b-row class="justify-content-center">
       <b-col cols="12" md="10" lg="6" class="position-relative">
-        <div class="form-top" />
+        <div class="form-top"></div>
         <div class="initiative-form">
           <form enctype="multipart/form-data" @submit.prevent="createInitiative">
             <h4>MOTI ME!</h4>

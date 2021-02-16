@@ -52,17 +52,17 @@ textarea.form-control,
     background-color: #f8f8f8;
     box-shadow: 4px 4px 6px rgba(208, 212, 220, 0.35), -4px -4px 6px #ffffff, inset 0 4px 6px rgba(208, 212, 220, 0.5);
   }
-}
-
-textarea.form-control {
-  padding: 0.5rem 1rem;
-  resize: none;
 
   &::placeholder {
     font-style: italic;
     font-size: 0.8rem;
     font-weight: 300;
   }
+}
+
+textarea.form-control {
+  padding: 0.5rem 1rem;
+  resize: none;
 }
 
 .custom-select {
