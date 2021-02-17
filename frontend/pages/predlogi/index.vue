@@ -4,12 +4,14 @@
       <b-col lg="7">
         <b-row class="my-4 justify-content-center">
           <b-col cols="9" class="text-center">
-            <h4 class="d-inline">Oddaj pobudo!</h4> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim.
+            <h4 class="d-inline">
+              Oddaj pobudo!
+            </h4> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim.
           </b-col>
         </b-row>
         <b-row class="action-cards">
           <b-col cols="4">
-            <div class="action-card-top"></div>
+            <div class="action-card-top" />
             <NuxtLink to="nov" class="action-card d-block h-100">
               <h6 class="d-flex align-items-center">
                 MOTI ME!
@@ -19,7 +21,7 @@
             </NuxtLink>
           </b-col>
           <b-col cols="4">
-            <div class="action-card-top"></div>
+            <div class="action-card-top" />
             <div class="action-card h-100">
               <h6 class="d-flex align-items-center">
                 IMAM IDEJO!
@@ -29,7 +31,7 @@
             </div>
           </b-col>
           <b-col cols="4">
-            <div class="action-card-top"></div>
+            <div class="action-card-top" />
             <div class="action-card h-100">
               <h6 class="d-flex align-items-center">
                 ZANIMA ME!
@@ -43,48 +45,101 @@
         <hr class="hr-lower">
         <b-row>
           <b-col cols="12">
-            <h4 class="mb-4 text-center">Išči ali brskaj po obstoječih predlogih!</h4>
+            <h4 class="mb-4 text-center">
+              Išči ali brskaj po obstoječih predlogih!
+            </h4>
           </b-col>
         </b-row>
         <b-row class="mb-4">
-          <b-col cols="12" class="d-inline-flex">
-            <input
-              v-model="search"
-              type="text"
-              class="form-control"
-              placeholder="Išči po naslovu ali vsebini pobud"
+          <b-col cols="12" class="d-flex">
+            <div class="d-inline-flex flex-grow-1 align-items-center position-relative">
+              <input
+                v-model="search"
+                type="text"
+                class="form-control"
+                placeholder="Išči po naslovu ali vsebini pobud"
+              >
+              <img src="~/assets/img/icons/search.png" class="position-absolute mr-1" style="right: 0;">
+            </div>
+            <button
+              class="filter d-inline-flex align-items-center"
+              @click="showType = !showType"
             >
-            <button class="filter d-inline-flex align-items-center">
               Tip
               <img
                 src="~/assets/img/icons/arrow-down.png"
                 alt="arrow down"
-                class="ml-2"
+                :class="{ 'ml-2': true, 'dropdown-open': showType }"
               >
+              <div
+                v-if="showType"
+                style="position: absolute; top: 3rem; z-index: 1"
+                @click.stop=""
+              >
+                <div>
+                  TO DO: types
+                </div>
+              </div>
             </button>
-            <button class="filter d-inline-flex align-items-center">
+            <button
+              class="filter d-inline-flex align-items-center"
+              @click="showArea = !showArea"
+            >
               Področje
               <img
                 src="~/assets/img/icons/arrow-down.png"
                 alt="arrow down"
-                class="ml-2"
+                :class="{ 'ml-2': true, 'dropdown-open': showArea }"
               >
+              <div
+                v-if="showArea"
+                style="position: absolute; top: 3rem; z-index: 1"
+                @click.stop=""
+              >
+                <div>
+                  TO DO: areas
+                </div>
+              </div>
             </button>
-            <button class="filter d-inline-flex align-items-center">
+            <button
+              class="filter d-inline-flex align-items-center"
+              @click="showLocation = !showLocation"
+            >
               Območje
               <img
                 src="~/assets/img/icons/arrow-down.png"
                 alt="arrow down"
-                class="ml-2"
+                :class="{ 'ml-2': true, 'dropdown-open': showLocation }"
               >
+              <div
+                v-if="showLocation"
+                style="position: absolute; top: 3rem; z-index: 1"
+                @click.stop=""
+              >
+                <div>
+                  TO DO: območje
+                </div>
+              </div>
             </button>
-            <button class="filter d-inline-flex align-items-center">
+            <button
+              class="filter d-inline-flex align-items-center"
+              @click="showStatus = !showStatus"
+            >
               Status
               <img
                 src="~/assets/img/icons/arrow-down.png"
                 alt="arrow down"
-                class="ml-2"
+                :class="{ 'ml-2': true, 'dropdown-open': showStatus }"
               >
+              <div
+                v-if="showStatus"
+                style="position: absolute; top: 3rem; z-index: 1"
+                @click.stop=""
+              >
+                <div>
+                  TO DO: status
+                </div>
+              </div>
             </button>
           </b-col>
         </b-row>
@@ -196,7 +251,7 @@
                   <span class="tag">{{ date(initiative.created) }}</span>
                 </div>
                 <p>
-                  {{ initiative.description}}
+                  {{ initiative.description }}
                 </p>
                 <hr class="hr-upper">
                 <hr class="hr-lower">
@@ -241,6 +296,10 @@ export default {
   data () {
     return {
       search: '',
+      showType: false,
+      showArea: false,
+      showLocation: false,
+      showStatus: false,
       initiatives: [
         {
           title: 'Ureditev oranžne ograje ob starem mostu od Lastovke proti Orientu',
@@ -340,12 +399,20 @@ h4 {
 
 .filter {
   box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
-  border-radius: 1rem;
+  border-radius: 1.5rem;
   border: none;
   font-style: italic;
   font-size: 0.8rem;
   padding: 0.1rem 0.5rem;
   margin-left: 0.5rem;
+
+  img {
+    transition: transform 500ms;
+
+    &.dropdown-open {
+      transform: rotate(-180deg);
+    }
+  }
 }
 
 .initiative-card {
