@@ -182,33 +182,38 @@ class Command(BaseCommand):
             description='To je YT video'
         ).save()
 
-    models.DescriptionDefinition(
-        order=1,
-        type=models.InitiativeType.HAVE_IDEA,
-        title='Naslov opisa 1',
-        field='title1'
-    ).save()
-    models.DescriptionDefinition(
-        order=2,
-        type=models.InitiativeType.HAVE_IDEA,
-        title='Naslov opisa 2',
-        field='title2'
-    ).save()
-    models.DescriptionDefinition(
-        order=3,
-        type=models.InitiativeType.HAVE_IDEA,
-        title='Naslov opisa 3',
-        field='title3'
-    ).save()
-    models.DescriptionDefinition(
-        order=1,
-        type=models.InitiativeType.BOTHERS_ME,
-        title='Naslov opisa 1',
-        field='title1'
-    ).save()
-    models.DescriptionDefinition(
-        order=1,
-        type=models.InitiativeType.INTERESTED_IN,
-        title='Naslov opisa 1',
-        field='title1'
-    ).save()
+        models.DescriptionDefinition(
+            order=1,
+            type=models.InitiativeType.HAVE_IDEA,
+            title='Naslov opisa 1',
+            field='title1',
+            author_id=1,
+        ).save()
+        models.DescriptionDefinition(
+            order=2,
+            type=models.InitiativeType.HAVE_IDEA,
+            title='Naslov opisa 2',
+            field='title2',
+            author_id=1,
+        ).save()
+        models.DescriptionDefinition(
+            order=3,
+            type=models.InitiativeType.HAVE_IDEA,
+            title='Naslov opisa 3',
+            field='title3',
+            author_id=1,
+        ).save()
+        models.DescriptionDefinition(
+            order=1,
+            type=models.InitiativeType.BOTHERS_ME,
+            title='Naslov opisa 1',
+            field='title1',
+            author_id=1,
+        ).save()
+        models.DescriptionDefinition(
+            order=1,
+            type=models.InitiativeType.INTERESTED_IN,
+            title='Naslov opisa 1',
+            field='title1',
+            author_id=1,
+        ).save()
