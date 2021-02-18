@@ -97,9 +97,9 @@
             <div class="form-group">
               <label class="mt-4">Naslovna slika*</label>
               <div :class="{'dropzone': true, 'drop-active': dropzone1Active}">
-                <div v-if="form.coverImageFile">
+                <div v-if="coverImageFile">
                   <div class="filenames">
-                    <span class="mr-1">{{ form.coverImageFile.name }}</span>
+                    <span class="mr-1">{{ coverImageFile.name }}</span>
                     <img
                       src="~/assets/img/icons/trashcan.png"
                       alt="trashcan"
@@ -123,7 +123,6 @@
                     name="initiative-cover-image"
                     type="file"
                     class="d-none"
-                    required
                     accept="image/*"
                     @change="processCoverImage($event)"
                   >
@@ -141,8 +140,8 @@
             <div class="form-group">
               <label class="mt-4">Datoteke</label>
               <div :class="{'dropzone': true, 'drop-active': dropzone2Active}">
-                <div v-if="form.files.length > 0">
-                  <div v-for="file in form.files" :key="file.name" class="filenames">
+                <div v-if="files.length > 0">
+                  <div v-for="file in files" :key="file.name" class="filenames">
                     <span class="mr-1">{{ file.name }}</span>
                     <img
                       src="~/assets/img/icons/trashcan.png"
@@ -185,6 +184,9 @@
             </div>
             <hr class="hr-upper">
             <hr class="hr-lower">
+            <div v-if="errorForm" class="text-center">
+              <p class="error-message">Obrazec ni pravilno izpolnjen.</p>
+            </div>
             <div class="d-flex justify-content-between align-items-center">
               <div>
                 <b-button class="save-button px-4">
@@ -208,6 +210,7 @@
 
 <script>
 export default {
+  middleware: 'auth',
   data () {
     return {
       form: {
@@ -216,9 +219,11 @@ export default {
         initiativeDescription: '',
         initiativeSuggestion: '',
         initiativeLocation: '',
-        coverImageFile: null,
-        files: []
+        initiativeCoverImage: '',
+        initiativeFiles: []
       },
+      coverImageFile: null,
+      files: [],
       errorInitiativeTitle: false,
       initiativeAreaOptions: [
         { value: null, text: 'Izberite področje' }
@@ -228,7 +233,8 @@ export default {
       errorInitiativeLocation: false,
       initiativeLocationEmptyAllowed: false,
       dropzone1Active: false,
-      dropzone2Active: false
+      dropzone2Active: false,
+      errorForm: false
     }
   },
   created () {
@@ -279,25 +285,25 @@ export default {
       this.dropzone1Active = false
       const files = event.target.files || event.dataTransfer.files
       if (files) {
-        this.form.coverImageFile = files[0]
+        this.coverImageFile = files[0]
       }
       console.log(this.form)
     },
     removeCoverImage () {
-      this.form.coverImageFile = null
+      this.coverImageFile = null
     },
     processFiles (event) {
       this.dropzone2Active = false
       const files = event.target.files || event.dataTransfer.files
       for (let f = 0; f < files.length; f++) {
-        this.form.files.push(files[f])
+        this.files.push(files[f])
       }
       console.log(this.form)
     },
     removeFile (filename) {
-      for (let i = 0; i < this.form.files.length; i++) {
-        if (this.form.files[i].name === filename) {
-          this.form.files.splice(i, 1)
+      for (let i = 0; i < this.files.length; i++) {
+        if (this.files[i].name === filename) {
+          this.files.splice(i, 1)
         }
       }
     },
@@ -314,17 +320,39 @@ export default {
       this.dropzone2Active = false
     },
     async createInitiative () {
-      console.log(JSON.stringify(this.form))
       if (!this.errorInitiativeTitle &&
         !this.errorInitiativeArea &&
         !this.errorInitiativeDescription &&
-        !this.errorInitiativeLocation) {
+        !this.errorInitiativeLocation &&
+        this.form.initiativeCoverImage) {
         try {
+          const imageID = await this.$store.dispatch('postCoverImage', { image: this.coverImageFile })
+          this.form.initiativeCoverImage = {
+            id: imageID
+          }
+          console.log('img', imageID)
+
+          for (let i = 0; i < this.files.length; i++) {
+            console.log({
+              file: this.files[i],
+              name: this.files[i].name
+            })
+            const filesID = await this.$store.dispatch('postFiles', {
+              file: this.files[i],
+              name: this.files[i].name
+            })
+            this.form.initiativeFiles.push({
+              id: filesID
+            })
+          }
+          console.log(this.form)
           await this.$store.dispatch('postInitiative', this.form)
         } catch (err) {
           // this.errorComment = true
           console.log(err)
         }
+      } else {
+        this.errorForm = true
       }
     }
   }

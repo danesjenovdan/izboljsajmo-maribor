@@ -4,6 +4,7 @@
       <h1 class="title">
         {{ accessToken }}
       </h1>
+      <NuxtLink to="/predlogi/1">predlog</NuxtLink>
       <div class="links">
         <a
           href="https://nuxtjs.org/"

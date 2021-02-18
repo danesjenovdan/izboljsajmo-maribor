@@ -12,7 +12,7 @@
         <b-row class="action-cards">
           <b-col cols="4">
             <div class="action-card-top" />
-            <NuxtLink to="nov" class="action-card d-block h-100">
+            <NuxtLink to="/predlogi/nov" class="action-card d-block h-100">
               <h6 class="d-flex align-items-center">
                 MOTI ME!
                 <img src="~/assets/img/icons/arrow-right.png" alt="arrow right">

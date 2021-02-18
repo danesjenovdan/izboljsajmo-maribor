@@ -45,7 +45,7 @@
       VSTOPI<span class="float-right"><img src="~/assets/img/icons/arrow-right.png"></span>
     </b-button>
     <div class="form-note text-center">
-      Nimaš računa? <NuxtLink to="login/register">Registriraj se</NuxtLink>
+      Nimaš računa? <NuxtLink to="/register">Registriraj se</NuxtLink>
     </div>
   </b-form>
 </template>
@@ -78,7 +78,7 @@ export default {
       // console.log(JSON.stringify(this.form))
       try {
         await this.$store.dispatch('login', { form: this.form })
-        await this.$router.push('/')
+        await this.$router.push('/predlogi')
       } catch (err) {
         this.errorLogin = true
         console.log(err)

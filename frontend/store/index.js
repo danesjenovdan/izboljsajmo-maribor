@@ -97,17 +97,83 @@ export const actions = {
     })
     const responseData = await response.data
 
-    if (response.status === 200) {
+    if (response.status === 201) {
+    } else {
+      console.log('ni ok', responseData)
+      // throw error
+    }
+  },
+  async postCoverImage (context, payload) {
+    const formData = new FormData()
+    formData.append('image', payload.image)
+    const response = await this.$axios.post('v1/images/', formData, {
+      headers: {
+        Authorization: 'Bearer ' + context.getters.token,
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    const responseData = await response.data
+    console.log(response)
+
+    if (response.status === 201) { // Created
+      return responseData.id
+    } else {
+      console.log('ni ok', responseData)
+      // throw error
+    }
+  },
+  async postFiles (context, payload) {
+    const formData = new FormData()
+    formData.append('file', payload.file)
+    formData.append('name', payload.name)
+    const response = await this.$axios.post('v1/files/', formData, {
+      headers: {
+        Authorization: 'Bearer ' + context.getters.token,
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    const responseData = await response.data
+    console.log(response)
+
+    if (response.status === 201) { // Created
+      return responseData.id
     } else {
       console.log('ni ok', responseData)
       // throw error
     }
   },
   async postInitiative (context, payload) {
-    const response = await this.$axios.post('v1/initiatives/', payload)
+    const form = {
+      title: payload.initiativeTitle,
+      type: 'II',
+      area: payload.initiativeArea,
+      address: 'Županova',
+      location: payload.initiativeLocation,
+      descriptions: [
+        {
+          title: 'To je nek title',
+          field: 'to_bo_nek_kljuc',
+          content: payload.initiativeDescription
+        },
+        {
+          title: 'To je nek title 2',
+          field: 'to_bo_nek_kljuc 2',
+          content: payload.initiativeSuggestion
+        }
+      ],
+      cover_image: payload.initiativeCoverImage,
+      uploaded_files: payload.initiativeFiles
+    }
+    console.log(form)
+    const response = await this.$axios.post('v1/initiatives/', form, {
+      headers: {
+        Authorization: 'Bearer ' + context.getters.token
+      }
+    })
     const responseData = await response.data
 
-    if (response.status === 200) {
+    if (response.status === 201) {
+      console.log(responseData)
     } else {
       console.log('ni ok', responseData)
       // throw error

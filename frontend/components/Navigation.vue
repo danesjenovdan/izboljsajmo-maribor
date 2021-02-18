@@ -3,17 +3,26 @@
     <b-row class="navigation justify-content-between align-items-center">
       <img src="~/assets/img/izboljsajmo_maribor_logo.png" alt="">
       <div class="">
-        <NuxtLink to="/">
+        <NuxtLink v-if="!isAuthenticated" to="/predlogi">
           Domov
         </NuxtLink>
-        <NuxtLink to="/">
+        <NuxtLink v-if="!isAuthenticated" to="/o-izboljsajmo-maribor">
           O izboljšajmo Maribor
         </NuxtLink>
-        <NuxtLink to="/">
+        <NuxtLink v-if="!isAuthenticated" to="/pomoc">
           Pomoč
         </NuxtLink>
-        <NuxtLink class="login" to="/login">
+        <NuxtLink v-if="!isAuthenticated" class="login" to="/login">
           Prijava
+        </NuxtLink>
+        <NuxtLink v-if="isAuthenticated" class="" to="/predlogi/nov" @click.prevent="">
+          Imam predlog
+        </NuxtLink>
+        <NuxtLink v-if="isAuthenticated" class="" to="/predlogi" @click.prevent="">
+          Vsi predlogi
+        </NuxtLink>
+        <NuxtLink v-if="isAuthenticated" class="" to="/" @click.prevent="">
+          Moj profil
         </NuxtLink>
       </div>
     </b-row>
@@ -21,7 +30,15 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
+  data () {
+    return {}
+  },
+  computed: mapState({
+    isAuthenticated: 'token'
+  })
 }
 </script>
 
