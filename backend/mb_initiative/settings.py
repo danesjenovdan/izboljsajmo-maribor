@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'behaviors.apps.BehaviorsConfig',
     'rest_framework',
+    'django_filters',
     'rest_framework_gis',
     'oauth2_provider',
     'social_django',

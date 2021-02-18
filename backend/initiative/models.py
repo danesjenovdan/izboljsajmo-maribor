@@ -5,12 +5,8 @@ from django.contrib.gis.db import models as geo_models
 
 from behaviors.behaviors import Timestamped, Authored
 
-from initiatives.models import CommentStatus
+from initiatives.models import CommentStatus, InitiativeType
 
-class InitiativeType(models.TextChoices):
-    BOTHERS_ME = 'MM', _('MOTI ME!')
-    HAVE_IDEA = 'II', _('IMAM IDEJO!')
-    INTERESTED_IN = 'ZM', _('ZANIMA ME!')
 
 class Initiative(Timestamped, Authored):
     type = models.CharField(
@@ -90,3 +86,38 @@ class Initiative(Timestamped, Authored):
                 _('Object must be created before it can be archived'))
         self.archived = timezone.now()
         return super(StoreDeleted, self).save(*args, **kwargs)
+
+
+class BothersManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(type=InitiativeType.BOTHERS_ME)
+
+
+class BothersInitiative(Initiative):
+    objects = BothersManager()
+    class Meta:
+        proxy=True
+
+
+class IdeaManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(type=InitiativeType.HAVE_IDEA)
+
+
+class IdeaInitiative(Initiative):
+    objects = IdeaManager()
+    class Meta:
+        proxy=True
+
+
+class InterestedManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(type=InitiativeType.INTERESTED_IN)
+
+
+class InterestedInitiative(Initiative):
+    objects = InterestedManager()
+    class Meta:
+        proxy=True
+
+

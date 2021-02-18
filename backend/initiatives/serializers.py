@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.core.exceptions import ValidationError
 from .models import (
     User, File, StatusInitiative, CompetentService, Organization, Comment,
-    CommentStatus, Description, Area, FAQ, Image
+    CommentStatus, Description, Area, FAQ, Image, DescriptionDefinition
 )
 
 import logging
@@ -158,3 +158,10 @@ class FAQSerializer(serializers.ModelSerializer):
             'answer')
 
 
+class DescriptionDefinitionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DescriptionDefinition
+        fields = (
+            'field',
+            'title',
+            'order')

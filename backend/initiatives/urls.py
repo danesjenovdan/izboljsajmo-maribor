@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 
 from .views import (
     UserViewSet, OrganizationViewSet, AreaViewSet, FAQViewSet, FilesViewSet,
-    ImagesViewSet
+    ImagesViewSet, DescriptionDefinitionViewSet
 )
 
 from about.views import AboutViewSet
@@ -20,7 +20,7 @@ router.register(r'about', AboutViewSet, basename='About')
 router.register(r'faq', FAQViewSet, basename='FAQ')
 router.register(r'images', ImagesViewSet, basename='Image')
 router.register(r'files', FilesViewSet, basename='File')
-
+router.register(r'description-definitions', DescriptionDefinitionViewSet, basename='DescriptionDefinition')
 
 
 urlpatterns = [

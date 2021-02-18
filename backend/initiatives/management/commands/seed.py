@@ -6,7 +6,7 @@ from oauth2_provider.models import Application
 from datetime import datetime
 
 from initiatives import models
-from initiative.models import InitiativeType, Initiative
+from initiative.models import Initiative
 from about.models import About, AboutType
 
 
@@ -101,7 +101,7 @@ class Command(BaseCommand):
             status['obj'] = status_obj
 
         initiative = Initiative(
-            type=InitiativeType.HAVE_IDEA,
+            type=models.InitiativeType.HAVE_IDEA,
             title='Bi bi dovilili vhod v vodnak pred univerzo',
             author=user,
             zone=zone,
@@ -181,3 +181,34 @@ class Command(BaseCommand):
             url='https://www.youtube.com/watch?v=GRLbU2JbBHY',
             description='To je YT video'
         ).save()
+
+    models.DescriptionDefinition(
+        order=1,
+        type=models.InitiativeType.HAVE_IDEA,
+        title='Naslov opisa 1',
+        field='title1'
+    ).save()
+    models.DescriptionDefinition(
+        order=2,
+        type=models.InitiativeType.HAVE_IDEA,
+        title='Naslov opisa 2',
+        field='title2'
+    ).save()
+    models.DescriptionDefinition(
+        order=3,
+        type=models.InitiativeType.HAVE_IDEA,
+        title='Naslov opisa 3',
+        field='title3'
+    ).save()
+    models.DescriptionDefinition(
+        order=1,
+        type=models.InitiativeType.BOTHERS_ME,
+        title='Naslov opisa 1',
+        field='title1'
+    ).save()
+    models.DescriptionDefinition(
+        order=1,
+        type=models.InitiativeType.INTERESTED_IN,
+        title='Naslov opisa 1',
+        field='title1'
+    ).save()

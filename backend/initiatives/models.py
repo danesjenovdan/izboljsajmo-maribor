@@ -13,6 +13,12 @@ from behaviors.behaviors import Timestamped, Authored
 # Elementi novice so lahko [video, slika, text, naslov...?], na seznamu lahko urejaš vrstni red.
 
 
+class InitiativeType(models.TextChoices):
+    BOTHERS_ME = 'MM', _('MOTI ME!')
+    HAVE_IDEA = 'II', _('IMAM IDEJO!')
+    INTERESTED_IN = 'ZM', _('ZANIMA ME!')
+
+
 class CommentStatus(models.TextChoices):
     PUBLISHED = 'PU', 'PUBLISHED'
     DELETED = 'D', 'DELETED'
@@ -305,3 +311,17 @@ class Image(Timestamped):
             return self.image.url
         except:
             return 'no image'
+
+class DescriptionDefinition(Timestamped, Authored):
+    type = models.CharField(
+        _('Initiative type'),
+        max_length=2,
+        choices=InitiativeType.choices,
+        default=InitiativeType.BOTHERS_ME)
+    order = models.IntegerField(default=0)
+    field = models.CharField(
+        _('Field name'),
+        max_length=50)
+    title = models.CharField(
+        _('Title'),
+        max_length=100)

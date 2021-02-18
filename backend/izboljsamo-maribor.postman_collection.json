@@ -41,7 +41,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"user iz organizacije\",\n    \"password\": \"123\",\n    \"email\": \"asdasd123@email.si\",\n    \"number_of_members\": 12,\n    \"organization_name\": \"Biznis\"\n}",
+					"raw": "{\n    \"username\": \"assddss2312333323\",\n    \"password\": \"123\",\n    \"email\": \"asdasd123@email.si\",\n    \"number_of_members\": 12,\n    \"organization_name\": \"DJND1\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -205,7 +205,162 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "get initiatives",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/v1/initiatives/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"v1",
+								"initiatives",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 16 Feb 2021 15:59:05 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.8.3"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Origin"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, POST, HEAD, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "400"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"type\": \"II\",\n        \"title\": \"Bi bi dovilili vhod v vodnak pred univerzo\",\n        \"location\": {\n            \"type\": \"Point\",\n            \"coordinates\": [\n                5,\n                23\n            ]\n        },\n        \"created\": \"2021-02-16T15:58:37.633947Z\",\n        \"cover_image\": null,\n        \"area\": {\n            \"id\": 1,\n            \"name\": \"GOSPODARSTVO/TURIZEM\",\n            \"note\": \"dogodki, prireditve, praznična okrasitev mesta, turistične table\"\n        },\n        \"comment_count\": 1,\n        \"vote_count\": 1,\n        \"status\": \"Urejamo\",\n        \"author\": \"The guy\",\n        \"description\": \"Dummy text\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "get description definitions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/v1/description-definitions/?type=II",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"description-definitions",
+						""
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "II"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "get initiatives",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/v1/initiatives/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"v1",
+								"initiatives",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 16 Feb 2021 15:59:05 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.8.3"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Origin"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, POST, HEAD, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "400"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"type\": \"II\",\n        \"title\": \"Bi bi dovilili vhod v vodnak pred univerzo\",\n        \"location\": {\n            \"type\": \"Point\",\n            \"coordinates\": [\n                5,\n                23\n            ]\n        },\n        \"created\": \"2021-02-16T15:58:37.633947Z\",\n        \"cover_image\": null,\n        \"area\": {\n            \"id\": 1,\n            \"name\": \"GOSPODARSTVO/TURIZEM\",\n            \"note\": \"dogodki, prireditve, praznična okrasitev mesta, turistične table\"\n        },\n        \"comment_count\": 1,\n        \"vote_count\": 1,\n        \"status\": \"Urejamo\",\n        \"author\": \"The guy\",\n        \"description\": \"Dummy text\"\n    }\n]"
+				}
+			]
 		},
 		{
 			"name": "get my initiatives",
