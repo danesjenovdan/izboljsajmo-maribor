@@ -324,7 +324,7 @@ export default {
         !this.errorInitiativeArea &&
         !this.errorInitiativeDescription &&
         !this.errorInitiativeLocation &&
-        this.form.initiativeCoverImage) {
+        this.coverImageFile) {
         try {
           const imageID = await this.$store.dispatch('postCoverImage', { image: this.coverImageFile })
           this.form.initiativeCoverImage = {
