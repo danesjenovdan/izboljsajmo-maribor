@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.core.exceptions import ValidationError
 from .models import (
     User, Initiative, File, StatusInitiative, CompetentService, Organization, Comment,
     CommentStatus, Description, Area, FAQ, Image
@@ -6,6 +7,9 @@ from .models import (
 
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 
+import logging
+
+logger = logging.getLogger(__name__)
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,9 +48,8 @@ class OrganizationSerializer(serializers.ModelSerializer):
         organization_name = validated_data.pop('organization_name', None)
         number_of_members = validated_data.pop('number_of_members', None)
 
-        user = super().create(validated_data)
-
         organization = Organization.objects.filter(name=organization_name)
+        user = super().create(validated_data)
         if not organization:
             organization = Organization(
                 name=organization_name,
@@ -54,12 +57,17 @@ class OrganizationSerializer(serializers.ModelSerializer):
             )
             organization.save()
         else:
-            organization = organization[0]
+            raise ValidationError('Organization with this name already exists')
 
         user.set_password(validated_data['password'])
         user.save()
         user.organizations.add(organization)
         return user
+
+    def validate_organization_name(self, data):
+        if Organization.objects.filter(name=data):
+            raise ValidationError('Organization with this name already exists')
+        return data
 
 
 class CompetentServiceSerializer(serializers.ModelSerializer):
