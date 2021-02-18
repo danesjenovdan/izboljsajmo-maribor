@@ -92,7 +92,9 @@ export const actions = {
     const newComment = {
       content: payload.content
     }
-    const response = await this.$axios.post(`v1/initiatives/${payload.id}/comments/`, newComment)
+    const response = await this.$axios.post(`v1/initiatives/${payload.id}/comments/`, newComment, {
+      headers: { Authorization: 'Bearer ' + context.getters.token }
+    })
     const responseData = await response.data
 
     if (response.status === 200) {
