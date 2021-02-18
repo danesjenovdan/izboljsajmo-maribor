@@ -1,21 +1,16 @@
 from django.db import models
-from django.contrib.gis.db import models as geo_models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.core import validators
+from django.contrib.gis.db import models as geo_models
 
 from behaviors.behaviors import Timestamped, Authored
 
 
 # TODO o izboljšamo maribor naredi podobno kot je na mauticu.
 # Elementi novice so lahko [video, slika, text, naslov...?], na seznamu lahko urejaš vrstni red.
-
-class InitiativeType(models.TextChoices):
-    BOTHERS_ME = 'MM', _('MOTI ME!')
-    HAVE_IDEA = 'II', _('IMAM IDEJO!')
-    INTERESTED_IN = 'ZM', _('ZANIMA ME!')
 
 
 class CommentStatus(models.TextChoices):
@@ -24,89 +19,9 @@ class CommentStatus(models.TextChoices):
     PENDING = 'PE', 'PENDING'
 
 
-class Initiative(Timestamped, Authored):
-    type = models.CharField(
-        _('Initiative type'),
-        max_length=2,
-        choices=InitiativeType.choices,
-        default=InitiativeType.BOTHERS_ME)
-    title = models.CharField(
-        _('Title'),
-        max_length=50)
-    statuses = models.ManyToManyField(
-        'Status',
-        verbose_name=_('Status of initiative'),
-        through='StatusInitiative')
-    area = models.ForeignKey(
-        'Area',
-        verbose_name=_('Area'),
-        on_delete=models.CASCADE,
-        related_name='initiatives')
-    location = geo_models.PointField()
-    address = models.CharField(
-        _("Address of initiative"),
-        max_length=100)
-    zone = models.ForeignKey(
-        'Zone',
-        verbose_name=_('GEO Zone of initiative'),
-        on_delete=models.CASCADE,
-        related_name='initiatives')
-    publisher = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='published_initiatives',
-        null=True,
-        blank=True)
-    cover_image = models.ForeignKey(
-        'Image',
-        verbose_name=_('Cover image before'),
-        on_delete=models.CASCADE,
-        related_name='initiative_before',
-        null=True,
-        blank=True)
-    cover_image_after = models.ForeignKey(
-        'Image',
-        verbose_name=_('Cover image after'),
-        on_delete=models.CASCADE,
-        related_name='initiative_after',
-        null=True,
-        blank=True)
-    archived = models.DateTimeField(
-        null=True,
-        blank=True)
-    is_draft = models.BooleanField(
-        _('In review'),
-        default=False)
-
-    def __str__(self):
-        return self.title
-
-    def comment_count(self):
-        return self.initiative_comments.filter(status=CommentStatus.PUBLISHED).count()
-
-    def status(self):
-        try:
-            return self.initiative_statuses.latest('created').status.name
-        except:
-            return None
-
-    def vote_count(self):
-        return self.votes.count()
-
-    def is_archived(self):
-        return self.archived is not None
-
-    def archive(self, *args, **kwargs):
-        if not self.pk:
-            raise ObjectDoesNotExist(
-                _('Object must be created before it can be archived'))
-        self.archived = timezone.now()
-        return super(StoreDeleted, self).save(*args, **kwargs)
-
-
 class StatusInitiative(Timestamped):
     initiative = models.ForeignKey(
-        'Initiative',
+        'initiative.Initiative',
         verbose_name=_('Initiative'),
         related_name='initiative_statuses',
         on_delete=models.CASCADE)
@@ -215,7 +130,7 @@ class Status(Timestamped):
 
 class Description(Timestamped):
     initiative = models.ForeignKey(
-        'Initiative',
+        'initiative.Initiative',
         verbose_name=_('Initiative'),
         related_name='descriptions',
         on_delete=models.CASCADE)
@@ -248,7 +163,7 @@ class CompetentService(Timestamped):
 
 class Comment(Timestamped, Authored):
     initiative = models.ForeignKey(
-        'Initiative',
+        'initiative.Initiative',
         verbose_name=_('Initiative'),
         related_name='initiative_comments',
         on_delete=models.CASCADE)
@@ -263,7 +178,7 @@ class Comment(Timestamped, Authored):
 
 class Vote(Timestamped, Authored):
     initiative = models.ForeignKey(
-        'Initiative',
+        'initiative.Initiative',
         verbose_name=_('Initiative'),
         related_name='votes',
         on_delete=models.CASCADE)
@@ -353,7 +268,7 @@ class FAQ(Timestamped):
 
 class File(Timestamped):
     initiative = models.ForeignKey(
-        'Initiative',
+        'initiative.Initiative',
         verbose_name=_('Initiative'),
         on_delete=models.CASCADE,
         related_name='files',
@@ -384,5 +299,9 @@ class Image(Timestamped):
         upload_to='images',
         null=True,
         blank=True)
+
     def __str__(self):
-        return self.image.url
+        try:
+            return self.image.url
+        except:
+            return 'no image'

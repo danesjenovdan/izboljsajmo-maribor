@@ -6,6 +6,7 @@ from oauth2_provider.models import Application
 from datetime import datetime
 
 from initiatives import models
+from initiative.models import InitiativeType, Initiative
 from about.models import About, AboutType
 
 
@@ -99,8 +100,8 @@ class Command(BaseCommand):
             status_obj.save()
             status['obj'] = status_obj
 
-        initiative = models.Initiative(
-            type=models.InitiativeType.HAVE_IDEA,
+        initiative = Initiative(
+            type=InitiativeType.HAVE_IDEA,
             title='Bi bi dovilili vhod v vodnak pred univerzo',
             author=user,
             zone=zone,

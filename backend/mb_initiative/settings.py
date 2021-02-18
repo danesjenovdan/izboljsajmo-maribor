@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'import_export',
 
     'initiatives',
+    'initiative',
     'about',
 ]
 

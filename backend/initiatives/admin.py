@@ -6,7 +6,7 @@ from django.utils.html import format_html
 from django.urls import reverse
 
 from .models import (
-    User, Organization, Zone, CompetentService, Initiative, Area, Status, StatusInitiative,
+    User, Organization, Zone, CompetentService, Area, Status, StatusInitiative,
     File, Comment, Comment, FAQ, StatusInitiativeHear, Rejection,
     StatusInitiativeHear, StatusInitiativeEditing, StatusInitiativeProgress,
     StatusInitiativeFinished, StatusInitiativeDone, StatusInitiativeRejected, Description
@@ -15,10 +15,8 @@ from .forms import (
     HearStatusInlineForm, EditingStatusInlineForm, ProgressStatusInlineForm, DoneStatusInlineForm,
     FinishedStatusInlineForm, RejectedStatusInlineForm
 )
-from .export_resources import InitiativeResource
 
 from admin_ordering.admin import OrderableAdmin
-from import_export.admin import ImportExportModelAdmin
 
 
 class MBUserAdmin(UserAdmin):
@@ -212,34 +210,7 @@ class AreaAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 
-class InitiativeAdmin(ImportExportModelAdmin):
-    search_fields = ['name']
-    autocomplete_fields = ['author', 'publisher', 'area', 'zone']
-    list_filter = ['statuses', 'zone', 'area', 'type']
-    list_display = [
-        'title',
-        'author',
-        'type',
-        'publisher',
-        'status',
-        'area',
-        'zone',
-        'created',
-        'comment_count',
-        'vote_count'
-    ]
-    inlines = (
-        DescriptionInline,
-        FileInline,
-        StatusInitiativeHearInline,
-        StatusInitiativeEditingInline,
-        StatusInitiativeProgressInline,
-        StatusInitiativeFinishedInline,
-        StatusInitiativeDoneInline,
-        StatusInitiativeRejectedInline,
-        CommentInline)
 
-    resource_class = InitiativeResource
 
 
 class CommentAdmin(admin.ModelAdmin):
@@ -263,8 +234,6 @@ class FAQAdmin(OrderableAdmin, admin.ModelAdmin):
     list_editable = ["order"]
 
 
-
-admin.site.register(Initiative, InitiativeAdmin)
 admin.site.register(User, MBUserAdmin)
 admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(Zone, ZoneAdmin)
