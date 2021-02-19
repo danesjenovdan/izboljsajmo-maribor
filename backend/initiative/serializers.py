@@ -18,6 +18,7 @@ class InitiativeListSerializer(serializers.ModelSerializer):
         model = Initiative
         fields = (
             'type',
+            'id',
             'title',
             'location',
             'created',
