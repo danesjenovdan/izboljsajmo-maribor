@@ -3,6 +3,7 @@ from rest_framework import viewsets, mixins, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters import rest_framework as filters
+from rest_framework import filters as s_filters
 
 from .serializers import (
     InitiativeDetailsSerializer, InitiativeListSerializer
@@ -22,8 +23,10 @@ class InitiativeViewSet(
     permission_classes = [IsOwnerOrReadOnly, ]
     serializer_class = InitiativeDetailsSerializer
     queryset = Initiative.objects.all()
-    filter_backends = (filters.DjangoFilterBackend,)
+    filter_backends = (filters.DjangoFilterBackend, s_filters.SearchFilter)
     filterset_fields = ('zone', 'area', 'type')
+    search_fields = ['title', 'zone__name', 'area__name']
+
 
     def get_serializer_class(self):
         if self.action == 'list':
