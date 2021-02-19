@@ -312,6 +312,7 @@ class Image(Timestamped):
         except:
             return 'no image'
 
+
 class DescriptionDefinition(Timestamped, Authored):
     type = models.CharField(
         _('Initiative type'),

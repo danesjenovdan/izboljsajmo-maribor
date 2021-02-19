@@ -16,13 +16,14 @@ from import_export.admin import ImportExportModelAdmin
 
 
 class InitiativeAdmin(ImportExportModelAdmin):
-    search_fields = ['name']
+    search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone']
-    list_filter = ['statuses', 'zone', 'area', 'type']
+    list_filter = ['statuses', 'zone__name', 'area__name', 'type']
     list_display = [
         'title',
         'author',
         'type',
+        'zone',
         'publisher',
         'status',
         'area',
@@ -46,9 +47,9 @@ class InitiativeAdmin(ImportExportModelAdmin):
 
 
 class BothersInitiativeAdmin(ImportExportModelAdmin):
-    search_fields = ['name']
+    search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone']
-    list_filter = ['statuses', 'zone', 'area', 'type']
+    list_filter = ['statuses', 'zone__name', 'area__name', 'type']
     list_display = [
         'title',
         'author',
@@ -76,9 +77,9 @@ class BothersInitiativeAdmin(ImportExportModelAdmin):
 
 
 class IdeaInitiativeAdmin(ImportExportModelAdmin):
-    search_fields = ['name']
+    search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone']
-    list_filter = ['statuses', 'zone', 'area', 'type']
+    list_filter = ['statuses', 'zone__name', 'area__name', 'type']
     list_display = [
         'title',
         'author',
@@ -106,9 +107,9 @@ class IdeaInitiativeAdmin(ImportExportModelAdmin):
 
 
 class InterestedInitiativeAdmin(ImportExportModelAdmin):
-    search_fields = ['name']
+    search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone']
-    list_filter = ['statuses', 'zone', 'area', 'type']
+    list_filter = ['statuses', 'zone__name', 'area__name', 'type']
     list_display = [
         'title',
         'author',

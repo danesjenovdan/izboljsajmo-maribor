@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets, mixins, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django_filters import rest_framework as filters
 
 from .serializers import (
     InitiativeDetailsSerializer, InitiativeListSerializer
@@ -16,10 +17,13 @@ class InitiativeViewSet(
     mixins.RetrieveModelMixin,
     mixins.CreateModelMixin,
     mixins.ListModelMixin,
-    mixins.UpdateModelMixin):
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin):
     permission_classes = [IsOwnerOrReadOnly, ]
     serializer_class = InitiativeDetailsSerializer
     queryset = Initiative.objects.all()
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('zone', 'area', 'type')
 
     def get_serializer_class(self):
         if self.action == 'list':
