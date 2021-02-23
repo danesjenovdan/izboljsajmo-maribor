@@ -153,97 +153,20 @@
             </div>
           </b-col>
         </b-row>
-        <b-row class="mb-4">
-          <b-col cols="4">
-            <div class="initiative-card">
-              <img class="img-fluid" src="~/static/predlog.png" alt="">
+        <b-row>
+          <b-col v-for="initiative in initiatives" :key="initiative.title" cols="4" class="mb-4">
+            <div class="initiative-card h-100">
+              <img
+                class="cover-image"
+                :src="initiative.cover_image.image"
+                alt=""
+              >
               <div class="initiative-card-body">
-                <h4>Kolesarske steze</h4>
-                <span class="author">Edita Jerovšek</span>
-                <div class="my-1">
-                  <span class="tag">Slišimo</span>
-                  <span class="tag">Promet</span>
-                  <span class="tag">26. 1. 2021</span>
-                </div>
-                <p>
-                  Dne 2.10.2020 ste mi odgovorili, da je moja pobuda sprejeta, a do danes nisem prejela odgovora, ali se sploh kaj dogaja. Prav tako ...
-                </p>
-                <hr class="hr-upper">
-                <hr class="hr-lower">
-                <div class="d-flex justify-content-between">
-                  <div class="d-inline-flex align-items-center">
-                    <b-button class="d-flex align-items-center">
-                      <img
-                        src="~/assets/img/icons/love.png"
-                        alt="love"
-                        class="mr-1"
-                      >
-                      Podpri
-                    </b-button>
-                    <span class="ml-1">43</span>
-                  </div>
-                  <div class="d-inline-flex align-items-center">
-                    <b-button class="d-flex align-items-center">
-                      <img
-                        src="~/assets/img/icons/comment.png"
-                        alt="comment"
-                        class="mr-1"
-                      >
-                      Komentiraj
-                    </b-button>
-                    <span class="ml-1">12</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </b-col>
-          <b-col cols="4">
-            <div class="initiative-card">
-              <div class="initiative-card-body">
-                <h4>Nekoč čista Partizanska cesta</h4>
-                <span class="author">Edita Jerovšek</span>
-                <div class="my-1">
-                  <span class="tag">Slišimo</span>
-                  <span class="tag">Promet</span>
-                  <span class="tag">26. 1. 2021</span>
-                </div>
-                <p>
-                  Dne 2.10.2020 ste mi odgovorili, da je moja pobuda sprejeta, a do danes nisem prejela odgovora, ali se sploh kaj dogaja. Prav tako ...
-                </p>
-                <hr class="hr-upper">
-                <hr class="hr-lower">
-                <div class="d-flex justify-content-between">
-                  <div class="d-inline-flex align-items-center">
-                    <b-button class="d-flex align-items-center">
-                      <img
-                        src="~/assets/img/icons/love.png"
-                        alt="love"
-                        class="mr-1"
-                      >
-                      Podpri
-                    </b-button>
-                    <span class="ml-1">43</span>
-                  </div>
-                  <div class="d-inline-flex align-items-center">
-                    <b-button class="d-flex align-items-center">
-                      <img
-                        src="~/assets/img/icons/comment.png"
-                        alt="comment"
-                        class="mr-1"
-                      >
-                      Komentiraj
-                    </b-button>
-                    <span class="ml-1">12</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </b-col>
-          <b-col v-for="initiative in initiatives" :key="initiative.title" cols="4">
-            <div class="initiative-card">
-              <img class="img-fluid" src="~/static/predlog.png" alt="">
-              <div class="initiative-card-body">
-                <h4>{{ initiative.title }}</h4>
+                <h4>
+                  <NuxtLink :to="`/predlogi/${initiative.id}`">
+                    {{ initiative.title }}
+                  </NuxtLink>
+                </h4>
                 <span class="author">{{ initiative.author }}</span>
                 <div class="my-1">
                   <span class="tag">{{ initiative.status }}</span>
@@ -300,20 +223,7 @@ export default {
       showArea: false,
       showLocation: false,
       showStatus: false,
-      initiatives: [
-        {
-          title: 'Ureditev oranžne ograje ob starem mostu od Lastovke proti Orientu',
-          author: 'Edita Jerovšek',
-          status: 'Slišimo',
-          area: {
-            name: 'Promet'
-          },
-          created: '26. 1. 2021',
-          description: 'Dne 2.10.2020 ste mi odgovorili, da je moja pobuda sprejeta, a do danes nisem prejela odgovora, ali se sploh kaj dogaja. Prav tako ...',
-          vote_count: 43,
-          comment_count: 1
-        }
-      ]
+      initiatives: []
     }
   },
   created () {
@@ -418,8 +328,18 @@ h4 {
 .initiative-card {
   box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
 
+  .cover-image {
+    width: 100%;
+    height: 8rem;
+    object-fit: cover;
+  }
+
   .initiative-card-body {
     padding: 0.5rem;
+
+    h4 a {
+      color: black;
+    }
 
     .author {
       font-size: 0.9rem;

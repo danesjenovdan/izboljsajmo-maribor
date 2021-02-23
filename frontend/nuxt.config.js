@@ -51,5 +51,7 @@ export default {
   },
 
   router: {
-  }
+  },
+
+  ssr: false // Disable Server Side rendering
 }

@@ -30,15 +30,15 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
 export default {
   data () {
     return {}
   },
-  computed: mapState({
-    isAuthenticated: 'token'
-  })
+  computed: {
+    isAuthenticated () {
+      return this.$store.getters.isAuthenticated
+    }
+  }
 }
 </script>
 

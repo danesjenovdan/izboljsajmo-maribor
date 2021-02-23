@@ -23,8 +23,12 @@
                 xl="4"
                 class="mb-4"
               >
-                <div class="initiative-card draft">
-                  <img class="img-fluid" src="~/static/predlog.png" alt="">
+                <div class="initiative-card draft h-100">
+                  <img
+                    class="cover-image"
+                    :src="$axios.defaults.baseURL + draft.cover_image.image"
+                    alt="Initiative draft cover image"
+                  >
                   <div class="initiative-card-body">
                     <h4>{{ draft.title }}</h4>
                     <p>{{ draft.description }}</p>
@@ -60,10 +64,18 @@
                 xl="4"
                 class="mb-4"
               >
-                <div class="initiative-card published">
+                <div class="initiative-card published h-100">
+                  <img
+                    class="cover-image"
+                    :src="$axios.defaults.baseURL + initiative.cover_image.image"
+                    alt="Initiative cover image"
+                  >
                   <div class="initiative-card-body">
-                    <img class="img-fluid" :src="initiative.cover_image.image" alt="">
-                    <h4>{{ initiative.title }}</h4>
+                    <h4>
+                      <NuxtLink :to="`/predlogi/${initiative.id}`">
+                        {{ initiative.title }}
+                      </NuxtLink>
+                    </h4>
                     <span class="author">{{ initiative.author }}</span>
                     <div class="my-1">
                       <span class="tag">Slišimo</span>
@@ -118,7 +130,6 @@ export default {
       }
     })
       .then((res) => {
-        console.log(res.data.published)
         return {
           drafts: res.data.drafts,
           published: res.data.published
@@ -126,7 +137,7 @@ export default {
       })
       .catch((e) => {
         return redirect('/404')
-        // console.log(params)
+      // console.log(params)
       })
   },
   data () {
@@ -170,8 +181,18 @@ h1, h4 {
 .initiative-card {
   box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
 
+  .cover-image {
+    width: 100%;
+    height: 8rem;
+    object-fit: cover;
+  }
+
   .initiative-card-body {
     padding: 0.75rem;
+
+    h4 a {
+      color: black;
+    }
 
     .author {
       font-size: 0.9rem;
@@ -201,7 +222,6 @@ h1, h4 {
 
   &.draft {
     .btn {
-      // font-size: 1rem;
       padding: 0.75rem 3rem;
 
       img {

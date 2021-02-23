@@ -1,13 +1,19 @@
 export const state = () => ({
-  token: null,
   client_id: 'kIZWxeodL29mfaKSIGQWPUuuck8CXv3m58XuJ8Y7',
   client_secret: '54pWmrpj1y9FiwkUDofjeP4B5tbLQ4wW6F2wqsMT3JuQN4ApIqcveKlzOC1laQIJp8JpVi99EheHCkumEJ0o81J9f2uHK3eXjUdxprzDnWlsTuZM6cgv1Eo35KSr7Mfg',
-  grant_type: 'password'
+  grant_type: 'password',
+  initiativeTypes: {
+    MM: 'MOTI ME!',
+    II: 'IMAM IDEJO!',
+    ZM: 'ZANIMA ME!'
+  }
 })
 
 export const getters = {
   token (state) {
-    return state.token
+    // console.log('getting', window.localStorage.getItem('authToken'))
+    // return window.localStorage.getItem('authToken')
+    return window.localStorage.getItem('authToken')
   },
   client_id (state) {
     return state.client_id
@@ -19,13 +25,17 @@ export const getters = {
     return state.grant_type
   },
   isAuthenticated (state) {
-    return !!state.token
+    // console.log('isAuthenticated', window.localStorage.getItem('authToken'))
+    return !!window.localStorage.getItem('authToken')
+  },
+  initiativeTypes (state) {
+    return state.initiativeTypes
   }
 }
 
 export const mutations = {
   setToken (state, payload) {
-    state.token = payload.token
+    window.localStorage.setItem('authToken', payload.token)
   }
 }
 
@@ -50,7 +60,7 @@ export const actions = {
     }
   },
   logout (context) {
-    // context.commit('setAuth', { isAuth: false })
+    context.commit('setToken', { token: '' })
   },
   async register (context, payload) {
     const registerData = {
@@ -164,7 +174,7 @@ export const actions = {
       cover_image: payload.initiativeCoverImage,
       uploaded_files: payload.initiativeFiles
     }
-    console.log(form)
+    console.log(JSON.stringify(form))
     const response = await this.$axios.post('v1/initiatives/', form, {
       headers: {
         Authorization: 'Bearer ' + context.getters.token
