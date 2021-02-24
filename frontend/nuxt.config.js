@@ -38,7 +38,9 @@ export default {
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    // https://auth.nuxtjs.org/
+    '@nuxtjs/auth-next'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -52,6 +54,7 @@ export default {
 
   router: {
   },
-
-  ssr: false // Disable Server Side rendering
+  // TO DO: https://auth.nuxtjs.org/schemes/oauth2
+  auth: {
+  }
 }
