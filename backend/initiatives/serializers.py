@@ -2,7 +2,8 @@ from rest_framework import serializers
 from django.core.exceptions import ValidationError
 from .models import (
     User, File, StatusInitiative, CompetentService, Organization, Comment,
-    CommentStatus, Description, Area, FAQ, Image, DescriptionDefinition
+    CommentStatus, Description, Area, FAQ, Image, DescriptionDefinition,
+    Zone
 )
 
 import logging
@@ -78,6 +79,13 @@ class AreaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Area
         fields = ('id', 'name', 'note')
+
+
+
+class ZoneSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Zone
+        fields = ('id', 'name')
 
 
 class StatusInitiativeSerializer(serializers.ModelSerializer):

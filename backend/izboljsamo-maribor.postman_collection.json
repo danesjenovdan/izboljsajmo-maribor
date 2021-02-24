@@ -192,7 +192,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8000/v1/initiatives/",
+					"raw": "http://localhost:8000/v1/initiatives/?type=MM",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -202,6 +202,12 @@
 						"v1",
 						"initiatives",
 						""
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "MM"
+						}
 					]
 				}
 			},
@@ -409,6 +415,48 @@
 					"path": [
 						"v1",
 						"areas",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get zones",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/v1/zones/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"zones",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get initiative types",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/v1/initiative-types/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"initiative-types",
 						""
 					]
 				}
