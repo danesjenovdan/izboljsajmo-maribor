@@ -88,6 +88,11 @@ export default {
         autoLogout: false
       }
       */
+    },
+    redirect: {
+      login: '/prijava',
+      logout: '/predlogi',
+      home: '/'
     }
   }
 }

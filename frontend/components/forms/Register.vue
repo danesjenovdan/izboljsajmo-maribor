@@ -56,7 +56,7 @@
       ZAKLJUČI REGISTRACIJO<span class="float-right"><img src="~/assets/img/icons/arrow-right.png" alt="arrow icon"></span>
     </b-button>
     <div class="form-note text-center">
-      Že imaš račun? <NuxtLink to="/login">Prijavi se</NuxtLink>
+      Že imaš račun? <NuxtLink to="/prijava">Prijavi se</NuxtLink>
     </div>
   </form>
 </template>

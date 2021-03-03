@@ -156,7 +156,6 @@ export default {
     },
     async logout () {
       await this.$store.dispatch('logout')
-      await this.$router.push('/predlogi')
     }
   }
 }
