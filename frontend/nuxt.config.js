@@ -54,7 +54,40 @@ export default {
 
   router: {
   },
-  // TO DO: https://auth.nuxtjs.org/schemes/oauth2
+
   auth: {
+    strategies: {
+      local: {
+        token: {
+          property: 'access_token',
+          required: true,
+          name: 'Authorization',
+          type: 'Bearer'
+        },
+        endpoints: {
+          login: { url: '/auth/token', method: 'post' },
+          user: false,
+          logout: false
+        },
+        clientId: 'kIZWxeodL29mfaKSIGQWPUuuck8CXv3m58XuJ8Y7',
+        grantType: 'password'
+      }
+      /*
+      social: {
+        scheme: 'oauth2',
+        endpoints: {
+          authorization: 'http://localhost:8000/auth/token/',
+          token: false,
+          logout: 'https://example.com/logout'
+        },
+        grantType: 'password',
+        redirectUri: '/login',
+        logoutRedirectUri: '/predlogi',
+        clientId: 'kIZWxeodL29mfaKSIGQWPUuuck8CXv3m58XuJ8Y7',
+        scope: ['openid', 'profile', 'email'],
+        autoLogout: false
+      }
+      */
+    }
   }
 }

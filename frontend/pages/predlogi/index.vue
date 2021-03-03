@@ -208,7 +208,77 @@
         </b-row>
       </b-col>
       <b-col lg="5">
-        <img src="~/static/map.png" class="">
+        <!-- <img src="~/static/map.png" class=""> -->
+        <!--
+        <l-map
+          v-model="zoom"
+          v-model:zoom="zoom"
+          :center="[47.41322, -1.219482]"
+          @move="log('move')"
+        >
+          <l-tile-layer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <l-control-layers />
+          <l-marker :lat-lng="[0, 0]" draggable @moveend="log('moveend')">
+            <l-tooltip>
+              lol
+            </l-tooltip>
+          </l-marker>
+
+          <l-marker :lat-lng="[47.41322, -1.219482]">
+            <l-icon :icon-url="iconUrl" :icon-size="iconSize" />
+          </l-marker>
+
+          <l-marker :lat-lng="[50, 50]" draggable @moveend="log('moveend')">
+            <l-popup>
+              lol
+            </l-popup>
+          </l-marker>
+
+          <l-polyline
+            :lat-lngs="[
+              [47.334852, -1.509485],
+              [47.342596, -1.328731],
+              [47.241487, -1.190568],
+              [47.234787, -1.358337],
+            ]"
+            color="green"
+          />
+          <l-polygon
+            :lat-lngs="[
+              [46.334852, -1.509485],
+              [46.342596, -1.328731],
+              [46.241487, -1.190568],
+              [46.234787, -1.358337],
+            ]"
+            color="#41b782"
+            :fill="true"
+            :fill-opacity="0.5"
+            fill-color="#41b782"
+          />
+          <l-rectangle
+            :lat-lngs="[
+              [46.334852, -1.509485],
+              [46.342596, -1.328731],
+              [46.241487, -1.190568],
+              [46.234787, -1.358337],
+            ]"
+            :fill="true"
+            color="#35495d"
+          />
+          <l-rectangle
+            :bounds="[
+              [46.334852, -1.190568],
+              [46.241487, -1.090357],
+            ]"
+          >
+            <l-popup>
+              lol
+            </l-popup>
+          </l-rectangle>
+        </l-map>
+        -->
       </b-col>
     </b-row>
   </b-container>
@@ -245,7 +315,7 @@ export default {
     },
     date (date) {
       const d = new Date(date)
-      return `${d.getDate()}.${d.getMonth()}.${d.getFullYear()}`
+      return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`
     }
   }
 }

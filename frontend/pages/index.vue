@@ -3,7 +3,10 @@
     <b-row class="p-4">
       <b-col cols="12" lg="3" class="text-center text-lg-left mb-4">
         <h1>Pozdravljeni, Janez Novak</h1>
-        <b-button class="logout-button w-75 position-relative d-inline-flex justify-content-center">
+        <b-button
+          class="logout-button w-75 position-relative d-inline-flex justify-content-center"
+          @click="logout"
+        >
           ODJAVA
           <img src="~/assets/img/icons/exit-right.png" alt="logout icon" class="position-absolute">
         </b-button>
@@ -149,7 +152,11 @@ export default {
   methods: {
     date (date) {
       const d = new Date(date)
-      return `${d.getDate()}.${d.getMonth()}.${d.getFullYear()}`
+      return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`
+    },
+    async logout () {
+      await this.$store.dispatch('logout')
+      await this.$router.push('/predlogi')
     }
   }
 }

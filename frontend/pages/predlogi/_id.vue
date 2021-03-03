@@ -120,15 +120,14 @@ export default {
         title: '',
         author: '',
         created: ''
-      },
-      filesNames: ['file1.jpg', 'file2.jpg']
+      }
     }
   },
   computed: {},
   methods: {
     date (date) {
       const d = new Date(date)
-      return `${d.getDate()}.${d.getMonth()}.${d.getFullYear()}`
+      return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}` // months go 0-11
     },
     statusImage (s) {
       return require(`~/assets/img/icons/${s}.png`)
