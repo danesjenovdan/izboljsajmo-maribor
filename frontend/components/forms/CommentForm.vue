@@ -60,6 +60,10 @@ export default {
 
 <style scoped lang="scss">
 
+#comment {
+  overflow: hidden !important;
+}
+
 h5 {
   font-weight: 600;
 }

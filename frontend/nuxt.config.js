@@ -38,7 +38,9 @@ export default {
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    // https://auth.nuxtjs.org/
+    '@nuxtjs/auth-next'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -51,5 +53,46 @@ export default {
   },
 
   router: {
+  },
+
+  auth: {
+    strategies: {
+      local: {
+        token: {
+          property: 'access_token',
+          required: true,
+          name: 'Authorization',
+          type: 'Bearer'
+        },
+        endpoints: {
+          login: { url: '/auth/token', method: 'post' },
+          user: false,
+          logout: false
+        },
+        clientId: 'kIZWxeodL29mfaKSIGQWPUuuck8CXv3m58XuJ8Y7',
+        grantType: 'password'
+      }
+      /*
+      social: {
+        scheme: 'oauth2',
+        endpoints: {
+          authorization: 'http://localhost:8000/auth/token/',
+          token: false,
+          logout: 'https://example.com/logout'
+        },
+        grantType: 'password',
+        redirectUri: '/login',
+        logoutRedirectUri: '/predlogi',
+        clientId: 'kIZWxeodL29mfaKSIGQWPUuuck8CXv3m58XuJ8Y7',
+        scope: ['openid', 'profile', 'email'],
+        autoLogout: false
+      }
+      */
+    },
+    redirect: {
+      login: '/prijava',
+      logout: '/predlogi',
+      home: '/'
+    }
   }
 }

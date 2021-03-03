@@ -4,7 +4,9 @@
       <b-col cols="4" class="position-relative">
         <div class="predlog-info">
           <div class="tags mb-2">
-            <span>Imam idejo!</span>
+            <span>
+              {{ $store.getters.initiativeTypes[data.type] }}
+            </span>
             <span>{{ data.area.name }}</span>
           </div>
           <h1>{{ data.title }}</h1>
@@ -46,7 +48,7 @@
           <b-col class="predlog-description p-0">
             <b-row class="position-relative mb-5">
               <b-col>
-                <img src="~/static/predlog.png" class="cover-image img-fluid" alt="">
+                <img :src="data.cover_image.image" class="cover-image img-fluid" alt="Initiative cover image">
                 <b-button class="support-button">
                   <img src="~/assets/img/icons/love.png" alt="heart">
                   PODPRI
@@ -64,12 +66,11 @@
               <b-col cols="9">
                 <div class="files">
                   <h6>Datoteke</h6>
-                  <span v-for="file in filesNames" :key="file" class="mr-2">
-                    {{ file }}
+                  <span v-for="file in data.uploaded_files" :key="file.id" class="mr-2">
+                    {{ file.name }}
                   </span>
                   <div class="img-preview mt-4">
-                    <img src="~/static/predlog.png" alt="dmksmdl" class="mr-2">
-                    <img src="~/static/predlog.png" alt="dmksmdl">
+                    <img v-for="file in data.uploaded_files" :key="file.id" :src="file.file" :alt="file.name" class="mr-2">
                   </div>
                 </div>
               </b-col>
@@ -102,7 +103,7 @@ export default {
     const id = params.id
     return $axios.get(`v1/initiatives/${id}`)
       .then((res) => {
-        // console.log(res.data)
+        console.log(res.data)
         return { data: res.data, id }
       })
       .catch((e) => {
@@ -115,18 +116,18 @@ export default {
       id: '',
       data: {
         area: '',
+        type: '',
         title: '',
         author: '',
         created: ''
-      },
-      filesNames: ['file1.jpg', 'file2.jpg']
+      }
     }
   },
   computed: {},
   methods: {
     date (date) {
       const d = new Date(date)
-      return `${d.getDate()}.${d.getMonth()}.${d.getFullYear()}`
+      return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}` // months go 0-11
     },
     statusImage (s) {
       return require(`~/assets/img/icons/${s}.png`)

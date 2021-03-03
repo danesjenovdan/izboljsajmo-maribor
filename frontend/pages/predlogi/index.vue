@@ -153,97 +153,20 @@
             </div>
           </b-col>
         </b-row>
-        <b-row class="mb-4">
-          <b-col cols="4">
-            <div class="initiative-card">
-              <img class="img-fluid" src="~/static/predlog.png" alt="">
+        <b-row>
+          <b-col v-for="initiative in initiatives" :key="initiative.title" cols="4" class="mb-4">
+            <div class="initiative-card h-100">
+              <img
+                class="cover-image"
+                :src="initiative.cover_image.image"
+                alt=""
+              >
               <div class="initiative-card-body">
-                <h4>Kolesarske steze</h4>
-                <span class="author">Edita Jerovšek</span>
-                <div class="my-1">
-                  <span class="tag">Slišimo</span>
-                  <span class="tag">Promet</span>
-                  <span class="tag">26. 1. 2021</span>
-                </div>
-                <p>
-                  Dne 2.10.2020 ste mi odgovorili, da je moja pobuda sprejeta, a do danes nisem prejela odgovora, ali se sploh kaj dogaja. Prav tako ...
-                </p>
-                <hr class="hr-upper">
-                <hr class="hr-lower">
-                <div class="d-flex justify-content-between">
-                  <div class="d-inline-flex align-items-center">
-                    <b-button class="d-flex align-items-center">
-                      <img
-                        src="~/assets/img/icons/love.png"
-                        alt="love"
-                        class="mr-1"
-                      >
-                      Podpri
-                    </b-button>
-                    <span class="ml-1">43</span>
-                  </div>
-                  <div class="d-inline-flex align-items-center">
-                    <b-button class="d-flex align-items-center">
-                      <img
-                        src="~/assets/img/icons/comment.png"
-                        alt="comment"
-                        class="mr-1"
-                      >
-                      Komentiraj
-                    </b-button>
-                    <span class="ml-1">12</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </b-col>
-          <b-col cols="4">
-            <div class="initiative-card">
-              <div class="initiative-card-body">
-                <h4>Nekoč čista Partizanska cesta</h4>
-                <span class="author">Edita Jerovšek</span>
-                <div class="my-1">
-                  <span class="tag">Slišimo</span>
-                  <span class="tag">Promet</span>
-                  <span class="tag">26. 1. 2021</span>
-                </div>
-                <p>
-                  Dne 2.10.2020 ste mi odgovorili, da je moja pobuda sprejeta, a do danes nisem prejela odgovora, ali se sploh kaj dogaja. Prav tako ...
-                </p>
-                <hr class="hr-upper">
-                <hr class="hr-lower">
-                <div class="d-flex justify-content-between">
-                  <div class="d-inline-flex align-items-center">
-                    <b-button class="d-flex align-items-center">
-                      <img
-                        src="~/assets/img/icons/love.png"
-                        alt="love"
-                        class="mr-1"
-                      >
-                      Podpri
-                    </b-button>
-                    <span class="ml-1">43</span>
-                  </div>
-                  <div class="d-inline-flex align-items-center">
-                    <b-button class="d-flex align-items-center">
-                      <img
-                        src="~/assets/img/icons/comment.png"
-                        alt="comment"
-                        class="mr-1"
-                      >
-                      Komentiraj
-                    </b-button>
-                    <span class="ml-1">12</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </b-col>
-          <b-col v-for="initiative in initiatives" :key="initiative.title" cols="4">
-            <div class="initiative-card">
-              <img class="img-fluid" src="~/static/predlog.png" alt="">
-              <div class="initiative-card-body">
-                <h4>{{ initiative.title }}</h4>
+                <h4>
+                  <NuxtLink :to="`/predlogi/${initiative.id}`">
+                    {{ initiative.title }}
+                  </NuxtLink>
+                </h4>
                 <span class="author">{{ initiative.author }}</span>
                 <div class="my-1">
                   <span class="tag">{{ initiative.status }}</span>
@@ -285,7 +208,77 @@
         </b-row>
       </b-col>
       <b-col lg="5">
-        <img src="~/static/map.png" class="">
+        <!-- <img src="~/static/map.png" class=""> -->
+        <!--
+        <l-map
+          v-model="zoom"
+          v-model:zoom="zoom"
+          :center="[47.41322, -1.219482]"
+          @move="log('move')"
+        >
+          <l-tile-layer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <l-control-layers />
+          <l-marker :lat-lng="[0, 0]" draggable @moveend="log('moveend')">
+            <l-tooltip>
+              lol
+            </l-tooltip>
+          </l-marker>
+
+          <l-marker :lat-lng="[47.41322, -1.219482]">
+            <l-icon :icon-url="iconUrl" :icon-size="iconSize" />
+          </l-marker>
+
+          <l-marker :lat-lng="[50, 50]" draggable @moveend="log('moveend')">
+            <l-popup>
+              lol
+            </l-popup>
+          </l-marker>
+
+          <l-polyline
+            :lat-lngs="[
+              [47.334852, -1.509485],
+              [47.342596, -1.328731],
+              [47.241487, -1.190568],
+              [47.234787, -1.358337],
+            ]"
+            color="green"
+          />
+          <l-polygon
+            :lat-lngs="[
+              [46.334852, -1.509485],
+              [46.342596, -1.328731],
+              [46.241487, -1.190568],
+              [46.234787, -1.358337],
+            ]"
+            color="#41b782"
+            :fill="true"
+            :fill-opacity="0.5"
+            fill-color="#41b782"
+          />
+          <l-rectangle
+            :lat-lngs="[
+              [46.334852, -1.509485],
+              [46.342596, -1.328731],
+              [46.241487, -1.190568],
+              [46.234787, -1.358337],
+            ]"
+            :fill="true"
+            color="#35495d"
+          />
+          <l-rectangle
+            :bounds="[
+              [46.334852, -1.190568],
+              [46.241487, -1.090357],
+            ]"
+          >
+            <l-popup>
+              lol
+            </l-popup>
+          </l-rectangle>
+        </l-map>
+        -->
       </b-col>
     </b-row>
   </b-container>
@@ -300,20 +293,7 @@ export default {
       showArea: false,
       showLocation: false,
       showStatus: false,
-      initiatives: [
-        {
-          title: 'Ureditev oranžne ograje ob starem mostu od Lastovke proti Orientu',
-          author: 'Edita Jerovšek',
-          status: 'Slišimo',
-          area: {
-            name: 'Promet'
-          },
-          created: '26. 1. 2021',
-          description: 'Dne 2.10.2020 ste mi odgovorili, da je moja pobuda sprejeta, a do danes nisem prejela odgovora, ali se sploh kaj dogaja. Prav tako ...',
-          vote_count: 43,
-          comment_count: 1
-        }
-      ]
+      initiatives: []
     }
   },
   created () {
@@ -335,7 +315,7 @@ export default {
     },
     date (date) {
       const d = new Date(date)
-      return `${d.getDate()}.${d.getMonth()}.${d.getFullYear()}`
+      return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`
     }
   }
 }
@@ -418,8 +398,18 @@ h4 {
 .initiative-card {
   box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
 
+  .cover-image {
+    width: 100%;
+    height: 8rem;
+    object-fit: cover;
+  }
+
   .initiative-card-body {
     padding: 0.5rem;
+
+    h4 a {
+      color: black;
+    }
 
     .author {
       font-size: 0.9rem;
