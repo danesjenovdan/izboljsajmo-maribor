@@ -6,7 +6,7 @@ from django.utils.translation import gettext as _
 from django.core import validators
 from django.contrib.gis.db import models as geo_models
 
-from behaviors.behaviors import Timestamped, Authored
+from behaviors.behaviors import Timestamped, Authored, Published
 
 
 # TODO o izboljšamo maribor naredi podobno kot je na mauticu.
@@ -19,15 +19,22 @@ class InitiativeType(models.TextChoices):
     INTERESTED_IN = 'ZM', _('ZANIMA ME!')
 
 
+class Reviwers(models.TextChoices):
+    SUPER_ADMIN = 'SA', _('SUPER ADMIN')
+    AREA_ADMIN = 'AA', _('AREA ADMIN')
+    AREA_APPRAISER = 'AP', _('AREA APPRAISER')
+    CONTRACTOR_APPRAISER = 'CA', _('CONTRACTOR APPRAISER')
+
+
 class CommentStatus(models.TextChoices):
     PUBLISHED = 'PU', 'PUBLISHED'
     DELETED = 'D', 'DELETED'
     PENDING = 'PE', 'PENDING'
 
 
-class StatusInitiative(Timestamped):
+class StatusInitiative(Timestamped, Published):
     initiative = models.ForeignKey(
-        'initiative.Initiative',
+        'initiatives.Initiative',
         verbose_name=_('Initiative'),
         related_name='initiative_statuses',
         on_delete=models.CASCADE)
@@ -46,7 +53,6 @@ class StatusInitiative(Timestamped):
         blank=True,
         verbose_name=_('Rejection'),
         on_delete=models.SET_NULL)
-
     competent_service = models.ForeignKey(
         'CompetentService',
         null=True,
@@ -94,11 +100,19 @@ class StatusInitiativeHear(StatusInitiative):
     class Meta:
         proxy=True
 
+    def save(self, *args, **kwargs):
+        self.status = Status.objects.get(name='Slišimo')
+        return super().save(*args, **kwargs)
+
 
 class StatusInitiativeEditing(StatusInitiative):
     objects = EditingManager()
     class Meta:
         proxy=True
+
+    def save(self, *args, **kwargs):
+        self.status = Status.objects.get(name='Urejamo')
+        return super().save(*args, **kwargs)
 
 
 class StatusInitiativeProgress(StatusInitiative):
@@ -106,11 +120,19 @@ class StatusInitiativeProgress(StatusInitiative):
     class Meta:
         proxy=True
 
+    def save(self, *args, **kwargs):
+        self.status = Status.objects.get(name='V izvajanju')
+        return super().save(*args, **kwargs)
+
 
 class StatusInitiativeFinished(StatusInitiative):
     objects = FinishedManager()
     class Meta:
         proxy=True
+
+    def save(self, *args, **kwargs):
+        self.status = Status.objects.get(name='Zaključeno')
+        return super().save(*args, **kwargs)
 
 
 class StatusInitiativeDone(StatusInitiative):
@@ -118,11 +140,19 @@ class StatusInitiativeDone(StatusInitiative):
     class Meta:
         proxy=True
 
+    def save(self, *args, **kwargs):
+        self.status = Status.objects.get(name='Izvedeno')
+        return super().save(*args, **kwargs)
+
 
 class StatusInitiativeRejected(StatusInitiative):
     objects = RejectedManager()
     class Meta:
         proxy=True
+
+    def save(self, *args, **kwargs):
+        self.status = Status.objects.get(name='Zavrnjeno')
+        return super().save(*args, **kwargs)
 
 
 class Status(Timestamped):
@@ -136,7 +166,7 @@ class Status(Timestamped):
 
 class Description(Timestamped):
     initiative = models.ForeignKey(
-        'initiative.Initiative',
+        'initiatives.Initiative',
         verbose_name=_('Initiative'),
         related_name='descriptions',
         on_delete=models.CASCADE)
@@ -169,7 +199,7 @@ class CompetentService(Timestamped):
 
 class Comment(Timestamped, Authored):
     initiative = models.ForeignKey(
-        'initiative.Initiative',
+        'initiatives.Initiative',
         verbose_name=_('Initiative'),
         related_name='initiative_comments',
         on_delete=models.CASCADE)
@@ -184,7 +214,7 @@ class Comment(Timestamped, Authored):
 
 class Vote(Timestamped, Authored):
     initiative = models.ForeignKey(
-        'initiative.Initiative',
+        'initiatives.Initiative',
         verbose_name=_('Initiative'),
         related_name='votes',
         on_delete=models.CASCADE)
@@ -274,7 +304,7 @@ class FAQ(Timestamped):
 
 class File(Timestamped):
     initiative = models.ForeignKey(
-        'initiative.Initiative',
+        'initiatives.Initiative',
         verbose_name=_('Initiative'),
         on_delete=models.CASCADE,
         related_name='files',

@@ -5,7 +5,7 @@ from django.contrib.gis.db import models as geo_models
 
 from behaviors.behaviors import Timestamped, Authored
 
-from initiatives.models import CommentStatus, InitiativeType
+from initiatives.models import CommentStatus, InitiativeType, Reviwers
 
 
 class Initiative(Timestamped, Authored):
@@ -14,6 +14,11 @@ class Initiative(Timestamped, Authored):
         max_length=2,
         choices=InitiativeType.choices,
         default=InitiativeType.BOTHERS_ME)
+    reviwer = models.CharField(
+        _('Reviwer'),
+        max_length=2,
+        choices=Reviwers.choices,
+        default=Reviwers.SUPER_ADMIN)
     title = models.CharField(
         _('Title'),
         max_length=50)
@@ -93,7 +98,19 @@ class BothersManager(models.Manager):
         return super().get_queryset().filter(type=InitiativeType.BOTHERS_ME)
 
 
-class BothersInitiative(Initiative):
+class BothersInitiativeSuper(Initiative):
+    objects = BothersManager()
+    class Meta:
+        proxy=True
+
+
+class BothersInitiativeArea(Initiative):
+    objects = BothersManager()
+    class Meta:
+        proxy=True
+
+
+class BothersInitiativeContractor(Initiative):
     objects = BothersManager()
     class Meta:
         proxy=True
@@ -120,4 +137,4 @@ class InterestedInitiative(Initiative):
     class Meta:
         proxy=True
 
-
+#TODO make Initiatives for roles

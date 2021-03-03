@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Initiative
+from initiatives.models import Initiative
 
 from initiatives.serializers import (
     AreaSerializer, ImageSerializer, StatusInitiativeSerializer, FileDetailsSerializer, DescriptionSerializers, CommentSerializer

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.core.exceptions import ValidationError
-from .models import (
+from initiatives.models import (
     User, File, StatusInitiative, CompetentService, Organization, Comment,
     CommentStatus, Description, Area, FAQ, Image, DescriptionDefinition,
     Zone

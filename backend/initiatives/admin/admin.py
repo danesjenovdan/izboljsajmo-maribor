@@ -5,13 +5,13 @@ from django.utils.translation import gettext as _
 from django.utils.html import format_html
 from django.urls import reverse
 
-from .models import (
+from initiatives.models import (
     User, Organization, Zone, CompetentService, Area, Status, StatusInitiative,
     File, Comment, Comment, FAQ, StatusInitiativeHear, Rejection,
     StatusInitiativeHear, StatusInitiativeEditing, StatusInitiativeProgress,
     StatusInitiativeFinished, StatusInitiativeDone, StatusInitiativeRejected, Description
 )
-from .forms import (
+from initiatives.forms import (
     HearStatusInlineForm, EditingStatusInlineForm, ProgressStatusInlineForm, DoneStatusInlineForm,
     FinishedStatusInlineForm, RejectedStatusInlineForm
 )
@@ -91,6 +91,10 @@ class StatusInitiativeHearInline(admin.TabularInline):
         super().save_model(request, obj, form, change)
 
 
+class StatusInitiativeHearAdminInline(StatusInitiativeHearInline):
+    fields = ['status', 'created', 'email_content', 'publication_status']
+
+
 class StatusInitiativeEditingInline(admin.TabularInline):
     form = EditingStatusInlineForm
     readonly_fields = ['created']
@@ -103,6 +107,10 @@ class StatusInitiativeEditingInline(admin.TabularInline):
     def save_model(self, request, obj, form, change):
         obj.status = Status.objects.get(name='Urejamo')
         super().save_model(request, obj, form, change)
+
+
+class StatusInitiativeEditingAdminInline(StatusInitiativeEditingInline):
+    fields = ['created', 'email_content', 'competent_service', 'publication_status']
 
 
 class StatusInitiativeProgressInline(admin.TabularInline):
@@ -118,6 +126,10 @@ class StatusInitiativeProgressInline(admin.TabularInline):
         super().save_model(request, obj, form, change)
 
 
+class StatusInitiativeProgressAdminInline(StatusInitiativeProgressInline):
+    fields = ['created', 'email_content', 'publication_status']
+
+
 class StatusInitiativeFinishedInline(admin.TabularInline):
     form = FinishedStatusInlineForm
     readonly_fields = ['created']
@@ -129,6 +141,10 @@ class StatusInitiativeFinishedInline(admin.TabularInline):
     def save_model(self, request, obj, form, change):
         obj.status = Status.objects.get(name='Zaključeno')
         super().save_model(request, obj, form, change)
+
+
+class StatusInitiativeFinishedAdminInline(StatusInitiativeFinishedInline):
+    fields = ['created', 'email_content', 'publication_status']
 
 
 class StatusInitiativeDoneInline(admin.TabularInline):
@@ -144,6 +160,10 @@ class StatusInitiativeDoneInline(admin.TabularInline):
         super().save_model(request, obj, form, change)
 
 
+class StatusInitiativeDoneAdminInline(StatusInitiativeDoneInline):
+    fields = ['created', 'email_content', 'publication_status']
+
+
 class StatusInitiativeRejectedInline(admin.TabularInline):
     form = RejectedStatusInlineForm
     readonly_fields = ['created']
@@ -157,6 +177,9 @@ class StatusInitiativeRejectedInline(admin.TabularInline):
         obj.status = Status.objects.get(name='Zavrnjeno')
         super().save_model(request, obj, form, change)
 
+
+class StatusInitiativeRejectedAdminInline(StatusInitiativeRejectedInline):
+    fields = ['created', 'email_content', 'reason_for_rejection', 'publication_status']
 
 class DescriptionInline(admin.TabularInline):
     search_fields = ['title']
@@ -210,9 +233,6 @@ class AreaAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 
-
-
-
 class CommentAdmin(admin.ModelAdmin):
     list_display = ['id', 'initiative_obj', "content", "author", "status", 'created']
     list_editable = ["status"]
@@ -225,7 +245,6 @@ class CommentAdmin(admin.ModelAdmin):
 
     initiative_obj.allow_tags = True
     initiative_obj.short_description = _('Initiatives')
-
 
 
 class FAQAdmin(OrderableAdmin, admin.ModelAdmin):

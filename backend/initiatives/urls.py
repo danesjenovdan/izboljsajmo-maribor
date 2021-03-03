@@ -3,8 +3,8 @@ from django.urls import path, re_path, include
 from rest_framework.routers import DefaultRouter
 
 from .views import (
-    UserViewSet, OrganizationViewSet, AreaViewSet, FAQViewSet, FilesViewSet,
-    ImagesViewSet, DescriptionDefinitionViewSet, ZoneViewSet, InitiativeTypeApiView
+    UserViewSet, OrganizationViewSet, AreaViewSet, FAQViewSet, FilesViewSet, InitiativeViewSet,
+    ImagesViewSet, DescriptionDefinitionViewSet, ZoneViewSet, InitiativeTypeApiView, InitiativeAdminToAreaAdmin
 )
 
 from about.views import AboutViewSet
@@ -22,9 +22,11 @@ router.register(r'faq', FAQViewSet, basename='FAQ')
 router.register(r'images', ImagesViewSet, basename='Image')
 router.register(r'files', FilesViewSet, basename='File')
 router.register(r'description-definitions', DescriptionDefinitionViewSet, basename='DescriptionDefinition')
+router.register(r'initiatives', InitiativeViewSet, basename='Initiative')
 
 
 urlpatterns = [
     path('', include((router.urls, 'initiatives'))),
-    path('initiative-types/', InitiativeTypeApiView.as_view())
+    path('initiative-types/', InitiativeTypeApiView.as_view()),
+    path('push-initiative-to-area-admin/<str:label>/<int:pk>', InitiativeAdminToAreaAdmin.as_view(), name='push-to-area'),
 ]

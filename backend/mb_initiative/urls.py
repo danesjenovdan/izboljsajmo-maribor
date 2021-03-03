@@ -23,5 +23,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^auth/', include('drf_social_oauth2.urls', namespace='drf')),
     re_path(r'^v1/', include('initiatives.urls', namespace='initiatives')),
-    re_path(r'^v1/', include('initiative.urls', namespace='initiative')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

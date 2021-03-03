@@ -116,11 +116,15 @@ class RejectedStatusInlineForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         initial = kwargs.pop('initial', {})
         instance = kwargs.get('instance', None)
+        logger.debug('instance')
         if instance:
             pass
         else:
-            default_email = Status.objects.get(name='Zavrnjeno').default_email
-            initial['email_content'] = default_email
+            status = Status.objects.get(name='Zavrnjeno')
+            initial['email_content'] = status.default_email
+            logger.debug(status.default_email)
+            print('ivan')
+            initial['status_id'] = status.id
 
         kwargs['initial'] = initial
         super().__init__(
