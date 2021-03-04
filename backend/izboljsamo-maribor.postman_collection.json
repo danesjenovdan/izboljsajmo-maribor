@@ -35,6 +35,35 @@
 			"response": []
 		},
 		{
+			"name": "get user data",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"ivan123\",\n    \"password\": \"123\",\n    \"email\": \"asdasd@email.si\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/v1/users/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "registration for organization",
 			"request": {
 				"method": "POST",
