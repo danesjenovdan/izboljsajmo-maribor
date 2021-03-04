@@ -1,5 +1,6 @@
 export const state = () => ({
   client_secret: '54pWmrpj1y9FiwkUDofjeP4B5tbLQ4wW6F2wqsMT3JuQN4ApIqcveKlzOC1laQIJp8JpVi99EheHCkumEJ0o81J9f2uHK3eXjUdxprzDnWlsTuZM6cgv1Eo35KSr7Mfg',
+  user: null,
   initiativeTypes: {
     MM: 'MOTI ME!',
     II: 'IMAM IDEJO!',
@@ -32,6 +33,10 @@ export const actions = {
     // console.log(loginData)
     // const response = await this.$axios.post('auth/token/', loginData)
     await this.$auth.loginWith('local', { data: loginData })
+    const user = await this.$axios.get('v1/users/me/', {
+      headers: { Authorization: 'Bearer ' + context.getters.token }
+    })
+    this.$auth.setUser(user.data)
   },
 
   async logout () {

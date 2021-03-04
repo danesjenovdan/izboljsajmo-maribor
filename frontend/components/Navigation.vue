@@ -25,7 +25,7 @@
           Moj profil
         </NuxtLink>
         <div v-if="showProfileDropdown" class="profileDropdown">
-          <h3 class="pt-4 text-center font-weight-bold">Janez Novak</h3>
+          <h3 class="pt-4 text-center font-weight-bold">{{ this.$auth.user.username }}</h3>
           <hr class="hr-upper">
           <hr class="hr-lower">
           <div class="text-center">

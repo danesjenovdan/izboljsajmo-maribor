@@ -13,7 +13,6 @@
 <style lang="scss">
 
 html, body {
-  // height: 100%;
   background-color: #f8f8f8;
 }
 
@@ -27,10 +26,6 @@ html, body {
   flex: 1;
   overflow: auto;
 }
-
-//.footer {
-//  flex-shrink: 0;
-//}
 
 </style>
 
