@@ -17,8 +17,13 @@
           </p>
           <div class="address">
             <p>{{ data.address }}</p>
-            <!-- TO DO: insert real map -->
-            <img src="~/static/map.png" class="map img-fluid">
+            <div id="map-wrap" class="mt-4">
+              <client-only>
+                <l-map :zoom=13 :center="[46.554650,15.645881]">
+                  <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+                </l-map>
+              </client-only>
+            </div>
           </div>
           <hr>
           <b-row v-for="status in data.statuses" :key="status.status" class="status">
@@ -48,7 +53,7 @@
           <b-col class="predlog-description p-0">
             <b-row class="position-relative mb-5">
               <b-col>
-                <img :src="data.cover_image.image" class="cover-image img-fluid" alt="Initiative cover image">
+                <img v-if="data.cover_image" :src="data.cover_image.image" class="cover-image img-fluid" alt="Initiative cover image">
                 <b-button class="support-button">
                   <img src="~/assets/img/icons/love.png" alt="heart">
                   PODPRI
@@ -176,6 +181,10 @@ export default {
     p {
       margin-bottom: 0.5rem;
     }
+  }
+
+  #map-wrap {
+    height: 15rem;
   }
 
   hr {

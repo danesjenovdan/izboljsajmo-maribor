@@ -1,6 +1,6 @@
 <template>
-  <b-container fluid>
-    <b-row>
+  <b-container fluid class="h-100">
+    <b-row class="h-100">
       <b-col lg="7">
         <b-row class="my-4 justify-content-center">
           <b-col cols="9" class="text-center">
@@ -43,242 +43,187 @@
         </b-row>
         <hr class="hr-upper">
         <hr class="hr-lower">
-        <b-row>
-          <b-col cols="12">
-            <h4 class="mb-4 text-center">
-              Išči ali brskaj po obstoječih predlogih!
-            </h4>
-          </b-col>
-        </b-row>
-        <b-row class="mb-4">
-          <b-col cols="12" class="d-flex">
-            <div class="d-inline-flex flex-grow-1 align-items-center position-relative">
-              <input
-                v-model="search"
-                type="text"
-                class="form-control"
-                placeholder="Išči po naslovu ali vsebini pobud"
-              >
-              <img src="~/assets/img/icons/search.png" class="position-absolute mr-1" style="right: 0;">
-            </div>
-            <button
-              class="filter d-inline-flex align-items-center"
-              @click="showType = !showType"
-            >
-              Tip
-              <img
-                src="~/assets/img/icons/arrow-down.png"
-                alt="arrow down"
-                :class="{ 'ml-2': true, 'dropdown-open': showType }"
-              >
-              <div
-                v-if="showType"
-                style="position: absolute; top: 3rem; z-index: 1"
-                @click.stop=""
-              >
-                <div>
-                  TO DO: types
-                </div>
+        <div>
+          <b-row>
+            <b-col cols="12">
+              <h4 class="mb-4 text-center">
+                Išči ali brskaj po obstoječih predlogih!
+              </h4>
+            </b-col>
+          </b-row>
+          <b-row class="mb-4">
+            <b-col cols="12" class="d-flex">
+              <div class="d-inline-flex flex-grow-1 align-items-center position-relative">
+                <input
+                  v-model="search"
+                  type="text"
+                  class="form-control"
+                  placeholder="Išči po naslovu ali vsebini pobud"
+                >
+                <img src="~/assets/img/icons/search.png" class="position-absolute mr-1" style="right: 0;">
               </div>
-            </button>
-            <button
-              class="filter d-inline-flex align-items-center"
-              @click="showArea = !showArea"
-            >
-              Področje
-              <img
-                src="~/assets/img/icons/arrow-down.png"
-                alt="arrow down"
-                :class="{ 'ml-2': true, 'dropdown-open': showArea }"
+              <button
+                class="filter d-inline-flex align-items-center"
+                @click="showType = !showType"
               >
-              <div
-                v-if="showArea"
-                style="position: absolute; top: 3rem; z-index: 1"
-                @click.stop=""
-              >
-                <div>
-                  TO DO: areas
-                </div>
-              </div>
-            </button>
-            <button
-              class="filter d-inline-flex align-items-center"
-              @click="showLocation = !showLocation"
-            >
-              Območje
-              <img
-                src="~/assets/img/icons/arrow-down.png"
-                alt="arrow down"
-                :class="{ 'ml-2': true, 'dropdown-open': showLocation }"
-              >
-              <div
-                v-if="showLocation"
-                style="position: absolute; top: 3rem; z-index: 1"
-                @click.stop=""
-              >
-                <div>
-                  TO DO: območje
-                </div>
-              </div>
-            </button>
-            <button
-              class="filter d-inline-flex align-items-center"
-              @click="showStatus = !showStatus"
-            >
-              Status
-              <img
-                src="~/assets/img/icons/arrow-down.png"
-                alt="arrow down"
-                :class="{ 'ml-2': true, 'dropdown-open': showStatus }"
-              >
-              <div
-                v-if="showStatus"
-                style="position: absolute; top: 3rem; z-index: 1"
-                @click.stop=""
-              >
-                <div>
-                  TO DO: status
-                </div>
-              </div>
-            </button>
-          </b-col>
-        </b-row>
-        <b-row class="mb-3">
-          <b-col class="d-flex justify-content-between">
-            <div>
-              {{ initiatives.length }} predlogov
-            </div>
-            <div>
-              Sortiraj po datumu objave
-            </div>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col v-for="initiative in initiatives" :key="initiative.title" cols="4" class="mb-4">
-            <div class="initiative-card h-100">
-              <img
-                class="cover-image"
-                :src="initiative.cover_image.image"
-                alt=""
-              >
-              <div class="initiative-card-body">
-                <h4>
-                  <NuxtLink :to="`/predlogi/${initiative.id}`">
-                    {{ initiative.title }}
-                  </NuxtLink>
-                </h4>
-                <span class="author">{{ initiative.author }}</span>
-                <div class="my-1">
-                  <span class="tag">{{ initiative.status }}</span>
-                  <span class="tag">{{ initiative.area.name }}</span>
-                  <span class="tag">{{ date(initiative.created) }}</span>
-                </div>
-                <p>
-                  {{ initiative.description }}
-                </p>
-                <hr class="hr-upper">
-                <hr class="hr-lower">
-                <div class="d-flex justify-content-between">
-                  <div class="d-inline-flex align-items-center">
-                    <b-button class="d-flex align-items-center">
-                      <img
-                        src="~/assets/img/icons/love.png"
-                        alt="love"
-                        class="mr-1"
-                      >
-                      Podpri
-                    </b-button>
-                    <span class="ml-1">{{ initiative.vote_count }}</span>
-                  </div>
-                  <div class="d-inline-flex align-items-center">
-                    <b-button class="d-flex align-items-center">
-                      <img
-                        src="~/assets/img/icons/comment.png"
-                        alt="comment"
-                        class="mr-1"
-                      >
-                      Komentiraj
-                    </b-button>
-                    <span class="ml-1">{{ initiative.comment_count }}</span>
+                Tip
+                <img
+                  src="~/assets/img/icons/arrow-down.png"
+                  alt="arrow down"
+                  :class="{ 'ml-2': true, 'dropdown-open': showType }"
+                >
+                <div
+                  v-if="showType"
+                  style="position: absolute; top: 3rem; z-index: 1"
+                  @click.stop=""
+                >
+                  <div>
+                    TO DO: types
                   </div>
                 </div>
+              </button>
+              <button
+                class="filter d-inline-flex align-items-center"
+                @click="showArea = !showArea"
+              >
+                Področje
+                <img
+                  src="~/assets/img/icons/arrow-down.png"
+                  alt="arrow down"
+                  :class="{ 'ml-2': true, 'dropdown-open': showArea }"
+                >
+                <div
+                  v-if="showArea"
+                  style="position: absolute; top: 3rem; z-index: 1"
+                  @click.stop=""
+                >
+                  <div>
+                    TO DO: areas
+                  </div>
+                </div>
+              </button>
+              <button
+                class="filter d-inline-flex align-items-center"
+                @click="showLocation = !showLocation"
+              >
+                Območje
+                <img
+                  src="~/assets/img/icons/arrow-down.png"
+                  alt="arrow down"
+                  :class="{ 'ml-2': true, 'dropdown-open': showLocation }"
+                >
+                <div
+                  v-if="showLocation"
+                  style="position: absolute; top: 3rem; z-index: 1"
+                  @click.stop=""
+                >
+                  <div>
+                    TO DO: območje
+                  </div>
+                </div>
+              </button>
+              <button
+                class="filter d-inline-flex align-items-center"
+                @click="showStatus = !showStatus"
+              >
+                Status
+                <img
+                  src="~/assets/img/icons/arrow-down.png"
+                  alt="arrow down"
+                  :class="{ 'ml-2': true, 'dropdown-open': showStatus }"
+                >
+                <div
+                  v-if="showStatus"
+                  style="position: absolute; top: 3rem; z-index: 1"
+                  @click.stop=""
+                >
+                  <div>
+                    TO DO: status
+                  </div>
+                </div>
+              </button>
+            </b-col>
+          </b-row>
+          <b-row class="mb-3">
+            <b-col class="d-flex justify-content-between">
+              <div>
+                {{ initiatives.length }} predlogov
               </div>
-            </div>
-          </b-col>
-        </b-row>
+              <div>
+                Sortiraj po datumu objave
+              </div>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col v-for="initiative in initiatives" :key="initiative.id" cols="4" class="mb-4">
+              <div class="initiative-card h-100">
+                <img
+                  v-if="initiative.cover_image"
+                  class="cover-image"
+                  :src="initiative.cover_image.image"
+                  alt=""
+                >
+                <div class="initiative-card-body">
+                  <h4>
+                    <NuxtLink :to="`/predlogi/${initiative.id}`">
+                      {{ initiative.title }}
+                    </NuxtLink>
+                  </h4>
+                  <span class="author">{{ initiative.author }}</span>
+                  <div class="my-1">
+                    <span class="tag">{{ initiative.status }}</span>
+                    <span class="tag">{{ initiative.area.name }}</span>
+                    <span class="tag">{{ date(initiative.created) }}</span>
+                  </div>
+                  <p>
+                    {{ initiative.description }}
+                  </p>
+                  <hr class="hr-upper">
+                  <hr class="hr-lower">
+                  <div class="d-flex justify-content-between">
+                    <div class="d-inline-flex align-items-center">
+                      <b-button class="d-flex align-items-center">
+                        <img
+                          src="~/assets/img/icons/love.png"
+                          alt="love"
+                          class="mr-1"
+                        >
+                        Podpri
+                      </b-button>
+                      <span class="ml-1">{{ initiative.vote_count }}</span>
+                    </div>
+                    <div class="d-inline-flex align-items-center">
+                      <b-button class="d-flex align-items-center">
+                        <img
+                          src="~/assets/img/icons/comment.png"
+                          alt="comment"
+                          class="mr-1"
+                        >
+                        Komentiraj
+                      </b-button>
+                      <span class="ml-1">{{ initiative.comment_count }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </b-col>
+          </b-row>
+        </div>
       </b-col>
       <b-col lg="5">
-        <!-- <img src="~/static/map.png" class=""> -->
-        <!--
-        <l-map
-          v-model="zoom"
-          v-model:zoom="zoom"
-          :center="[47.41322, -1.219482]"
-          @move="log('move')"
-        >
-          <l-tile-layer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <l-control-layers />
-          <l-marker :lat-lng="[0, 0]" draggable @moveend="log('moveend')">
-            <l-tooltip>
-              lol
-            </l-tooltip>
-          </l-marker>
-
-          <l-marker :lat-lng="[47.41322, -1.219482]">
-            <l-icon :icon-url="iconUrl" :icon-size="iconSize" />
-          </l-marker>
-
-          <l-marker :lat-lng="[50, 50]" draggable @moveend="log('moveend')">
-            <l-popup>
-              lol
-            </l-popup>
-          </l-marker>
-
-          <l-polyline
-            :lat-lngs="[
-              [47.334852, -1.509485],
-              [47.342596, -1.328731],
-              [47.241487, -1.190568],
-              [47.234787, -1.358337],
-            ]"
-            color="green"
-          />
-          <l-polygon
-            :lat-lngs="[
-              [46.334852, -1.509485],
-              [46.342596, -1.328731],
-              [46.241487, -1.190568],
-              [46.234787, -1.358337],
-            ]"
-            color="#41b782"
-            :fill="true"
-            :fill-opacity="0.5"
-            fill-color="#41b782"
-          />
-          <l-rectangle
-            :lat-lngs="[
-              [46.334852, -1.509485],
-              [46.342596, -1.328731],
-              [46.241487, -1.190568],
-              [46.234787, -1.358337],
-            ]"
-            :fill="true"
-            color="#35495d"
-          />
-          <l-rectangle
-            :bounds="[
-              [46.334852, -1.190568],
-              [46.241487, -1.090357],
-            ]"
-          >
-            <l-popup>
-              lol
-            </l-popup>
-          </l-rectangle>
-        </l-map>
-        -->
+        <div id="map-wrap" class="h-100">
+          <client-only>
+            <l-map :zoom=13 :center="[46.554650,15.645881]">
+              <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+              <l-marker
+                v-for="initiative in initiatives"
+                :key="initiative.id"
+                :lat-lng="[initiative.location.coordinates[0],initiative.location.coordinates[1]]"
+              >
+              </l-marker>
+            </l-map>
+          </client-only>
+        </div>
       </b-col>
     </b-row>
   </b-container>
@@ -286,6 +231,8 @@
 
 <script>
 export default {
+  components: {
+  },
   data () {
     return {
       search: '',
@@ -293,8 +240,11 @@ export default {
       showArea: false,
       showLocation: false,
       showStatus: false,
-      initiatives: []
+      initiatives: [],
+      map: null
     }
+  },
+  computed: {
   },
   created () {
     this.fetchInitiatives()
@@ -307,6 +257,7 @@ export default {
         console.log(responseData)
         for (const i in responseData) {
           this.initiatives.push(responseData[i])
+          console.log(this.initiatives[i].location.coordinates)
         }
       } else {
         console.log('ni ok', responseData)

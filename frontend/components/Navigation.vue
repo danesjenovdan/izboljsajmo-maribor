@@ -123,7 +123,7 @@ export default {
     background-color: #f8f8f8;
     box-shadow: 0 0 20px #d4d9e1;
     border-radius: 0.5rem;
-    z-index: 1;
+    z-index: 1000;
 
     .logout-button {
       background-color: #d7d7d7;
