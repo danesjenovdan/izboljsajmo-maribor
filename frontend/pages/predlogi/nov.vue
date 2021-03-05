@@ -248,18 +248,12 @@ export default {
   },
   methods: {
     async fetchAreas () {
-      const response = await this.$axios.get('v1/areas/')
-      const responseData = await response.data
-      if (response.status === 200) {
-        for (const i in responseData) {
-          this.initiativeAreaOptions.push({
-            value: responseData[i].id,
-            text: responseData[i].name
-          })
-        }
-      } else {
-        // console.log('ni ok', responseData)
-        // throw error
+      const areas = await this.$store.dispatch('getAreas')
+      for (const i in areas) {
+        this.initiativeAreaOptions.push({
+          value: areas[i].id,
+          text: areas[i].name
+        })
       }
     },
     checkInitiativeTitle () {

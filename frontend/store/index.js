@@ -153,5 +153,66 @@ export const actions = {
       console.log('ni ok', responseData)
       // throw error
     }
+  },
+
+  async getInitiatives (context, payload) {
+    const params = new URLSearchParams()
+    // search
+    if (payload.search) {
+      params.append('search', payload.search)
+    }
+    // types
+    if (payload.type) {
+      for (const type of payload.type) {
+        params.append('type', type)
+      }
+    }
+    // areas
+    if (payload.area) {
+      for (const area of payload.area) {
+        params.append('area', area)
+      }
+    }
+    // zones
+    if (payload.zone) {
+      for (const zone of payload.zone) {
+        params.append('zone', zone)
+      }
+    }
+    // statuses
+    if (payload.status) {
+      for (const status of payload.status) {
+        params.append('status', status)
+      }
+    }
+    const response = await this.$axios.get('v1/initiatives/?', {
+      params
+    })
+    if (response.status === 200) {
+      return await response.data
+    } else {
+      // console.log('ni ok', responseData)
+      // throw error
+    }
+  },
+
+  async getAreas (context, payload) {
+    const response = await this.$axios.get('v1/areas/')
+    if (response.status === 200) {
+      return await response.data
+    } else {
+      // console.log('ni ok', responseData)
+      // throw error
+    }
+  },
+
+  async getZones (context, payload) {
+    const response = await this.$axios.get('v1/zones/')
+    if (response.status === 200) {
+      return await response.data
+    } else {
+      // console.log('ni ok', responseData)
+      // throw error
+    }
   }
 }
