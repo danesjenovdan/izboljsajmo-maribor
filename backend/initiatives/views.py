@@ -84,6 +84,19 @@ class DescriptionDefinitionViewSet(viewsets.GenericViewSet, mixins.ListModelMixi
     filterset_fields = ('type',)
 
 
+class CharInFilter(filters.BaseInFilter, filters.CharFilter):
+    pass
+
+
+class InitiativeFilterSet(filters.FilterSet):
+    type = CharInFilter(field_name='type', lookup_expr='in')
+
+    class Meta:
+        model = Initiative
+        fields = ['zone', 'area', 'type']
+
+
+# TODO has_voted za prijavlenega userja
 class InitiativeViewSet(
     viewsets.GenericViewSet,
     mixins.RetrieveModelMixin,
@@ -95,7 +108,7 @@ class InitiativeViewSet(
     serializer_class = InitiativeDetailsSerializer
     queryset = Initiative.objects.all()
     filter_backends = (filters.DjangoFilterBackend, s_filters.SearchFilter)
-    filterset_fields = ('zone', 'area', 'type')
+    filterset_class = InitiativeFilterSet
     search_fields = ['title', 'zone__name', 'area__name']
 
 
