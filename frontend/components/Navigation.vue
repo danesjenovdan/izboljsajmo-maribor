@@ -25,7 +25,7 @@
           Moj profil
         </NuxtLink>
         <div v-if="showProfileDropdown" class="profileDropdown">
-          <h3 class="pt-4 text-center font-weight-bold">Janez Novak</h3>
+          <h3 class="pt-4 text-center font-weight-bold">{{ this.$auth.user.username }}</h3>
           <hr class="hr-upper">
           <hr class="hr-lower">
           <div class="text-center">
@@ -123,7 +123,7 @@ export default {
     background-color: #f8f8f8;
     box-shadow: 0 0 20px #d4d9e1;
     border-radius: 0.5rem;
-    z-index: 1;
+    z-index: 1000;
 
     .logout-button {
       background-color: #d7d7d7;

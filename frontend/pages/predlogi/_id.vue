@@ -17,8 +17,17 @@
           </p>
           <div class="address">
             <p>{{ data.address }}</p>
-            <!-- TO DO: insert real map -->
-            <img src="~/static/map.png" class="map img-fluid">
+            <div id="map-wrap" class="mt-4">
+              <client-only>
+                <l-map :zoom=13 :center="[46.554650,15.645881]">
+                  <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+                  <l-marker
+                    :lat-lng="[data.location.coordinates[0], data.location.coordinates[1]]"
+                  >
+                  </l-marker>
+                </l-map>
+              </client-only>
+            </div>
           </div>
           <hr>
           <b-row v-for="status in data.statuses" :key="status.status" class="status">
@@ -48,7 +57,20 @@
           <b-col class="predlog-description p-0">
             <b-row class="position-relative mb-5">
               <b-col>
-                <img :src="data.cover_image.image" class="cover-image img-fluid" alt="Initiative cover image">
+                <div class="d-flex">
+                  <img
+                    v-if="data.cover_image"
+                    :src="data.cover_image.image"
+                    class="cover-image"
+                    alt="Initiative cover image - before"
+                  >
+                  <img
+                    v-if="data.cover_image_after"
+                    :src="data.cover_image_after.image"
+                    class="cover-image"
+                    alt="Initiative cover image - after"
+                  >
+                </div>
                 <b-button class="support-button">
                   <img src="~/assets/img/icons/love.png" alt="heart">
                   PODPRI
@@ -62,7 +84,7 @@
                 </p>
               </b-col>
             </b-row>
-            <b-row class="justify-content-center my-5">
+            <b-row v-if="data.uploaded_files.length > 0" class="justify-content-center my-5">
               <b-col cols="9">
                 <div class="files">
                   <h6>Datoteke</h6>
@@ -70,7 +92,18 @@
                     {{ file.name }}
                   </span>
                   <div class="img-preview mt-4">
-                    <img v-for="file in data.uploaded_files" :key="file.id" :src="file.file" :alt="file.name" class="mr-2">
+                    <a
+                      v-for="file in data.uploaded_files"
+                      :key="file.id"
+                      :href="file.file"
+                      class="mr-2"
+                      download
+                    >
+                      <img
+                        :src="file.file"
+                        :alt="file.name"
+                      >
+                    </a>
                   </div>
                 </div>
               </b-col>
@@ -178,6 +211,10 @@ export default {
     }
   }
 
+  #map-wrap {
+    height: 15rem;
+  }
+
   hr {
     border: 1px solid #71131e;
     margin: 1rem 0;
@@ -238,6 +275,12 @@ export default {
   box-shadow: 3px 3px 7px #d4d9e1, -3px -3px 7px #ffffff;
   border-radius: 0.5rem;
 
+  .cover-image {
+    object-fit: cover;
+    width: 100%;
+    max-height: 25rem;
+  }
+
   .support-button {
     margin: 0;
     padding: 0.75rem 1.5rem;
@@ -272,8 +315,9 @@ export default {
 
     .img-preview {
       img {
-        max-height: 100px;
-        max-width: 100px;
+        object-fit: cover;
+        height: 6rem;
+        width: 6rem;
       }
     }
   }

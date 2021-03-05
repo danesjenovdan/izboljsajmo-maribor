@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
+    <Navigation />
     <div class="content">
-      <Navigation />
       <Nuxt />
     </div>
     <footer>
@@ -12,7 +12,7 @@
 
 <style lang="scss">
 
-body {
+html, body {
   background-color: #f8f8f8;
 }
 
@@ -23,11 +23,8 @@ body {
 }
 
 .content {
-  flex: 1 0 auto;
-}
-
-.footer {
-  flex-shrink: 0;
+  flex: 1;
+  overflow: auto;
 }
 
 </style>

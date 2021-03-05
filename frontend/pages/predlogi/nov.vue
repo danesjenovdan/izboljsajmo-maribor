@@ -83,7 +83,13 @@
                 </b-button>
               </div>
             </div>
-            <img src="~/static/map.png" class="map img-fluid my-4">
+            <div id="map-wrap" class="mt-4">
+              <client-only>
+                <l-map :zoom=13 :center="[46.554650,15.645881]">
+                  <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+                </l-map>
+              </client-only>
+            </div>
             <b-form-group v-slot="{ ariaDescribedby }">
               <b-form-checkbox
                 id="no-location-allowed"
@@ -242,18 +248,12 @@ export default {
   },
   methods: {
     async fetchAreas () {
-      const response = await this.$axios.get('v1/areas/')
-      const responseData = await response.data
-      if (response.status === 200) {
-        for (const i in responseData) {
-          this.initiativeAreaOptions.push({
-            value: responseData[i].id,
-            text: responseData[i].name
-          })
-        }
-      } else {
-        // console.log('ni ok', responseData)
-        // throw error
+      const areas = await this.$store.dispatch('getAreas')
+      for (const i in areas) {
+        this.initiativeAreaOptions.push({
+          value: areas[i].id,
+          text: areas[i].name
+        })
       }
     },
     checkInitiativeTitle () {
@@ -399,6 +399,10 @@ hr {
   button {
     margin: 0 1rem;
   }
+}
+
+#map-wrap {
+  height: 20rem;
 }
 
 .trashcan {

@@ -2,7 +2,7 @@
   <b-container fluid>
     <b-row class="p-4">
       <b-col cols="12" lg="3" class="text-center text-lg-left mb-4">
-        <h1>Pozdravljeni, Janez Novak</h1>
+        <h1>Pozdravljeni, {{ this.$auth.user.username }}</h1>
         <b-button
           class="logout-button w-75 position-relative d-inline-flex justify-content-center"
           @click="logout"
@@ -12,7 +12,7 @@
         </b-button>
       </b-col>
       <b-col cols="12" lg="9">
-        <b-row class="card-outline p-4 mb-4">
+        <b-row v-if="drafts.length > 0" class="card-outline p-4 mb-4">
           <b-col cols="12" md="4" lg="2" class="mb-4">
             <h4>Neoddani predlogi</h4>
           </b-col>
@@ -58,7 +58,28 @@
             <h4>Oddani predlogi</h4>
           </b-col>
           <b-col cols="12" md="8" lg="10">
+            <p v-if="published.length === 0" class="font-italic">Nimaš oddanih predlogov.</p>
             <b-row>
+              <b-col
+                v-if="published.length === 0"
+                cols="12"
+                lg="6"
+                xl="4"
+                class="mb-4"
+              >
+                <div class="initiative-card py-5 px-3 empty h-100 text-center">
+                  <h4>Oddaj predlog izboljšave, popravek ali postavi vprašanje</h4>
+                  <div>
+                    <NuxtLink
+                      to="/predlogi/nov"
+                      class="new-initiative-button btn position-relative d-inline-flex justify-content-center text-uppercase"
+                    >
+                      Predlagaj
+                      <img src="~/assets/img/icons/arrow-right.png" alt="logout icon" class="position-absolute">
+                    </NuxtLink>
+                  </div>
+                </div>
+              </b-col>
               <b-col
                 v-for="initiative in published"
                 :key="initiative.created"
@@ -248,6 +269,27 @@ h1, h4 {
 
       img {
         height: 0.8rem;
+      }
+    }
+  }
+
+  &.empty {
+    h4 {
+      font-weight: 600;
+    }
+
+    .new-initiative-button {
+      padding-right: 2.5rem;
+      padding-left: 1rem;
+
+      &:hover {
+        background-color: #6c757d;
+        color: white;
+      }
+
+      img {
+        right: 0.5rem;
+        height: 1.5rem;
       }
     }
   }
