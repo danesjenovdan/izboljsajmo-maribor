@@ -90,6 +90,8 @@ class CharInFilter(filters.BaseInFilter, filters.CharFilter):
 
 class InitiativeFilterSet(filters.FilterSet):
     type = CharInFilter(field_name='type', lookup_expr='in')
+    zone = CharInFilter(field_name='zone', lookup_expr='in')
+    area = CharInFilter(field_name='area', lookup_expr='in')
 
     class Meta:
         model = Initiative

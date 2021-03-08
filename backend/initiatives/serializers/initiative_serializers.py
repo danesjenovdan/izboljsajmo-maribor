@@ -14,6 +14,7 @@ class InitiativeListSerializer(serializers.ModelSerializer):
     author = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
     cover_image = ImageSerializer()
+    has_voted = serializers.SerializerMethodField()
     class Meta:
         model = Initiative
         fields = (
@@ -28,7 +29,8 @@ class InitiativeListSerializer(serializers.ModelSerializer):
             'vote_count',
             'status',
             'author',
-            'description')
+            'description',
+            'has_voted')
 
     def get_author(self, obj):
         return obj.author.username
@@ -36,6 +38,19 @@ class InitiativeListSerializer(serializers.ModelSerializer):
     # TODO
     def get_description(self, obj):
         return 'Dummy text'
+
+    def get_has_voted(self, obj):
+        user = None
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            user = request.user
+            if user.is_authenticated:
+                vote = obj.votes.filter(author=user)
+                if vote:
+                    return True
+
+        return False
+
 
 class InitiativeDetailsSerializer(WritableNestedModelSerializer):
     statuses = StatusInitiativeSerializer(source='initiative_statuses', many=True, required=False)
@@ -46,6 +61,8 @@ class InitiativeDetailsSerializer(WritableNestedModelSerializer):
     descriptions = DescriptionSerializers(many=True)
     cover_image = ImageSerializer(required=False)
     cover_image_after = ImageSerializer(required=False)
+    has_voted = serializers.SerializerMethodField()
+
     class Meta:
         model = Initiative
         fields = (
@@ -63,7 +80,8 @@ class InitiativeDetailsSerializer(WritableNestedModelSerializer):
             'address',
             'comments',
             'descriptions',
-            'is_draft')
+            'is_draft',
+            'has_voted')
         extra_kwargs = {
             'author': {'read_only': False},
             'cover_image_after': {'read_only': True},
@@ -82,3 +100,15 @@ class InitiativeDetailsSerializer(WritableNestedModelSerializer):
 
     def get_author(self, obj):
         return obj.author.username
+
+    def get_has_voted(self, obj):
+        user = None
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            user = request.user
+            if user.is_authenticated:
+                vote = obj.votes.filter(author=user)
+                if vote:
+                    return True
+
+        return False
