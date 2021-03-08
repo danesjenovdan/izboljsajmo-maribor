@@ -19,12 +19,16 @@
             <p>{{ data.address }}</p>
             <div id="map-wrap" class="mt-4">
               <client-only>
-                <l-map :zoom=13 :center="[46.554650,15.645881]">
-                  <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+                <l-map
+                  :zoom="13"
+                  :center="[46.554650, 15.645881]"
+                >
+                  <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
                   <l-marker
                     :lat-lng="[data.location.coordinates[0], data.location.coordinates[1]]"
-                  >
-                  </l-marker>
+                    :icon="mapIcon"
+                    @ready="setIconStyles"
+                  />
                 </l-map>
               </client-only>
             </div>
@@ -35,11 +39,13 @@
               <div class="icon-circle d-flex justify-content-center align-items-center">
                 <img :src="statusImage(status.status)" alt="status img">
               </div>
-              <div class="line"></div>
+              <div class="line" />
             </b-col>
             <b-col class="pl-0">
               <div>
-                <h6 class="text-uppercase">{{ status.status }}</h6>
+                <h6 class="text-uppercase">
+                  {{ status.status }}
+                </h6>
                 <span>{{ date(status.created) }}</span>
                 <p>{{ status.note }}</p>
               </div>
@@ -153,11 +159,17 @@ export default {
         title: '',
         author: '',
         created: ''
-      }
+      },
+      mapIcon: null
     }
   },
   computed: {},
   methods: {
+    setIconStyles () {
+      this.mapIcon = this.$L.icon({
+        iconUrl: require('@/assets/img/icons/pin.png')
+      })
+    },
     date (date) {
       const d = new Date(date)
       return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}` // months go 0-11

@@ -276,14 +276,18 @@
       <b-col lg="5">
         <div id="map-wrap" class="h-100">
           <client-only>
-            <l-map :zoom=13 :center="[46.554650,15.645881]">
-              <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+            <l-map
+              :zoom="13"
+              :center="[46.554650, 15.645881]"
+            >
+              <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
               <l-marker
                 v-for="initiative in initiatives"
                 :key="initiative.id"
                 :lat-lng="[initiative.location.coordinates[0], initiative.location.coordinates[1]]"
-              >
-              </l-marker>
+                :icon="mapIcon"
+                @ready="setIconStyles"
+              />
             </l-map>
           </client-only>
         </div>
@@ -294,8 +298,6 @@
 
 <script>
 export default {
-  components: {
-  },
   data () {
     return {
       search: '',
@@ -311,7 +313,8 @@ export default {
       filterStatuses: [],
       sortInitiativesByDateAscending: true,
       initiatives: [],
-      map: null
+      map: null,
+      mapIcon: null
     }
   },
   computed: {
@@ -329,6 +332,11 @@ export default {
     this.fetchZones()
   },
   methods: {
+    setIconStyles () {
+      this.mapIcon = this.$L.icon({
+        iconUrl: require('@/assets/img/icons/pin.png')
+      })
+    },
     async fetchInitiatives () {
       this.initiatives = await this.$store.dispatch('getInitiatives', {
         search: this.search,
