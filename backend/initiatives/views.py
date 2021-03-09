@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from django.utils.translation import gettext as _
 from rest_framework import viewsets, mixins, permissions, status, views, authentication
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -12,7 +13,7 @@ from .serializers import (
     CommentSerializer, AreaSerializer, FAQSerializer, FileSerializer, ImageSerializer,
     InitiativeDetailsSerializer, InitiativeListSerializer
 )
-from .models import Zone, Area, FAQ, DescriptionDefinition, InitiativeType, Initiative, Reviwers
+from .models import Zone, Area, FAQ, DescriptionDefinition, InitiativeType, Initiative, Reviwers, Vote
 
 from .permissions import IsOwnerOrReadOnly
 
@@ -98,7 +99,6 @@ class InitiativeFilterSet(filters.FilterSet):
         fields = ['zone', 'area', 'type']
 
 
-# TODO has_voted za prijavlenega userja
 class InitiativeViewSet(
     viewsets.GenericViewSet,
     mixins.RetrieveModelMixin,
@@ -147,6 +147,21 @@ class InitiativeViewSet(
         if serializer.is_valid(raise_exception=False):
             serializer.save(author = request.user, initiative = initiative)
             return Response(serializer.data)
+
+    @action(
+        methods=['post'],
+        detail=True,
+        url_path='vote',
+        url_name='vote',
+        permission_classes=[permissions.IsAuthenticated,])
+    def votes(self, request, pk=None):
+        initiative = get_object_or_404(Initiative, pk=pk)
+        ex_vote = Vote.objects.filter(author=request.user, initiative=initiative)
+        if ex_vote:
+            return Response({'detail': _('You already voted for this initiative.')}, 409)
+        else:
+            Vote(author=request.user, initiative=initiative).save()
+            return Response({'detail': 'done'})
 
     @action(
         methods=['get'],

@@ -7,7 +7,7 @@ from django.urls import reverse
 
 from initiatives.models import (
     User, Organization, Zone, CompetentService, Area, Status, StatusInitiative,
-    File, Comment, Comment, FAQ, StatusInitiativeHear, Rejection,
+    File, Comment, Comment, FAQ, StatusInitiativeHear, Rejection, Image,
     StatusInitiativeHear, StatusInitiativeEditing, StatusInitiativeProgress,
     StatusInitiativeFinished, StatusInitiativeDone, StatusInitiativeRejected, Description
 )
@@ -213,7 +213,7 @@ class RejectionAdmin(admin.ModelAdmin):
     ]
 
 
-class ZoneAdmin(gis_admin.GeoModelAdmin):
+class ZoneAdmin(gis_admin.OSMGeoAdmin):
     search_fields = ['name']
     list_display = [
         'name',
@@ -261,6 +261,7 @@ admin.site.register(CompetentService, CompetentServiceAdmin)
 admin.site.register(Status)
 admin.site.register(StatusInitiative)
 admin.site.register(File)
+admin.site.register(Image)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(FAQ, FAQAdmin)
 admin.site.register(Rejection, RejectionAdmin)
