@@ -6,26 +6,32 @@
         <NuxtLink v-if="!isAuthenticated" to="/predlogi">
           Domov
         </NuxtLink>
+        <NuxtLink v-if="isAuthenticated" class="" to="/predlogi" @click.prevent="">
+          Vsi predlogi
+        </NuxtLink>
         <NuxtLink v-if="!isAuthenticated" to="/o-izboljsajmo-maribor">
           O izboljšajmo Maribor
         </NuxtLink>
-        <NuxtLink v-if="!isAuthenticated" to="/pomoc">
+        <NuxtLink to="/pomoc">
           Pomoč
         </NuxtLink>
         <NuxtLink v-if="!isAuthenticated" class="login" to="/prijava">
           Prijava
         </NuxtLink>
-        <NuxtLink v-if="isAuthenticated" class="" to="/predlogi/nov" @click.prevent="">
-          Imam predlog
-        </NuxtLink>
-        <NuxtLink v-if="isAuthenticated" class="" to="/predlogi" @click.prevent="">
-          Vsi predlogi
-        </NuxtLink>
-        <NuxtLink v-if="isAuthenticated" class="profile" to="" @click.native="showProfileDropdown = !showProfileDropdown">
+        <NuxtLink
+          v-if="isAuthenticated"
+          class="profile"
+          to="/"
+          event=""
+          @click.native="showProfileDropdown = !showProfileDropdown"
+        >
+          <!-- event="" is to disable the link -->
           Moj profil
         </NuxtLink>
         <div v-if="showProfileDropdown" class="profileDropdown">
-          <h3 class="pt-4 text-center font-weight-bold">{{ this.$auth.user.username }}</h3>
+          <h3 class="pt-4 text-center font-weight-bold">
+            {{ this.$auth.user.username }}
+          </h3>
           <hr class="hr-upper">
           <hr class="hr-lower">
           <div class="text-center">
@@ -89,11 +95,21 @@ export default {
   a {
     color: #606060;
     margin-left: 1rem;
-    padding: 0.5rem 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1.5rem;
+
+    &.nuxt-link-exact-active {
+      border: 2px solid #a92332;
+    }
+
+    &.profile.nuxt-link-exact-active {
+      border: none;
+      font-weight: 600;
+    }
 
     &:hover {
       text-decoration: none;
-      color: #ef7782;
+      color: #a92332;
     }
 
     &.login {
@@ -104,8 +120,6 @@ export default {
     &.profile {
       background-color: #ef7782;
       box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
-      border-radius: 1.5rem;
-      font-weight: 600;
       color: black;
 
       &:hover {

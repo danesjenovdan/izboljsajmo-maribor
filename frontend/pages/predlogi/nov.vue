@@ -69,7 +69,7 @@
               <div class="d-inline-flex w-75 initiative-location-input">
                 <input
                   id="initiative-location"
-                  v-model.trim="form.initiativeLocation"
+                  v-model="form.initiativeLocation.coordinates"
                   :class="{ 'form-control': true, 'error-input': errorInitiativeLocation }"
                   name="initiative-location"
                   type="text"
@@ -77,7 +77,7 @@
                   @keyup="checkInitiativeLocation"
                 >
                 <b-button
-                  @click="findLocation"
+                  @click=""
                 >
                   POTRDI
                 </b-button>
@@ -85,15 +85,25 @@
             </div>
             <div id="map-wrap" class="mt-4">
               <client-only>
-                <l-map :zoom=13 :center="[46.554650,15.645881]">
+                <l-map
+                  :zoom="13"
+                  :center="[46.554650, 15.645881]"
+                >
                   <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+                  <l-marker
+                    :lat-lng.sync="mapMarkerPosition"
+                    :draggable="true"
+                    :icon="mapIcon"
+                    @ready="setIconStyles"
+                  >
+                  </l-marker>
                 </l-map>
               </client-only>
             </div>
             <b-form-group v-slot="{ ariaDescribedby }">
               <b-form-checkbox
                 id="no-location-allowed"
-                v-model="initiativeLocationEmptyAllowed"
+                v-model="initiativeLocationIsEmpty"
                 :aria-describedby="ariaDescribedby"
                 @change="initiativeLocationEmpty"
               >
@@ -219,15 +229,6 @@ export default {
   middleware: 'auth',
   data () {
     return {
-      form: {
-        initiativeTitle: '',
-        initiativeArea: null,
-        initiativeDescription: '',
-        initiativeSuggestion: '',
-        initiativeLocation: '',
-        initiativeCoverImage: '',
-        initiativeFiles: []
-      },
       coverImageFile: null,
       files: [],
       errorInitiativeTitle: false,
@@ -237,16 +238,42 @@ export default {
       errorInitiativeArea: false,
       errorInitiativeDescription: false,
       errorInitiativeLocation: false,
-      initiativeLocationEmptyAllowed: false,
+      initiativeLocationIsEmpty: false,
       dropzone1Active: false,
       dropzone2Active: false,
-      errorForm: false
+      errorForm: false,
+      mapMarkerPosition: {
+        lat: 46.554650,
+        lng: 15.645881
+      },
+      mapIcon: null
+    }
+  },
+  computed: {
+    form () {
+      return {
+        initiativeTitle: '',
+        initiativeArea: null,
+        initiativeDescription: '',
+        initiativeSuggestion: '',
+        initiativeLocation: {
+          type: 'Point',
+          coordinates: [this.mapMarkerPosition.lat, this.mapMarkerPosition.lng]
+        },
+        initiativeCoverImage: '',
+        initiativeFiles: []
+      }
     }
   },
   created () {
     this.fetchAreas()
   },
   methods: {
+    setIconStyles () {
+      this.mapIcon = this.$L.icon({
+        iconUrl: require('@/assets/img/icons/pin.png')
+      })
+    },
     async fetchAreas () {
       const areas = await this.$store.dispatch('getAreas')
       for (const i in areas) {
@@ -266,19 +293,13 @@ export default {
       this.errorInitiativeDescription = this.form.initiativeDescription.length === 0
     },
     checkInitiativeLocation () {
-      if (!this.initiativeLocationEmptyAllowed) {
+      if (!this.initiativeLocationIsEmpty) {
         this.errorInitiativeLocation = this.form.initiativeLocation.length === 0
       }
     },
     initiativeLocationEmpty () {
-      if (this.initiativeLocationEmptyAllowed) {
+      if (this.initiativeLocationIsEmpty) {
         this.errorInitiativeLocation = false
-      }
-    },
-    findLocation () {
-      this.form.initiativeLocation = {
-        type: 'Point',
-        coordinates: [-123.0208, 44.0464]
       }
     },
     processCoverImage (event) {
@@ -326,12 +347,13 @@ export default {
         !this.errorInitiativeLocation &&
         this.coverImageFile) {
         try {
+          // upload and set cover image
           const imageID = await this.$store.dispatch('postCoverImage', { image: this.coverImageFile })
           this.form.initiativeCoverImage = {
             id: imageID
           }
           console.log('img', imageID)
-
+          // upload and set image files
           for (let i = 0; i < this.files.length; i++) {
             console.log({
               file: this.files[i],
@@ -344,6 +366,10 @@ export default {
             this.form.initiativeFiles.push({
               id: filesID
             })
+          }
+          // remove location if empty
+          if (this.initiativeLocationIsEmpty) {
+            this.form.initiativeLocation = null
           }
           console.log(this.form)
           await this.$store.dispatch('postInitiative', this.form)
