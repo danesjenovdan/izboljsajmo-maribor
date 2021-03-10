@@ -105,6 +105,8 @@ class BothersInitiativeAreaAdmin(ImportExportModelAdmin):
 
 
 class BothersInitiativeContractorAdmin(ImportExportModelAdmin):
+    readonly_fields = ['title', 'author', 'address', 'type', 'area', 'location', 'cover_image', 'zone', 'modified', 'archived']
+    exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type']

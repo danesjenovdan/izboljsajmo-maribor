@@ -158,7 +158,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8000/v1/initiatives/1/",
+					"raw": "http://localhost:8000/v1//initiatives/1/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -166,6 +166,7 @@
 					"port": "8000",
 					"path": [
 						"v1",
+						"",
 						"initiatives",
 						"1",
 						""
@@ -555,6 +556,48 @@
 		},
 		{
 			"name": "create comment",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"content\": \"WooHoo To je zakon!!!\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/initiatives/1/comments/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"initiatives",
+						"1",
+						"comments",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add vote to initiative",
 			"request": {
 				"auth": {
 					"type": "oauth2",
