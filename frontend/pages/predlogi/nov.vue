@@ -4,7 +4,7 @@
       <b-col cols="12" md="10" lg="6" class="position-relative">
         <div class="form-top"></div>
         <div class="initiative-form">
-          <form enctype="multipart/form-data" @submit.prevent="createInitiative">
+          <form enctype="multipart/form-data" @submit.prevent="createInitiative(false)">
             <h4>MOTI ME!</h4>
             <p class="form-subtitle">
               Naznani okvare, poškodbe, slabosti (pomanjkljivosti), ki jih zaznavaš v svojem okolju.
@@ -14,7 +14,7 @@
               <span v-if="errorInitiativeTitle" class="error-message">Vpiši naslov pobude.</span>
               <input
                 id="initiative-title"
-                v-model.trim="form.initiativeTitle"
+                v-model.trim="title"
                 :class="{ 'form-control': true, 'error-input': errorInitiativeTitle }"
                 name="initiative-title"
                 type="text"
@@ -29,7 +29,7 @@
               </div>
               <b-form-select
                 id="initiative-area"
-                v-model="form.initiativeArea"
+                v-model="area"
                 :class="{ 'form-control': true, 'error-input': errorInitiativeArea }"
                 name="initiative-area"
                 :options="initiativeAreaOptions"
@@ -41,7 +41,7 @@
               <span v-if="errorInitiativeDescription" class="error-message">Vpiši opis pobude.</span>
               <textarea
                 id="initiative-description"
-                v-model.trim="form.initiativeDescription"
+                v-model.trim="description"
                 :class="{ 'form-control': true, 'error-input': errorInitiativeDescription }"
                 placeholder="Na katero težavo, pomanjkljivost, napako, okvaro, nevarnost se nanaša vaša pobuda?"
                 rows="5"
@@ -52,7 +52,7 @@
             <b-form-group class="mt-4">
               <b-form-textarea
                 id="initiative-suggestion"
-                v-model.trim="form.initiativeSuggestion"
+                v-model.trim="suggestion"
                 :class="{ 'form-control': true}"
                 placeholder="Kakšen je vaš predlog rešitve, odprave pomanjkljivosti/slabosti?"
                 rows="5"
@@ -69,7 +69,7 @@
               <div class="d-inline-flex w-75 initiative-location-input">
                 <input
                   id="initiative-location"
-                  v-model="form.initiativeLocation.coordinates"
+                  v-model="address"
                   :class="{ 'form-control': true, 'error-input': errorInitiativeLocation }"
                   name="initiative-location"
                   type="text"
@@ -77,7 +77,7 @@
                   @keyup="checkInitiativeLocation"
                 >
                 <b-button
-                  @click=""
+                  @click="findCoordinates"
                 >
                   POTRDI
                 </b-button>
@@ -89,13 +89,19 @@
                   :zoom="13"
                   :center="[46.554650, 15.645881]"
                 >
-                  <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+                  <l-tile-layer
+                    url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+                    attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+                  >
+                  </l-tile-layer>
                   <l-marker
                     :lat-lng.sync="mapMarkerPosition"
                     :draggable="true"
                     :icon="mapIcon"
                     @ready="setIconStyles"
+                    @dragend="findAddress"
                   >
+                    <l-popup>{{ address }}</l-popup>
                   </l-marker>
                 </l-map>
               </client-only>
@@ -205,10 +211,10 @@
             </div>
             <div class="d-flex justify-content-between align-items-center">
               <div>
-                <b-button class="save-button px-4">
+                <b-button class="save-button px-4" @click="createInitiative(true)">
                   Shrani
                 </b-button>
-                <b-button class="cancel-button px-4 ml-2">
+                <b-button class="cancel-button px-4 ml-2" @click="$router.push('/predlogi')">
                   Zavrzi
                 </b-button>
               </div>
@@ -229,6 +235,10 @@ export default {
   middleware: 'auth',
   data () {
     return {
+      title: '',
+      area: null,
+      description: '',
+      suggestion: '',
       coverImageFile: null,
       files: [],
       errorInitiativeTitle: false,
@@ -237,14 +247,15 @@ export default {
       ],
       errorInitiativeArea: false,
       errorInitiativeDescription: false,
+      address: 'Maribor, Slovenija',
       errorInitiativeLocation: false,
       initiativeLocationIsEmpty: false,
       dropzone1Active: false,
       dropzone2Active: false,
       errorForm: false,
       mapMarkerPosition: {
-        lat: 46.554650,
-        lng: 15.645881
+        lat: 46.5576439,
+        lng: 15.6455854
       },
       mapIcon: null
     }
@@ -252,10 +263,11 @@ export default {
   computed: {
     form () {
       return {
-        initiativeTitle: '',
-        initiativeArea: null,
-        initiativeDescription: '',
-        initiativeSuggestion: '',
+        initiativeTitle: this.title,
+        initiativeArea: this.area,
+        initiativeDescription: this.description,
+        initiativeSuggestion: this.suggestion,
+        initiativeAddress: this.address,
         initiativeLocation: {
           type: 'Point',
           coordinates: [this.mapMarkerPosition.lat, this.mapMarkerPosition.lng]
@@ -284,17 +296,51 @@ export default {
       }
     },
     checkInitiativeTitle () {
-      this.errorInitiativeTitle = this.form.initiativeTitle.length === 0
+      this.errorInitiativeTitle = this.title.length === 0
     },
     checkInitiativeArea () {
-      this.errorInitiativeArea = this.form.initiativeArea === null
+      this.errorInitiativeArea = this.area === null
     },
     checkInitiativeDescription () {
       this.errorInitiativeDescription = this.form.initiativeDescription.length === 0
     },
+    async findCoordinates () {
+      const response = await this.$axios.get('https://nominatim.openstreetmap.org/search?', {
+        params: {
+          q: this.form.initiativeAddress,
+          format: 'json',
+          countrycodes: 'si',
+          'accept-language': 'sl'
+        }
+      })
+      if (response.status === 200) {
+        if (response.data.length > 0) {
+          const location = response.data[0]
+          this.address = location.display_name
+          this.mapMarkerPosition = {
+            lat: location.lat,
+            lng: location.lon
+          }
+        }
+      }
+    },
+    async findAddress () {
+      const response = await this.$axios.get('https://nominatim.openstreetmap.org/reverse?', {
+        params: {
+          lat: this.mapMarkerPosition.lat,
+          lon: this.mapMarkerPosition.lng,
+          format: 'json',
+          countrycodes: 'si',
+          'accept-language': 'sl'
+        }
+      })
+      if (response.status === 200) {
+        this.address = response.data.display_name
+      }
+    },
     checkInitiativeLocation () {
       if (!this.initiativeLocationIsEmpty) {
-        this.errorInitiativeLocation = this.form.initiativeLocation.length === 0
+        this.errorInitiativeLocation = this.form.initiativeAddress.length === 0
       }
     },
     initiativeLocationEmpty () {
@@ -340,7 +386,7 @@ export default {
     dragLeaveHandler2 () {
       this.dropzone2Active = false
     },
-    async createInitiative () {
+    async createInitiative (isDraft) {
       if (!this.errorInitiativeTitle &&
         !this.errorInitiativeArea &&
         !this.errorInitiativeDescription &&
@@ -371,8 +417,11 @@ export default {
           if (this.initiativeLocationIsEmpty) {
             this.form.initiativeLocation = null
           }
+          // is draft
+          this.form.isDraft = isDraft
           console.log(this.form)
-          await this.$store.dispatch('postInitiative', this.form)
+          const id = await this.$store.dispatch('postInitiative', this.form)
+          await this.$router.push(`/predlogi/${id}`)
         } catch (err) {
           // this.errorComment = true
           console.log(err)

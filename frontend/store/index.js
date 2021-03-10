@@ -122,22 +122,23 @@ export const actions = {
       title: payload.initiativeTitle,
       type: 'II',
       area: payload.initiativeArea,
-      address: 'Županova',
+      address: payload.initiativeAddress,
       location: payload.initiativeLocation,
       descriptions: [
         {
           title: 'To je nek title',
           field: 'to_bo_nek_kljuc',
-          content: payload.initiativeDescription
+          content: 'to je nek description'
         },
         {
           title: 'To je nek title 2',
           field: 'to_bo_nek_kljuc 2',
-          content: payload.initiativeSuggestion
+          content: 'to je nek description 2'
         }
       ],
       cover_image: payload.initiativeCoverImage,
-      uploaded_files: payload.initiativeFiles
+      uploaded_files: payload.initiativeFiles,
+      is_draft: payload.isDraft
     }
     console.log(JSON.stringify(form))
     const response = await this.$axios.post('v1/initiatives/', form, {
@@ -149,6 +150,7 @@ export const actions = {
 
     if (response.status === 201) {
       console.log(responseData)
+      return responseData.id
     } else {
       console.log('ni ok', responseData)
       // throw error
