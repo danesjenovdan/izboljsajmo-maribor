@@ -46,7 +46,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'http://localhost:8000'
+    baseURL: 'https://api.izboljsajmo-maribor.k8s.djnd.si' // TODO
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -95,5 +95,10 @@ export default {
       logout: '/predlogi',
       home: '/'
     }
+  },
+  server: {
+    port: 3000, // default: 3000
+    host: '0.0.0.0', // default: localhost,
+    timing: false
   }
 }
