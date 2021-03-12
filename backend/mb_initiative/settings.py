@@ -27,7 +27,7 @@ SECRET_KEY = '!qof+ch(!97u_q#@=t_x*ctj)&4xi%sf@v6btijm%$mtvkyeu&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['api.izboljsajmo-maribor.djnd.si', '*']
 
 
 # Application definition
@@ -93,13 +93,20 @@ WSGI_APPLICATION = 'mb_initiative.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-         'HOST': 'postgis',
-         'NAME': 'mb-initiative',
-         'USER': 'postgres',
-         'PASSWORD': 'initititit'
-    },
+    'default': ({
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': os.getenv('SECRET_DB_NAME', ''),
+        'USER': os.getenv('SECRET_DB_USERNAME', ''),
+        'PASSWORD': os.getenv('SECRET_DB_PASSWORD', ''),
+        'HOST': os.getenv('POSTGIS_SERVICE_HOST', ''),
+        'PORT': '5432',
+    } if os.getenv('APP_ENV', 'development') == 'production' else {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'HOST': 'postgis',
+        'NAME': 'mb-initiative',
+        'USER': 'postgres',
+        'PASSWORD': 'initititit'
+    })
 }
 
 
