@@ -76,6 +76,20 @@ export const actions = {
     })
   },
 
+  async postVote (context, payload) {
+    const response = await this.$axios.post(`v1/initiatives/${payload.id}/vote/`, {}, {
+      headers: { Authorization: 'Bearer ' + context.getters.token }
+    })
+
+    if (response.status === 200) {
+      return true // voted successfully
+    } else if (response.status === 409) {
+      return false // already voted
+    } else {
+      return false // error
+    }
+  },
+
   async postCoverImage (context, payload) {
     const formData = new FormData()
     formData.append('image', payload.image)
@@ -188,10 +202,30 @@ export const actions = {
       }
     }
     const response = await this.$axios.get('v1/initiatives/?', {
+      headers: {
+        Authorization: 'Bearer ' + context.getters.token
+      },
       params
     })
     if (response.status === 200) {
-      return await response.data
+      return { initiatives: response.data }
+    } else {
+      // console.log('ni ok', responseData)
+      // throw error
+    }
+  },
+
+  async getMyInitiatives (context, payload) {
+    const response = await this.$axios.get('v1/initiatives/my', {
+      headers: {
+        Authorization: 'Bearer ' + context.getters.token
+      }
+    })
+    if (response.status === 200) {
+      return {
+        drafts: response.data.drafts,
+        published: response.data.published
+      }
     } else {
       // console.log('ni ok', responseData)
       // throw error
