@@ -33,9 +33,8 @@ export const actions = {
     // console.log(loginData)
     // const response = await this.$axios.post('auth/token/', loginData)
     await this.$auth.loginWith('local', { data: loginData })
-    const user = await this.$axios.get('v1/users/me/', {
-      headers: { Authorization: 'Bearer ' + context.getters.token }
-    })
+    await this.$axios.setHeader('Authorization', 'Bearer ' + context.getters.token)
+    const user = await this.$axios.get('v1/users/me/')
     this.$auth.setUser(user.data)
   },
 
@@ -179,34 +178,21 @@ export const actions = {
     }
     // types
     if (payload.type) {
-      for (const type of payload.type) {
-        params.append('type', type)
-      }
+      params.append('type', payload.type.join(','))
     }
     // areas
     if (payload.area) {
-      for (const area of payload.area) {
-        params.append('area', area)
-      }
+      params.append('area', payload.area.join(','))
     }
     // zones
     if (payload.zone) {
-      for (const zone of payload.zone) {
-        params.append('zone', zone)
-      }
+      params.append('area', payload.zone.join(','))
     }
     // statuses
     if (payload.status) {
-      for (const status of payload.status) {
-        params.append('status', status)
-      }
+      params.append('area', payload.status.join(','))
     }
-    const response = await this.$axios.get('v1/initiatives/?', {
-      headers: {
-        Authorization: 'Bearer ' + context.getters.token
-      },
-      params
-    })
+    const response = await this.$axios.get('v1/initiatives/?', { params })
     if (response.status === 200) {
       return { initiatives: response.data }
     } else {

@@ -298,13 +298,14 @@ export default {
       })
     },
     async fetchInitiatives () {
-      this.initiatives = await this.$store.dispatch('getInitiatives', {
+      const fetched = await this.$store.dispatch('getInitiatives', {
         search: this.search,
         type: this.filterTypes,
         area: this.filterAreas,
         zone: this.filterZones,
         status: this.filterStatuses
       })
+      this.initiatives = fetched.initiatives
     },
     async fetchAreas () {
       this.areas = await this.$store.dispatch('getAreas')
