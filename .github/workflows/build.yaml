@@ -38,7 +38,7 @@ jobs:
       -
         name: Update image versions in kustomize/kustomization.yaml
         run: |
-          sed -i "s/newTag: .*\+/newTag\: '${{ env.GITHUB_SHA }}'/" kustomize/kustomization.yaml
+          sed -i "s/newTag: .*\+/newTag\: '${{ github.sha }}'/" kustomize/kustomization.yaml
       -
         name: Commit and push new image versions
         uses: EndBug/add-and-commit@v7 # You can change this to use a specific version
