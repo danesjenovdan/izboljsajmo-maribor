@@ -218,58 +218,13 @@
             </b-col>
           </b-row>
           <b-row>
-            <b-col v-for="initiative in sortedInitiatives" :key="initiative.id" cols="4" class="mb-4">
-              <div class="initiative-card h-100">
-                <img
-                  v-if="initiative.cover_image"
-                  class="cover-image"
-                  :src="initiative.cover_image.image"
-                  alt=""
-                >
-                <div class="initiative-card-body">
-                  <h4>
-                    <NuxtLink :to="`/predlogi/${initiative.id}`">
-                      {{ initiative.title }}
-                    </NuxtLink>
-                  </h4>
-                  <span class="author">{{ initiative.author }}</span>
-                  <div class="my-1">
-                    <span class="tag">{{ initiative.status }}</span>
-                    <span class="tag">{{ initiative.area.name }}</span>
-                    <span class="tag">{{ date(initiative.created) }}</span>
-                  </div>
-                  <p>
-                    {{ initiative.description }}
-                  </p>
-                  <hr class="hr-upper">
-                  <hr class="hr-lower">
-                  <div class="d-flex justify-content-between">
-                    <div class="d-inline-flex align-items-center">
-                      <b-button class="d-flex align-items-center">
-                        <img
-                          src="~/assets/img/icons/love.png"
-                          alt="love"
-                          class="mr-1"
-                        >
-                        Podpri
-                      </b-button>
-                      <span class="ml-1">{{ initiative.vote_count }}</span>
-                    </div>
-                    <div class="d-inline-flex align-items-center">
-                      <b-button class="d-flex align-items-center">
-                        <img
-                          src="~/assets/img/icons/comment.png"
-                          alt="comment"
-                          class="mr-1"
-                        >
-                        Komentiraj
-                      </b-button>
-                      <span class="ml-1">{{ initiative.comment_count }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </b-col>
+            <InitiativeCard
+              v-for="initiative in sortedInitiatives"
+              :key="initiative.id"
+              v-bind="initiative"
+              @vote="vote(initiative.id)"
+            >
+            </InitiativeCard>
           </b-row>
         </div>
       </b-col>
@@ -277,7 +232,7 @@
         <div id="map-wrap" class="h-100">
           <client-only>
             <l-map
-              :zoom="13"
+              :zoom="15"
               :center="[46.554650, 15.645881]"
             >
               <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
@@ -297,7 +252,13 @@
 </template>
 
 <script>
+import InitiativeCard from '~/components/InitiativeCard'
+
 export default {
+  components: { InitiativeCard },
+  asyncData ({ store }) {
+    return store.dispatch('getInitiatives', {})
+  },
   data () {
     return {
       search: '',
@@ -327,7 +288,6 @@ export default {
     }
   },
   created () {
-    this.fetchInitiatives()
     this.fetchAreas()
     this.fetchZones()
   },
@@ -338,23 +298,20 @@ export default {
       })
     },
     async fetchInitiatives () {
-      this.initiatives = await this.$store.dispatch('getInitiatives', {
+      const fetched = await this.$store.dispatch('getInitiatives', {
         search: this.search,
         type: this.filterTypes,
         area: this.filterAreas,
         zone: this.filterZones,
         status: this.filterStatuses
       })
+      this.initiatives = fetched.initiatives
     },
     async fetchAreas () {
       this.areas = await this.$store.dispatch('getAreas')
     },
     async fetchZones () {
       this.zones = await this.$store.dispatch('getZones')
-    },
-    date (date) {
-      const d = new Date(date)
-      return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`
     },
     switchType () {
       this.showType = !this.showType
@@ -379,6 +336,22 @@ export default {
       this.showArea = false
       this.showZone = false
       this.showStatus = !this.showStatus
+    },
+    async vote (id) {
+      const success = await this.$store.dispatch('postVote', {
+        id
+      })
+      if (success) { // voted successfully
+        for (const initiative of this.initiatives) {
+          if (initiative.id === id) {
+            initiative.has_voted = true
+            initiative.vote_count += 1
+            break
+          }
+        }
+      } else { // error
+        console.log('error')
+      }
     }
   }
 }
@@ -501,62 +474,6 @@ h4 {
 
     &.sort-ascending {
       transform: rotate(180deg);
-    }
-  }
-}
-
-.initiative-card {
-  box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
-
-  .cover-image {
-    width: 100%;
-    height: 8rem;
-    object-fit: cover;
-  }
-
-  .initiative-card-body {
-    padding: 0.5rem;
-
-    h4 a {
-      color: black;
-    }
-
-    .author {
-      font-size: 0.9rem;
-      font-style: italic;
-    }
-
-    .tag {
-      background-color: #eff3fb;
-      border-radius: 0.5rem;
-      padding: 0.25rem;
-      font-size: 0.75rem;
-    }
-
-    p {
-      font-size: 0.9rem;
-    }
-
-    .btn {
-      margin: 0;
-      padding: 0.25rem 0.5rem;
-      font-style: normal;
-      font-size: 0.75rem;
-      font-weight: 400;
-      letter-spacing: normal;
-
-      img {
-        height: 0.8rem;
-      }
-    }
-
-    hr {
-      &.hr-upper {
-        margin-top: 1rem
-      }
-      &.hr-lower {
-        margin-bottom: 1rem;
-      }
     }
   }
 }

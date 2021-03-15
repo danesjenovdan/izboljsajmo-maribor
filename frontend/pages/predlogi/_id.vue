@@ -77,9 +77,10 @@
                     alt="Initiative cover image - after"
                   >
                 </div>
-                <b-button class="support-button">
+                <b-button class="support-button" :disabled="data.has_voted" @click="vote">
                   <img src="~/assets/img/icons/love.png" alt="heart">
-                  PODPRI
+                  <span v-if="!data.has_voted">PODPRI</span>
+                  <span v-if="data.has_voted">GLAS ODDAN</span>
                 </b-button>
               </b-col>
             </b-row>
@@ -154,13 +155,9 @@ export default {
     return {
       id: '',
       data: {
-        area: '',
-        type: '',
-        title: '',
-        author: '',
-        created: ''
       },
-      mapIcon: null
+      mapIcon: null,
+      errorVoted: false
     }
   },
   computed: {},
@@ -176,6 +173,16 @@ export default {
     },
     statusImage (s) {
       return require(`~/assets/img/icons/${s}.png`)
+    },
+    async vote () {
+      const success = await this.$store.dispatch('postVote', {
+        id: this.id
+      })
+      if (success) { // voted successfully
+        this.data.has_voted = true
+      } else { // error
+        this.errorVoted = true
+      }
     }
   }
 }

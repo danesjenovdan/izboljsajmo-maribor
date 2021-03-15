@@ -80,62 +80,13 @@
                   </div>
                 </div>
               </b-col>
-              <b-col
+              <InitiativeCard
                 v-for="initiative in published"
-                :key="initiative.created"
-                cols="12"
-                lg="6"
-                xl="4"
-                class="mb-4"
+                :key="initiative.id"
+                v-bind="initiative"
+                @vote="vote(initiative.id)"
               >
-                <div class="initiative-card published h-100">
-                  <img
-                    class="cover-image"
-                    :src="$axios.defaults.baseURL + initiative.cover_image.image"
-                    alt="Initiative cover image"
-                  >
-                  <div class="initiative-card-body">
-                    <h4>
-                      <NuxtLink :to="`/predlogi/${initiative.id}`">
-                        {{ initiative.title }}
-                      </NuxtLink>
-                    </h4>
-                    <span class="author">{{ initiative.author }}</span>
-                    <div class="my-1">
-                      <span class="tag">Slišimo</span>
-                      <span class="tag">Promet</span>
-                      <span class="tag">{{ date(initiative.created) }}</span>
-                    </div>
-                    <p> {{ initiative.description }}</p>
-                    <hr class="hr-upper">
-                    <hr class="hr-lower">
-                    <div class="d-flex justify-content-between">
-                      <div class="d-inline-flex align-items-center">
-                        <b-button class="d-flex align-items-center">
-                          <img
-                            src="~/assets/img/icons/love.png"
-                            alt="love"
-                            class="mr-1"
-                          >
-                          Podpri
-                        </b-button>
-                        <span class="ml-1">{{ initiative.vote_count }}</span>
-                      </div>
-                      <div class="d-inline-flex align-items-center">
-                        <b-button class="d-flex align-items-center">
-                          <img
-                            src="~/assets/img/icons/comment.png"
-                            alt="comment"
-                            class="mr-1"
-                          >
-                          Komentiraj
-                        </b-button>
-                        <span class="ml-1">{{ initiative.comment_count }}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </b-col>
+              </InitiativeCard>
             </b-row>
           </b-col>
         </b-row>
@@ -147,22 +98,8 @@
 <script>
 export default {
   middleware: 'auth',
-  asyncData ({ store, $axios, redirect }) {
-    return $axios.get('v1/initiatives/my', {
-      headers: {
-        Authorization: 'Bearer ' + store.getters.token
-      }
-    })
-      .then((res) => {
-        return {
-          drafts: res.data.drafts,
-          published: res.data.published
-        }
-      })
-      .catch((e) => {
-        return redirect('/404')
-      // console.log(params)
-      })
+  asyncData ({ store }) {
+    return store.dispatch('getMyInitiatives')
   },
   data () {
     return {
@@ -171,12 +108,28 @@ export default {
     }
   },
   methods: {
+    async logout () {
+      await this.$store.dispatch('logout')
+    },
+    async vote (id) {
+      const success = await this.$store.dispatch('postVote', {
+        id
+      })
+      if (success) { // voted successfully
+        for (const initiative of this.published) {
+          if (initiative.id === id) {
+            initiative.has_voted = true
+            initiative.vote_count += 1
+            break
+          }
+        }
+      } else { // error
+        console.log('error')
+      }
+    },
     date (date) {
       const d = new Date(date)
       return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`
-    },
-    async logout () {
-      await this.$store.dispatch('logout')
     }
   }
 }
