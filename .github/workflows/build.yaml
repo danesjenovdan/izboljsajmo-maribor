@@ -20,7 +20,8 @@ jobs:
           images: |
             rg.fr-par.scw.cloud/djnd/izboljsajmo-maribor-backend
           # add git short SHA as Docker tag
-          tag-custom: ${{ env.GITHUB_SHA }}
+          tag-custom:
+            - ${{ env.GITHUB_SHA }}
           tag-custom-only: true
       -
         name: Set up Docker Buildx
@@ -50,23 +51,19 @@ jobs:
           labels: ${{ steps.docker_meta.outputs.labels }}
       -
         name: Update frontend image version in kustomization.yaml
-        uses: fjogeleit/yaml-update-action@master
-        with:
-          valueFile: 'kustomize/kustomization.yaml'
-          propertyPath: 'images[0].newTag'
-          value: ${{ steps.docker_meta.outputs.tags }}
-          branch: deployment/${{ steps.docker_meta.outputs.tags }}
-          targetBranch: k8s
-          createPR: 'false'
-          message: 'Update frontend image version to ${{ steps.docker_meta.outputs.tags }}'
+        run: |
+          sed -i "s/newTag: .*\+/newTag\: '${{ env.GITHUB_SHA }}'/" kustomize/kustomization.yaml
       -
-        name: Update backend image version in kustomization.yaml
-        uses: fjogeleit/yaml-update-action@master
+        uses: EndBug/add-and-commit@v7 # You can change this to use a specific version
         with:
-          valueFile: 'kustomize/kustomization.yaml'
-          propertyPath: 'images[1].newTag'
-          value: ${{ steps.docker_meta.outputs.tags }}
-          branch: deployment/${{ steps.docker_meta.outputs.tags }}
-          targetBranch: k8s
-          createPR: 'true'
-          message: 'Update backend image version to ${{ steps.docker_meta.outputs.tags }}'
+          add: '.'
+          author_name: GitHub action
+
+          # The message for the commit
+          # Default: 'Commit from GitHub Actions (name of the workflow)'
+          message: 'Update image versions in kustomize/kustomization.yaml'
+
+          # The flag used on the pull strategy. Use NO-PULL to avoid the action pulling at all.
+          # Default: '--no-rebase'
+          # 'NO-PULL or --no-rebase or --no-ff or --rebase'
+          pull_strategy: 'NO-PULL'
