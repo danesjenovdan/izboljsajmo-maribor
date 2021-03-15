@@ -1,5 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.gis.geos import Polygon, GEOSGeometry
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
 
 from oauth2_provider.models import Application
 
@@ -13,6 +15,23 @@ class Command(BaseCommand):
     help = 'Setup data for development'
 
     def handle(self, *args, **options):
+
+        self.options = [('add_', 'Can add '), ('change_', 'Can change '), ('view_', 'Can view ')]
+
+
+        admin_group, created = Group.objects.get_or_create(name='Admin')
+        ct = ContentType.objects.get_for_model(models.BothersInitiativeArea)
+
+        permissions = self.get_permissions('bothersinitiativearea', ct)
+        admin_group.permissions.add(*permissions)
+        print(list(Permission.objects.all().values_list('codename', flat=True)))
+
+        appraiser_group, created = Group.objects.get_or_create(name='Appraiser')
+        ct = ContentType.objects.get_for_model(models.BothersInitiativeAppraiser)
+
+        permissions = self.get_permissions('bothersinitiativeappraiser', ct)
+        appraiser_group.permissions.add(*permissions)
+
         organization = models.Organization(
             name='DJND',
             number_of_members=23
@@ -29,6 +48,8 @@ class Command(BaseCommand):
         user.set_password('123123123')
         user.save()
         user.organizations.add(organization)
+
+
 
         Application(
             client_id='kIZWxeodL29mfaKSIGQWPUuuck8CXv3m58XuJ8Y7',
@@ -57,6 +78,32 @@ class Command(BaseCommand):
             competent_service=competent_service
         )
         area.save()
+
+        gos_admin = models.User(
+            first_name='gos admin',
+            username='gos admin',
+            email='admin@test.com',
+            is_active=True,
+        )
+        gos_admin.save()
+        gos_admin.set_password('123123123')
+        gos_admin.save()
+        gos_admin.competent_services.add(competent_service)
+
+        admin_group.user_set.add(gos_admin)
+
+        appraiser = models.User(
+            first_name='gos appraiser',
+            username='gos appraiser',
+            email='appraiser@test.com',
+            is_active=True,
+        )
+        appraiser.save()
+        appraiser.set_password('123123123')
+        appraiser.save()
+        appraiser.competent_services.add(competent_service)
+
+        appraiser_group.user_set.add(appraiser)
 
         statuses = [
             {
@@ -216,3 +263,11 @@ class Command(BaseCommand):
             field='title1',
             author_id=1,
         ).save()
+
+    def get_permissions(self, name, ct):
+        permissions = []
+        for option in self.options:
+            print(f'{option[0]}{name}')
+            permissions.append(Permission.objects.get(
+            codename=f'{option[0]}{name}'))
+        return permissions

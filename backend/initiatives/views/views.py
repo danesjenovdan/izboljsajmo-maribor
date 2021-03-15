@@ -8,14 +8,14 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from django_filters import rest_framework as filters
 from rest_framework import filters as s_filters
 
-from .serializers import (
+from initiatives.serializers import (
     UserSerializer, OrganizationSerializer, DescriptionDefinitionSerializer, ZoneSerializer,
     CommentSerializer, AreaSerializer, FAQSerializer, FileSerializer, ImageSerializer,
     InitiativeDetailsSerializer, InitiativeListSerializer
 )
-from .models import Zone, Area, FAQ, DescriptionDefinition, InitiativeType, Initiative, Reviwers, Vote
+from initiatives.models import Zone, Area, FAQ, DescriptionDefinition, InitiativeType, Initiative, Reviwers, Vote
 
-from .permissions import IsOwnerOrReadOnly
+from initiatives.permissions import IsOwnerOrReadOnly
 
 
 class UserViewSet(
@@ -173,16 +173,7 @@ class InitiativeViewSet(
         initiatives = Initiative.objects.filter(author=request.user)
         drafts = initiatives.filter(is_draft=True)
         published = initiatives.filter(is_draft=False)
-        draft_serializer = InitiativeListSerializer(drafts, many=True)
-        serializer = InitiativeListSerializer(published, many=True)
+        draft_serializer = InitiativeListSerializer(drafts, context = {'request':request}, many=True)
+        serializer = InitiativeListSerializer(published, context = {'request':request}, many=True)
         return Response({'drafts': draft_serializer.data, 'published': serializer.data})
 
-
-class InitiativeAdminToAreaAdmin(views.APIView):
-    permission_classes = [permissions.IsAuthenticated,]
-    authentication_classes = [authentication.SessionAuthentication,]
-    def get(self, request, pk, label):
-        initiative = Initiative.objects.get(pk=pk)
-        initiative.reviwer = Reviwers.AREA_ADMIN
-        initiative.save()
-        return redirect('admin:%s_%s_change' % (initiative._meta.app_label,  label), object_id=pk)

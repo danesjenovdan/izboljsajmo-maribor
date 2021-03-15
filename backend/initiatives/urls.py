@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 
 from .views import (
     UserViewSet, OrganizationViewSet, AreaViewSet, FAQViewSet, FilesViewSet, InitiativeViewSet,
-    ImagesViewSet, DescriptionDefinitionViewSet, ZoneViewSet, InitiativeTypeApiView, InitiativeAdminToAreaAdmin
+    ImagesViewSet, DescriptionDefinitionViewSet, ZoneViewSet, InitiativeTypeApiView, MoveResponsibilityApiView
 )
 
 from about.views import AboutViewSet
@@ -28,5 +28,5 @@ router.register(r'initiatives', InitiativeViewSet, basename='Initiative')
 urlpatterns = [
     path('', include((router.urls, 'initiatives'))),
     path('initiative-types/', InitiativeTypeApiView.as_view()),
-    path('push-initiative-to-area-admin/<str:label>/<int:pk>', InitiativeAdminToAreaAdmin.as_view(), name='push-to-area'),
+    path('move-responsibility/<str:label>/<int:pk>/<str:next>/', MoveResponsibilityApiView.as_view(), name='move-responsibility'),
 ]

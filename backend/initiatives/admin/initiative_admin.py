@@ -3,8 +3,8 @@ from django.contrib import admin
 # Register your models here.
 
 from initiatives.models import (
-    Initiative, BothersInitiativeSuper, BothersInitiativeArea, BothersInitiativeContractor,
-    IdeaInitiative,
+    Initiative, BothersInitiativeSuper, BothersInitiativeArea, BothersInitiativeAppraiser,
+    IdeaInitiative, ArchivedInitiative,
     InterestedInitiative
 )
 
@@ -22,9 +22,10 @@ class InitiativeAdmin(ImportExportModelAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type']
+    date_hierarchy = 'created'
     list_display = [
         'title',
-        'reviwer',
+        'reviewer',
         'author',
         'type',
         'zone',
@@ -54,6 +55,7 @@ class BothersInitiativeSuperAdmin(ImportExportModelAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type']
+    date_hierarchy = 'created'
     list_display = [
         'title',
         'author',
@@ -64,7 +66,8 @@ class BothersInitiativeSuperAdmin(ImportExportModelAdmin):
         'zone',
         'created',
         'comment_count',
-        'vote_count'
+        'vote_count',
+        'reviewer'
     ]
     inlines = (
         DescriptionInline,
@@ -81,6 +84,7 @@ class BothersInitiativeAreaAdmin(ImportExportModelAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type']
+    date_hierarchy = 'created'
     list_display = [
         'title',
         'author',
@@ -104,11 +108,12 @@ class BothersInitiativeAreaAdmin(ImportExportModelAdmin):
     resource_class = InitiativeResource
 
 
-class BothersInitiativeContractorAdmin(ImportExportModelAdmin):
+class BothersInitiativeAppraiserAdmin(ImportExportModelAdmin):
     readonly_fields = ['title', 'author', 'address', 'type', 'area', 'location', 'cover_image', 'zone', 'modified', 'archived']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
+    date_hierarchy = 'created'
     list_filter = ['statuses', 'zone__name', 'area__name', 'type']
     list_display = [
         'title',
@@ -135,6 +140,7 @@ class IdeaInitiativeAdmin(ImportExportModelAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type']
+    date_hierarchy = 'created'
     list_display = [
         'title',
         'author',
@@ -165,6 +171,7 @@ class InterestedInitiativeAdmin(ImportExportModelAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type']
+    date_hierarchy = 'created'
     list_display = [
         'title',
         'author',
@@ -191,10 +198,12 @@ class InterestedInitiativeAdmin(ImportExportModelAdmin):
     resource_class = InitiativeResource
 
 
-#admin.site.register(Initiative, InitiativeAdmin)
+admin.site.register(Initiative)
+admin.site.register(ArchivedInitiative, InitiativeAdmin)
+
 admin.site.register(BothersInitiativeSuper, BothersInitiativeSuperAdmin)
 admin.site.register(BothersInitiativeArea, BothersInitiativeAreaAdmin)
-admin.site.register(BothersInitiativeContractor, BothersInitiativeContractorAdmin)
+admin.site.register(BothersInitiativeAppraiser, BothersInitiativeAppraiserAdmin)
 
 admin.site.register(IdeaInitiative, IdeaInitiativeAdmin)
 admin.site.register(InterestedInitiative, InterestedInitiativeAdmin)

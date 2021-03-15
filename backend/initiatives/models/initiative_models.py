@@ -14,8 +14,8 @@ class Initiative(Timestamped, Authored):
         max_length=2,
         choices=InitiativeType.choices,
         default=InitiativeType.BOTHERS_ME)
-    reviwer = models.CharField(
-        _('Reviwer'),
+    reviewer = models.CharField(
+        _('Reviewer'),
         max_length=2,
         choices=Reviwers.choices,
         default=Reviwers.SUPER_ADMIN)
@@ -93,32 +93,45 @@ class Initiative(Timestamped, Authored):
         return super(StoreDeleted, self).save(*args, **kwargs)
 
 
-class BothersManager(models.Manager):
+class ArchivedManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(type=InitiativeType.BOTHERS_ME)
+        return super().get_queryset().filter(archived__isnull=False)
+
+
+class ArchivedInitiative(Initiative):
+    objects = ArchivedManager()
+    class Meta:
+        proxy=True
+
+class BothersManager(models.Manager):
+    def __init__(self, reviewer):
+        self.reviewer = reviewer
+        super().__init__()
+    def get_queryset(self):
+        return super().get_queryset().filter(type=InitiativeType.BOTHERS_ME, archived=None, reviewer=self.reviewer)
 
 
 class BothersInitiativeSuper(Initiative):
-    objects = BothersManager()
+    objects = BothersManager(Reviwers.SUPER_ADMIN)
     class Meta:
         proxy=True
 
 
 class BothersInitiativeArea(Initiative):
-    objects = BothersManager()
+    objects = BothersManager(Reviwers.AREA_ADMIN)
     class Meta:
         proxy=True
 
 
-class BothersInitiativeContractor(Initiative):
-    objects = BothersManager()
+class BothersInitiativeAppraiser(Initiative):
+    objects = BothersManager(Reviwers.AREA_APPRAISER)
     class Meta:
         proxy=True
 
 
 class IdeaManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(type=InitiativeType.HAVE_IDEA)
+        return super().get_queryset().filter(type=InitiativeType.HAVE_IDEA, archived=None)
 
 
 class IdeaInitiative(Initiative):
@@ -129,7 +142,7 @@ class IdeaInitiative(Initiative):
 
 class InterestedManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(type=InitiativeType.INTERESTED_IN)
+        return super().get_queryset().filter(type=InitiativeType.INTERESTED_IN, archived=None)
 
 
 class InterestedInitiative(Initiative):

@@ -191,3 +191,6 @@ OAUTH2_PROVIDER = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+FROM_EMAIL = 'dummy@email.si'
