@@ -1,0 +1,72 @@
+name: Publish Docker image
+on:
+  push:
+    branches:
+      - 'k8s'
+jobs:
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Check out the repo
+        uses: actions/checkout@v2
+      -
+        name: Docker meta to create tag
+        id: docker_meta
+        uses: crazy-max/ghaction-docker-meta@v1
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            zboljsajmo-maribor-backend
+            rg.fr-par.scw.cloud/djnd/izboljsajmo-maribor-backend
+          # add git short SHA as Docker tag
+          tag-sha: true
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          registry: rg.fr-par.scw.cloud/djnd
+          username: nologin
+          password: ${{ secrets.SCW_SECRET_TOKEN }}
+      -
+        name: Build and push BACKEND
+        uses: docker/build-push-action@v2
+        with:
+          context: ./backend
+          push: true
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+      -
+        name: Build and push FRONTEND
+        uses: docker/build-push-action@v2
+        with:
+          context: ./frontend
+          push: true
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+      -
+        name: Update frontend image version in kustomization.yaml
+        uses: fjogeleit/yaml-update-action@master
+        with:
+          valueFile: 'kustomize/kustomization.yaml'
+          propertyPath: 'images[0].newTag'
+          value: ${{ steps.docker_meta.outputs.tags }}
+          branch: deployment/${{ steps.docker_meta.outputs.tags }}
+          targetBranch: k8s
+          createPR: 'false'
+          message: 'Update frontend image version to ${{ steps.docker_meta.outputs.tags }}'
+      -
+        name: Update backend image version in kustomization.yaml
+        uses: fjogeleit/yaml-update-action@master
+        with:
+          valueFile: 'kustomize/kustomization.yaml'
+          propertyPath: 'images[1].newTag'
+          value: ${{ steps.docker_meta.outputs.tags }}
+          branch: deployment/${{ steps.docker_meta.outputs.tags }}
+          targetBranch: k8s
+          createPR: 'true'
+          message: 'Update backend image version to ${{ steps.docker_meta.outputs.tags }}'

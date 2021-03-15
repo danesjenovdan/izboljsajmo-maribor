@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: izboljsajmo-maribor-backend
-        image: rg.fr-par.scw.cloud/djnd/izboljsajmo-maribor-backend:latest
+        image: backend # kustomize thing
         command: ['python', 'manage.py', 'runserver', '0.0.0.0:8000'] # TODO
         ports:
         - name: http

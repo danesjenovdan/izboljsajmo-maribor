@@ -6,3 +6,10 @@ resources:
   - backend.yaml
   - frontend.yaml
   - postgis.yaml
+images:
+- name: frontend
+  newName: rg.fr-par.scw.cloud/djnd/izboljsajmo-maribor-frontend
+  newTag: IMAGE_TAG
+- name: backend
+  newName: rg.fr-par.scw.cloud/djnd/izboljsajmo-maribor-backend
+  newTag: IMAGE_TAG

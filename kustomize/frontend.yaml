@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: izboljsajmo-maribor-frontend
-        image: rg.fr-par.scw.cloud/djnd/izboljsajmo-maribor-frontend:latest
+        image: frontend # kustomize thing
         ports:
         - containerPort: 3000
         # env:
