@@ -21,11 +21,11 @@ spec:
         - containerPort: 5432
         env:
           - name: POSTGRES_DB
-            value: 
+            value: mb-initiative
           - name: POSTGRES_USER
-            value: 
+            value: postgres
           - name: POSTGRES_PASS
-            value: 
+            value: initititit!
 ---
 apiVersion: v1
 kind: Service

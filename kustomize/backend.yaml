@@ -38,11 +38,11 @@ spec:
           - name: APP_ENV
             value: production
           - name: SECRET_DB_NAME
-            value: 
+            value: mb-initiative
           - name: SECRET_DB_USERNAME
-            value: 
+            value: postgres
           - name: SECRET_DB_PASSWORD
-            value: 
+            value: initititit!
 ---
 apiVersion: v1
 kind: Service
