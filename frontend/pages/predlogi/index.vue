@@ -1,16 +1,16 @@
 <template>
   <b-container fluid class="h-100">
     <b-row class="h-100">
-      <b-col lg="7">
+      <b-col lg="7" class="h-100 overflow-auto">
         <b-row class="my-4 justify-content-center">
-          <b-col cols="9" class="text-center">
+          <b-col cols="12" lg="9" class="text-center">
             <h4 class="d-inline">
               Oddaj pobudo!
             </h4> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim.
           </b-col>
         </b-row>
         <b-row class="action-cards">
-          <b-col cols="4">
+          <b-col cols="12" md="4" class="mb-3">
             <div class="action-card-top" />
             <NuxtLink to="/predlogi/nov" class="action-card d-block h-100">
               <h6 class="d-flex align-items-center">
@@ -20,7 +20,7 @@
               <p>Naznani okvare, poškodbe, slabosti (pomanjkljivosti), ki jih zaznavaš v svojem okolju.</p>
             </NuxtLink>
           </b-col>
-          <b-col cols="4">
+          <b-col cols="12" md="4" class="mb-3">
             <div class="action-card-top" />
             <div class="action-card h-100">
               <h6 class="d-flex align-items-center">
@@ -30,7 +30,7 @@
               <p>Predlagaj novosti,  predloge za izboljšave, družbene inovacije, ki izboljšujejo kakovost življenja v MO Maribor.</p>
             </div>
           </b-col>
-          <b-col cols="4">
+          <b-col cols="12" md="4" class="mb-3">
             <div class="action-card-top" />
             <div class="action-card h-100">
               <h6 class="d-flex align-items-center">
@@ -52,8 +52,8 @@
             </b-col>
           </b-row>
           <b-row class="mb-4">
-            <b-col cols="12" class="d-flex">
-              <div class="d-inline-flex flex-grow-1 align-items-center position-relative">
+            <b-col cols="12" class="d-md-flex">
+              <div class="d-md-inline-flex flex-grow-1 mb-3 mb-md-0 mr-0 mr-md-2 align-items-center position-relative">
                 <input
                   v-model="search"
                   type="text"
@@ -65,7 +65,7 @@
                 </button>
               </div>
               <button
-                class="filter d-inline-flex align-items-center"
+                class="filter d-inline-flex align-items-center ml-0"
                 :class="{ 'dropdown-open': showType }"
                 @click="switchType"
               >
@@ -200,7 +200,7 @@
           </b-row>
           <b-row class="mb-3">
             <b-col class="d-flex justify-content-between">
-              <div>
+              <div class="pl-1">
                 {{ initiatives.length }} predlogov
               </div>
               <div
@@ -217,14 +217,20 @@
               </div>
             </b-col>
           </b-row>
-          <b-row>
-            <InitiativeCard
+          <b-row class="p-4 p-md-0">
+            <b-col
               v-for="initiative in sortedInitiatives"
               :key="initiative.id"
-              v-bind="initiative"
-              @vote="vote(initiative.id)"
+              cols="12"
+              md="4"
+              class="mb-4"
             >
-            </InitiativeCard>
+              <InitiativeCard
+                v-bind="initiative"
+                @vote="vote(initiative.id)"
+              >
+              </InitiativeCard>
+            </b-col>
           </b-row>
         </div>
       </b-col>
@@ -232,7 +238,7 @@
         <div id="map-wrap" class="h-100">
           <client-only>
             <l-map
-              :zoom="15"
+              :zoom="13"
               :center="[46.554650, 15.645881]"
             >
               <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
@@ -417,6 +423,11 @@ h4 {
   border: none;
   background-color: transparent;
   right: 0;
+  top: 0.2rem;
+
+  @media (min-width: 768px) {
+    top: auto;
+  }
 
   img {
     height: 2rem;
@@ -448,10 +459,21 @@ h4 {
     background-color: #f8f8f8;
     box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
     border-radius: 0.5rem;
-    top: 3rem;
+    top: 6rem;
+    left: 2rem;
+    right: 2rem;
     z-index: 10;
     padding: 1rem;
     text-align: left;
+
+    @media (min-width: 768px) {
+      top: 3rem;
+    }
+
+    @media (min-width: 992px) {
+      left: auto;
+      right: auto;
+    }
   }
 }
 

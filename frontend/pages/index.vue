@@ -29,7 +29,7 @@
                 <div class="initiative-card draft h-100">
                   <img
                     class="cover-image"
-                    :src="$axios.defaults.baseURL + draft.cover_image.image"
+                    :src="draft.cover_image.image"
                     alt="Initiative draft cover image"
                   >
                   <div class="initiative-card-body">
@@ -80,13 +80,20 @@
                   </div>
                 </div>
               </b-col>
-              <InitiativeCard
+              <b-col
                 v-for="initiative in published"
                 :key="initiative.id"
-                v-bind="initiative"
-                @vote="vote(initiative.id)"
+                cols="12"
+                lg="6"
+                xl="4"
+                class="mb-4"
               >
-              </InitiativeCard>
+                <InitiativeCard
+                  v-bind="initiative"
+                  @vote="vote(initiative.id)"
+                >
+                </InitiativeCard>
+              </b-col>
             </b-row>
           </b-col>
         </b-row>
