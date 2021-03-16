@@ -1,57 +1,64 @@
 <template>
   <b-container fluid>
-    <b-row class="navigation justify-content-between align-items-center">
-      <img src="~/assets/img/izboljsajmo_maribor_logo.png" alt="">
-      <div class="">
-        <NuxtLink v-if="!isAuthenticated" to="/predlogi">
-          Domov
-        </NuxtLink>
-        <NuxtLink v-if="isAuthenticated" class="" to="/predlogi" @click.prevent="">
-          Vsi predlogi
-        </NuxtLink>
-        <NuxtLink v-if="!isAuthenticated" to="/o-izboljsajmo-maribor">
-          O izboljšajmo Maribor
-        </NuxtLink>
-        <NuxtLink to="/pomoc">
-          Pomoč
-        </NuxtLink>
-        <NuxtLink v-if="!isAuthenticated" class="login" to="/prijava">
-          Prijava
-        </NuxtLink>
-        <NuxtLink
-          v-if="isAuthenticated"
-          class="profile"
-          to="/"
-          event=""
-          @click.native="showProfileDropdown = !showProfileDropdown"
-        >
-          <!-- event="" is to disable the link -->
-          Moj profil
-        </NuxtLink>
-        <div v-if="showProfileDropdown" class="profileDropdown">
-          <h3 class="pt-4 text-center font-weight-bold">
-            {{ this.$auth.user.username }}
-          </h3>
-          <hr class="hr-upper">
-          <hr class="hr-lower">
-          <div class="text-center">
-            <b-button
-              class="my-initiatives-button w-75 position-relative d-inline-flex justify-content-center"
-              @click="myInitiatives"
+    <b-row>
+      <b-navbar toggleable="md" class="navigation align-items-center">
+        <img src="~/assets/img/izboljsajmo_maribor_logo.png" alt="">
+        <b-navbar-toggle target="nav_collapse">
+          <img src="~/assets/img/icons/more.png" alt="toggle menu">
+        </b-navbar-toggle>
+        <b-collapse is-nav id="nav_collapse" class="py-4 py-md-0">
+          <b-navbar-nav class="ml-auto">
+            <NuxtLink v-if="!isAuthenticated" class="nav-link" to="/predlogi">
+              Domov
+            </NuxtLink>
+            <NuxtLink v-if="isAuthenticated" class="nav-link" to="/predlogi" @click.prevent="">
+              Vsi predlogi
+            </NuxtLink>
+            <NuxtLink v-if="!isAuthenticated" class="nav-link" to="/o-izboljsajmo-maribor">
+              O izboljšajmo Maribor
+            </NuxtLink>
+            <NuxtLink class="nav-link" to="/pomoc">
+              Pomoč
+            </NuxtLink>
+            <NuxtLink v-if="!isAuthenticated" class="login nav-link" to="/prijava">
+              Prijava
+            </NuxtLink>
+            <NuxtLink
+              v-if="isAuthenticated"
+              class="profile nav-link"
+              to="/"
+              event=""
+              @click.native="showProfileDropdown = !showProfileDropdown"
             >
-              MOJI PREDLOGI
-              <img src="~/assets/img/icons/arrow-right.png" alt="logout icon" class="position-absolute">
-            </b-button>
-            <b-button
-              class="logout-button w-75 position-relative d-inline-flex justify-content-center"
-              @click="logout"
-            >
-              ODJAVA
-              <img src="~/assets/img/icons/exit-right.png" alt="logout icon" class="position-absolute">
-            </b-button>
-          </div>
-        </div>
-      </div>
+              <!-- event="" is to disable the link -->
+              Moj profil
+            </NuxtLink>
+            <div v-if="showProfileDropdown" class="profileDropdown">
+              <h3 class="pt-4 text-center font-weight-bold">
+                {{ this.$auth.user.username }}
+              </h3>
+              <hr class="hr-upper">
+              <hr class="hr-lower">
+              <div class="text-center">
+                <b-button
+                  class="my-initiatives-button w-75 position-relative d-inline-flex justify-content-center"
+                  @click="myInitiatives"
+                >
+                  MOJI PREDLOGI
+                  <img src="~/assets/img/icons/arrow-right.png" alt="logout icon" class="position-absolute">
+                </b-button>
+                <b-button
+                  class="logout-button w-75 position-relative d-inline-flex justify-content-center"
+                  @click="logout"
+                >
+                  ODJAVA
+                  <img src="~/assets/img/icons/exit-right.png" alt="logout icon" class="position-absolute">
+                </b-button>
+              </div>
+            </div>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar>
     </b-row>
   </b-container>
 </template>
@@ -87,16 +94,22 @@ export default {
   padding: 1rem 2rem;
   box-shadow: 3px 3px 7px #d4d9e1, -3px -3px 7px #ffffff;
   background-color: #f8f8f8;
+  width: 100%;
 
   img {
     height: 40px;
   }
 
-  a {
+  .navbar-nav .nav-link {
+    text-align: center;
     color: #606060;
-    margin-left: 1rem;
-    padding: 0.25rem 0.75rem;
     border-radius: 1.5rem;
+
+    @media (min-width: 768px) {
+      text-align: left;
+      margin-left: 1rem;
+      padding: 0.25rem 0.75rem;
+    }
 
     &.nuxt-link-exact-active {
       border: 2px solid #a92332;
@@ -127,6 +140,12 @@ export default {
         color: white;
         transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
       }
+    }
+  }
+
+  .navbar-toggler {
+    img {
+      height: 1rem;
     }
   }
 
