@@ -103,8 +103,11 @@
 </template>
 
 <script>
+import InitiativeCard from '~/components/InitiativeCard'
+
 export default {
   middleware: 'auth',
+  components: { InitiativeCard },
   asyncData ({ store }) {
     return store.dispatch('getMyInitiatives')
   },
