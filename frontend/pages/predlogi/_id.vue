@@ -140,7 +140,10 @@
 </template>
 
 <script>
+import CommentForm from '~/components/forms/CommentForm'
+
 export default {
+  components: { CommentForm },
   asyncData ({ params, $axios, redirect }) {
     const id = params.id
     return $axios.get(`v1/initiatives/${id}`)

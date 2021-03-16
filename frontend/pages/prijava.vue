@@ -19,6 +19,7 @@
 
 <script>
 import Login from '~/components/forms/Login'
+
 export default {
   components: { Login },
   layout: 'login',

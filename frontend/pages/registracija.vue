@@ -21,7 +21,11 @@
 </template>
 
 <script>
+import Register from '~/components/forms/Register'
+import RegisterOrganization from '~/components/forms/RegisterOrganization'
+
 export default {
+  components: { Register, RegisterOrganization },
   layout: 'login',
   data () {
     return {
