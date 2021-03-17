@@ -1,10 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.conf import settings
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.core import validators
 from django.contrib.gis.db import models as geo_models
+from django.contrib.auth.models import Group
 
 from behaviors.behaviors import Timestamped, Authored, Published
 
@@ -64,6 +65,8 @@ class StatusInitiative(Timestamped, Published):
         _("Is email sent"),
         default=False)
 
+    def to_table_row(self):
+        return f'<tr><th>{self.status.name}</th><th>{self.note[:50]}</th><th>{_("published") if self.published else _("draft")}</th><th>{self.created.date().isoformat()}</th></tr>'
 
 class HearManager(models.Manager):
     def get_queryset(self):
@@ -246,6 +249,11 @@ class User(AbstractUser, Timestamped):
         blank=True,
         related_name='users',
         verbose_name=_('Competent service'))
+    role = models.CharField(
+        _('Role'),
+        max_length=2,
+        choices=Reviwers.choices,
+        default=Reviwers.AREA_ADMIN)
     # a username field that allows a space
     username = models.CharField(_('username'), max_length=30, unique=True,
         help_text=_('Required. 30 characters or fewer. Letters, digits and '
@@ -253,6 +261,68 @@ class User(AbstractUser, Timestamped):
         validators=[
             validators.RegexValidator(r'^[\w.@+ -]+$', _('Enter a valid username.'), 'invalid')
         ])
+
+
+class SuperAdminManager(BaseUserManager):
+    def get_queryset(self):
+        return super().get_queryset().filter(role=Reviwers.SUPER_ADMIN)
+
+
+class SuperAdminUser(User):
+    objects = SuperAdminManager()
+    class Meta:
+        proxy=True
+
+    def save(self, *args, **kwargs):
+        if self.pk == None:
+            self.role = Reviwers.SUPER_ADMIN
+        return super().save(*args, **kwargs)
+
+
+class AreaAdminManager(BaseUserManager):
+    def get_queryset(self):
+        return super().get_queryset().filter(role=Reviwers.AREA_ADMIN)
+
+
+class AreaAdminUser(User):
+    objects = AreaAdminManager()
+    class Meta:
+        proxy=True
+
+    def save(self, *args, **kwargs):
+        if self.pk == None:
+            self.role = Reviwers.AREA_ADMIN
+        return super().save(*args, **kwargs)
+
+
+class AreaAppraiserManager(BaseUserManager):
+    def get_queryset(self):
+        return super().get_queryset().filter(role=Reviwers.AREA_APPRAISER)
+
+class AreaAppraiserUser(User):
+    objects = AreaAppraiserManager()
+    class Meta:
+        proxy=True
+
+    def save(self, *args, **kwargs):
+        if self.pk == None:
+            self.role = Reviwers.AREA_APPRAISER
+        return super().save(*args, **kwargs)
+
+
+class ContractorAppraiserManager(BaseUserManager):
+    def get_queryset(self):
+        return super().get_queryset().filter(role=Reviwers.CONTRACTOR_APPRAISER)
+
+class ContractorAppraiserUser(User):
+    objects = ContractorAppraiserManager()
+    class Meta:
+        proxy=True
+
+    def save(self, *args, **kwargs):
+        if self.pk == None:
+            self.role = Reviwers.CONTRACTOR_APPRAISER
+        return super().save(*args, **kwargs)
 
 
 class Organization(Timestamped):

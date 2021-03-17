@@ -6,8 +6,8 @@ from django.utils.html import format_html
 from django.urls import reverse
 
 from initiatives.models import (
-    User, Organization, Zone, CompetentService, Area, Status, StatusInitiative,
-    File, Comment, Comment, FAQ, StatusInitiativeHear, Rejection, Image,
+    User, AreaAdminUser, AreaAppraiserUser, ContractorAppraiserUser, Organization, Zone, CompetentService,
+    Area, Status, StatusInitiative, File, Comment, Comment, FAQ, StatusInitiativeHear, Rejection, Image,
     StatusInitiativeHear, StatusInitiativeEditing, StatusInitiativeProgress,
     StatusInitiativeFinished, StatusInitiativeDone, StatusInitiativeRejected, Description
 )
@@ -33,7 +33,7 @@ class MBUserAdmin(UserAdmin):
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
-        (_('MB datas'), {'fields': ('zones', 'organizations', 'competent_services', 'phone_number')}),
+        (_('MB datas'), {'fields': ('role', 'zones', 'organizations', 'competent_services', 'phone_number')}),
         (_('Notes'), {'fields': ('note',)}),
     )
     add_fieldsets = (
@@ -42,6 +42,17 @@ class MBUserAdmin(UserAdmin):
             'fields': ('username', 'password1', 'password2'),
         }),
     )
+
+class AreaAdminUserAdmin(MBUserAdmin):
+    readonly_fields = ['role']
+
+
+class AreaAppraiserUserAdmin(MBUserAdmin):
+    readonly_fields = ['role']
+
+
+class ContractorAppraiserUserAdmin(MBUserAdmin):
+    readonly_fields = ['role']
 
 
 class UserOrganizationInline(admin.TabularInline):
@@ -254,6 +265,9 @@ class FAQAdmin(OrderableAdmin, admin.ModelAdmin):
 
 
 admin.site.register(User, MBUserAdmin)
+admin.site.register(AreaAdminUser, AreaAdminUserAdmin)
+admin.site.register(AreaAppraiserUser, AreaAppraiserUserAdmin)
+admin.site.register(ContractorAppraiserUser, ContractorAppraiserUserAdmin)
 admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(Zone, ZoneAdmin)
 admin.site.register(Area, AreaAdmin)

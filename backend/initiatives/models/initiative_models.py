@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils.html import mark_safe
 from django.utils.translation import gettext as _
 from django.contrib.gis.db import models as geo_models
 
@@ -18,7 +19,7 @@ class Initiative(Timestamped, Authored):
         _('Reviewer'),
         max_length=2,
         choices=Reviwers.choices,
-        default=Reviwers.SUPER_ADMIN)
+        default=Reviwers.AREA_ADMIN)
     title = models.CharField(
         _('Title'),
         max_length=50)
@@ -79,6 +80,20 @@ class Initiative(Timestamped, Authored):
         except:
             return None
 
+    def status_history(self):
+        return mark_safe(
+            f'''<table>
+            <tr>
+                <th>{_("Status")}</th>
+                <th>{_("Note")}</th>
+                <th>{_("Published status")}</th>
+                <th>{_("Status changed at")}</th>
+            </tr>
+                {"".join([status.to_table_row() for status in self.initiative_statuses.all()])}
+            </table>
+            '''
+            )
+
     def vote_count(self):
         return self.votes.count()
 
@@ -103,6 +118,7 @@ class ArchivedInitiative(Initiative):
     class Meta:
         proxy=True
 
+# MOTI ME
 class BothersManager(models.Manager):
     def __init__(self, reviewer):
         self.reviewer = reviewer
@@ -129,25 +145,67 @@ class BothersInitiativeAppraiser(Initiative):
         proxy=True
 
 
+class BothersInitiativeContractor(Initiative):
+    objects = BothersManager(Reviwers.CONTRACTOR_APPRAISER)
+    class Meta:
+        proxy=True
+
+
+# IMAM IDEJO
 class IdeaManager(models.Manager):
+    def __init__(self, reviewer):
+        self.reviewer = reviewer
+        super().__init__()
     def get_queryset(self):
-        return super().get_queryset().filter(type=InitiativeType.HAVE_IDEA, archived=None)
+        return super().get_queryset().filter(type=InitiativeType.HAVE_IDEA, archived=None, reviewer=self.reviewer)
 
 
-class IdeaInitiative(Initiative):
-    objects = IdeaManager()
+class IdeaInitiativeSuper(Initiative):
+    objects = BothersManager(Reviwers.SUPER_ADMIN)
     class Meta:
         proxy=True
 
 
-class InterestedManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(type=InitiativeType.INTERESTED_IN, archived=None)
-
-
-class InterestedInitiative(Initiative):
-    objects = InterestedManager()
+class IdeaInitiativeArea(Initiative):
+    objects = BothersManager(Reviwers.AREA_ADMIN)
     class Meta:
         proxy=True
 
-#TODO make Initiatives for roles
+
+class IdeaInitiativeAppraiser(Initiative):
+    objects = BothersManager(Reviwers.AREA_APPRAISER)
+    class Meta:
+        proxy=True
+
+
+class IdeaInitiativeContractor(Initiative):
+    objects = BothersManager(Reviwers.CONTRACTOR_APPRAISER)
+    class Meta:
+        proxy=True
+
+
+# ZANIMA ME
+class InterestedManager(models.Manager): # zanima me
+    def __init__(self, reviewer):
+        self.reviewer = reviewer
+        super().__init__()
+    def get_queryset(self):
+        return super().get_queryset().filter(type=InitiativeType.INTERESTED_IN, archived=None, reviewer=self.reviewer)
+
+
+class InterestedInitiativeSuper(Initiative):
+    objects = BothersManager(Reviwers.SUPER_ADMIN)
+    class Meta:
+        proxy=True
+
+
+class InterestedInitiativeArea(Initiative):
+    objects = BothersManager(Reviwers.AREA_ADMIN)
+    class Meta:
+        proxy=True
+
+
+class InterestedInitiativeAppraiser(Initiative):
+    objects = BothersManager(Reviwers.AREA_APPRAISER)
+    class Meta:
+        proxy=True
