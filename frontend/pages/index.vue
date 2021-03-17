@@ -58,7 +58,9 @@
             <h4>Oddani predlogi</h4>
           </b-col>
           <b-col cols="12" md="8" lg="10">
-            <p v-if="published.length === 0" class="font-italic">Nimaš oddanih predlogov.</p>
+            <p v-if="published.length === 0" class="font-italic">
+              Nimaš oddanih predlogov.
+            </p>
             <b-row>
               <b-col
                 v-if="published.length === 0"
@@ -91,8 +93,7 @@
                 <InitiativeCard
                   v-bind="initiative"
                   @vote="vote(initiative.id)"
-                >
-                </InitiativeCard>
+                />
               </b-col>
             </b-row>
           </b-col>
@@ -106,8 +107,8 @@
 import InitiativeCard from '~/components/InitiativeCard'
 
 export default {
-  middleware: 'auth',
   components: { InitiativeCard },
+  middleware: 'auth',
   asyncData ({ store }) {
     return store.dispatch('getMyInitiatives')
   },

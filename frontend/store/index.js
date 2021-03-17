@@ -127,7 +127,7 @@ export const actions = {
   async postInitiative (context, payload) {
     const form = {
       title: payload.initiativeTitle,
-      type: 'II',
+      type: payload.initiativeType,
       area: payload.initiativeArea,
       address: payload.initiativeAddress,
       location: payload.initiativeLocation,

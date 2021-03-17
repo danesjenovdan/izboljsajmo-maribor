@@ -12,7 +12,7 @@
         <b-row class="action-cards">
           <b-col cols="12" md="4" class="mb-3">
             <div class="action-card-top" />
-            <NuxtLink to="/predlogi/nov" class="action-card d-block h-100">
+            <NuxtLink to="/predlogi/nov?tip=MM" class="action-card d-block h-100">
               <h6 class="d-flex align-items-center">
                 MOTI ME!
                 <img src="~/assets/img/icons/arrow-right.png" alt="arrow right">
@@ -22,23 +22,23 @@
           </b-col>
           <b-col cols="12" md="4" class="mb-3">
             <div class="action-card-top" />
-            <div class="action-card h-100">
+            <NuxtLink to="/predlogi/nov?tip=II" class="action-card d-block h-100">
               <h6 class="d-flex align-items-center">
                 IMAM IDEJO!
                 <img src="~/assets/img/icons/arrow-right.png" alt="arrow right">
               </h6>
               <p>Predlagaj novosti,  predloge za izboljšave, družbene inovacije, ki izboljšujejo kakovost življenja v MO Maribor.</p>
-            </div>
+            </NuxtLink>
           </b-col>
           <b-col cols="12" md="4" class="mb-3">
             <div class="action-card-top" />
-            <div class="action-card h-100">
+            <NuxtLink to="/predlogi/nov?tip=ZM" class="action-card d-block h-100">
               <h6 class="d-flex align-items-center">
                 ZANIMA ME!
                 <img src="~/assets/img/icons/arrow-right.png" alt="arrow right">
               </h6>
               <p>Zastavi splošna vprašanja ali izreči pohvale.</p>
-            </div>
+            </NuxtLink>
           </b-col>
         </b-row>
         <hr class="hr-upper">
@@ -129,7 +129,7 @@
                   <div>
                     <b-form-group>
                       <b-form-checkbox
-                        v-for="area in this.areas"
+                        v-for="area in areas"
                         :id="String(area.id)"
                         :key="area.id"
                         v-model="filterAreas"
@@ -162,7 +162,7 @@
                   <div>
                     <b-form-group>
                       <b-form-checkbox
-                        v-for="zone in this.zones"
+                        v-for="zone in zones"
                         :id="String(zone.id)"
                         :key="zone.id"
                         v-model="filterZones"
@@ -228,8 +228,7 @@
               <InitiativeCard
                 v-bind="initiative"
                 @vote="vote(initiative.id)"
-              >
-              </InitiativeCard>
+              />
             </b-col>
           </b-row>
         </div>
