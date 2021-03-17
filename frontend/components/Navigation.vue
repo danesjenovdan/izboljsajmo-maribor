@@ -2,7 +2,9 @@
   <b-container fluid>
     <b-row>
       <b-navbar toggleable="md" class="navigation align-items-center">
-        <img src="~/assets/img/izboljsajmo_maribor_logo.png" alt="">
+        <NuxtLink to="/predlogi">
+          <img src="~/assets/img/izboljsajmo_maribor_logo.png" alt="">
+        </NuxtLink>
         <b-navbar-toggle target="nav_collapse">
           <img src="~/assets/img/icons/more.png" alt="toggle menu">
         </b-navbar-toggle>
