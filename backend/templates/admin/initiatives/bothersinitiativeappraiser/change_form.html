@@ -3,10 +3,7 @@
 {% load filters %}
 {% block object-tools-items %}
     <li>
-        <a href="{% url 'initiatives:move-responsibility' pk=original.pk label=original|get_class next='SA' %}" class="historylink">{% translate "Pošlji super adminu  v pregled" %}</a>
-    </li>
-    <li>
-        <a href="{% url 'initiatives:move-responsibility' pk=original.pk label=original|get_class next='AP' %}" class="historylink">{% translate "Pošlji cenilcu področnemu" %}</a>
+        <a href="{% url 'initiatives:move-responsibility' pk=original.pk label=original|get_class next='SA' %}" class="historylink">{% translate "Pošlji super adminu v pregled" %}</a>
     </li>
     <li>
         <a href="{% url opts|admin_urlname:'history' original.pk|admin_urlquote %}" class="historylink">{% translate "History" %}</a>

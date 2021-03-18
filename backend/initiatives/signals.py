@@ -1,34 +1,34 @@
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
+from django.contrib.auth.models import Group
 
 from behaviors.behaviors import Published
 
-from .models import (
-    BothersInitiativeArea, BothersInitiativeSuper, BothersInitiativeContractor, StatusInitiative,
+# from .models import (
+#     BothersInitiativeArea, BothersInitiativeSuper, BothersInitiativeContractor, StatusInitiative,
 
-    # users
-    SuperAdminUser, AreaAdminUser, AreaAppraiserUser, ContractorAppraiserUser
-)
+#     # users
+#     SuperAdminUser, AreaAdminUser, AreaAppraiserUser, ContractorAppraiserUser, User
+# )
 from .utils import send_email
 
+import logging
+logger = logging.getLogger(__name__)
+
 # TODO
-@receiver(pre_save, sender=BothersInitiativeSuper)
 def handle_super_admin_save(sender, instance, **kwargs):
     pass
 
 # TODO
-@receiver(pre_save, sender=BothersInitiativeArea)
 def handle_area_admin_save(sender, instance, **kwargs):
     pass
 
 # TODO
-@receiver(pre_save, sender=BothersInitiativeContractor)
 def handle_contractor_save(sender, instance, **kwargs):
     pass
 
 # TODO
-@receiver(post_save, sender=StatusInitiative)
-def handle_contractor_save(sender, instance, **kwargs):
+def handle_status_save(sender, instance, **kwargs):
     if instance.publication_status == Published.PUBLISHED and instance.is_email_sent == False:
         instance.is_email_sent = True
         instance.save()
@@ -36,29 +36,36 @@ def handle_contractor_save(sender, instance, **kwargs):
 
 
 # set users to permissions groups
-@receiver(post_save, sender=SuperAdminUser)
-def set_area_admin_to_group(sender, instance, **kwargs):
-    admin_group = Group.objects.filter(name='Super admin')
-    if admin_group:
-        admin_group.user_set.add(instance)
+def set_super_admin_to_group(sender, instance, created, **kwargs):
+    if created:
+        admin_group = Group.objects.filter(name='Super admin')
+        if admin_group:
+            admin_group = admin_group[0]
+            admin_group.user_set.add(instance)
 
 
-@receiver(post_save, sender=AreaAdminUser)
-def set_area_admin_to_group(sender, instance, **kwargs):
-    admin_group = Group.objects.filter(name='Area admin')
-    if admin_group:
-        admin_group.user_set.add(instance)
+def set_area_admin_to_group(sender, instance, created, **kwargs):
+    if created:
+        admin_group = Group.objects.filter(name='Area admin')
+        if admin_group:
+            admin_group = admin_group[0]
+            admin_group.user_set.add(instance)
 
 
-@receiver(post_save, sender=AreaAppraiserUser)
-def set_area_admin_to_group(sender, instance, **kwargs):
-    admin_group = Group.objects.filter(name='Appraiser')
-    if admin_group:
-        admin_group.user_set.add(instance)
+def set_area_appraiser_to_group(sender, instance, created, **kwargs):
+    if created:
+        admin_group = Group.objects.filter(name='Appraiser')
+        if admin_group:
+            admin_group = admin_group[0]
+            admin_group.user_set.add(instance)
 
 
-@receiver(post_save, sender=ContractorAppraiserUser)
-def set_area_admin_to_group(sender, instance, **kwargs):
-    admin_group = Group.objects.filter(name='Contractor')
-    if admin_group:
-        admin_group.user_set.add(instance)
+def set_contractor_appraiser_to_group(sender, instance, created, **kwargs):
+    logger.warning("save contractor")
+    if created:
+        logger.warning("set group")
+        admin_group = Group.objects.filter(name='Contractor')
+        if admin_group:
+            admin_group = admin_group[0]
+            admin_group.user_set.add(instance)
+

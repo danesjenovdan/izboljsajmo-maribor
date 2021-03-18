@@ -6,8 +6,14 @@ from django.utils.translation import gettext as _
 from django.core import validators
 from django.contrib.gis.db import models as geo_models
 from django.contrib.auth.models import Group
+from django.db.models.signals import pre_save, post_save
 
 from behaviors.behaviors import Timestamped, Authored, Published
+
+from initiatives.signals import set_area_admin_to_group, set_super_admin_to_group, set_area_appraiser_to_group, set_contractor_appraiser_to_group
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 # TODO o izboljšamo maribor naredi podobno kot je na mauticu.
@@ -275,6 +281,7 @@ class SuperAdminUser(User):
 
     def save(self, *args, **kwargs):
         if self.pk == None:
+            self.is_staff = True
             self.role = Reviwers.SUPER_ADMIN
         return super().save(*args, **kwargs)
 
@@ -291,6 +298,7 @@ class AreaAdminUser(User):
 
     def save(self, *args, **kwargs):
         if self.pk == None:
+            self.is_staff = True
             self.role = Reviwers.AREA_ADMIN
         return super().save(*args, **kwargs)
 
@@ -306,6 +314,7 @@ class AreaAppraiserUser(User):
 
     def save(self, *args, **kwargs):
         if self.pk == None:
+            self.is_staff = True
             self.role = Reviwers.AREA_APPRAISER
         return super().save(*args, **kwargs)
 
@@ -320,7 +329,9 @@ class ContractorAppraiserUser(User):
         proxy=True
 
     def save(self, *args, **kwargs):
+        logger.warning('SAVE')
         if self.pk == None:
+            self.is_staff = True
             self.role = Reviwers.CONTRACTOR_APPRAISER
         return super().save(*args, **kwargs)
 
@@ -426,3 +437,9 @@ class DescriptionDefinition(Timestamped, Authored):
     title = models.CharField(
         _('Title'),
         max_length=100)
+
+
+post_save.connect(set_contractor_appraiser_to_group, sender=ContractorAppraiserUser)
+post_save.connect(set_area_appraiser_to_group, sender=AreaAppraiserUser)
+post_save.connect(set_super_admin_to_group, sender=SuperAdminUser)
+post_save.connect(set_area_admin_to_group, sender=AreaAdminUser)

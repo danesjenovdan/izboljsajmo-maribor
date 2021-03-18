@@ -3,6 +3,7 @@ from django.conf import settings
 from django.utils.html import mark_safe
 from django.utils.translation import gettext as _
 from django.contrib.gis.db import models as geo_models
+from django.db.models.signals import pre_save, post_save
 
 from behaviors.behaviors import Timestamped, Authored
 
@@ -16,10 +17,17 @@ class Initiative(Timestamped, Authored):
         choices=InitiativeType.choices,
         default=InitiativeType.BOTHERS_ME)
     reviewer = models.CharField(
-        _('Reviewer'),
+        _('Reviewer role'),
         max_length=2,
         choices=Reviwers.choices,
         default=Reviwers.AREA_ADMIN)
+    reviewer_user = models.ForeignKey(
+        'initiatives.User',
+        verbose_name=_('Reviewer'),
+        related_name='reviewed',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True)
     title = models.CharField(
         _('Title'),
         max_length=50)
@@ -161,25 +169,25 @@ class IdeaManager(models.Manager):
 
 
 class IdeaInitiativeSuper(Initiative):
-    objects = BothersManager(Reviwers.SUPER_ADMIN)
+    objects = IdeaManager(Reviwers.SUPER_ADMIN)
     class Meta:
         proxy=True
 
 
 class IdeaInitiativeArea(Initiative):
-    objects = BothersManager(Reviwers.AREA_ADMIN)
+    objects = IdeaManager(Reviwers.AREA_ADMIN)
     class Meta:
         proxy=True
 
 
 class IdeaInitiativeAppraiser(Initiative):
-    objects = BothersManager(Reviwers.AREA_APPRAISER)
+    objects = IdeaManager(Reviwers.AREA_APPRAISER)
     class Meta:
         proxy=True
 
 
 class IdeaInitiativeContractor(Initiative):
-    objects = BothersManager(Reviwers.CONTRACTOR_APPRAISER)
+    objects = IdeaManager(Reviwers.CONTRACTOR_APPRAISER)
     class Meta:
         proxy=True
 
@@ -194,18 +202,18 @@ class InterestedManager(models.Manager): # zanima me
 
 
 class InterestedInitiativeSuper(Initiative):
-    objects = BothersManager(Reviwers.SUPER_ADMIN)
+    objects = InterestedManager(Reviwers.SUPER_ADMIN)
     class Meta:
         proxy=True
 
 
 class InterestedInitiativeArea(Initiative):
-    objects = BothersManager(Reviwers.AREA_ADMIN)
+    objects = InterestedManager(Reviwers.AREA_ADMIN)
     class Meta:
         proxy=True
 
 
 class InterestedInitiativeAppraiser(Initiative):
-    objects = BothersManager(Reviwers.AREA_APPRAISER)
+    objects = InterestedManager(Reviwers.AREA_APPRAISER)
     class Meta:
         proxy=True
