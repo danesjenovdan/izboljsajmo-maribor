@@ -167,21 +167,23 @@ export const actions = {
       params.append('search', payload.search)
     }
     // types
-    if (payload.type) {
+    if (payload.type && payload.type.length > 0) {
       params.append('type', payload.type.join(','))
-    }
+    } else { return { initiatives: [] } }
     // areas
-    if (payload.area) {
+    if (payload.area && payload.area.length > 0) {
       params.append('area', payload.area.join(','))
-    }
+    } else { return { initiatives: [] } }
     // zones
-    if (payload.zone) {
-      params.append('area', payload.zone.join(','))
-    }
+    if (payload.zone && payload.zone.length > 0) {
+      params.append('zone', payload.zone.join(','))
+    } else { return { initiatives: [] } }
     // statuses
+    /*
     if (payload.status) {
-      params.append('area', payload.status.join(','))
-    }
+      params.append('status', payload.status.join(','))
+    } else { return { initiatives: [] } }
+    */
     const response = await this.$axios.get('v1/initiatives/?', { params })
     if (response.status === 200) {
       return { initiatives: response.data }

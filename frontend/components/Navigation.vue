@@ -105,7 +105,10 @@ export default {
   .navbar-nav .nav-link {
     text-align: center;
     color: #606060;
+    font-size: 0.8rem;
     border-radius: 1.5rem;
+    border: 2px solid #f8f8f8;
+    margin-bottom: 0.25rem;
 
     @media (min-width: 768px) {
       text-align: left;
@@ -118,13 +121,7 @@ export default {
     }
 
     &.profile.nuxt-link-exact-active {
-      border: none;
       font-weight: 600;
-    }
-
-    &:hover {
-      text-decoration: none;
-      color: #a92332;
     }
 
     &.login {
@@ -132,13 +129,20 @@ export default {
       border-radius: 1.5rem;
     }
 
+    &:hover {
+      text-decoration: none;
+      color: #a92332;
+    }
+
     &.profile {
       background-color: #ef7782;
+      border-color: #ef7782;
       box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
       color: black;
 
       &:hover {
         background-color: #6c757d;
+        border-color: #6c757d;
         color: white;
         transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
       }
