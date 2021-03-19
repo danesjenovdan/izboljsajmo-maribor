@@ -45,7 +45,9 @@
       VSTOPI<span class="float-right"><img src="~/assets/img/icons/arrow-right.png"></span>
     </b-button>
     <div class="form-note text-center">
-      Nimaš računa? <NuxtLink to="/registracija">Registriraj se</NuxtLink>
+      Nimaš računa? <NuxtLink to="/registracija">
+        Registriraj se
+      </NuxtLink>
     </div>
   </b-form>
 </template>

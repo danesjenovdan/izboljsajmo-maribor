@@ -10,6 +10,15 @@
   </div>
 </template>
 
+<script>
+import Navigation from '~/components/Navigation'
+import Footer from '~/components/Footer'
+
+export default {
+  components: { Footer, Navigation }
+}
+</script>
+
 <style lang="scss">
 
 html, body {
@@ -28,11 +37,3 @@ html, body {
 }
 
 </style>
-
-<script>
-import Navigation from '~/components/Navigation'
-import Footer from '~/components/Footer'
-export default {
-  components: { Footer, Navigation }
-}
-</script>
