@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block body %}
+    <h2>{% translate 'Initiatives to resolve:' %}</h2>
+    <table>
+        {% for i in initiatives %}
+        <tr>
+            <td>i.name</td>
+            <td><a href="{{i.get_admin_change_url}}">{% translate "Open initiative" %}</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock body %}

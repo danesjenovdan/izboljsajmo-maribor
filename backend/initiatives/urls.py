@@ -4,7 +4,8 @@ from rest_framework.routers import DefaultRouter
 
 from .views import (
     UserViewSet, OrganizationViewSet, AreaViewSet, FAQViewSet, FilesViewSet, InitiativeViewSet,
-    ImagesViewSet, DescriptionDefinitionViewSet, ZoneViewSet, InitiativeTypeApiView, MoveResponsibilityApiView
+    ImagesViewSet, DescriptionDefinitionViewSet, ZoneViewSet, InitiativeTypeApiView, MoveResponsibilityApiView,
+    ArchiveApiView
 )
 
 from about.views import AboutViewSet
@@ -29,4 +30,5 @@ urlpatterns = [
     path('', include((router.urls, 'initiatives'))),
     path('initiative-types/', InitiativeTypeApiView.as_view()),
     path('move-responsibility/<str:label>/<int:pk>/<str:next>/', MoveResponsibilityApiView.as_view(), name='move-responsibility'),
+    path('archive/<str:label>/<int:pk>/', ArchiveApiView.as_view(), name='archive'),
 ]

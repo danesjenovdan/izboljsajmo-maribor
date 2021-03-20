@@ -3,6 +3,9 @@
 {% load filters %}
 {% block object-tools-items %}
     <li>
+        <a href="{% url 'initiatives:archive' pk=original.pk label=original|get_class %}" class="deletelink">{% translate "Archive" %}</a>
+    </li>
+    <li>
         <a href="{% url opts|admin_urlname:'history' original.pk|admin_urlquote %}" class="historylink">{% translate "History" %}</a>
     </li>
     {% if has_absolute_url %}

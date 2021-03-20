@@ -255,6 +255,11 @@ class User(AbstractUser, Timestamped):
         blank=True,
         related_name='users',
         verbose_name=_('Competent service'))
+    area = models.ManyToManyField(
+        'Area',
+        blank=True,
+        related_name='users',
+        verbose_name=_('Area'))
     role = models.CharField(
         _('Role'),
         max_length=2,

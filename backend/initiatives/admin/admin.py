@@ -6,7 +6,7 @@ from django.utils.html import format_html
 from django.urls import reverse
 
 from initiatives.models import (
-    User, AreaAdminUser, AreaAppraiserUser, ContractorAppraiserUser, Organization, Zone, CompetentService,
+    User, SuperAdminUser, AreaAdminUser, AreaAppraiserUser, ContractorAppraiserUser, Organization, Zone, CompetentService,
     Area, Status, StatusInitiative, File, Comment, Comment, FAQ, StatusInitiativeHear, Rejection, Image,
     StatusInitiativeHear, StatusInitiativeEditing, StatusInitiativeProgress,
     StatusInitiativeFinished, StatusInitiativeDone, StatusInitiativeRejected, Description
@@ -42,6 +42,11 @@ class MBUserAdmin(UserAdmin):
             'fields': ('username', 'password1', 'password2'),
         }),
     )
+
+
+class SuperAdminUserAdmin(MBUserAdmin):
+    readonly_fields = ['role']
+
 
 class AreaAdminUserAdmin(MBUserAdmin):
     readonly_fields = ['role']
@@ -265,6 +270,7 @@ class FAQAdmin(OrderableAdmin, admin.ModelAdmin):
 
 
 admin.site.register(User, MBUserAdmin)
+admin.site.register(SuperAdminUser, SuperAdminUserAdmin)
 admin.site.register(AreaAdminUser, AreaAdminUserAdmin)
 admin.site.register(AreaAppraiserUser, AreaAppraiserUserAdmin)
 admin.site.register(ContractorAppraiserUser, ContractorAppraiserUserAdmin)

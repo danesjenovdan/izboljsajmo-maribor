@@ -17,28 +17,29 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         self.options = [('add_', 'Can add '), ('change_', 'Can change '), ('view_', 'Can view ')]
+        self.basc_options = [('change_', 'Can change '), ('view_', 'Can view ')]
 
 
         # Super admin
         admin_group, created = Group.objects.get_or_create(name='Super admin')
 
         ct = ContentType.objects.get_for_model(models.BothersInitiativeArea)
-        permissions = self.get_permissions('bothersinitiativesuper', ct)
+        permissions = self.get_permissions('bothersinitiativesuper', ct, self.options)
         admin_group.permissions.add(*permissions)
         ct = ContentType.objects.get_for_model(models.IdeaInitiativeAppraiser)
-        permissions = self.get_permissions('ideainitiativesuper', ct)
+        permissions = self.get_permissions('ideainitiativesuper', ct, self.options)
         admin_group.permissions.add(*permissions)
         ct = ContentType.objects.get_for_model(models.InterestedInitiativeAppraiser)
-        permissions = self.get_permissions('interestedinitiativesuper', ct)
+        permissions = self.get_permissions('interestedinitiativesuper', ct, self.options)
         admin_group.permissions.add(*permissions)
 
         ct = ContentType.objects.get_for_model(models.AreaAdminUser)
-        permissions = self.get_permissions('areaadminuser', ct)
+        permissions = self.get_permissions('areaadminuser', ct, self.options)
         admin_group.permissions.add(*permissions)
         ct = ContentType.objects.get_for_model(models.ContractorAppraiserUser)
-        permissions = self.get_permissions('contractorappraiseruser', ct)
+        permissions = self.get_permissions('contractorappraiseruser', ct, self.options)
         admin_group.permissions.add(*permissions)
-        ct = ContentType.objects.get_for_model(models.AreaAppraiserUser)
+        ct = ContentType.objects.get_for_model(models.AreaAppraiserUser, self.options)
         permissions = self.get_permissions('areaappraiseruser', ct)
         admin_group.permissions.add(*permissions)
         
@@ -57,10 +58,10 @@ class Command(BaseCommand):
         area_admin_group.permissions.add(*permissions)
 
         ct = ContentType.objects.get_for_model(models.AreaAppraiserUser)
-        permissions = self.get_permissions('areaappraiseruser', ct)
+        permissions = self.get_permissions('areaappraiseruser', ct, self.options)
         area_admin_group.permissions.add(*permissions)
         ct = ContentType.objects.get_for_model(models.ContractorAppraiserUser)
-        permissions = self.get_permissions('contractorappraiseruser', ct)
+        permissions = self.get_permissions('contractorappraiseruser', ct, self.options)
         area_admin_group.permissions.add(*permissions)
 
         # Appraiser group
@@ -76,7 +77,7 @@ class Command(BaseCommand):
         appraiser_group.permissions.add(*permissions)
 
         ct = ContentType.objects.get_for_model(models.ContractorAppraiserUser)
-        permissions = self.get_permissions('contractorappraiseruser', ct)
+        permissions = self.get_permissions('contractorappraiseruser', ct, self.options)
         appraiser_group.permissions.add(*permissions)
 
         # Contracotr group
@@ -320,9 +321,9 @@ class Command(BaseCommand):
             author_id=1,
         ).save()
 
-    def get_permissions(self, name, ct):
+    def get_permissions(self, name, ct, options=self.basc_options):
         permissions = []
-        for option in self.options:
+        for option in options:
             print(f'{option[0]}{name}')
             permissions.append(Permission.objects.get(
             codename=f'{option[0]}{name}'))

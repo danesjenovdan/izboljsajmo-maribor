@@ -4,6 +4,7 @@ from django.utils.html import mark_safe
 from django.utils.translation import gettext as _
 from django.contrib.gis.db import models as geo_models
 from django.db.models.signals import pre_save, post_save
+from django.urls import reverse
 
 from behaviors.behaviors import Timestamped, Authored
 
@@ -132,13 +133,19 @@ class BothersManager(models.Manager):
         self.reviewer = reviewer
         super().__init__()
     def get_queryset(self):
-        return super().get_queryset().filter(type=InitiativeType.BOTHERS_ME, archived=None, reviewer=self.reviewer)
+        if self.reviewer:
+            return super().get_queryset().filter(type=InitiativeType.BOTHERS_ME, archived=None, reviewer=self.reviewer)
+        else:
+            return super().get_queryset().filter(type=InitiativeType.BOTHERS_ME, archived=None)
 
 
 class BothersInitiativeSuper(Initiative):
-    objects = BothersManager(Reviwers.SUPER_ADMIN)
+    objects = BothersManager(None)
     class Meta:
         proxy=True
+
+    def get_admin_change_url(self):
+        return reverse('admin:initiatives_bothersinitiativesuper_change',  args=[self.id] )
 
 
 class BothersInitiativeArea(Initiative):
@@ -146,17 +153,26 @@ class BothersInitiativeArea(Initiative):
     class Meta:
         proxy=True
 
+    def get_admin_change_url(self):
+        return reverse('admin:initiatives_bothersinitiativearea_change',  args=[self.id] )
+
 
 class BothersInitiativeAppraiser(Initiative):
     objects = BothersManager(Reviwers.AREA_APPRAISER)
     class Meta:
         proxy=True
 
+    def get_admin_change_url(self):
+        return reverse('admin:initiatives_bothersinitiativeappraiser_change',  args=[self.id] )
+
 
 class BothersInitiativeContractor(Initiative):
     objects = BothersManager(Reviwers.CONTRACTOR_APPRAISER)
     class Meta:
         proxy=True
+
+    def get_admin_change_url(self):
+        return reverse('admin:initiatives_bothersinitiativecontractor_change',  args=[self.id] )
 
 
 # IMAM IDEJO
@@ -165,13 +181,19 @@ class IdeaManager(models.Manager):
         self.reviewer = reviewer
         super().__init__()
     def get_queryset(self):
-        return super().get_queryset().filter(type=InitiativeType.HAVE_IDEA, archived=None, reviewer=self.reviewer)
+        if self.reviewer:
+            return super().get_queryset().filter(type=InitiativeType.HAVE_IDEA, archived=None, reviewer=self.reviewer)
+        else:
+            return super().get_queryset().filter(type=InitiativeType.HAVE_IDEA, archived=None)
 
 
 class IdeaInitiativeSuper(Initiative):
-    objects = IdeaManager(Reviwers.SUPER_ADMIN)
+    objects = IdeaManager(None)
     class Meta:
         proxy=True
+
+    def get_admin_change_url(self):
+        return reverse('admin:initiatives_ideainitiativesuper_change',  args=[self.id] )
 
 
 class IdeaInitiativeArea(Initiative):
@@ -179,17 +201,26 @@ class IdeaInitiativeArea(Initiative):
     class Meta:
         proxy=True
 
+    def get_admin_change_url(self):
+        return reverse('admin:initiatives_ideainitiativearea_change',  args=[self.id] )
+
 
 class IdeaInitiativeAppraiser(Initiative):
     objects = IdeaManager(Reviwers.AREA_APPRAISER)
     class Meta:
         proxy=True
 
+    def get_admin_change_url(self):
+        return reverse('admin:initiatives_ideainitiativeappraiser_change',  args=[self.id] )
+
 
 class IdeaInitiativeContractor(Initiative):
     objects = IdeaManager(Reviwers.CONTRACTOR_APPRAISER)
     class Meta:
         proxy=True
+
+    def get_admin_change_url(self):
+        return reverse('admin:initiatives_ideainitiativecontractor_change',  args=[self.id] )
 
 
 # ZANIMA ME
@@ -198,13 +229,19 @@ class InterestedManager(models.Manager): # zanima me
         self.reviewer = reviewer
         super().__init__()
     def get_queryset(self):
-        return super().get_queryset().filter(type=InitiativeType.INTERESTED_IN, archived=None, reviewer=self.reviewer)
+        if self.reviewer:
+            return super().get_queryset().filter(type=InitiativeType.INTERESTED_IN, archived=None, reviewer=self.reviewer)
+        else:
+            return super().get_queryset().filter(type=InitiativeType.INTERESTED_IN, archived=None)
 
 
 class InterestedInitiativeSuper(Initiative):
-    objects = InterestedManager(Reviwers.SUPER_ADMIN)
+    objects = InterestedManager(None)
     class Meta:
         proxy=True
+
+    def get_admin_change_url(self):
+        return reverse('admin:initiatives_interestedinitiativesuper_change',  args=[self.id] )
 
 
 class InterestedInitiativeArea(Initiative):
@@ -212,8 +249,14 @@ class InterestedInitiativeArea(Initiative):
     class Meta:
         proxy=True
 
+    def get_admin_change_url(self):
+        return reverse('admin:initiatives_interestedinitiativearea_change',  args=[self.id] )
+
 
 class InterestedInitiativeAppraiser(Initiative):
     objects = InterestedManager(Reviwers.AREA_APPRAISER)
     class Meta:
         proxy=True
+
+    def get_admin_change_url(self):
+        return reverse('admin:initiatives_interestedinitiativeappraiser_change',  args=[self.id] )
