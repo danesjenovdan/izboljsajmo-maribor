@@ -41,10 +41,14 @@ class Initiative(Timestamped, Authored):
         verbose_name=_('Area'),
         on_delete=models.CASCADE,
         related_name='initiatives')
-    location = geo_models.PointField(default='POINT(0.0 0.0)')
+    location = geo_models.PointField(
+        null=True,
+        blank=True)
     address = models.CharField(
         _("Address of initiative"),
-        max_length=100)
+        max_length=100,
+        null=True,
+        blank=True)
     zone = models.ForeignKey(
         'initiatives.Zone',
         verbose_name=_('GEO Zone of initiative'),
@@ -98,7 +102,7 @@ class Initiative(Timestamped, Authored):
                 <th>{_("Published status")}</th>
                 <th>{_("Status changed at")}</th>
             </tr>
-                {"".join([status.to_table_row() for status in self.initiative_statuses.all()])}
+                {"".join([status.to_table_row() for status in self.initiative_statuses.all().order_by('created')])}
             </table>
             '''
             )

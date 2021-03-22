@@ -72,7 +72,7 @@ def set_contractor_appraiser_to_group(sender, instance, created, **kwargs):
 
 # initiatives signals
 def set_zone_from_location(sender, instance, created, **kwargs):
-    if created:
+    if created and instance.location:
         zones = Zone.objects.filter(polygon__intersects=instance.location)
         if zones:
             self.zone = zones[0]

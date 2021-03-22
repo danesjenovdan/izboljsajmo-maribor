@@ -65,7 +65,8 @@ class StatusInitiative(Timestamped, Published):
         default=False)
 
     def to_table_row(self):
-        return f'<tr><th>{self.status.name}</th><th>{self.note[:50]}</th><th>{_("published") if self.published else _("draft")}</th><th>{self.created.date().isoformat()}</th></tr>'
+        draft_style = 'style="background-color: coral;"' if self.draft else 'style="background-color: lightgreen;"'
+        return f'<tr><th>{self.status.name}</th><th>{self.note[:50]}</th><th {draft_style}>{_("published") if self.published else _("draft")}</th><th>{self.created.date().isoformat()}</th></tr>'
 
 class HearManager(models.Manager):
     def get_queryset(self):

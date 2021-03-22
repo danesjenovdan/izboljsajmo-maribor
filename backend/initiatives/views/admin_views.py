@@ -7,7 +7,8 @@ from rest_framework.response import Response
 
 from datetime import datetime
 
-from initiatives.models import Initiative, Reviwers
+from initiatives.serializers import RejectionSerializer
+from initiatives.models import Initiative, Reviwers, Rejection
 
 
 class MoveResponsibilityApiView(views.APIView):
@@ -28,3 +29,11 @@ class ArchiveApiView(views.APIView):
         initiative.archived = datetime.now()
         initiative.save()
         return redirect('admin:%s_%s_changelist' % (initiative._meta.app_label,  label))
+
+
+class RejectionViewSet(
+    viewsets.GenericViewSet,
+    mixins.RetrieveModelMixin):
+    permission_classes = [permissions.IsAuthenticated, ]
+    serializer_class = RejectionSerializer
+    queryset = Rejection.objects.all()
