@@ -1,11 +1,13 @@
 <template>
   <b-container fluid class="login-container">
     <div class="logo">
-      <img
-        src="~/assets/img/izboljsajmo_maribor_logo.png"
-        class="p-4"
-        alt="Izboljšajmo Maribor logo"
-      >
+      <NuxtLink to="/predlogi">
+        <img
+          src="~/assets/img/izboljsajmo_maribor_logo.png"
+          class="p-4"
+          alt="Izboljšajmo Maribor logo"
+        >
+      </NuxtLink>
     </div>
     <b-row class="justify-content-center align-items-md-center">
       <div class="login-window">

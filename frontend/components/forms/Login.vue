@@ -89,6 +89,13 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+
+#remember-me-input-group {
+  .custom-checkbox label.custom-control-label:before, .custom-checkbox label.custom-control-label:after {
+    border: none;
+    box-shadow: 3px 3px 4px rgba(208, 212, 220, 0.35), -3px -3px 4px #ffffff, inset 0 3px 4px rgba(208, 212, 220, 0.5);
+  }
+}
 
 </style>

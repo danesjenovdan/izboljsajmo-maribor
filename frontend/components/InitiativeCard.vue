@@ -125,7 +125,7 @@ h4 {
 }
 
 .initiative-card {
-  box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
+  box-shadow: 4px 4px 6px #d3d7df, -4px -4px 6px #ffffff;
 
   .cover-image {
     width: 100%;
@@ -138,6 +138,8 @@ h4 {
 
     h4 a {
       color: black;
+      line-height: 1;
+      font-weight: 700;
     }
 
     .author {

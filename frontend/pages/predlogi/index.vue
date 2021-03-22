@@ -200,8 +200,8 @@
           </b-row>
           <b-row class="mb-3">
             <b-col class="d-flex justify-content-between">
-              <div class="pl-1">
-                {{ initiatives.length }} predlogov
+              <div class="initiatives-no pl-1 d-flex align-items-center">
+                {{ initiativesNumber }}
               </div>
               <div
                 class="sort-initiatives d-flex align-items-center"
@@ -261,14 +261,16 @@ import InitiativeCard from '~/components/InitiativeCard'
 
 export default {
   components: { InitiativeCard },
+  /*
   asyncData ({ store }) {
     return store.dispatch('getInitiatives', {})
   },
+  */
   data () {
     return {
       search: '',
       showType: false,
-      filterTypes: [],
+      filterTypes: Object.keys(this.$store.getters.initiativeTypes),
       areas: [],
       showArea: false,
       filterAreas: [],
@@ -284,6 +286,10 @@ export default {
     }
   },
   computed: {
+    initiativesNumber () {
+      const n = this.initiatives.length
+      if (n === 1) { return '1 predlog' } else if (n === 2) { return '2 predloga' } else if (n === 3 || n === 4) { return `${n} predlogi` } else { return `${n} predlogov` }
+    },
     sortedInitiatives () {
       const initiatives = this.initiatives.slice(0).sort((a, b) => a.created.localeCompare(b.created))
       if (!this.sortInitiativesByDateAscending) {
@@ -292,9 +298,10 @@ export default {
       return initiatives
     }
   },
-  created () {
-    this.fetchAreas()
-    this.fetchZones()
+  async created () {
+    await this.fetchAreas()
+    await this.fetchZones()
+    await this.fetchInitiatives()
   },
   methods: {
     setIconStyles () {
@@ -314,9 +321,11 @@ export default {
     },
     async fetchAreas () {
       this.areas = await this.$store.dispatch('getAreas')
+      this.filterAreas = this.areas.map(a => a.id)
     },
     async fetchZones () {
       this.zones = await this.$store.dispatch('getZones')
+      this.filterZones = this.zones.map(z => z.id)
     },
     switchType () {
       this.showType = !this.showType
@@ -381,6 +390,7 @@ export default {
     font-style: italic;
     text-transform: uppercase;
     letter-spacing: 0.1rem;
+    line-height: 1;
 
     img {
       height: 1.2rem;
@@ -391,6 +401,7 @@ export default {
   p {
     font-size: 0.8rem;
     font-style: italic;
+    line-height: 1.4;
   }
 }
 
@@ -436,14 +447,16 @@ h4 {
 .filter {
   box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
   border-radius: 1.5rem;
-  border: 1px solid #f8f8f8;
+  border: 2px solid #f8f8f8;
+  background-color: #f8f8f8;
   font-style: italic;
   font-size: 0.8rem;
   padding: 0.1rem 0.5rem;
   margin-left: 0.5rem;
+  margin-top: 0.25rem;
 
   &.dropdown-open {
-    border: 1px solid #ef7782;
+    border: 2px solid #ef7782;
 
     img {
       transform: rotate(-180deg);
@@ -464,6 +477,7 @@ h4 {
     z-index: 10;
     padding: 1rem;
     text-align: left;
+    cursor: default;
 
     @media (min-width: 768px) {
       top: 3rem;
@@ -474,6 +488,11 @@ h4 {
       right: auto;
     }
   }
+}
+
+.initiatives-no {
+  font-style: italic;
+  font-size: 0.8rem;
 }
 
 .sort-initiatives {
