@@ -6,18 +6,11 @@ from django.utils.translation import gettext as _
 from django.core import validators
 from django.contrib.gis.db import models as geo_models
 from django.contrib.auth.models import Group
-from django.db.models.signals import pre_save, post_save
 
 from behaviors.behaviors import Timestamped, Authored, Published
 
-from initiatives.signals import set_area_admin_to_group, set_super_admin_to_group, set_area_appraiser_to_group, set_contractor_appraiser_to_group
-
 import logging
 logger = logging.getLogger(__name__)
-
-
-# TODO o izboljšamo maribor naredi podobno kot je na mauticu.
-# Elementi novice so lahko [video, slika, text, naslov...?], na seznamu lahko urejaš vrstni red.
 
 
 class InitiativeType(models.TextChoices):
@@ -442,9 +435,3 @@ class DescriptionDefinition(Timestamped, Authored):
     title = models.CharField(
         _('Title'),
         max_length=100)
-
-
-post_save.connect(set_contractor_appraiser_to_group, sender=ContractorAppraiserUser)
-post_save.connect(set_area_appraiser_to_group, sender=AreaAppraiserUser)
-post_save.connect(set_super_admin_to_group, sender=SuperAdminUser)
-post_save.connect(set_area_admin_to_group, sender=AreaAdminUser)

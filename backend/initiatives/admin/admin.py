@@ -33,7 +33,7 @@ class MBUserAdmin(UserAdmin):
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
-        (_('MB datas'), {'fields': ('role', 'zones', 'organizations', 'competent_services', 'phone_number')}),
+        (_('MB datas'), {'fields': ('role', 'zones', 'organizations', 'competent_services', 'area', 'phone_number')}),
         (_('Notes'), {'fields': ('note',)}),
     )
     add_fieldsets = (

@@ -8,7 +8,7 @@ from django.urls import reverse
 
 from behaviors.behaviors import Timestamped, Authored
 
-from initiatives.models import CommentStatus, InitiativeType, Reviwers
+from initiatives.models import CommentStatus, InitiativeType, Reviwers, Zone
 
 
 class Initiative(Timestamped, Authored):

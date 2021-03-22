@@ -10,4 +10,15 @@
         </tr>
         {% endfor %}
     </table>
+
+    {% if old_initiatives %}
+        <table>
+            {% for i in old_initiatives %}
+            <tr>
+                <td>i.name</td>
+                <td><a href="{{i.get_admin_change_url}}">{% translate "Open initiative" %}</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
 {% endblock body %}
