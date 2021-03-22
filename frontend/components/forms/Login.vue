@@ -29,7 +29,7 @@
         @keyup="checkPassword"
       />
     </div>
-    <div class="text-right">
+    <div class="text-right mt-2">
       <a href="/">Pozabljeno geslo?</a>
     </div>
     <b-form-group id="remember-me-input-group" v-slot="{ ariaDescribedby }">
