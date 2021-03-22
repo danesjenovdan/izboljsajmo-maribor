@@ -1,3 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: izboljsajmo-maribor-backend-pv-claim
+  labels:
+    app: izboljsajmo-maribor-backend
+spec:
+  storageClassName: 'scw-bssd-retain'
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,9 +28,16 @@ spec:
       labels:
         app: izboljsajmo-maribor-backend
     spec:
+      volumes:
+      - name: izboljsajmo-maribor-backend-persistent-storage
+        persistentVolumeClaim:
+          claimName: izboljsajmo-maribor-backend-pv-claim
       containers:
       - name: izboljsajmo-maribor-backend
         image: backend # kustomize thing
+        volumeMounts:
+        - name: izboljsajmo-maribor-backend-persistent-storage
+          mountPath: /files
         command: ['python', 'manage.py', 'runserver', '0.0.0.0:8000'] # TODO
         ports:
         - name: http
@@ -43,6 +64,15 @@ spec:
             value: postgres
           - name: SECRET_DB_PASSWORD
             value: initititit!
+      - name: izboljsajmo-maribor-nginx
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+        image: nginx:alpine
+        volumeMounts:
+        - name: izboljsajmo-maribor-backend-persistent-storage
+          mountPath: /usr/share/nginx/html
 ---
 apiVersion: v1
 kind: Service
