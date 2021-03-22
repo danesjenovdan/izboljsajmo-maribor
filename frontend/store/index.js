@@ -70,15 +70,11 @@ export const actions = {
     const newComment = {
       content: payload.content
     }
-    await this.$axios.post(`v1/initiatives/${payload.id}/comments/`, newComment, {
-      headers: { Authorization: 'Bearer ' + context.getters.token }
-    })
+    await this.$axios.post(`v1/initiatives/${payload.id}/comments/`, newComment)
   },
 
   async postVote (context, payload) {
-    const response = await this.$axios.post(`v1/initiatives/${payload.id}/vote/`, {}, {
-      headers: { Authorization: 'Bearer ' + context.getters.token }
-    })
+    const response = await this.$axios.post(`v1/initiatives/${payload.id}/vote/`)
 
     if (response.status === 200) {
       return true // voted successfully
@@ -94,7 +90,6 @@ export const actions = {
     formData.append('image', payload.image)
     const response = await this.$axios.post('v1/images/', formData, {
       headers: {
-        Authorization: 'Bearer ' + context.getters.token,
         'Content-Type': 'multipart/form-data'
       }
     })
@@ -115,7 +110,6 @@ export const actions = {
     formData.append('name', payload.name)
     const response = await this.$axios.post('v1/files/', formData, {
       headers: {
-        Authorization: 'Bearer ' + context.getters.token,
         'Content-Type': 'multipart/form-data'
       }
     })
@@ -133,7 +127,7 @@ export const actions = {
   async postInitiative (context, payload) {
     const form = {
       title: payload.initiativeTitle,
-      type: 'II',
+      type: payload.initiativeType,
       area: payload.initiativeArea,
       address: payload.initiativeAddress,
       location: payload.initiativeLocation,
@@ -154,11 +148,7 @@ export const actions = {
       is_draft: payload.isDraft
     }
     console.log(JSON.stringify(form))
-    const response = await this.$axios.post('v1/initiatives/', form, {
-      headers: {
-        Authorization: 'Bearer ' + context.getters.token
-      }
-    })
+    const response = await this.$axios.post('v1/initiatives/', form)
     const responseData = await response.data
 
     if (response.status === 201) {
@@ -177,21 +167,23 @@ export const actions = {
       params.append('search', payload.search)
     }
     // types
-    if (payload.type) {
+    if (payload.type && payload.type.length > 0) {
       params.append('type', payload.type.join(','))
-    }
+    } else { return { initiatives: [] } }
     // areas
-    if (payload.area) {
+    if (payload.area && payload.area.length > 0) {
       params.append('area', payload.area.join(','))
-    }
+    } else { return { initiatives: [] } }
     // zones
-    if (payload.zone) {
-      params.append('area', payload.zone.join(','))
-    }
+    if (payload.zone && payload.zone.length > 0) {
+      params.append('zone', payload.zone.join(','))
+    } else { return { initiatives: [] } }
     // statuses
+    /*
     if (payload.status) {
-      params.append('area', payload.status.join(','))
-    }
+      params.append('status', payload.status.join(','))
+    } else { return { initiatives: [] } }
+    */
     const response = await this.$axios.get('v1/initiatives/?', { params })
     if (response.status === 200) {
       return { initiatives: response.data }
@@ -202,11 +194,7 @@ export const actions = {
   },
 
   async getMyInitiatives (context, payload) {
-    const response = await this.$axios.get('v1/initiatives/my', {
-      headers: {
-        Authorization: 'Bearer ' + context.getters.token
-      }
-    })
+    const response = await this.$axios.get('v1/initiatives/my')
     if (response.status === 200) {
       return {
         drafts: response.data.drafts,

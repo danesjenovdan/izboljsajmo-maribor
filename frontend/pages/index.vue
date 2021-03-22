@@ -29,7 +29,7 @@
                 <div class="initiative-card draft h-100">
                   <img
                     class="cover-image"
-                    :src="$axios.defaults.baseURL + draft.cover_image.image"
+                    :src="draft.cover_image.image"
                     alt="Initiative draft cover image"
                   >
                   <div class="initiative-card-body">
@@ -58,7 +58,9 @@
             <h4>Oddani predlogi</h4>
           </b-col>
           <b-col cols="12" md="8" lg="10">
-            <p v-if="published.length === 0" class="font-italic">Nimaš oddanih predlogov.</p>
+            <p v-if="published.length === 0" class="font-italic">
+              Nimaš oddanih predlogov.
+            </p>
             <b-row>
               <b-col
                 v-if="published.length === 0"
@@ -80,13 +82,19 @@
                   </div>
                 </div>
               </b-col>
-              <InitiativeCard
+              <b-col
                 v-for="initiative in published"
                 :key="initiative.id"
-                v-bind="initiative"
-                @vote="vote(initiative.id)"
+                cols="12"
+                lg="6"
+                xl="4"
+                class="mb-4"
               >
-              </InitiativeCard>
+                <InitiativeCard
+                  v-bind="initiative"
+                  @vote="vote(initiative.id)"
+                />
+              </b-col>
             </b-row>
           </b-col>
         </b-row>
@@ -96,7 +104,10 @@
 </template>
 
 <script>
+import InitiativeCard from '~/components/InitiativeCard'
+
 export default {
+  components: { InitiativeCard },
   middleware: 'auth',
   asyncData ({ store }) {
     return store.dispatch('getMyInitiatives')

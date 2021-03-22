@@ -1,65 +1,59 @@
 <template>
-  <b-col
-    cols="12"
-    lg="6"
-    xl="4"
-    class="mb-4"
-  >
-    <div class="initiative-card h-100">
-      <img
-        v-if="cover_image"
-        class="cover-image"
-        :src="cover_image.image"
-        alt=""
-      >
-      <div class="initiative-card-body">
-        <h4>
-          <NuxtLink :to="`/predlogi/${id}`">
-            {{ title }}
-          </NuxtLink>
-        </h4>
-        <span class="author">{{ author }}</span>
-        <div class="my-1">
-          <span class="tag">{{ status }}</span>
-          <span class="tag">{{ area.name }}</span>
-          <span class="tag">{{ date(created) }}</span>
-        </div>
-        <p>
-          {{ description }}
-        </p>
-        <hr class="hr-upper">
-        <hr class="hr-lower">
-        <div class="d-flex justify-content-between">
-          <div class="d-inline-flex align-items-center">
-            <b-button
-              class="d-flex align-items-center"
-              :disabled="has_voted"
-              @click="vote"
+  <div class="initiative-card h-100">
+    <img
+      v-if="cover_image"
+      class="cover-image"
+      :src="cover_image.image"
+      alt=""
+    >
+    <div class="initiative-card-body">
+      <h4>
+        <NuxtLink :to="`/predlogi/${id}`">
+          {{ title }}
+        </NuxtLink>
+      </h4>
+      <span class="author">{{ author }}</span>
+      <div class="my-1">
+        <span class="tag">{{ status }}</span>
+        <span class="tag">{{ area.name }}</span>
+        <span class="tag">{{ date(created) }}</span>
+      </div>
+      <p>
+        {{ description }}
+      </p>
+      <hr class="hr-upper">
+      <hr class="hr-lower">
+      <div class="d-flex justify-content-between">
+        <div class="d-inline-flex align-items-center">
+          <b-button
+            class="d-flex align-items-center"
+            :disabled="has_voted"
+            @click="vote"
+          >
+            <img
+              src="~/assets/img/icons/love.png"
+              alt="love"
+              class="mr-1"
             >
-              <img
-                src="~/assets/img/icons/love.png"
-                alt="love"
-                class="mr-1"
-              >
-              Podpri
-            </b-button>
-            <span class="ml-1">{{ vote_count }}</span>
-          </div>
-          <div class="d-inline-flex align-items-center">
-            <b-button class="d-flex align-items-center">
-              <img
-                src="~/assets/img/icons/comment.png"
-                alt="comment"
-                class="mr-1"
-              >
-              Komentiraj
-            </b-button>
-            <span class="ml-1">{{ comment_count }}</span>
-          </div>
+            <span v-if="!has_voted">Podpri</span>
+            <span v-if="has_voted">Glas oddan!</span>
+          </b-button>
+          <span class="ml-1">{{ vote_count }}</span>
+        </div>
+        <div class="d-inline-flex align-items-center">
+          <b-button class="d-flex align-items-center">
+            <img
+              src="~/assets/img/icons/comment.png"
+              alt="comment"
+              class="mr-1"
+            >
+            Komentiraj
+          </b-button>
+          <span class="ml-1">{{ comment_count }}</span>
         </div>
       </div>
     </div>
-  </b-col>
+  </div>
 </template>
 
 <script>
@@ -131,7 +125,7 @@ h4 {
 }
 
 .initiative-card {
-  box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
+  box-shadow: 4px 4px 6px #d3d7df, -4px -4px 6px #ffffff;
 
   .cover-image {
     width: 100%;
@@ -144,6 +138,8 @@ h4 {
 
     h4 a {
       color: black;
+      line-height: 1;
+      font-weight: 700;
     }
 
     .author {
