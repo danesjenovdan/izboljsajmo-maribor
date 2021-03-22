@@ -185,6 +185,12 @@ textarea.form-control {
         width: 50%;
         height: 50%;
       }
+
+      &:hover {
+        color: #fff;
+        background-color: #5a6268;
+        border-color: #545b62;
+      }
     }
 
     p {

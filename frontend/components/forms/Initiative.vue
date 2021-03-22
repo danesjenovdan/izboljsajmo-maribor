@@ -160,9 +160,9 @@
                 @change="processCoverImage($event)"
               >
               <div class="d-flex align-items-center">
-                <b-button class="drop-circle d-flex justify-content-center align-items-center">
+                <div class="drop-circle btn d-flex justify-content-center align-items-center">
                   <img src="~/assets/img/icons/add.png" alt="add">
-                </b-button>
+                </div>
                 <p>Dodaj sliko ali pa jo povleci in odloži. Dovoljeni formati so: gif, jpg, png. Velikost naj ne presega 5 MB.</p>
               </div>
             </label>
@@ -202,9 +202,9 @@
                 @change="processFiles($event)"
               >
               <div class="d-flex align-items-center">
-                <b-button class="drop-circle d-flex justify-content-center align-items-center">
+                <div class="drop-circle btn d-flex justify-content-center align-items-center">
                   <img src="~/assets/img/icons/add.png" alt="add">
-                </b-button>
+                </div>
                 <p>Dodaj datoteke ali pa jih povleci in odloži. Dovoljeni formati so: gif, jpg, png, doc, docx, pdf, odt. Velikost naj ne presega 5 MB.</p>
               </div>
             </label>
@@ -326,16 +326,21 @@ export default {
         {
           params: {
             q: this.form.initiativeAddress,
+            city: 'Maribor',
+            country: 'Slovenia',
+            postalcode: 2000,
             format: 'json',
-            countrycodes: 'si',
-            'accept-language': 'sl'
+            countrycodes: 'si'
+          },
+          headers: {
+            'Accept-Language': 'sl'
           }
         }
       )
       if (response.status === 200) {
         if (response.data.length > 0) {
           const location = response.data[0]
-          this.address = location.display_name
+          this.address = this.formatAddress(location.address)
           this.mapMarkerPosition = {
             lat: location.lat,
             lng: location.lon
@@ -351,14 +356,23 @@ export default {
             lat: this.mapMarkerPosition.lat,
             lon: this.mapMarkerPosition.lng,
             format: 'json',
-            countrycodes: 'si',
-            'accept-language': 'sl'
+            countrycodes: 'si'
+          },
+          headers: {
+            'Accept-Language': 'sl'
           }
         }
       )
       if (response.status === 200) {
-        this.address = response.data.display_name
+        this.address = this.formatAddress(response.data.address)
       }
+    },
+    formatAddress (address) {
+      // {"house_number":"7","road":"Ulica heroja Zidanška","suburb":"Tabor","city_district":"Maribor","city":"Maribor","postcode":"2000","country":"Slovenija","country_code":"si"}
+      const streetAndHouseNo = (address.road) ? (address.house_number ? `${address.road} ${address.house_number}, ` : `${address.road}, `) : ''
+      const city = address.city || address.town || address.village || address.municipality || ''
+      const postcodeAndCity = `${address.postcode} ${city}, `
+      return `${streetAndHouseNo}${postcodeAndCity}${address.country}`
     },
     checkInitiativeLocation () {
       if (!this.initiativeLocationIsEmpty) {

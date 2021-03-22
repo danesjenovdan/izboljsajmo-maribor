@@ -73,7 +73,7 @@
                   <h4>Oddaj predlog izboljšave, popravek ali postavi vprašanje</h4>
                   <div>
                     <NuxtLink
-                      to="/predlogi/nov"
+                      to="/predlogi/nov?tip=II"
                       class="new-initiative-button btn position-relative d-inline-flex justify-content-center text-uppercase"
                     >
                       Predlagaj
