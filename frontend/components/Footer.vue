@@ -21,6 +21,7 @@ export default {
 
   a {
     color: #f8f8f8;
+    font-size: 0.8rem;
 
     &:hover {
       text-decoration: none;

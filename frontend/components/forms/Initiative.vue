@@ -11,7 +11,7 @@
     <div class="initiative-form">
       <form
         enctype="multipart/form-data"
-        @submit.prevent="createInitiative(false)"
+        @submit.prevent="createInitiative()"
       >
         <h4>{{ formTitle }}</h4>
         <p class="form-subtitle">
@@ -219,7 +219,7 @@
         </div>
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <b-button class="save-button px-4" @click="createInitiative(true)">
+            <b-button class="save-button px-4" @click="createDraft()">
               Shrani
             </b-button>
             <b-button
@@ -329,7 +329,6 @@ export default {
             city: 'Maribor',
             country: 'Slovenia',
             postalcode: 2000,
-            format: 'json',
             countrycodes: 'si'
           },
           headers: {
@@ -355,7 +354,7 @@ export default {
           params: {
             lat: this.mapMarkerPosition.lat,
             lon: this.mapMarkerPosition.lng,
-            format: 'json',
+            format: 'jsonv2',
             countrycodes: 'si'
           },
           headers: {
@@ -422,7 +421,48 @@ export default {
     dragLeaveHandler2 () {
       this.dropzone2Active = false
     },
-    async createInitiative (isDraft) {
+    async createDraft () {
+      try {
+        // is draft
+        this.form.isDraft = true
+        // add initiative type
+        this.form.initiativeType = this.initiativeType
+        // upload and set cover image
+        if (this.coverImageFile) {
+          const imageID = await this.$store.dispatch('postCoverImage', {
+            image: this.coverImageFile
+          })
+          this.form.initiativeCoverImage = {
+            id: imageID
+          }
+        }
+        // upload and set image files
+        for (let i = 0; i < this.files.length; i++) {
+          console.log({
+            file: this.files[i],
+            name: this.files[i].name
+          })
+          const filesID = await this.$store.dispatch('postFiles', {
+            file: this.files[i],
+            name: this.files[i].name
+          })
+          this.form.initiativeFiles.push({
+            id: filesID
+          })
+        }
+        // remove location if empty
+        if (this.initiativeLocationIsEmpty) {
+          this.form.initiativeLocation = null
+        }
+        console.log(this.form)
+        const id = await this.$store.dispatch('postInitiative', this.form)
+        await this.$router.push('/')
+      } catch (err) {
+        // this.errorComment = true
+        console.log(err)
+      }
+    },
+    async createInitiative () {
       if (
         !this.errorInitiativeTitle &&
         !this.errorInitiativeArea &&
@@ -457,17 +497,11 @@ export default {
           if (this.initiativeLocationIsEmpty) {
             this.form.initiativeLocation = null
           }
-          // is draft
-          this.form.isDraft = isDraft
           // add initiative type
           this.form.initiativeType = this.initiativeType
           console.log(this.form)
           const id = await this.$store.dispatch('postInitiative', this.form)
-          if (this.form.isDraft) {
-            await this.$router.push('/')
-          } else {
-            await this.$router.push(`/predlogi/${id}`)
-          }
+          await this.$router.push(`/predlogi/${id}`)
         } catch (err) {
           // this.errorComment = true
           console.log(err)
