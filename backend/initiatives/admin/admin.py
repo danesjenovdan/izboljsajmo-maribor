@@ -6,8 +6,8 @@ from django.utils.html import format_html
 from django.urls import reverse
 
 from initiatives.models import (
-    User, Organization, Zone, CompetentService, Area, Status, StatusInitiative,
-    File, Comment, Comment, FAQ, StatusInitiativeHear, Rejection, Image,
+    User, SuperAdminUser, AreaAdminUser, AreaAppraiserUser, ContractorAppraiserUser, Organization, Zone, CompetentService,
+    Area, Status, StatusInitiative, File, Comment, Comment, FAQ, StatusInitiativeHear, Rejection, Image,
     StatusInitiativeHear, StatusInitiativeEditing, StatusInitiativeProgress,
     StatusInitiativeFinished, StatusInitiativeDone, StatusInitiativeRejected, Description
 )
@@ -33,7 +33,7 @@ class MBUserAdmin(UserAdmin):
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
-        (_('MB datas'), {'fields': ('zones', 'organizations', 'competent_services', 'phone_number')}),
+        (_('MB datas'), {'fields': ('role', 'zones', 'organizations', 'competent_services', 'area', 'phone_number')}),
         (_('Notes'), {'fields': ('note',)}),
     )
     add_fieldsets = (
@@ -42,6 +42,22 @@ class MBUserAdmin(UserAdmin):
             'fields': ('username', 'password1', 'password2'),
         }),
     )
+
+
+class SuperAdminUserAdmin(MBUserAdmin):
+    readonly_fields = ['role']
+
+
+class AreaAdminUserAdmin(MBUserAdmin):
+    readonly_fields = ['role']
+
+
+class AreaAppraiserUserAdmin(MBUserAdmin):
+    readonly_fields = ['role']
+
+
+class ContractorAppraiserUserAdmin(MBUserAdmin):
+    readonly_fields = ['role']
 
 
 class UserOrganizationInline(admin.TabularInline):
@@ -168,7 +184,7 @@ class StatusInitiativeRejectedInline(admin.TabularInline):
     form = RejectedStatusInlineForm
     readonly_fields = ['created']
     fields = ['created', 'email_content', 'reason_for_rejection']
-    autocomplete_fields = ['reason_for_rejection']
+    autocomplete_fields = ['reason_for_rejection',]
     classes = ['collapse']
     model = StatusInitiativeRejected
     extra = 0
@@ -176,6 +192,11 @@ class StatusInitiativeRejectedInline(admin.TabularInline):
     def save_model(self, request, obj, form, change):
         obj.status = Status.objects.get(name='Zavrnjeno')
         super().save_model(request, obj, form, change)
+
+    class Media:
+        js = (
+            'https://code.jquery.com/jquery-3.6.0.min.js', # jquery
+        )
 
 
 class StatusInitiativeRejectedAdminInline(StatusInitiativeRejectedInline):
@@ -254,6 +275,10 @@ class FAQAdmin(OrderableAdmin, admin.ModelAdmin):
 
 
 admin.site.register(User, MBUserAdmin)
+admin.site.register(SuperAdminUser, SuperAdminUserAdmin)
+admin.site.register(AreaAdminUser, AreaAdminUserAdmin)
+admin.site.register(AreaAppraiserUser, AreaAppraiserUserAdmin)
+admin.site.register(ContractorAppraiserUser, ContractorAppraiserUserAdmin)
 admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(Zone, ZoneAdmin)
 admin.site.register(Area, AreaAdmin)

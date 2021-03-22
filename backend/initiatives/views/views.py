@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.translation import gettext as _
-from rest_framework import viewsets, mixins, permissions, status, views, authentication
+from rest_framework import viewsets, mixins, permissions, status, views, authentication, exceptions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -17,6 +17,8 @@ from initiatives.models import Zone, Area, FAQ, DescriptionDefinition, Initiativ
 
 from initiatives.permissions import IsOwnerOrReadOnly
 
+import logging
+logger = logging.getLogger(__name__)
 
 class UserViewSet(
     viewsets.GenericViewSet,
@@ -149,19 +151,32 @@ class InitiativeViewSet(
             return Response(serializer.data)
 
     @action(
-        methods=['post'],
+        methods=['post', 'delete'],
         detail=True,
         url_path='vote',
         url_name='vote',
         permission_classes=[permissions.IsAuthenticated,])
     def votes(self, request, pk=None):
-        initiative = get_object_or_404(Initiative, pk=pk)
-        ex_vote = Vote.objects.filter(author=request.user, initiative=initiative)
-        if ex_vote:
-            return Response({'detail': _('You already voted for this initiative.')}, 409)
+        logger.warning(request.method)
+        if request.method == 'POST':
+            logger.warning(pk)
+            initiative = get_object_or_404(Initiative, pk=pk)
+            ex_vote = Vote.objects.filter(author=request.user, initiative=initiative)
+            if ex_vote:
+                return Response({'detail': _('You already voted for this initiative.')}, status.HTTP_409_CONFLICT)
+            else:
+                Vote(author=request.user, initiative=initiative).save()
+                return Response({'detail': 'done'})
+        elif request.method == 'DELETE':
+            initiative = get_object_or_404(Initiative, pk=pk)
+            ex_vote = Vote.objects.filter(author=request.user, initiative=initiative)
+            if ex_vote:
+                ex_vote.delete()
+                return Response({'detail': 'deleted'}, status.HTTP_204_NO_CONTENT)
+            else:
+                return Response({'detail': _('You need to vote first.')}, status.HTTP_409_CONFLICT)
         else:
-            Vote(author=request.user, initiative=initiative).save()
-            return Response({'detail': 'done'})
+            raise exceptions.MethodNotAllowed(request.method)
 
     @action(
         methods=['get'],

@@ -17,20 +17,77 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         self.options = [('add_', 'Can add '), ('change_', 'Can change '), ('view_', 'Can view ')]
+        self.basc_options = [('change_', 'Can change '), ('view_', 'Can view ')]
 
 
-        admin_group, created = Group.objects.get_or_create(name='Admin')
+        # Super admin
+        admin_group, created = Group.objects.get_or_create(name='Super admin')
+
         ct = ContentType.objects.get_for_model(models.BothersInitiativeArea)
-
-        permissions = self.get_permissions('bothersinitiativearea', ct)
+        permissions = self.get_permissions('bothersinitiativesuper', ct, self.options)
         admin_group.permissions.add(*permissions)
-        print(list(Permission.objects.all().values_list('codename', flat=True)))
+        ct = ContentType.objects.get_for_model(models.IdeaInitiativeAppraiser)
+        permissions = self.get_permissions('ideainitiativesuper', ct, self.options)
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.InterestedInitiativeAppraiser)
+        permissions = self.get_permissions('interestedinitiativesuper', ct, self.options)
+        admin_group.permissions.add(*permissions)
 
+        ct = ContentType.objects.get_for_model(models.AreaAdminUser)
+        permissions = self.get_permissions('areaadminuser', ct, self.options)
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.ContractorAppraiserUser)
+        permissions = self.get_permissions('contractorappraiseruser', ct, self.options)
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.AreaAppraiserUser, self.options)
+        permissions = self.get_permissions('areaappraiseruser', ct)
+        admin_group.permissions.add(*permissions)
+        
+
+        # Area admin
+        area_admin_group, created = Group.objects.get_or_create(name='Area admin')
+
+        ct = ContentType.objects.get_for_model(models.BothersInitiativeArea)
+        permissions = self.get_permissions('bothersinitiativearea', ct)
+        area_admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.IdeaInitiativeAppraiser)
+        permissions = self.get_permissions('ideainitiativearea', ct)
+        area_admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.InterestedInitiativeAppraiser)
+        permissions = self.get_permissions('interestedinitiativearea', ct)
+        area_admin_group.permissions.add(*permissions)
+
+        ct = ContentType.objects.get_for_model(models.AreaAppraiserUser)
+        permissions = self.get_permissions('areaappraiseruser', ct, self.options)
+        area_admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.ContractorAppraiserUser)
+        permissions = self.get_permissions('contractorappraiseruser', ct, self.options)
+        area_admin_group.permissions.add(*permissions)
+
+        # Appraiser group
         appraiser_group, created = Group.objects.get_or_create(name='Appraiser')
         ct = ContentType.objects.get_for_model(models.BothersInitiativeAppraiser)
-
         permissions = self.get_permissions('bothersinitiativeappraiser', ct)
         appraiser_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.IdeaInitiativeAppraiser)
+        permissions = self.get_permissions('ideainitiativeappraiser', ct)
+        appraiser_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.InterestedInitiativeAppraiser)
+        permissions = self.get_permissions('interestedinitiativeappraiser', ct)
+        appraiser_group.permissions.add(*permissions)
+
+        ct = ContentType.objects.get_for_model(models.ContractorAppraiserUser)
+        permissions = self.get_permissions('contractorappraiseruser', ct, self.options)
+        appraiser_group.permissions.add(*permissions)
+
+        # Contracotr group
+        contractor_group, created = Group.objects.get_or_create(name='Contractor')
+        ct = ContentType.objects.get_for_model(models.BothersInitiativeContractor)
+        permissions = self.get_permissions('bothersinitiativecontractor', ct)
+        contractor_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.IdeaInitiativeContractor)
+        permissions = self.get_permissions('ideainitiativecontractor', ct)
+        contractor_group.permissions.add(*permissions)
 
         organization = models.Organization(
             name='DJND',
@@ -264,9 +321,9 @@ class Command(BaseCommand):
             author_id=1,
         ).save()
 
-    def get_permissions(self, name, ct):
+    def get_permissions(self, name, ct, options=self.basc_options):
         permissions = []
-        for option in self.options:
+        for option in options:
             print(f'{option[0]}{name}')
             permissions.append(Permission.objects.get(
             codename=f'{option[0]}{name}'))
