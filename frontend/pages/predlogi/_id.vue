@@ -22,7 +22,7 @@
             <span class="separator">|</span>
             <span>{{ date(data.created) }}</span>
           </p>
-          <div class="address">
+          <div v-if="data.location" class="address">
             <p>{{ data.address }}</p>
             <div id="map-wrap" class="mt-4">
               <client-only>

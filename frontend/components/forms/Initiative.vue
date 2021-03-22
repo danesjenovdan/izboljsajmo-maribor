@@ -453,6 +453,7 @@ export default {
         // remove location if empty
         if (this.initiativeLocationIsEmpty) {
           this.form.initiativeLocation = null
+          this.form.initiativeAddress = null
         }
         console.log(this.form)
         const id = await this.$store.dispatch('postInitiative', this.form)
@@ -496,6 +497,7 @@ export default {
           // remove location if empty
           if (this.initiativeLocationIsEmpty) {
             this.form.initiativeLocation = null
+            this.form.initiativeAddress = null
           }
           // add initiative type
           this.form.initiativeType = this.initiativeType
