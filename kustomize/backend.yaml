@@ -137,7 +137,7 @@ spec:
   tls:
   - hosts:
     - files.izboljsajmo-maribor.k8s.djnd.si
-    secretName: izboljsajmo-maribor-backend-tls
+    secretName: izboljsajmo-maribor-nginx-tls
   rules:
   - host: files.izboljsajmo-maribor.k8s.djnd.si
     http:
