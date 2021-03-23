@@ -4,7 +4,14 @@
       <b-col cols="12" lg="4" class="position-relative">
         <div class="predlog-info mb-4 mb-lg-0">
           <div class="tags mb-2">
-            <span>
+            <span class="pl-4">
+              <span
+                :class="{
+                  'tag-mm': data.type === 'MM',
+                  'tag-ii': data.type === 'II',
+                  'tag-zm': data.type === 'ZM',
+                }">
+              </span>
               {{ $store.getters.initiativeTypes[data.type] }}
             </span>
             <span>{{ data.area.name }}</span>
@@ -15,7 +22,7 @@
             <span class="separator">|</span>
             <span>{{ date(data.created) }}</span>
           </p>
-          <div class="address">
+          <div v-if="data.location" class="address">
             <p>{{ data.address }}</p>
             <div id="map-wrap" class="mt-4">
               <client-only>
@@ -122,7 +129,7 @@
             <b-row class="justify-content-center mb-5">
               <b-col cols="12" lg="9">
                 <CommentForm :id="id" />
-                <div v-for="comment in data.comments" :key="comment.author" class="comment">
+                <div v-for="comment in data.comments" :key="comment.author + comment.created" class="comment">
                   <hr class="hr-upper">
                   <hr class="hr-lower">
                   <span>{{ comment.author }}</span>
@@ -212,8 +219,37 @@ export default {
     color: black;
     font-size: 0.75rem;
     padding: 0.4rem 0.8rem;
-    margin-right: 0.4rem;
+    margin-right: 0.75rem;
     border-radius: 1rem;
+    position: relative;
+    text-transform: lowercase;
+    display: inline-block;
+
+    &:first-letter {
+      text-transform: capitalize;
+    }
+
+    span {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      position: absolute;
+      height: 100%;
+      padding: 0.5rem;
+      left: 0;
+      top: 0;
+
+      &.tag-mm {
+        background-color: #8cade2;
+      }
+
+      &.tag-ii {
+        background-color: #70b6a3;
+      }
+
+      &.tag-zm {
+        background-color: #d9ab27;
+      }
+    }
   }
 
   h1, h6 {
@@ -353,8 +389,14 @@ export default {
       font-style: italic;
       font-size: 0.8rem;
     }
+
     .separator {
       margin: 0 0.25rem;
+    }
+
+    p {
+      overflow-wrap: break-word;
+      white-space: pre-wrap;
     }
   }
 }

@@ -9,10 +9,12 @@
         >
       </NuxtLink>
     </div>
-    <b-row class="justify-content-center align-items-md-center">
-      <div class="login-window">
-        <Nuxt />
-      </div>
+    <b-row class="justify-content-center align-items-sm-center">
+      <b-col cols="12" md="9" lg="6" xl="4">
+        <div class="login-window">
+          <Nuxt />
+        </div>
+      </b-col>
     </b-row>
   </b-container>
 </template>
@@ -25,15 +27,13 @@
   background-position: center;
 
   &>.row {
-    @media (min-width: 768px) {
-      height: 100vh;
-    }
+    height: 100vh;
   }
 
   .logo {
     text-align: center;
 
-    @media (min-width: 768px) {
+    @media (min-width: 576px) {
       position: absolute;
     }
   }
@@ -41,12 +41,7 @@
   .login-window {
     background-color: #f8f8f8;
     padding: 2rem;
-    overflow-y: scroll;
-
-    @media (min-width: 768px) {
-      max-height: 80%;
-      border-radius: 10px;
-    }
+    border-radius: 10px;
 
     h1 {
       font-weight: 700;
@@ -56,7 +51,7 @@
     a {
       font-size: 0.75rem;
       font-style: italic;
-      font-weight: 300;
+      font-weight: 500;
       color: black;
       text-decoration: underline;
 
@@ -66,8 +61,8 @@
     }
 
     hr {
-      width: calc(450px + 4rem);
       margin-left: -2rem;
+      margin-right: -2rem;
     }
   }
 }
