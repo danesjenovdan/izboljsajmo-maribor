@@ -134,7 +134,7 @@
               <div class="filenames">
                 <span class="mr-1">{{ coverImageFile.name }}</span>
                 <img
-                  src="~/assets/img/icons/trashcan.png"
+                  src="~/assets/img/icons/trashcan.svg"
                   alt="trashcan"
                   class="trashcan"
                   @click="removeCoverImage"
@@ -161,7 +161,7 @@
               >
               <div class="d-flex align-items-center">
                 <div class="drop-circle btn d-flex justify-content-center align-items-center">
-                  <img src="~/assets/img/icons/add.png" alt="add">
+                  <img src="~/assets/img/icons/add.svg" alt="add">
                 </div>
                 <p>Dodaj sliko ali pa jo povleci in odloži. Dovoljeni formati so: gif, jpg, png. Velikost naj ne presega 5 MB.</p>
               </div>
@@ -175,7 +175,7 @@
               <div v-for="file in files" :key="file.name" class="filenames">
                 <span class="mr-1">{{ file.name }}</span>
                 <img
-                  src="~/assets/img/icons/trashcan.png"
+                  src="~/assets/img/icons/trashcan.svg"
                   alt="trashcan"
                   class="trashcan"
                   @click="removeFile(file.name)"
@@ -203,7 +203,7 @@
               >
               <div class="d-flex align-items-center">
                 <div class="drop-circle btn d-flex justify-content-center align-items-center">
-                  <img src="~/assets/img/icons/add.png" alt="add">
+                  <img src="~/assets/img/icons/add.svg" alt="add">
                 </div>
                 <p>Dodaj datoteke ali pa jih povleci in odloži. Dovoljeni formati so: gif, jpg, png, doc, docx, pdf, odt. Velikost naj ne presega 5 MB.</p>
               </div>
@@ -229,9 +229,9 @@
               Zavrzi
             </b-button>
           </div>
-          <b-button type="submit" class="d-flex align-items-center px-4">
+          <b-button type="submit" class="d-flex align-items-center pl-4 pr-3">
             <span class="mr-4">ODDAJ</span>
-            <img src="~/assets/img/icons/arrow-right.png" alt="arrow right">
+            <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
           </b-button>
         </div>
       </form>
@@ -299,7 +299,7 @@ export default {
   methods: {
     setIconStyles () {
       this.mapIcon = this.$L.icon({
-        iconUrl: require('@/assets/img/icons/pin.png')
+        iconUrl: require('@/assets/img/icons/pin.svg')
       })
     },
     async fetchAreas () {
@@ -456,7 +456,7 @@ export default {
           this.form.initiativeAddress = null
         }
         console.log(this.form)
-        const id = await this.$store.dispatch('postInitiative', this.form)
+        await this.$store.dispatch('postInitiative', this.form)
         await this.$router.push('/')
       } catch (err) {
         // this.errorComment = true

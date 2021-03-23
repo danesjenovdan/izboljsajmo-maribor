@@ -87,7 +87,7 @@
                   >
                 </div>
                 <b-button class="support-button" :disabled="data.has_voted" @click="vote">
-                  <img src="~/assets/img/icons/love.png" alt="heart">
+                  <img src="~/assets/img/icons/love.svg" alt="heart">
                   <span v-if="!data.has_voted">PODPRI</span>
                   <span v-if="data.has_voted">GLAS ODDAN</span>
                 </b-button>
@@ -176,7 +176,7 @@ export default {
   methods: {
     setIconStyles () {
       this.mapIcon = this.$L.icon({
-        iconUrl: require('@/assets/img/icons/pin.png')
+        iconUrl: require('@/assets/img/icons/pin.svg')
       })
     },
     date (date) {

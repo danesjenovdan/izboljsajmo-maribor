@@ -80,8 +80,13 @@
         @keyup="checkPassword"
       />
     </div>
-    <b-button type="submit" class="w-100 mt-4">
-      ZAKLJUČI REGISTRACIJO<span class="float-right"><img src="~/assets/img/icons/arrow-right.png"></span>
+    <b-button type="submit" class="w-100 d-flex justify-content-center align-items-center position-relative">
+      ZAKLJUČI REGISTRACIJO
+      <img
+        src="~/assets/img/icons/arrow-right.svg"
+        class="position-absolute"
+        alt="arrow icon"
+      >
     </b-button>
     <div class="form-note text-center">
       Že imaš račun? <NuxtLink to="/prijava">

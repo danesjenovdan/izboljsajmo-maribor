@@ -3,7 +3,7 @@
     <b-row>
       <b-navbar toggleable="md" class="navigation align-items-center">
         <NuxtLink to="/predlogi">
-          <img src="~/assets/img/izboljsajmo_maribor_logo.png" alt="">
+          <img src="~/assets/img/izboljsajmo_maribor_logo.png" alt="Izboljšajmo Maribor LOGO">
         </NuxtLink>
         <b-navbar-toggle target="nav_collapse">
           <img src="~/assets/img/icons/more.png" alt="toggle menu">
@@ -18,9 +18,6 @@
             </NuxtLink>
             <NuxtLink class="nav-link" to="/o-izboljsajmo-maribor">
               O Izboljšajmo Maribor
-            </NuxtLink>
-            <NuxtLink class="nav-link" to="/pomoc">
-              Pomoč
             </NuxtLink>
             <NuxtLink v-if="!isAuthenticated" class="login nav-link" to="/prijava">
               Prijava
@@ -43,18 +40,18 @@
               <hr class="hr-lower">
               <div class="text-center">
                 <b-button
-                  class="my-initiatives-button w-75 position-relative d-inline-flex justify-content-center"
+                  class="my-initiatives-button w-75 position-relative d-inline-flex justify-content-center align-items-center"
                   @click="myInitiatives"
                 >
                   MOJI PREDLOGI
-                  <img src="~/assets/img/icons/arrow-right.png" alt="logout icon" class="position-absolute">
+                  <img src="~/assets/img/icons/arrow-right.svg" alt="logout icon" class="position-absolute">
                 </b-button>
                 <b-button
-                  class="logout-button w-75 position-relative d-inline-flex justify-content-center"
+                  class="logout-button w-75 position-relative d-inline-flex justify-content-center align-items-center"
                   @click="logout"
                 >
                   ODJAVA
-                  <img src="~/assets/img/icons/exit-right.png" alt="logout icon" class="position-absolute">
+                  <img src="~/assets/img/icons/exit-right.svg" alt="logout icon" class="position-absolute">
                 </b-button>
               </div>
             </div>
@@ -93,13 +90,13 @@ export default {
 <style scoped lang="scss">
 
 .navigation {
-  padding: 1rem 2rem;
+  padding: 0.5rem 2rem;
   box-shadow: 3px 3px 7px #d4d9e1, -3px -3px 7px #ffffff;
   background-color: #f8f8f8;
   width: 100%;
 
   img {
-    height: 40px;
+    height: 50px;
   }
 
   .navbar-nav .nav-link {
@@ -175,11 +172,6 @@ export default {
 
       &:hover {
         background-color: #6c757d;
-      }
-
-      img {
-        right: 0.5rem;
-        height: 1.5rem;
       }
     }
   }

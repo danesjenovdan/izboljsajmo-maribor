@@ -15,7 +15,7 @@
             <NuxtLink to="/predlogi/nov?tip=MM" class="action-card d-block h-100">
               <h6 class="d-flex align-items-center">
                 MOTI ME!
-                <img src="~/assets/img/icons/arrow-right.png" alt="arrow right">
+                <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
               </h6>
               <p>Naznani okvare, poškodbe, slabosti (pomanjkljivosti), ki jih zaznavaš v svojem okolju.</p>
             </NuxtLink>
@@ -25,7 +25,7 @@
             <NuxtLink to="/predlogi/nov?tip=II" class="action-card d-block h-100">
               <h6 class="d-flex align-items-center">
                 IMAM IDEJO!
-                <img src="~/assets/img/icons/arrow-right.png" alt="arrow right">
+                <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
               </h6>
               <p>Predlagaj novosti,  predloge za izboljšave, družbene inovacije, ki izboljšujejo kakovost življenja v MO Maribor.</p>
             </NuxtLink>
@@ -35,7 +35,7 @@
             <NuxtLink to="/predlogi/nov?tip=ZM" class="action-card d-block h-100">
               <h6 class="d-flex align-items-center">
                 ZANIMA ME!
-                <img src="~/assets/img/icons/arrow-right.png" alt="arrow right">
+                <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
               </h6>
               <p>Zastavi splošna vprašanja ali izreči pohvale.</p>
             </NuxtLink>
@@ -59,9 +59,10 @@
                   type="text"
                   class="form-control"
                   placeholder="Išči po naslovu ali vsebini pobud"
+                  @keyup.enter="fetchInitiatives"
                 >
                 <button class="search-button position-absolute" @click="fetchInitiatives">
-                  <img src="~/assets/img/icons/search.png">
+                  <img src="~/assets/img/icons/search.svg">
                 </button>
               </div>
               <button
@@ -71,7 +72,7 @@
               >
                 Tip
                 <img
-                  src="~/assets/img/icons/arrow-down.png"
+                  src="~/assets/img/icons/arrow-down.svg"
                   alt="arrow down"
                   class="ml-2"
                 >
@@ -117,7 +118,7 @@
               >
                 Področje
                 <img
-                  src="~/assets/img/icons/arrow-down.png"
+                  src="~/assets/img/icons/arrow-down.svg"
                   alt="arrow down"
                   class="ml-2"
                 >
@@ -150,7 +151,7 @@
               >
                 Območje
                 <img
-                  src="~/assets/img/icons/arrow-down.png"
+                  src="~/assets/img/icons/arrow-down.svg"
                   alt="arrow down"
                   class="ml-2"
                 >
@@ -182,7 +183,7 @@
               >
                 Status
                 <img
-                  src="~/assets/img/icons/arrow-down.png"
+                  src="~/assets/img/icons/arrow-down.svg"
                   alt="arrow down"
                   class="ml-2"
                 >
@@ -207,9 +208,9 @@
                 class="sort-initiatives d-flex align-items-center"
                 @click="sortInitiativesByDateAscending = !sortInitiativesByDateAscending"
               >
-                <span>Sortiraj po datumu objave</span>
+                <span class="mr-1">Sortiraj po datumu objave</span>
                 <img
-                  src="~/assets/img/icons/down-arrow.png"
+                  src="~/assets/img/icons/down-arrow.svg"
                   alt="down-arrow"
                   class="ml-1"
                   :class="{ 'sort-ascending': sortInitiativesByDateAscending }"
@@ -309,18 +310,17 @@ export default {
   methods: {
     setIconStyles () {
       this.mapIcon = this.$L.icon({
-        iconUrl: require('@/assets/img/icons/pin.png')
+        iconUrl: require('@/assets/img/icons/pin.svg')
       })
     },
     async fetchInitiatives () {
-      const fetched = await this.$store.dispatch('getInitiatives', {
+      this.initiatives = await this.$store.dispatch('getInitiatives', {
         search: this.search,
         type: this.filterTypes,
         area: this.filterAreas,
         zone: this.filterZones,
         status: this.filterStatuses
       })
-      this.initiatives = fetched.initiatives
     },
     async fetchAreas () {
       this.areas = await this.$store.dispatch('getAreas')
@@ -436,7 +436,7 @@ h4 {
   border: none;
   background-color: transparent;
   right: 0;
-  top: 0.2rem;
+  top: 0;
 
   @media (min-width: 768px) {
     top: auto;
@@ -454,20 +454,21 @@ h4 {
   background-color: #f8f8f8;
   font-style: italic;
   font-size: 0.8rem;
-  padding: 0.1rem 0.5rem;
+  padding: 0.1rem 0.75rem;
   margin-left: 0.5rem;
   margin-top: 0.25rem;
 
   &.dropdown-open {
     border: 2px solid #ef7782;
 
-    img {
+    & > img {
       transform: rotate(-180deg);
     }
   }
 
-  img {
+  & > img {
     transition: transform 500ms;
+    width: 0.5rem;
   }
 
   .filter-dropdown {
@@ -512,7 +513,7 @@ h4 {
   }
 
   img {
-    height: 0.8rem;
+    height: 0.7rem;
     transition: transform 500ms;
 
     &.sort-ascending {

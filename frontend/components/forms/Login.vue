@@ -41,8 +41,13 @@
         Zapomni si me.
       </b-form-checkbox>
     </b-form-group>
-    <b-button type="submit" class="w-100">
-      VSTOPI<span class="float-right"><img src="~/assets/img/icons/arrow-right.png"></span>
+    <b-button type="submit" class="w-100 d-flex justify-content-center align-items-center position-relative">
+      VSTOPI
+      <img
+        src="~/assets/img/icons/arrow-right.svg"
+        class="position-absolute"
+        alt="right arrow"
+      >
     </b-button>
     <div class="form-note text-center">
       Nimaš računa? <NuxtLink to="/registracija">
