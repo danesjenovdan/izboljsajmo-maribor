@@ -6,6 +6,9 @@
     <div class="form-group">
       <label for="username">Ime in priimek (uporabniško ime)</label>
       <span v-if="errorUsername" class="error-message">Vpiši uporabniško ime.</span>
+      <p class="form-note">
+        Ime, ki ga prikazujemo ob tvojih objavah.
+      </p>
       <b-form-input
         id="username"
         v-model="form.username"
@@ -52,12 +55,12 @@
         @keyup="checkPassword"
       />
     </div>
-    <b-button type="submit" class="w-100">
+    <b-button type="submit" class="w-100 mt-4">
       ZAKLJUČI REGISTRACIJO<span class="float-right"><img src="~/assets/img/icons/arrow-right.png" alt="arrow icon"></span>
     </b-button>
     <div class="form-note text-center">
       Že imaš račun? <NuxtLink to="/prijava">
-        Prijavi se
+        Prijavi se.
       </NuxtLink>
     </div>
   </form>

@@ -16,8 +16,8 @@
             <NuxtLink v-if="isAuthenticated" class="nav-link" to="/predlogi" @click.prevent="">
               Vsi predlogi
             </NuxtLink>
-            <NuxtLink v-if="!isAuthenticated" class="nav-link" to="/o-izboljsajmo-maribor">
-              O izboljšajmo Maribor
+            <NuxtLink class="nav-link" to="/o-izboljsajmo-maribor">
+              O Izboljšajmo Maribor
             </NuxtLink>
             <NuxtLink class="nav-link" to="/pomoc">
               Pomoč

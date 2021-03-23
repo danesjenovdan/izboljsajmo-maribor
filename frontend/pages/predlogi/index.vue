@@ -242,7 +242,7 @@
             >
               <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
               <l-marker
-                v-for="initiative in initiatives"
+                v-for="initiative in initiativeMarkers"
                 :key="initiative.id"
                 :lat-lng="[initiative.location.coordinates[0], initiative.location.coordinates[1]]"
                 :icon="mapIcon"
@@ -289,6 +289,9 @@ export default {
     initiativesNumber () {
       const n = this.initiatives.length
       if (n === 1) { return '1 predlog' } else if (n === 2) { return '2 predloga' } else if (n === 3 || n === 4) { return `${n} predlogi` } else { return `${n} predlogov` }
+    },
+    initiativeMarkers () {
+      return this.initiatives.filter(initiative => initiative.location)
     },
     sortedInitiatives () {
       const initiatives = this.initiatives.slice(0).sort((a, b) => a.created.localeCompare(b.created))

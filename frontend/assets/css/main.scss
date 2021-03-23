@@ -33,7 +33,8 @@ label {
   font-weight: 600;
   font-style: italic;
   font-size: 1rem;
-  margin-bottom: 0.2rem;
+  line-height: normal;
+  margin-bottom: 0;
   margin-top: 1rem;
 }
 
@@ -123,7 +124,7 @@ textarea.form-control {
     cursor: pointer;
 
     &:before, &:after {
-      top: -0.1rem;
+      top: -0.2rem;
       left: -2rem;
       width: 1.5rem;
       height: 1.5rem;
@@ -183,6 +184,12 @@ textarea.form-control {
       img {
         width: 50%;
         height: 50%;
+      }
+
+      &:hover {
+        color: #fff;
+        background-color: #5a6268;
+        border-color: #545b62;
       }
     }
 

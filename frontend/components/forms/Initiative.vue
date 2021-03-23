@@ -11,7 +11,7 @@
     <div class="initiative-form">
       <form
         enctype="multipart/form-data"
-        @submit.prevent="createInitiative(false)"
+        @submit.prevent="createInitiative()"
       >
         <h4>{{ formTitle }}</h4>
         <p class="form-subtitle">
@@ -160,9 +160,9 @@
                 @change="processCoverImage($event)"
               >
               <div class="d-flex align-items-center">
-                <b-button class="drop-circle d-flex justify-content-center align-items-center">
+                <div class="drop-circle btn d-flex justify-content-center align-items-center">
                   <img src="~/assets/img/icons/add.png" alt="add">
-                </b-button>
+                </div>
                 <p>Dodaj sliko ali pa jo povleci in odloži. Dovoljeni formati so: gif, jpg, png. Velikost naj ne presega 5 MB.</p>
               </div>
             </label>
@@ -202,9 +202,9 @@
                 @change="processFiles($event)"
               >
               <div class="d-flex align-items-center">
-                <b-button class="drop-circle d-flex justify-content-center align-items-center">
+                <div class="drop-circle btn d-flex justify-content-center align-items-center">
                   <img src="~/assets/img/icons/add.png" alt="add">
-                </b-button>
+                </div>
                 <p>Dodaj datoteke ali pa jih povleci in odloži. Dovoljeni formati so: gif, jpg, png, doc, docx, pdf, odt. Velikost naj ne presega 5 MB.</p>
               </div>
             </label>
@@ -219,7 +219,7 @@
         </div>
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <b-button class="save-button px-4" @click="createInitiative(true)">
+            <b-button class="save-button px-4" @click="createDraft()">
               Shrani
             </b-button>
             <b-button
@@ -326,16 +326,20 @@ export default {
         {
           params: {
             q: this.form.initiativeAddress,
-            format: 'json',
-            countrycodes: 'si',
-            'accept-language': 'sl'
+            city: 'Maribor',
+            country: 'Slovenia',
+            postalcode: 2000,
+            countrycodes: 'si'
+          },
+          headers: {
+            'Accept-Language': 'sl'
           }
         }
       )
       if (response.status === 200) {
         if (response.data.length > 0) {
           const location = response.data[0]
-          this.address = location.display_name
+          this.address = this.formatAddress(location.address)
           this.mapMarkerPosition = {
             lat: location.lat,
             lng: location.lon
@@ -350,15 +354,24 @@ export default {
           params: {
             lat: this.mapMarkerPosition.lat,
             lon: this.mapMarkerPosition.lng,
-            format: 'json',
-            countrycodes: 'si',
-            'accept-language': 'sl'
+            format: 'jsonv2',
+            countrycodes: 'si'
+          },
+          headers: {
+            'Accept-Language': 'sl'
           }
         }
       )
       if (response.status === 200) {
-        this.address = response.data.display_name
+        this.address = this.formatAddress(response.data.address)
       }
+    },
+    formatAddress (address) {
+      // {"house_number":"7","road":"Ulica heroja Zidanška","suburb":"Tabor","city_district":"Maribor","city":"Maribor","postcode":"2000","country":"Slovenija","country_code":"si"}
+      const streetAndHouseNo = (address.road) ? (address.house_number ? `${address.road} ${address.house_number}, ` : `${address.road}, `) : ''
+      const city = address.city || address.town || address.village || address.municipality || ''
+      const postcodeAndCity = `${address.postcode} ${city}, `
+      return `${streetAndHouseNo}${postcodeAndCity}${address.country}`
     },
     checkInitiativeLocation () {
       if (!this.initiativeLocationIsEmpty) {
@@ -408,7 +421,49 @@ export default {
     dragLeaveHandler2 () {
       this.dropzone2Active = false
     },
-    async createInitiative (isDraft) {
+    async createDraft () {
+      try {
+        // is draft
+        this.form.isDraft = true
+        // add initiative type
+        this.form.initiativeType = this.initiativeType
+        // upload and set cover image
+        if (this.coverImageFile) {
+          const imageID = await this.$store.dispatch('postCoverImage', {
+            image: this.coverImageFile
+          })
+          this.form.initiativeCoverImage = {
+            id: imageID
+          }
+        }
+        // upload and set image files
+        for (let i = 0; i < this.files.length; i++) {
+          console.log({
+            file: this.files[i],
+            name: this.files[i].name
+          })
+          const filesID = await this.$store.dispatch('postFiles', {
+            file: this.files[i],
+            name: this.files[i].name
+          })
+          this.form.initiativeFiles.push({
+            id: filesID
+          })
+        }
+        // remove location if empty
+        if (this.initiativeLocationIsEmpty) {
+          this.form.initiativeLocation = null
+          this.form.initiativeAddress = null
+        }
+        console.log(this.form)
+        const id = await this.$store.dispatch('postInitiative', this.form)
+        await this.$router.push('/')
+      } catch (err) {
+        // this.errorComment = true
+        console.log(err)
+      }
+    },
+    async createInitiative () {
       if (
         !this.errorInitiativeTitle &&
         !this.errorInitiativeArea &&
@@ -442,18 +497,13 @@ export default {
           // remove location if empty
           if (this.initiativeLocationIsEmpty) {
             this.form.initiativeLocation = null
+            this.form.initiativeAddress = null
           }
-          // is draft
-          this.form.isDraft = isDraft
           // add initiative type
           this.form.initiativeType = this.initiativeType
           console.log(this.form)
           const id = await this.$store.dispatch('postInitiative', this.form)
-          if (this.form.isDraft) {
-            await this.$router.push('/')
-          } else {
-            await this.$router.push(`/predlogi/${id}`)
-          }
+          await this.$router.push(`/predlogi/${id}`)
         } catch (err) {
           // this.errorComment = true
           console.log(err)
