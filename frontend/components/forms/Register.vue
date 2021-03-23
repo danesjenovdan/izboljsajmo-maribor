@@ -5,9 +5,9 @@
     </p>
     <div class="form-group">
       <label for="username">Ime in priimek (uporabniško ime)</label>
-      <span v-if="errorUsername" class="error-message">Vpiši uporabniško ime.</span>
+      <span v-if="errorUsername" class="error-message">Vpišite uporabniško ime.</span>
       <p class="form-note">
-        Ime, ki ga prikazujemo ob tvojih objavah.
+        Ime, ki ga prikazujemo ob vaših objavah.
       </p>
       <b-form-input
         id="username"
@@ -21,7 +21,7 @@
     </div>
     <div class="form-group">
       <label for="email">E-naslov</label>
-      <span v-if="errorEmail" class="error-message">Vpiši e-naslov.</span>
+      <span v-if="errorEmail" class="error-message">Vpišite e-naslov.</span>
       <b-form-input
         id="email"
         v-model.trim="form.email"
@@ -33,7 +33,7 @@
     </div>
     <div class="form-group">
       <label for="phone">Telefonska številka</label>
-      <span v-if="errorPhone" class="error-message">Vpiši telefonsko številko.</span>
+      <span v-if="errorPhone" class="error-message">Vpišite telefonsko številko.</span>
       <b-form-input
         id="phone"
         v-model="form.phone"
@@ -45,7 +45,7 @@
     </div>
     <div class="form-group">
       <label for="password">Geslo</label>
-      <span v-if="errorPassword" class="error-message">Vpiši geslo.</span>
+      <span v-if="errorPassword" class="error-message">Vpišite geslo.</span>
       <b-form-input
         id="password"
         v-model="form.password"
@@ -64,8 +64,8 @@
       >
     </b-button>
     <div class="form-note text-center">
-      Že imaš račun? <NuxtLink to="/prijava">
-        Prijavi se.
+      Že imate račun? <NuxtLink to="/prijava">
+        Prijavite se.
       </NuxtLink>
     </div>
   </form>

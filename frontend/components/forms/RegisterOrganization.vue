@@ -5,7 +5,7 @@
     </p>
     <div class="form-group">
       <label for="username">Ime skupine ali organizacije (uporabniško ime)</label>
-      <span v-if="errorUsername" class="error-message">Vpiši uporabniško ime.</span>
+      <span v-if="errorUsername" class="error-message">Vpišite uporabniško ime.</span>
       <p class="form-note">
         Ime, ki ga prikazujemo ob vaših objavah.
       </p>
@@ -21,7 +21,7 @@
     </div>
     <div class="form-group">
       <label for="name">Ime in priimek odgovorne osebe</label>
-      <span v-if="errorName" class="error-message">Vpiši ime in priimek.</span>
+      <span v-if="errorName" class="error-message">Vpišite ime in priimek.</span>
       <b-form-input
         id="name"
         v-model="form.name"
@@ -34,7 +34,7 @@
     </div>
     <div class="form-group">
       <label for="no-of-members">Število oseb v skupini ali število organizacij</label>
-      <span v-if="errorMembers" class="error-message">Vpiši število oseb.</span>
+      <span v-if="errorMembers" class="error-message">Vpišite število oseb.</span>
       <b-form-input
         id="no-of-members"
         v-model="form.membersNumber"
@@ -46,7 +46,7 @@
     </div>
     <div class="form-group">
       <label for="email">E-naslov</label>
-      <span v-if="errorEmail" class="error-message">Vpiši e-naslov.</span>
+      <span v-if="errorEmail" class="error-message">Vpišite e-naslov.</span>
       <b-form-input
         id="email"
         v-model.trim="form.email"
@@ -58,7 +58,7 @@
     </div>
     <div class="form-group">
       <label for="phone">Telefonska številka</label>
-      <span v-if="errorPhone" class="error-message">Vpiši telefonsko številko.</span>
+      <span v-if="errorPhone" class="error-message">Vpišite telefonsko številko.</span>
       <b-form-input
         id="phone"
         v-model="form.phone"
@@ -70,7 +70,7 @@
     </div>
     <div class="form-group">
       <label for="password">Geslo</label>
-      <span v-if="errorPassword" class="error-message">Vpiši geslo.</span>
+      <span v-if="errorPassword" class="error-message">Vpišite geslo.</span>
       <b-form-input
         id="password"
         v-model="form.password"
@@ -89,8 +89,8 @@
       >
     </b-button>
     <div class="form-note text-center">
-      Že imaš račun? <NuxtLink to="/prijava">
-        Prijavi se.
+      Že imate račun? <NuxtLink to="/prijava">
+        Prijavite se.
       </NuxtLink>
     </div>
   </b-form>

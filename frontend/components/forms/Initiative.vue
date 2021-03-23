@@ -329,10 +329,8 @@ export default {
             city: 'Maribor',
             country: 'Slovenia',
             postalcode: 2000,
-            countrycodes: 'si'
-          },
-          headers: {
-            'Accept-Language': 'sl'
+            countrycodes: 'si',
+            accept_language: 'sl'
           }
         }
       )
@@ -355,10 +353,8 @@ export default {
             lat: this.mapMarkerPosition.lat,
             lon: this.mapMarkerPosition.lng,
             format: 'jsonv2',
-            countrycodes: 'si'
-          },
-          headers: {
-            'Accept-Language': 'sl'
+            countrycodes: 'si',
+            accept_language: 'sl'
           }
         }
       )

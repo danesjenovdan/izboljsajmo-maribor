@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Prijavi se!</h1>
+    <h1>Prijavite se!</h1>
     <Login />
   </div>
 </template>

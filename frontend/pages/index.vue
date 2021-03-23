@@ -2,7 +2,7 @@
   <b-container fluid>
     <b-row class="p-4">
       <b-col cols="12" lg="3" class="text-center text-lg-left mb-4">
-        <h1>Pozdravljeni, {{ this.$auth.user.username }}</h1>
+        <h1>Pozdravljeni, {{ this.$auth.user.username }}!</h1>
         <b-button
           class="logout-button w-75 position-relative d-inline-flex justify-content-center align-items-center"
           @click="logout"
@@ -14,7 +14,7 @@
       <b-col cols="12" lg="9">
         <b-row v-if="drafts.length > 0" class="card-outline p-4 mb-4">
           <b-col cols="12" md="4" lg="2" class="mb-4">
-            <h4>Neoddani predlogi</h4>
+            <h4>Neoddane pobude</h4>
           </b-col>
           <b-col cols="12" md="8" lg="10">
             <b-row>
@@ -55,11 +55,11 @@
         </b-row>
         <b-row class="card-outline p-4 mb-4">
           <b-col cols="12" md="4" lg="2" class="mb-4">
-            <h4>Oddani predlogi</h4>
+            <h4>Oddane pobude</h4>
           </b-col>
           <b-col cols="12" md="8" lg="10">
             <p v-if="published.length === 0" class="font-italic">
-              Nimaš oddanih predlogov.
+              Nimate oddanih pobud.
             </p>
             <b-row>
               <b-col
@@ -70,7 +70,7 @@
                 class="mb-4"
               >
                 <div class="initiative-card py-5 px-3 empty h-100 text-center">
-                  <h4>Oddaj predlog izboljšave, popravek ali postavi vprašanje</h4>
+                  <h4>Oddajte predlog izboljšave, popravek ali postavite vprašanje</h4>
                   <div>
                     <NuxtLink
                       to="/predlogi/nov?tip=II"

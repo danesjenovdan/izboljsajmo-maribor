@@ -4,12 +4,28 @@
       <b-col lg="7" class="h-100 overflow-auto">
         <b-row class="my-4 justify-content-center">
           <b-col cols="12" lg="9" class="text-center">
-            <h4 class="d-inline">
-              Oddaj pobudo!
-            </h4> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim.
+            <h4>
+              Dobrodošli na platformi Izboljšajmo Maribor, ki je namenjena podajanju pobud in zastavljanju vprašanj o vseh področjih delovanja Mestne občine Maribor.
+            </h4>
+            <p class="mb-1">
+              Vsak, ki živi ali dela v tem mestu, lahko prispeva, da bo Maribor boljši. Radi bi slišali vaše mnenje, kaj vas zanima, kaj vas moti in kaj predlagate v Mestni občini Maribor.
+            </p>
+            <p class="mb-1">
+              Kliknite na enega od gumbov in nam posredujte svojo pobudo. Vsaka oddana pobuda bo obravnavana v pristojni strokovni službi v mestni upravi.
+            </p>
           </b-col>
         </b-row>
         <b-row class="action-cards">
+          <b-col cols="12" md="4" class="mb-3">
+            <div class="action-card-top" />
+            <NuxtLink to="/predlogi/nov?tip=ZM" class="action-card d-block h-100">
+              <h6 class="d-flex align-items-center">
+                ZANIMA ME!
+                <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
+              </h6>
+              <p>Splošna vprašanja / pohvale</p>
+            </NuxtLink>
+          </b-col>
           <b-col cols="12" md="4" class="mb-3">
             <div class="action-card-top" />
             <NuxtLink to="/predlogi/nov?tip=MM" class="action-card d-block h-100">
@@ -17,7 +33,7 @@
                 MOTI ME!
                 <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
               </h6>
-              <p>Naznani okvare, poškodbe, slabosti (pomanjkljivosti), ki jih zaznavaš v svojem okolju.</p>
+              <p>Zaznane okvare, poškodbe, slabosti, pomanjkljivosti, nepravilnosti ...</p>
             </NuxtLink>
           </b-col>
           <b-col cols="12" md="4" class="mb-3">
@@ -27,17 +43,7 @@
                 IMAM IDEJO!
                 <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
               </h6>
-              <p>Predlagaj novosti,  predloge za izboljšave, družbene inovacije, ki izboljšujejo kakovost življenja v MO Maribor.</p>
-            </NuxtLink>
-          </b-col>
-          <b-col cols="12" md="4" class="mb-3">
-            <div class="action-card-top" />
-            <NuxtLink to="/predlogi/nov?tip=ZM" class="action-card d-block h-100">
-              <h6 class="d-flex align-items-center">
-                ZANIMA ME!
-                <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
-              </h6>
-              <p>Zastavi splošna vprašanja ali izreči pohvale.</p>
+              <p>Projektni predlogi, novosti, predlogi za izboljšave, družbene inovacije ...</p>
             </NuxtLink>
           </b-col>
         </b-row>
@@ -47,7 +53,7 @@
           <b-row>
             <b-col cols="12">
               <h4 class="mb-4 text-center">
-                Išči ali brskaj po obstoječih predlogih!
+                Iščite ali brskajte po že oddanih pobudah
               </h4>
             </b-col>
           </b-row>
@@ -58,7 +64,7 @@
                   v-model="search"
                   type="text"
                   class="form-control"
-                  placeholder="Išči po naslovu ali vsebini pobud"
+                  placeholder="Iščite po naslovu ali vsebini pobud"
                   @keyup.enter="fetchInitiatives"
                 >
                 <button class="search-button position-absolute" @click="fetchInitiatives">
@@ -262,11 +268,6 @@ import InitiativeCard from '~/components/InitiativeCard'
 
 export default {
   components: { InitiativeCard },
-  /*
-  asyncData ({ store }) {
-    return store.dispatch('getInitiatives', {})
-  },
-  */
   data () {
     return {
       search: '',
@@ -314,13 +315,14 @@ export default {
       })
     },
     async fetchInitiatives () {
-      this.initiatives = await this.$store.dispatch('getInitiatives', {
+      const fetched = await this.$store.dispatch('getInitiatives', {
         search: this.search,
         type: this.filterTypes,
         area: this.filterAreas,
         zone: this.filterZones,
         status: this.filterStatuses
       })
+      this.initiatives = fetched.initiatives
     },
     async fetchAreas () {
       this.areas = await this.$store.dispatch('getAreas')
@@ -385,7 +387,8 @@ export default {
   text-decoration: none;
 
   &:hover {
-    background-color: #eff3fb;
+    // background-color: #eff3fb;
+    background-color: white;
   }
 
   h6 {
