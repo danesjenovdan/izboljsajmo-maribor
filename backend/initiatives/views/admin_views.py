@@ -34,6 +34,6 @@ class ArchiveApiView(views.APIView):
 class RejectionViewSet(
     viewsets.GenericViewSet,
     mixins.RetrieveModelMixin):
-    permission_classes = [permissions.IsAuthenticated, ]
+    permission_classes = []
     serializer_class = RejectionSerializer
     queryset = Rejection.objects.all()

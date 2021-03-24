@@ -5,7 +5,7 @@
     </p>
     <div class="form-group">
       <label for="username">E-naslov ali uporabniško ime</label>
-      <span v-if="errorUsername" class="error-message">Vpiši uporabniško ime.</span>
+      <span v-if="errorUsername" class="error-message">Vpišite uporabniško ime.</span>
       <b-form-input
         id="username"
         v-model.trim="form.username"
@@ -18,7 +18,7 @@
     </div>
     <div class="form-group">
       <label for="password">Geslo</label>
-      <span v-if="errorPassword" class="error-message">Vpiši geslo.</span>
+      <span v-if="errorPassword" class="error-message">Vpišite geslo.</span>
       <b-form-input
         id="password"
         v-model.trim="form.password"
@@ -41,12 +41,17 @@
         Zapomni si me.
       </b-form-checkbox>
     </b-form-group>
-    <b-button type="submit" class="w-100">
-      VSTOPI<span class="float-right"><img src="~/assets/img/icons/arrow-right.png"></span>
+    <b-button type="submit" class="w-100 d-flex justify-content-center align-items-center position-relative">
+      VSTOPI
+      <img
+        src="~/assets/img/icons/arrow-right.svg"
+        class="position-absolute"
+        alt="right arrow"
+      >
     </b-button>
     <div class="form-note text-center">
-      Nimaš računa? <NuxtLink to="/registracija">
-        Registriraj se
+      Nimate računa? <NuxtLink to="/registracija">
+        Registrirajte se
       </NuxtLink>
     </div>
   </b-form>

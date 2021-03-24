@@ -13,11 +13,10 @@ from about.models import About, AboutType
 
 class Command(BaseCommand):
     help = 'Setup data for development'
-
+    basc_options = [('change_', 'Can change '), ('view_', 'Can view ')]
     def handle(self, *args, **options):
-
-        self.options = [('add_', 'Can add '), ('change_', 'Can change '), ('view_', 'Can view ')]
         self.basc_options = [('change_', 'Can change '), ('view_', 'Can view ')]
+        self.options = [('add_', 'Can add '), ('change_', 'Can change '), ('view_', 'Can view ')]
 
 
         # Super admin
@@ -321,7 +320,7 @@ class Command(BaseCommand):
             author_id=1,
         ).save()
 
-    def get_permissions(self, name, ct, options=self.basc_options):
+    def get_permissions(self, name, ct, options=basc_options):
         permissions = []
         for option in options:
             print(f'{option[0]}{name}')

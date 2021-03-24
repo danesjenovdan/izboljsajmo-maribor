@@ -123,7 +123,6 @@ class RejectedStatusInlineForm(forms.ModelForm):
             status = Status.objects.get(name='Zavrnjeno')
             initial['email_content'] = status.default_email
             logger.debug(status.default_email)
-            print('ivan')
             initial['status_id'] = status.id
 
         kwargs['initial'] = initial

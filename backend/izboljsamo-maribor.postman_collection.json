@@ -613,6 +613,48 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/initiatives/2/vote/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"initiatives",
+						"2",
+						"vote",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "remove vote from initiative",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
 					"raw": "{\n    \"content\": \"WooHoo To je zakon!!!\n}",
 					"options": {
 						"raw": {
@@ -621,7 +663,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8000/v1/initiatives/1/comments/",
+					"raw": "http://localhost:8000/v1/initiatives/1/vote/",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -631,7 +673,7 @@
 						"v1",
 						"initiatives",
 						"1",
-						"comments",
+						"vote",
 						""
 					]
 				}

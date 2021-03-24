@@ -4,40 +4,46 @@
       <b-col lg="7" class="h-100 overflow-auto">
         <b-row class="my-4 justify-content-center">
           <b-col cols="12" lg="9" class="text-center">
-            <h4 class="d-inline">
-              Oddaj pobudo!
-            </h4> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim.
+            <h4>
+              Dobrodošli na platformi Izboljšajmo Maribor, ki je namenjena podajanju pobud in zastavljanju vprašanj o vseh področjih delovanja Mestne občine Maribor.
+            </h4>
+            <p class="mb-1">
+              Vsak, ki živi ali dela v tem mestu, lahko prispeva, da bo Maribor boljši. Radi bi slišali vaše mnenje, kaj vas zanima, kaj vas moti in kaj predlagate v Mestni občini Maribor.
+            </p>
+            <p class="mb-1">
+              Kliknite na enega od gumbov in nam posredujte svojo pobudo. Vsaka oddana pobuda bo obravnavana v pristojni strokovni službi v mestni upravi.
+            </p>
           </b-col>
         </b-row>
         <b-row class="action-cards">
           <b-col cols="12" md="4" class="mb-3">
             <div class="action-card-top" />
-            <NuxtLink to="/predlogi/nov?tip=MM" class="action-card d-block h-100">
-              <h6 class="d-flex align-items-center">
-                MOTI ME!
-                <img src="~/assets/img/icons/arrow-right.png" alt="arrow right">
-              </h6>
-              <p>Naznani okvare, poškodbe, slabosti (pomanjkljivosti), ki jih zaznavaš v svojem okolju.</p>
-            </NuxtLink>
-          </b-col>
-          <b-col cols="12" md="4" class="mb-3">
-            <div class="action-card-top" />
-            <NuxtLink to="/predlogi/nov?tip=II" class="action-card d-block h-100">
-              <h6 class="d-flex align-items-center">
-                IMAM IDEJO!
-                <img src="~/assets/img/icons/arrow-right.png" alt="arrow right">
-              </h6>
-              <p>Predlagaj novosti,  predloge za izboljšave, družbene inovacije, ki izboljšujejo kakovost življenja v MO Maribor.</p>
-            </NuxtLink>
-          </b-col>
-          <b-col cols="12" md="4" class="mb-3">
-            <div class="action-card-top" />
-            <NuxtLink to="/predlogi/nov?tip=ZM" class="action-card d-block h-100">
+            <NuxtLink to="/predlogi/oddaj/zanima-me" class="action-card d-block h-100">
               <h6 class="d-flex align-items-center">
                 ZANIMA ME!
-                <img src="~/assets/img/icons/arrow-right.png" alt="arrow right">
+                <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
               </h6>
-              <p>Zastavi splošna vprašanja ali izreči pohvale.</p>
+              <p>Splošna vprašanja / pohvale</p>
+            </NuxtLink>
+          </b-col>
+          <b-col cols="12" md="4" class="mb-3">
+            <div class="action-card-top" />
+            <NuxtLink to="/predlogi/oddaj/moti-me" class="action-card d-block h-100">
+              <h6 class="d-flex align-items-center">
+                MOTI ME!
+                <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
+              </h6>
+              <p>Zaznane okvare, poškodbe, slabosti, pomanjkljivosti, nepravilnosti ...</p>
+            </NuxtLink>
+          </b-col>
+          <b-col cols="12" md="4" class="mb-3">
+            <div class="action-card-top" />
+            <NuxtLink to="/predlogi/oddaj/imam-idejo" class="action-card d-block h-100">
+              <h6 class="d-flex align-items-center">
+                IMAM IDEJO!
+                <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
+              </h6>
+              <p>Projektni predlogi, novosti, predlogi za izboljšave, družbene inovacije ...</p>
             </NuxtLink>
           </b-col>
         </b-row>
@@ -47,7 +53,7 @@
           <b-row>
             <b-col cols="12">
               <h4 class="mb-4 text-center">
-                Išči ali brskaj po obstoječih predlogih!
+                Iščite ali brskajte po že oddanih pobudah
               </h4>
             </b-col>
           </b-row>
@@ -58,10 +64,11 @@
                   v-model="search"
                   type="text"
                   class="form-control"
-                  placeholder="Išči po naslovu ali vsebini pobud"
+                  placeholder="Iščite po naslovu ali vsebini pobud"
+                  @keyup.enter="fetchInitiatives"
                 >
                 <button class="search-button position-absolute" @click="fetchInitiatives">
-                  <img src="~/assets/img/icons/search.png">
+                  <img src="~/assets/img/icons/search.svg">
                 </button>
               </div>
               <button
@@ -71,7 +78,7 @@
               >
                 Tip
                 <img
-                  src="~/assets/img/icons/arrow-down.png"
+                  src="~/assets/img/icons/arrow-down.svg"
                   alt="arrow down"
                   class="ml-2"
                 >
@@ -117,7 +124,7 @@
               >
                 Področje
                 <img
-                  src="~/assets/img/icons/arrow-down.png"
+                  src="~/assets/img/icons/arrow-down.svg"
                   alt="arrow down"
                   class="ml-2"
                 >
@@ -150,7 +157,7 @@
               >
                 Območje
                 <img
-                  src="~/assets/img/icons/arrow-down.png"
+                  src="~/assets/img/icons/arrow-down.svg"
                   alt="arrow down"
                   class="ml-2"
                 >
@@ -182,7 +189,7 @@
               >
                 Status
                 <img
-                  src="~/assets/img/icons/arrow-down.png"
+                  src="~/assets/img/icons/arrow-down.svg"
                   alt="arrow down"
                   class="ml-2"
                 >
@@ -207,9 +214,9 @@
                 class="sort-initiatives d-flex align-items-center"
                 @click="sortInitiativesByDateAscending = !sortInitiativesByDateAscending"
               >
-                <span>Sortiraj po datumu objave</span>
+                <span class="mr-1">Sortiraj po datumu objave</span>
                 <img
-                  src="~/assets/img/icons/down-arrow.png"
+                  src="~/assets/img/icons/down-arrow.svg"
                   alt="down-arrow"
                   class="ml-1"
                   :class="{ 'sort-ascending': sortInitiativesByDateAscending }"
@@ -238,7 +245,12 @@
           <client-only>
             <l-map
               :zoom="13"
+              :min-zoom="11"
               :center="[46.554650, 15.645881]"
+              :max-bounds="[
+                [46.46188844675249, 15.51583465730236],
+                [46.62102957408261, 15.783283325506178]
+              ]"
             >
               <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
               <l-marker
@@ -261,11 +273,6 @@ import InitiativeCard from '~/components/InitiativeCard'
 
 export default {
   components: { InitiativeCard },
-  /*
-  asyncData ({ store }) {
-    return store.dispatch('getInitiatives', {})
-  },
-  */
   data () {
     return {
       search: '',
@@ -309,7 +316,7 @@ export default {
   methods: {
     setIconStyles () {
       this.mapIcon = this.$L.icon({
-        iconUrl: require('@/assets/img/icons/pin.png')
+        iconUrl: require('@/assets/img/icons/pin.svg')
       })
     },
     async fetchInitiatives () {
@@ -385,7 +392,8 @@ export default {
   text-decoration: none;
 
   &:hover {
-    background-color: #eff3fb;
+    // background-color: #eff3fb;
+    background-color: white;
   }
 
   h6 {
@@ -409,13 +417,13 @@ export default {
 }
 
 .action-cards {
-  div:nth-child(1) .action-card-top {
+  div:nth-child(2) .action-card-top {
     background-color: #8cade2;
   }
-  div:nth-child(2) .action-card-top {
+  div:nth-child(3) .action-card-top {
     background-color: #70b6a3;
   }
-  div:nth-child(3) .action-card-top {
+  div:nth-child(1) .action-card-top {
     background-color: #d9ab27;
   }
 }
@@ -436,7 +444,7 @@ h4 {
   border: none;
   background-color: transparent;
   right: 0;
-  top: 0.2rem;
+  top: 0;
 
   @media (min-width: 768px) {
     top: auto;
@@ -454,20 +462,21 @@ h4 {
   background-color: #f8f8f8;
   font-style: italic;
   font-size: 0.8rem;
-  padding: 0.1rem 0.5rem;
+  padding: 0.1rem 0.75rem;
   margin-left: 0.5rem;
   margin-top: 0.25rem;
 
   &.dropdown-open {
     border: 2px solid #ef7782;
 
-    img {
+    & > img {
       transform: rotate(-180deg);
     }
   }
 
-  img {
+  & > img {
     transition: transform 500ms;
+    width: 0.5rem;
   }
 
   .filter-dropdown {
@@ -512,7 +521,7 @@ h4 {
   }
 
   img {
-    height: 0.8rem;
+    height: 0.7rem;
     transition: transform 500ms;
 
     &.sort-ascending {

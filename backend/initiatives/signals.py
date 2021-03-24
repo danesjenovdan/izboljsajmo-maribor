@@ -75,8 +75,8 @@ def set_zone_from_location(sender, instance, created, **kwargs):
     if created and instance.location:
         zones = Zone.objects.filter(polygon__intersects=instance.location)
         if zones:
-            self.zone = zones[0]
-        instance.save()
+            instance.zone = zones[0]
+            instance.save()
 
 
 post_save.connect(set_contractor_appraiser_to_group, sender=ContractorAppraiserUser)

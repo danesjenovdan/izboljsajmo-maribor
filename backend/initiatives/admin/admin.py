@@ -195,7 +195,7 @@ class StatusInitiativeRejectedInline(admin.TabularInline):
 
     class Media:
         js = (
-            'https://code.jquery.com/jquery-3.6.0.min.js', # jquery
+            'js/rejection_email_content_filler.js',
         )
 
 

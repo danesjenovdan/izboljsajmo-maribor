@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Registriraj se!</h1>
+    <h1>Registrirajte se!</h1>
     <b-form-group v-slot="{ ariaDescribedby }">
       <b-form-radio v-model="registrationForm" :aria-describedby="ariaDescribedby" value="posameznik">
         Sem posameznik/-ca.

@@ -31,7 +31,7 @@
             @click="vote"
           >
             <img
-              src="~/assets/img/icons/love.png"
+              src="~/assets/img/icons/love.svg"
               alt="love"
               class="mr-1"
             >
@@ -41,14 +41,14 @@
           <span class="ml-1">{{ vote_count }}</span>
         </div>
         <div class="d-inline-flex align-items-center">
-          <b-button class="d-flex align-items-center">
+          <NuxtLink :to="`/predlogi/${id}`" class="btn d-flex align-items-center">
             <img
-              src="~/assets/img/icons/comment.png"
+              src="~/assets/img/icons/comment.svg"
               alt="comment"
               class="mr-1"
             >
             Komentiraj
-          </b-button>
+          </NuxtLink>
           <span class="ml-1">{{ comment_count }}</span>
         </div>
       </div>
