@@ -28,7 +28,12 @@
               <client-only>
                 <l-map
                   :zoom="13"
+                  :min-zoom="11"
                   :center="[46.554650, 15.645881]"
+                  :max-bounds="[
+                    [46.46188844675249, 15.51583465730236],
+                    [46.62102957408261, 15.783283325506178]
+                  ]"
                 >
                   <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
                   <l-marker
@@ -87,7 +92,7 @@
                   >
                 </div>
                 <b-button class="support-button" :disabled="data.has_voted" @click="vote">
-                  <img src="~/assets/img/icons/love.png" alt="heart">
+                  <img src="~/assets/img/icons/love.svg" alt="heart">
                   <span v-if="!data.has_voted">PODPRI</span>
                   <span v-if="data.has_voted">GLAS ODDAN</span>
                 </b-button>
@@ -176,7 +181,7 @@ export default {
   methods: {
     setIconStyles () {
       this.mapIcon = this.$L.icon({
-        iconUrl: require('@/assets/img/icons/pin.png')
+        iconUrl: require('@/assets/img/icons/pin.svg')
       })
     },
     date (date) {

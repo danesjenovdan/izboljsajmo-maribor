@@ -16,7 +16,7 @@
     <div class="d-flex justify-content-end">
       <b-button type="submit" class="d-inline-flex align-items-center">
         <span>KOMENTIRAJ</span>
-        <img src="~/assets/img/icons/arrow-right.png" alt="arrow right">
+        <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
       </b-button>
     </div>
   </b-form>

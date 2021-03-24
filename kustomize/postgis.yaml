@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgis
+  labels:
+    app: izboljsajmo-maribor-postgis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: izboljsajmo-maribor-postgis
+  template:
+    metadata:
+      labels:
+        app: izboljsajmo-maribor-postgis
+    spec:
+      containers:
+      - name: izboljsajmo-maribor-postgis
+        image: mdillon/postgis
+        ports:
+        - containerPort: 5432
+        env:
+          - name: POSTGRES_DB
+            value: mb-initiative
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_PASS
+            value: initititit!
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgis
+spec:
+  selector:
+    app: izboljsajmo-maribor-postgis
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432

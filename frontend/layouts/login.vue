@@ -1,15 +1,15 @@
 <template>
-  <b-container fluid class="login-container">
+  <b-container fluid class="login-container d-flex flex-column">
     <div class="logo">
       <NuxtLink to="/predlogi">
         <img
           src="~/assets/img/izboljsajmo_maribor_logo.png"
-          class="p-4"
+          class="p-3"
           alt="Izboljšajmo Maribor logo"
         >
       </NuxtLink>
     </div>
-    <b-row class="justify-content-center align-items-sm-center">
+    <b-row class="justify-content-center align-items-center flex-grow-1">
       <b-col cols="12" md="9" lg="6" xl="4">
         <div class="login-window">
           <Nuxt />
@@ -25,13 +25,14 @@
   background-image: url('~assets/img/login-background-image.png');
   background-size: cover;
   background-position: center;
-
-  &>.row {
-    height: 100vh;
-  }
+  min-height: 100vh;
 
   .logo {
     text-align: center;
+
+    img {
+      width: 14rem;
+    }
 
     @media (min-width: 576px) {
       position: absolute;
@@ -42,6 +43,11 @@
     background-color: #f8f8f8;
     padding: 2rem;
     border-radius: 10px;
+    margin-bottom: 6rem;
+
+    @media (min-width: 576px) {
+      margin: 4rem 0;
+    }
 
     h1 {
       font-weight: 700;

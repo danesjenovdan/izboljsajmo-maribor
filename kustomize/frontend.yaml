@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: izboljsajmo-maribor-frontend
+  labels:
+    app: izboljsajmo-maribor-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: izboljsajmo-maribor-frontend
+  template:
+    metadata:
+      labels:
+        app: izboljsajmo-maribor-frontend
+    spec:
+      containers:
+      - name: izboljsajmo-maribor-frontend
+        image: frontend # kustomize thing
+        ports:
+        - containerPort: 3000
+        # env:
+        #   - name: APP_ENV
+        #     value: production
+        #   - name: SECRET_DB_NAME
+        #     value: mb-initiative
+        #   - name: SECRET_DB_USERNAME
+        #     value: postgres
+        #   - name: SECRET_DB_PASSWORD
+        #     value: initititit!
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: izboljsajmo-maribor-frontend
+spec:
+  selector:
+    app: izboljsajmo-maribor-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: izboljsajmo-maribor-frontend
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+spec:
+  tls:
+  - hosts:
+    - izboljsajmo-maribor.k8s.djnd.si
+    secretName: izboljsajmo-maribor-frontend-tls
+  rules:
+  - host: izboljsajmo-maribor.k8s.djnd.si
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: izboljsajmo-maribor-frontend
+            port:
+              number: 80
