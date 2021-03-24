@@ -21,7 +21,7 @@ class Initiative(Timestamped, Authored):
         _('Reviewer role'),
         max_length=2,
         choices=Reviwers.choices,
-        default=Reviwers.AREA_ADMIN)
+        default=Reviwers.AREA_ADMIN,)
     reviewer_user = models.ForeignKey(
         'initiatives.User',
         verbose_name=_('Reviewer'),
@@ -31,7 +31,9 @@ class Initiative(Timestamped, Authored):
         blank=True)
     title = models.CharField(
         _('Title'),
-        max_length=50)
+        max_length=50,
+        null=True,
+        blank=True)
     statuses = models.ManyToManyField(
         'initiatives.Status',
         verbose_name=_('Status of initiative'),
@@ -40,7 +42,9 @@ class Initiative(Timestamped, Authored):
         'initiatives.Area',
         verbose_name=_('Area'),
         on_delete=models.CASCADE,
-        related_name='initiatives')
+        related_name='initiatives',
+        null=True,
+        blank=True)
     location = geo_models.PointField(
         null=True,
         blank=True)
@@ -52,8 +56,10 @@ class Initiative(Timestamped, Authored):
     zone = models.ForeignKey(
         'initiatives.Zone',
         verbose_name=_('GEO Zone of initiative'),
-        on_delete=models.CASCADE,
-        related_name='initiatives')
+        on_delete=models.SET_NULL,
+        related_name='initiatives',
+        null=True,
+        blank=True)
     publisher = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

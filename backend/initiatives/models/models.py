@@ -25,6 +25,9 @@ class Reviwers(models.TextChoices):
     AREA_APPRAISER = 'AP', _('AREA APPRAISER')
     CONTRACTOR_APPRAISER = 'CA', _('CONTRACTOR APPRAISER')
 
+    def get_order():
+        return ['SA', 'AA', 'AP', 'CA']
+
 
 class CommentStatus(models.TextChoices):
     PUBLISHED = 'PU', 'PUBLISHED'
