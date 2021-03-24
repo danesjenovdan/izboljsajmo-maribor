@@ -99,8 +99,8 @@ export const actions = {
     if (response.status === 201) { // Created
       return responseData.id
     } else {
-      console.log('ni ok', responseData)
-      // throw error
+      console.log('error!', responseData)
+      return -1
     }
   },
 
@@ -119,8 +119,8 @@ export const actions = {
     if (response.status === 201) { // Created
       return responseData.id
     } else {
-      console.log('ni ok', responseData)
-      // throw error
+      console.log('error!', responseData)
+      return -1
     }
   },
 
@@ -131,18 +131,7 @@ export const actions = {
       area: payload.initiativeArea,
       address: payload.initiativeAddress,
       location: payload.initiativeLocation,
-      descriptions: [
-        {
-          title: 'To je nek title',
-          field: 'to_bo_nek_kljuc',
-          content: 'to je nek description'
-        },
-        {
-          title: 'To je nek title 2',
-          field: 'to_bo_nek_kljuc 2',
-          content: 'to je nek description 2'
-        }
-      ],
+      descriptions: [],
       cover_image: payload.initiativeCoverImage,
       uploaded_files: payload.initiativeFiles,
       is_draft: payload.isDraft

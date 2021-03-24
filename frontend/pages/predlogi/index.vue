@@ -18,7 +18,7 @@
         <b-row class="action-cards">
           <b-col cols="12" md="4" class="mb-3">
             <div class="action-card-top" />
-            <NuxtLink to="/predlogi/nov?tip=ZM" class="action-card d-block h-100">
+            <NuxtLink to="/predlogi/oddaj/zanima-me" class="action-card d-block h-100">
               <h6 class="d-flex align-items-center">
                 ZANIMA ME!
                 <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
@@ -28,7 +28,7 @@
           </b-col>
           <b-col cols="12" md="4" class="mb-3">
             <div class="action-card-top" />
-            <NuxtLink to="/predlogi/nov?tip=MM" class="action-card d-block h-100">
+            <NuxtLink to="/predlogi/oddaj/moti-me" class="action-card d-block h-100">
               <h6 class="d-flex align-items-center">
                 MOTI ME!
                 <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
@@ -38,7 +38,7 @@
           </b-col>
           <b-col cols="12" md="4" class="mb-3">
             <div class="action-card-top" />
-            <NuxtLink to="/predlogi/nov?tip=II" class="action-card d-block h-100">
+            <NuxtLink to="/predlogi/oddaj/imam-idejo" class="action-card d-block h-100">
               <h6 class="d-flex align-items-center">
                 IMAM IDEJO!
                 <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
@@ -412,13 +412,13 @@ export default {
 }
 
 .action-cards {
-  div:nth-child(1) .action-card-top {
+  div:nth-child(2) .action-card-top {
     background-color: #8cade2;
   }
-  div:nth-child(2) .action-card-top {
+  div:nth-child(3) .action-card-top {
     background-color: #70b6a3;
   }
-  div:nth-child(3) .action-card-top {
+  div:nth-child(1) .action-card-top {
     background-color: #d9ab27;
   }
 }

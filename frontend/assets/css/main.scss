@@ -36,6 +36,47 @@ hr {
   }
 }
 
+/*** FORM ELEMENTS ***/
+.initiative-form {
+  box-shadow: 4px 4px 11px #d4d9e1, -5px -5px 11px #ffffff;
+  border-radius: 0.5rem;
+  margin: 3rem 0;
+  padding: 2.5rem 1.5rem;
+
+  h4 {
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 2.4px;
+    margin-bottom: 0;
+  }
+
+  .form-subtitle {
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+}
+
+.form-top {
+  height: 1rem;
+  width: calc(100% - 30px);
+  position: absolute;
+  top: 3rem;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+
+  &.form-top-mm {
+    background-color: #8cade2;
+  }
+
+  &.form-top-ii {
+    background-color: #70b6a3;
+  }
+
+  &.form-top-zm {
+    background-color: #d9ab27;
+  }
+}
+
 label {
   font-weight: 600;
   font-style: italic;
