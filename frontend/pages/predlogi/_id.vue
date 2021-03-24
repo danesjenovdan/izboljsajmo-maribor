@@ -28,7 +28,12 @@
               <client-only>
                 <l-map
                   :zoom="13"
+                  :min-zoom="11"
                   :center="[46.554650, 15.645881]"
+                  :max-bounds="[
+                    [46.46188844675249, 15.51583465730236],
+                    [46.62102957408261, 15.783283325506178]
+                  ]"
                 >
                   <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
                   <l-marker

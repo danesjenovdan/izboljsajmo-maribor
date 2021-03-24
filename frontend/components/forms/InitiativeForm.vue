@@ -40,9 +40,11 @@
 
     <div class="form-group">
       <label for="initiative-description" class="mt-4">Opis*</label>
+      <!--
       <span v-if="errorInitiativeDescription" class="error-message">
         Izpolnite polje.
       </span>
+      -->
       <textarea
         v-for="(description, index) in descriptions"
         :id="'initiative-description-' + index"
@@ -79,7 +81,15 @@
     </div>
     <div id="map-wrap" class="mt-4">
       <client-only>
-        <l-map :zoom="13" :center="[46.55465, 15.645881]">
+        <l-map
+          :zoom="13"
+          :min-zoom="11"
+          :center="[46.55465, 15.645881]"
+          :max-bounds="[
+            [46.46188844675249, 15.51583465730236],
+            [46.62102957408261, 15.783283325506178]
+          ]"
+        >
           <l-tile-layer
             url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
             attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
@@ -233,7 +243,7 @@ export default {
   props: {
     descriptions: {
       type: Array,
-      default: []
+      default: () => []
     }
   },
   data () {
@@ -281,12 +291,12 @@ export default {
     this.fetchAreas()
   },
   methods: {
-    setIconStyles() {
+    setIconStyles () {
       this.mapIcon = this.$L.icon({
         iconUrl: require('@/assets/img/icons/pin.svg')
       })
     },
-    async fetchAreas() {
+    async fetchAreas () {
       const areas = await this.$store.dispatch('getAreas')
       for (const i in areas) {
         this.initiativeAreaOptions.push({
@@ -310,17 +320,16 @@ export default {
     checkCoverImage () {
       this.errorCoverImage = this.coverImageFile === null
     },
-    async findCoordinates() {
+    async findCoordinates () {
       const response = await this.$axios.get(
         'https://nominatim.openstreetmap.org/search?',
         {
           params: {
             q: this.form.initiativeAddress,
-            city: 'Maribor',
-            country: 'Slovenia',
-            postalcode: 2000,
+            format: 'jsonv2',
+            addressdetails: 1,
             countrycodes: 'si',
-            accept_language: 'sl'
+            'accept-language': 'sl'
           }
         }
       )
@@ -336,6 +345,7 @@ export default {
       }
     },
     async findAddress () {
+      console.log(this.mapMarkerPosition)
       const response = await this.$axios.get(
         'https://nominatim.openstreetmap.org/reverse?',
         {
@@ -344,7 +354,7 @@ export default {
             lon: this.mapMarkerPosition.lng,
             format: 'jsonv2',
             countrycodes: 'si',
-            accept_language: 'sl'
+            'accept-language': 'sl'
           }
         }
       )
@@ -352,7 +362,7 @@ export default {
         this.address = this.formatAddress(response.data.address)
       }
     },
-    formatAddress(address) {
+    formatAddress (address) {
       // {"house_number":"7","road":"Ulica heroja Zidanška","suburb":"Tabor","city_district":"Maribor","city":"Maribor","postcode":"2000","country":"Slovenija","country_code":"si"}
       const streetAndHouseNo = (address.road) ? (address.house_number ? `${address.road} ${address.house_number}, ` : `${address.road}, `) : ''
       const city = address.city || address.town || address.village || address.municipality || ''
@@ -369,7 +379,7 @@ export default {
         this.errorInitiativeLocation = false
       }
     },
-    processCoverImage(event) {
+    processCoverImage (event) {
       this.dropzone1Active = false
       const files = event.target.files || event.dataTransfer.files
       if (files) {
@@ -380,7 +390,7 @@ export default {
     removeCoverImage () {
       this.coverImageFile = null
     },
-    processFiles(event) {
+    processFiles (event) {
       this.dropzone2Active = false
       const files = event.target.files || event.dataTransfer.files
       for (let f = 0; f < files.length; f++) {
@@ -395,16 +405,16 @@ export default {
         }
       }
     },
-    dragOverHandler1() {
+    dragOverHandler1 () {
       this.dropzone1Active = true
     },
-    dragLeaveHandler1() {
+    dragLeaveHandler1 () {
       this.dropzone1Active = false
     },
-    dragOverHandler2() {
+    dragOverHandler2 () {
       this.dropzone2Active = true
     },
-    dragLeaveHandler2() {
+    dragLeaveHandler2 () {
       this.dropzone2Active = false
     },
     async createDraft () {
