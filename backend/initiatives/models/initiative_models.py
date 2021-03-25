@@ -113,6 +113,20 @@ class Initiative(Timestamped, Authored):
             '''
             )
 
+    def images_preview(self):
+        images = ""
+        if self.cover_image:
+            images += f'''<img src="{self.cover_image}" style"width=25%;">'''
+        if self.cover_image_after:
+            images += f'''<img src="{self.cover_image_after}" style"width=25%;">'''
+        return mark_safe(
+            f'''
+            <div style"width=50%;">
+                {images}
+            </div>
+            '''
+        )
+
     def vote_count(self):
         return self.votes.count()
 

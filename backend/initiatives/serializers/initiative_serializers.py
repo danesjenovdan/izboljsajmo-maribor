@@ -12,7 +12,7 @@ from drf_writable_nested.serializers import WritableNestedModelSerializer
 class InitiativeListSerializer(serializers.ModelSerializer):
     area = AreaSerializer()
     author = serializers.SerializerMethodField()
-    description = serializers.SerializerMethodField()
+    description = serializers.SerializerMethodField(required=False)
     cover_image = ImageSerializer()
     has_voted = serializers.SerializerMethodField()
     class Meta:
@@ -58,7 +58,7 @@ class InitiativeDetailsSerializer(WritableNestedModelSerializer):
     author = serializers.SerializerMethodField()
     area = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()
-    descriptions = DescriptionSerializers(many=True)
+    descriptions = DescriptionSerializers(many=True, required=False)
     cover_image = ImageSerializer(required=False)
     cover_image_after = ImageSerializer(required=False)
     has_voted = serializers.SerializerMethodField()

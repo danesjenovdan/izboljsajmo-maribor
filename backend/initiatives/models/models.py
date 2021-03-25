@@ -269,6 +269,7 @@ class User(AbstractUser, Timestamped):
         validators=[
             validators.RegexValidator(r'^[\w.@+ -]+$', _('Enter a valid username.'), 'invalid')
         ])
+    email_confirmed = models.BooleanField(default=False)
 
 
 class SuperAdminManager(BaseUserManager):
@@ -439,3 +440,26 @@ class DescriptionDefinition(Timestamped, Authored):
     title = models.CharField(
         _('Title'),
         max_length=100)
+
+
+class RestorePassword(Timestamped):
+    user = models.ForeignKey(
+        'User',
+        verbose_name=_('User'),
+        related_name='restore_passwords',
+        on_delete=models.CASCADE)
+    key = models.CharField(
+        _('Description type'),
+        max_length=50)
+
+
+class ConfirmEmail(Timestamped):
+    user = models.ForeignKey(
+        'User',
+        verbose_name=_('User'),
+        related_name='conform_emails',
+        on_delete=models.CASCADE)
+    key = models.CharField(
+        _('Description type'),
+        max_length=50)
+
