@@ -85,6 +85,18 @@ export const actions = {
     }
   },
 
+  async deleteVote (context, payload) {
+    const response = await this.$axios.delete(`v1/initiatives/${payload.id}/vote/`)
+
+    if (response.status === 204) {
+      return true // deleted successfully
+    } else if (response.status === 409) {
+      return false // user did not vote in the first place
+    } else {
+      return false // error
+    }
+  },
+
   async postCoverImage (context, payload) {
     const formData = new FormData()
     formData.append('image', payload.image)

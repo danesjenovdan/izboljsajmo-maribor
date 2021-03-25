@@ -91,10 +91,13 @@
                     alt="Initiative cover image - after"
                   >
                 </div>
-                <b-button class="support-button" :disabled="data.has_voted" @click="vote">
+                <b-button v-if="!data.has_voted" class="support-button" @click="vote">
                   <img src="~/assets/img/icons/love.svg" alt="heart">
-                  <span v-if="!data.has_voted">PODPRI</span>
-                  <span v-if="data.has_voted">GLAS ODDAN</span>
+                  <span>PODPRI</span>
+                </b-button>
+                <b-button v-if="data.has_voted" class="support-button" @click="removeVote">
+                  <!--<img src="~/assets/img/icons/love.svg" alt="heart">-->
+                  <span>GLAS ODDAN</span>
                 </b-button>
               </b-col>
             </b-row>
@@ -174,7 +177,7 @@ export default {
       data: {
       },
       mapIcon: null,
-      errorVoted: false
+      errorVoted: false // za bodoci error message
     }
   },
   computed: {},
@@ -197,6 +200,16 @@ export default {
       })
       if (success) { // voted successfully
         this.data.has_voted = true
+      } else { // error
+        this.errorVoted = true
+      }
+    },
+    async removeVote () {
+      const success = await this.$store.dispatch('deleteVote', {
+        id: this.id
+      })
+      if (success) { // unvoted successfully
+        this.data.has_voted = false
       } else { // error
         this.errorVoted = true
       }
