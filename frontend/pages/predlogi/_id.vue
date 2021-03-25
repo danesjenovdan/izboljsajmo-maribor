@@ -10,8 +10,8 @@
                   'tag-mm': data.type === 'MM',
                   'tag-ii': data.type === 'II',
                   'tag-zm': data.type === 'ZM',
-                }">
-              </span>
+                }"
+              />
               {{ $store.getters.initiativeTypes[data.type] }}
             </span>
             <span>{{ data.area.name }}</span>
@@ -46,7 +46,11 @@
             </div>
           </div>
           <hr>
-          <b-row v-for="status in data.statuses" :key="status.status" class="status">
+          <b-row
+            v-for="(status, index) in data.statuses"
+            :key="index"
+            class="status"
+          >
             <b-col cols="2" class="d-flex flex-column align-items-center">
               <div class="icon-circle d-flex justify-content-center align-items-center">
                 <img :src="statusImage(status.status)" alt="status img">
@@ -192,7 +196,11 @@ export default {
       return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}` // months go 0-11
     },
     statusImage (s) {
-      return require(`~/assets/img/icons/${s}.png`)
+      try {
+        return require(`~/assets/img/icons/${s}.png`)
+      } catch (e) {
+        return ''
+      }
     },
     async vote () {
       const success = await this.$store.dispatch('postVote', {

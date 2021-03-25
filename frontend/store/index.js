@@ -30,12 +30,7 @@ export const actions = {
       password: payload.form.password,
       client_secret: context.getters.client_secret
     }
-    // console.log(loginData)
-    // const response = await this.$axios.post('auth/token/', loginData)
     await this.$auth.loginWith('local', { data: loginData })
-    await this.$axios.setHeader('Authorization', 'Bearer ' + context.getters.token)
-    const user = await this.$axios.get('v1/users/me/')
-    this.$auth.setUser(user.data)
   },
 
   async logout () {
