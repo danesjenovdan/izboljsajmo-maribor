@@ -13,7 +13,10 @@ from initiatives.serializers import (
     CommentSerializer, AreaSerializer, FAQSerializer, FileSerializer, ImageSerializer,
     InitiativeDetailsSerializer, InitiativeListSerializer
 )
-from initiatives.models import Zone, Area, FAQ, DescriptionDefinition, InitiativeType, Initiative, Reviwers, Vote
+from initiatives.models import (
+    Zone, Area, FAQ, DescriptionDefinition, InitiativeType, Initiative, Reviwers, Vote, RestorePassword,
+    ConfirmEmail
+)
 
 from initiatives.permissions import IsOwnerOrReadOnly
 
@@ -123,9 +126,10 @@ class InitiativeViewSet(
 
 
     def create(self, request, *args, **kwargs):
-        area = request.data['area']
-        area = Area.objects.get(id=area)
-        for i, desctription in enumerate(request.data['descriptions']):
+        area = request.data.get('area', None)
+        if area:
+            area = Area.objects.get(id=area)
+        for i, desctription in enumerate(request.data.get('descriptions', [])):
             request.data['descriptions'][i]['order'] = i + 1
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -191,4 +195,17 @@ class InitiativeViewSet(
         draft_serializer = InitiativeListSerializer(drafts, context = {'request':request}, many=True)
         serializer = InitiativeListSerializer(published, context = {'request':request}, many=True)
         return Response({'drafts': draft_serializer.data, 'published': serializer.data})
+
+
+class RestorePasswordApiView(views.APIView):
+    permission_classes = []
+    authentication_classes = [authentication.SessionAuthentication,]
+    def post(self, request):
+        data = request.data
+        user = get_object_or_404(User, email=data.get('email', ''))
+        RestorePassword(user=user).save()
+        return Response({'status': _('Email will be send.')}, status=status.HTTP_201_CREATED)
+
+    def patch(self, request, key):
+        pass
 
