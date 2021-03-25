@@ -48,6 +48,7 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     baseURL: 'https://api.izboljsajmo-maribor.k8s.djnd.si' // TODO
+    // baseURL: 'http://localhost:8000/'
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -66,30 +67,18 @@ export default {
           name: 'Authorization',
           type: 'Bearer'
         },
+        user: {
+          property: false,
+          autoFetch: true
+        },
         endpoints: {
           login: { url: '/auth/token', method: 'post' },
-          user: false,
+          user: { url: 'v1/users/me/', method: 'get' },
           logout: false
         },
         clientId: 'kIZWxeodL29mfaKSIGQWPUuuck8CXv3m58XuJ8Y7',
         grantType: 'password'
       }
-      /*
-      social: {
-        scheme: 'oauth2',
-        endpoints: {
-          authorization: 'http://localhost:8000/auth/token/',
-          token: false,
-          logout: 'https://example.com/logout'
-        },
-        grantType: 'password',
-        redirectUri: '/login',
-        logoutRedirectUri: '/predlogi',
-        clientId: 'kIZWxeodL29mfaKSIGQWPUuuck8CXv3m58XuJ8Y7',
-        scope: ['openid', 'profile', 'email'],
-        autoLogout: false
-      }
-      */
     },
     redirect: {
       login: '/prijava',

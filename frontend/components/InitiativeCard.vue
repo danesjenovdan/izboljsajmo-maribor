@@ -26,8 +26,8 @@
       <div class="d-flex justify-content-between">
         <div class="d-inline-flex align-items-center">
           <b-button
+            v-if="!has_voted"
             class="d-flex align-items-center"
-            :disabled="has_voted"
             @click="vote"
           >
             <img
@@ -35,8 +35,19 @@
               alt="love"
               class="mr-1"
             >
-            <span v-if="!has_voted">Podpri</span>
-            <span v-if="has_voted">Glas oddan!</span>
+            <span>Podpri</span>
+          </b-button>
+          <b-button
+            v-if="has_voted"
+            class="d-flex align-items-center"
+            @click="removeVote"
+          >
+            <img
+              src="~/assets/img/icons/love.svg"
+              alt="love"
+              class="mr-1"
+            >
+            <span>Glas oddan!</span>
           </b-button>
           <span class="ml-1">{{ vote_count }}</span>
         </div>
@@ -113,6 +124,9 @@ export default {
     },
     vote () {
       this.$emit('vote')
+    },
+    removeVote () {
+      this.$emit('removeVote')
     }
   }
 }

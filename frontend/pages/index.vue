@@ -93,6 +93,7 @@
                 <InitiativeCard
                   v-bind="initiative"
                   @vote="vote(initiative.id)"
+                  @removeVote="removeVote(initiative.id)"
                 />
               </b-col>
             </b-row>
@@ -127,15 +128,28 @@ export default {
         id
       })
       if (success) { // voted successfully
-        for (const initiative of this.published) {
-          if (initiative.id === id) {
-            initiative.has_voted = true
-            initiative.vote_count += 1
-            break
-          }
-        }
+        this.updateVotes(id, true)
       } else { // error
         console.log('error')
+      }
+    },
+    async removeVote (id) {
+      const success = await this.$store.dispatch('deleteVote', {
+        id
+      })
+      if (success) { // unvoted successfully
+        this.updateVotes(id, false)
+      } else { // error
+        console.log('error')
+      }
+    },
+    updateVotes (id, hasVoted) {
+      for (const initiative of this.published) {
+        if (initiative.id === id) {
+          initiative.has_voted = hasVoted
+          initiative.vote_count += hasVoted ? 1 : -1
+          break
+        }
       }
     },
     date (date) {

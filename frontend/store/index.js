@@ -30,12 +30,7 @@ export const actions = {
       password: payload.form.password,
       client_secret: context.getters.client_secret
     }
-    // console.log(loginData)
-    // const response = await this.$axios.post('auth/token/', loginData)
     await this.$auth.loginWith('local', { data: loginData })
-    await this.$axios.setHeader('Authorization', 'Bearer ' + context.getters.token)
-    const user = await this.$axios.get('v1/users/me/')
-    this.$auth.setUser(user.data)
   },
 
   async logout () {
@@ -80,6 +75,18 @@ export const actions = {
       return true // voted successfully
     } else if (response.status === 409) {
       return false // already voted
+    } else {
+      return false // error
+    }
+  },
+
+  async deleteVote (context, payload) {
+    const response = await this.$axios.delete(`v1/initiatives/${payload.id}/vote/`)
+
+    if (response.status === 204) {
+      return true // deleted successfully
+    } else if (response.status === 409) {
+      return false // user did not vote in the first place
     } else {
       return false // error
     }
