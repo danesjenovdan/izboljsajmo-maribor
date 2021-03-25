@@ -515,6 +515,101 @@
 			"response": []
 		},
 		{
+			"name": "restore password request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"tomazkunst@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/restore-password/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"restore-password",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "confirm email",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"tomazkunst@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/confirm-email/CKL5WG6E65YY1RN8QU2TTXFGXQVV2TQ3/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"confirm-email",
+						"CKL5WG6E65YY1RN8QU2TTXFGXQVV2TQ3",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "restore password change",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"new_password\": \"123123123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/restore-password/C7QLI95NRENO4XYEDWGMY799QEB8BEXP/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"restore-password",
+						"C7QLI95NRENO4XYEDWGMY799QEB8BEXP",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "create initiative",
 			"request": {
 				"auth": {

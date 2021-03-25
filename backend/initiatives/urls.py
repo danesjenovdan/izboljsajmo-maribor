@@ -5,7 +5,7 @@ from rest_framework.routers import DefaultRouter
 from .views import (
     UserViewSet, OrganizationViewSet, AreaViewSet, FAQViewSet, FilesViewSet, InitiativeViewSet,
     ImagesViewSet, DescriptionDefinitionViewSet, ZoneViewSet, InitiativeTypeApiView, MoveResponsibilityApiView,
-    ArchiveApiView, RejectionViewSet, PrintInitiativesView
+    ArchiveApiView, RejectionViewSet, PrintInitiativesView, RestorePasswordApiView, ConfirmEmailApiView
 )
 
 from about.views import AboutViewSet
@@ -34,4 +34,7 @@ urlpatterns = [
     path('move-responsibility/<str:label>/<int:pk>/<str:next>/', MoveResponsibilityApiView.as_view(), name='move-responsibility'),
     path('archive/<str:label>/<int:pk>/', ArchiveApiView.as_view(), name='archive'),
     path('print/<int:pk>/', PrintInitiativesView.as_view(), name='print'),
+    path('restore-password/<str:key>/', RestorePasswordApiView.as_view(), name='restore-password'),
+    path('restore-password/', RestorePasswordApiView.as_view(), name='restore-password'),
+    path('confirm-email/<str:key>/', ConfirmEmailApiView.as_view(), name='confirm-email'),
 ]

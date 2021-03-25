@@ -13,3 +13,8 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return True
         # Write permissions are only allowed to the owner of the snippet.
         return obj.author == request.user
+
+class IsVerified(permissions.BasePermission):
+    message = 'You need to confirm email.'
+    def has_permission(self, request, view):
+        return request.user.email_confirmed

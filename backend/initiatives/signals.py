@@ -2,15 +2,17 @@ from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import Group
 from django.db.models.signals import pre_save, post_save
+from django.conf import settings
+from django.utils.translation import gettext as _
 
 from behaviors.behaviors import Published
 
 from initiatives.models import (
     Initiative, Zone,
     # users
-    SuperAdminUser, AreaAdminUser, AreaAppraiserUser, ContractorAppraiserUser, User
+    SuperAdminUser, AreaAdminUser, AreaAppraiserUser, ContractorAppraiserUser, User, RestorePassword, ConfirmEmail
 )
-from .utils import send_email
+from .utils import send_email, id_generator
 
 import logging
 logger = logging.getLogger(__name__)
@@ -78,6 +80,39 @@ def set_zone_from_location(sender, instance, created, **kwargs):
             instance.zone = zones[0]
             instance.save()
 
+# key generator
+def set_key(sender, instance, created, **kwargs):
+    if created:
+        key = id_generator(size=32)
+        not_unique = True
+        while not_unique:
+            key_gen = id_generator(size=32)
+            not_unique = sender.objects.filter(key=key_gen)
+        instance.key = key_gen
+        instance.save()
+
+        if sender == RestorePassword:
+            subject = _('Restore password Izboljšajmo Maribor')
+            template = 'emails/restore_password.html'
+            url = f'{settings.FRONT_URL}restore-password/{instance.key}/'
+        elif sender == ConfirmEmail:
+            subject = _('Confirm email Izboljšajmo Maribor')
+            template = 'emails/restore_password.html'
+            url = f'{settings.FRONT_URL}confirm-email/{instance.key}/'
+
+        send_email(
+            subject,
+            instance.user.email,
+            template,
+            {
+                'url': url
+            }
+        )
+
+def send_confirm_emil(sender, instance, created, **kwargs):
+    if created:
+        ConfirmEmail(user=instance).save()
+
 
 post_save.connect(set_contractor_appraiser_to_group, sender=ContractorAppraiserUser)
 post_save.connect(set_area_appraiser_to_group, sender=AreaAppraiserUser)
@@ -85,3 +120,8 @@ post_save.connect(set_super_admin_to_group, sender=SuperAdminUser)
 post_save.connect(set_area_admin_to_group, sender=AreaAdminUser)
 
 post_save.connect(set_zone_from_location, sender=Initiative)
+
+post_save.connect(set_key, sender=RestorePassword)
+post_save.connect(set_key, sender=ConfirmEmail)
+post_save.connect(send_confirm_emil, sender=User)
+
