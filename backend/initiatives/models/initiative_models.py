@@ -6,7 +6,7 @@ from django.contrib.gis.db import models as geo_models
 from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
 
-from behaviors.behaviors import Timestamped, Authored
+from behaviors.behaviors import Timestamped, Authored, Published
 
 from initiatives.models import CommentStatus, InitiativeType, Reviwers, Zone
 
@@ -127,6 +127,12 @@ class Initiative(Timestamped, Authored):
             '''
         )
 
+    def _is_published(self):
+        return bool(self.initiative_statuses.filter(publication_status=Published.PUBLISHED))
+
+    def _needs_publish(self):
+        return bool(self.initiative_statuses.filter(publication_status=Published.DRAFT))
+
     def vote_count(self):
         return self.votes.count()
 
@@ -139,6 +145,11 @@ class Initiative(Timestamped, Authored):
                 _('Object must be created before it can be archived'))
         self.archived = timezone.now()
         return super(StoreDeleted, self).save(*args, **kwargs)
+
+    _needs_publish.boolean = True
+    _is_published.boolean = True
+    is_published = property(_is_published)
+    needs_published = property(_needs_publish)
 
 
 class ArchivedManager(models.Manager):

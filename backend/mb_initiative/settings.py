@@ -208,3 +208,5 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 FROM_EMAIL = 'dummy@email.si'
+
+FRONT_URL = 'http://localhost:3000/'

@@ -37,7 +37,9 @@ class InitiativeAdmin(ImportExportModelAdmin):
         'zone',
         'created',
         'comment_count',
-        'vote_count'
+        'vote_count',
+        '_is_published',
+        '_needs_publish'
     ]
     inlines = (
         DescriptionInline,
@@ -78,7 +80,9 @@ class InterestedInitiativeSuperAdmin(ImportExportModelAdmin):
         'created',
         'comment_count',
         'vote_count',
-        'reviewer'
+        'reviewer',
+        '_is_published',
+        '_needs_publish'
     ]
     inlines = (
         DescriptionInline,
@@ -184,7 +188,9 @@ class IdeaInitiativeSuperAdmin(ImportExportModelAdmin):
         'created',
         'comment_count',
         'vote_count',
-        'reviewer'
+        'reviewer',
+        '_is_published',
+        '_needs_publish'
     ]
     inlines = (
         DescriptionInline,
@@ -334,7 +340,9 @@ class BothersInitiativeSuperAdmin(ImportExportModelAdmin):
         'created',
         'comment_count',
         'vote_count',
-        'reviewer'
+        'reviewer',
+        '_is_published',
+        '_needs_publish'
     ]
     inlines = (
         DescriptionInline,
@@ -456,8 +464,8 @@ class BothersInitiativeContractorAdmin(ImportExportModelAdmin):
     printer.short_description = "Print initiatives"
 
 
-admin.site.register(Initiative)
-admin.site.register(ArchivedInitiative, InitiativeAdmin)
+admin.site.register(Initiative, InitiativeAdmin)
+admin.site.register(ArchivedInitiative)
 
 admin.site.register(InterestedInitiativeSuper, InterestedInitiativeSuperAdmin)
 admin.site.register(InterestedInitiativeArea, InterestedInitiativeAreaAdmin)

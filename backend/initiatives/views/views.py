@@ -1,6 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.translation import gettext as _
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError 
+
 from rest_framework import viewsets, mixins, permissions, status, views, authentication, exceptions
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -15,10 +18,10 @@ from initiatives.serializers import (
 )
 from initiatives.models import (
     Zone, Area, FAQ, DescriptionDefinition, InitiativeType, Initiative, Reviwers, Vote, RestorePassword,
-    ConfirmEmail
+    ConfirmEmail, User
 )
 
-from initiatives.permissions import IsOwnerOrReadOnly
+from initiatives.permissions import IsOwnerOrReadOnly, IsVerified
 
 import logging
 logger = logging.getLogger(__name__)
@@ -34,7 +37,7 @@ class UserViewSet(
         detail=False,
         url_path='me',
         url_name='me',
-        permission_classes=[permissions.IsAuthenticated,])
+        permission_classes=[permissions.IsAuthenticated, IsVerified])
     def my_initiatives(self, request):
         return Response(UserSerializer(request.user).data)
 
@@ -66,14 +69,14 @@ class FilesViewSet(viewsets.GenericViewSet,
                    mixins.CreateModelMixin):
     serializer_class = FileSerializer
     parser_classes = (MultiPartParser, FormParser,)
-    permission_classes = [permissions.IsAuthenticated,]
+    permission_classes = [permissions.IsAuthenticated, IsVerified]
 
 
 class ImagesViewSet(viewsets.GenericViewSet,
                    mixins.CreateModelMixin):
     serializer_class = ImageSerializer
     parser_classes = (MultiPartParser, FormParser,)
-    permission_classes = [permissions.IsAuthenticated,]
+    permission_classes = [permissions.IsAuthenticated, IsVerified]
 
 
 class FAQViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
@@ -199,7 +202,7 @@ class InitiativeViewSet(
 
 class RestorePasswordApiView(views.APIView):
     permission_classes = []
-    authentication_classes = [authentication.SessionAuthentication,]
+    authentication_classes = []
     def post(self, request):
         data = request.data
         user = get_object_or_404(User, email=data.get('email', ''))
@@ -207,5 +210,26 @@ class RestorePasswordApiView(views.APIView):
         return Response({'status': _('Email will be send.')}, status=status.HTTP_201_CREATED)
 
     def patch(self, request, key):
-        pass
+        restore_password = get_object_or_404(RestorePassword, key=key)
+        password = request.data.get('new_password')
+        try:
+            validate_password(password, user=None, password_validators=None)
+        except ValidationError as e:
+            return Response({'detail': e}, status=status.HTTP_409_CONFLICT)
+        user = restore_password.user
+        user.set_password(password)
+        user.save()
+        restore_password.delete()
+        return Response({'status': _('Password has been set.')})
 
+
+class ConfirmEmailApiView(views.APIView):
+    permission_classes = []
+    authentication_classes = []
+    def get(self, request, key):
+        confirm_email = get_object_or_404(ConfirmEmail, key=key)
+        user = confirm_email.user
+        user.email_confirmed = True
+        user.save()
+        confirm_email.delete()
+        return Response({'status': _('Email confirmed.')})
