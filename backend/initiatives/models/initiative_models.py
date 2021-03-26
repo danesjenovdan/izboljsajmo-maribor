@@ -69,14 +69,14 @@ class Initiative(Timestamped, Authored):
     cover_image = models.ForeignKey(
         'initiatives.Image',
         verbose_name=_('Cover image before'),
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='initiative_before',
         null=True,
         blank=True)
     cover_image_after = models.ForeignKey(
         'initiatives.Image',
         verbose_name=_('Cover image after'),
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='initiative_after',
         null=True,
         blank=True)

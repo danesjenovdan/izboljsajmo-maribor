@@ -13,7 +13,7 @@ class InitiativeListSerializer(serializers.ModelSerializer):
     area = AreaSerializer()
     author = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField(required=False)
-    cover_image = ImageSerializer()
+    cover_image = ImageSerializer(required=False)
     has_voted = serializers.SerializerMethodField()
     class Meta:
         model = Initiative
@@ -59,7 +59,7 @@ class InitiativeDetailsSerializer(WritableNestedModelSerializer):
     area = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()
     descriptions = DescriptionSerializers(many=True, required=False)
-    cover_image = ImageSerializer(required=False)
+    cover_image = ImageSerializer(required=False, allow_null=True)
     cover_image_after = ImageSerializer(required=False)
     has_voted = serializers.SerializerMethodField()
 

@@ -419,6 +419,11 @@ class Image(Timestamped):
         upload_to='images',
         null=True,
         blank=True)
+    name = models.CharField(
+        _('Display name'),
+        max_length=50,
+        null=True,
+        blank=True)
 
     def __str__(self):
         try:
