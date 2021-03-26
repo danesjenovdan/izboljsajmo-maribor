@@ -205,6 +205,14 @@ textarea.form-control {
     img {
       height: 1.2rem;
     }
+
+    a {
+      color: unset;
+      &:hover {
+        text-decoration: none;
+        color: unset;
+      }
+    }
   }
 
   div hr {

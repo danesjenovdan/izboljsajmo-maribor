@@ -124,6 +124,7 @@
                       v-for="file in data.uploaded_files"
                       :key="file.id"
                       :href="file.file"
+                      target="_blank"
                       class="mr-2"
                       download
                     >

@@ -28,6 +28,7 @@
               >
                 <div class="initiative-card draft h-100">
                   <img
+                    v-if="draft.cover_image"
                     class="cover-image"
                     :src="draft.cover_image.image"
                     alt="Initiative draft cover image"
@@ -37,14 +38,17 @@
                     <p>{{ draft.description }}</p>
                     <div class="d-flex justify-content-center">
                       <div class="d-inline-flex align-items-center">
-                        <b-button class="d-flex align-items-center position-relative">
+                        <NuxtLink
+                          :to="`/predlogi/oddaj/${editLink[draft.type]}?id=${draft.id}`"
+                          class="btn d-flex align-items-center position-relative"
+                        >
                           <span class="text-uppercase pr-2">Uredi</span>
                           <img
                             src="~/assets/img/icons/edit.png"
                             alt="edit icon"
                             class="position-absolute"
                           >
-                        </b-button>
+                        </NuxtLink>
                       </div>
                     </div>
                   </div>
@@ -116,7 +120,12 @@ export default {
   data () {
     return {
       drafts: [],
-      published: []
+      published: [],
+      editLink: {
+        MM: 'moti-me',
+        ZM: 'zanima-me',
+        II: 'imam-idejo'
+      }
     }
   },
   methods: {

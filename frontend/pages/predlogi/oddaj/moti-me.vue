@@ -13,6 +13,7 @@
             </p>
             <Initiative
               :descriptions="descriptions"
+              :error-draft="errorDraft"
               @create-initiative="createInitiative"
               @create-draft="createDraft"
             />
@@ -31,37 +32,57 @@ export default {
   middleware: 'auth',
   data () {
     return {
-      initiativeType: 'MM',
+      type: 'MM',
       descriptions: [
         'Na kratko opišite, kaj vas moti. Zakaj? Če je mogoče, opišite svojo izkušnje, da nam pomagate bolje razumeti vašo pripombo.',
         'Kako bi lahko to, kar vas moti, popravili?'
-      ]
+      ],
+      errorDraft: false
     }
   },
   computed: {
   },
   methods: {
-    async createDraft (form) {
+    async createDraft (form, id) {
+      this.errorDraft = false
       try {
         // is draft
-        form.isDraft = true
-        // add initiative type
-        form.initiativeType = this.initiativeType
+        form.is_draft = true
         console.log('draft', form)
-        await this.$store.dispatch('postInitiative', form)
-        await this.$router.push('/')
+        if (id < 0) { // draft does not exist yet
+          // add initiative type
+          form.type = this.type
+          id = await this.$store.dispatch('postInitiative', form)
+        } else {
+          id = await this.$store.dispatch('patchInitiative', { form, id })
+        }
+        if (id < 0) {
+          this.errorDraft = true
+        } else {
+          await this.$router.push('/')
+        }
       } catch (err) {
         // this.errorComment = true
         console.log(err)
       }
     },
-    async createInitiative (form) {
+    async createInitiative (form, id) {
       try {
+        // is draft
+        form.is_draft = false
         // add initiative type
-        form.initiativeType = this.initiativeType
+        form.type = this.type
         console.log('publish', form)
-        const id = await this.$store.dispatch('postInitiative', form)
-        await this.$router.push(`/predlogi/${id}`)
+        if (id < 0) { // draft does not exist yet
+          id = await this.$store.dispatch('postInitiative', form)
+        } else {
+          id = await this.$store.dispatch('patchInitiative', { form, id })
+        }
+        if (id < 0) {
+          this.errorDraft = true
+        } else {
+          await this.$router.push(`/predlogi/${id}`)
+        }
       } catch (err) {
         // this.errorComment = true
         console.log(err)
