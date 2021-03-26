@@ -9,6 +9,8 @@ from django.contrib.auth.models import Group
 
 from behaviors.behaviors import Timestamped, Authored, Published
 
+from initiatives.utils import validate_file_extension
+
 import logging
 logger = logging.getLogger(__name__)
 
@@ -407,7 +409,7 @@ class File(Timestamped):
     file = models.FileField(
         _('File'),
         upload_to='files',
-        max_length=100)
+        validators=[validate_file_extension])
 
     def __str__(self):
         return self.name
