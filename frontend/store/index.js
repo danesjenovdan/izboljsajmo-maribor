@@ -167,11 +167,15 @@ export const actions = {
     const response = await this.$axios.patch(`v1/initiatives/${payload.id}/`, payload.form)
     const responseData = await response.data
     console.log(response)
-    if (response.statusText === "OK") {
+    if (response.statusText === 'OK') {
       return responseData.id
     } else {
       return -1
     }
+  },
+
+  async deleteInitiative (context, payload) {
+    return await this.$axios.delete(`v1/initiatives/${payload.id}`)
   },
 
   async getInitiatives (context, payload) {

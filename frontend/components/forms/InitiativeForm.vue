@@ -220,12 +220,12 @@
     </div>
     <div class="d-flex justify-content-between align-items-center">
       <div>
-        <b-button class="save-button px-4" @click="createDraft()">
+        <b-button class="save-button px-4" @click="createDraft">
           Shrani
         </b-button>
         <b-button
           class="cancel-button px-4 ml-2"
-          @click="$router.push('/predlogi')"
+          @click="deleteInitiative"
         >
           Zavrzi
         </b-button>
@@ -440,6 +440,17 @@ export default {
     },
     dragLeaveHandler2 () {
       this.dropzone2Active = false
+    },
+    async deleteInitiative () {
+      if (confirm('Ali ste prepričani, da želite izbrisati ta predlog?')) {
+        if (this.id >= 0) { // delete initiative from db
+          const res = await this.$store.dispatch('deleteInitiative', {
+            id: this.id
+          })
+          // TO DO: ERROR CHECK!!!
+        }
+        await this.$router.push('/')
+      }
     },
     async createDraft () {
       this.errorUpload = false
