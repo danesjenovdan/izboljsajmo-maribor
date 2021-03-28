@@ -61,6 +61,12 @@ export const actions = {
     await this.$axios.post('v1/organizations/', registerData)
   },
 
+  async resetPassword (context, payload) {
+    await this.$axios.post('v1/restore-password/', {
+      email: payload.email
+    })
+  },
+
   async postComment (context, payload) {
     const newComment = {
       content: payload.content

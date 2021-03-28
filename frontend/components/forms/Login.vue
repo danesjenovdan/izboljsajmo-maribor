@@ -30,7 +30,7 @@
       />
     </div>
     <div class="text-right mt-2">
-      <a href="/">Pozabljeno geslo?</a>
+      <a href="/pozabljeno-geslo">Pozabljeno geslo?</a>
     </div>
     <b-form-group id="remember-me-input-group" v-slot="{ ariaDescribedby }">
       <b-form-checkbox
