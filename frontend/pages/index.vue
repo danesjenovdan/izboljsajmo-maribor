@@ -210,7 +210,7 @@ a {
   }
 
   .initiative-card-body {
-    padding: 0.5rem;
+    padding: 0.75rem;
 
     h4 a {
       color: black;
