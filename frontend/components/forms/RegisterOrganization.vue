@@ -82,11 +82,7 @@
     </div>
     <b-button type="submit" class="w-100 d-flex justify-content-center align-items-center position-relative">
       ZAKLJUČI REGISTRACIJO
-      <img
-        src="~/assets/img/icons/arrow-right.svg"
-        class="position-absolute"
-        alt="arrow icon"
-      >
+      <ArrowRightIcon class="position-absolute" />
     </b-button>
     <div class="form-note text-center">
       Že imate račun? <NuxtLink to="/prijava">
@@ -97,7 +93,10 @@
 </template>
 
 <script>
+import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
+
 export default {
+  components: { ArrowRightIcon },
   data () {
     return {
       form: {

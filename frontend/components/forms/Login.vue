@@ -30,7 +30,7 @@
       />
     </div>
     <div class="text-right mt-2">
-      <a href="/">Pozabljeno geslo?</a>
+      <a href="/pozabljeno-geslo">Pozabljeno geslo?</a>
     </div>
     <b-form-group id="remember-me-input-group" v-slot="{ ariaDescribedby }">
       <b-form-checkbox
@@ -43,11 +43,7 @@
     </b-form-group>
     <b-button type="submit" class="w-100 d-flex justify-content-center align-items-center position-relative">
       VSTOPI
-      <img
-        src="~/assets/img/icons/arrow-right.svg"
-        class="position-absolute"
-        alt="right arrow"
-      >
+      <ArrowRightIcon class="position-absolute" />
     </b-button>
     <div class="form-note text-center">
       Nimate računa? <NuxtLink to="/registracija">
@@ -58,8 +54,10 @@
 </template>
 
 <script>
+import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
 
 export default {
+  components: { ArrowRightIcon },
   data () {
     return {
       rememberMe: false,
