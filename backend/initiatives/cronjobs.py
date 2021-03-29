@@ -25,7 +25,7 @@ def send_daily_notifications():
     subject = _('New initiatives which needs you attention')
     email_initiatives = defaultdict(list)
     for model in models:
-        initiatives = model.objects.filter(modified__gte=timezone.now()-timedelta(days=1))
+        initiatives = model.objects.filter(modified__gte=timezone.now()-timedelta(days=1), is_draft=False)
         print(f'There is {initiatives.count()} initiatives for update.')
         for initiative in initiatives:
             emails = []
@@ -51,7 +51,7 @@ def send_daily_notifications():
     print(email_initiatives)
 
 def send_admin_daily_notifications():
-    new_initiatives = Initiative.objects.filter(created__gte=timezone.now()-timedelta(days=1))
+    new_initiatives = Initiative.objects.filter(created__gte=timezone.now()-timedelta(days=1), is_draft=False)
     status_inititives = StatusInitiative.objects.filter(
         created__gte=timezone.now()-timedelta(days=1),
         publication_status=Published.DRAFT

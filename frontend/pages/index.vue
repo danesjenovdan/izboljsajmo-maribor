@@ -28,6 +28,7 @@
               >
                 <div class="initiative-card draft h-100">
                   <img
+                    v-if="draft.cover_image"
                     class="cover-image"
                     :src="draft.cover_image.image"
                     alt="Initiative draft cover image"
@@ -37,14 +38,17 @@
                     <p>{{ draft.description }}</p>
                     <div class="d-flex justify-content-center">
                       <div class="d-inline-flex align-items-center">
-                        <b-button class="d-flex align-items-center position-relative">
+                        <NuxtLink
+                          :to="`/predlogi/oddaj/${editLink[draft.type]}?id=${draft.id}`"
+                          class="btn d-flex align-items-center position-relative"
+                        >
                           <span class="text-uppercase pr-2">Uredi</span>
                           <img
                             src="~/assets/img/icons/edit.png"
                             alt="edit icon"
                             class="position-absolute"
                           >
-                        </b-button>
+                        </NuxtLink>
                       </div>
                     </div>
                   </div>
@@ -93,6 +97,7 @@
                 <InitiativeCard
                   v-bind="initiative"
                   @vote="vote(initiative.id)"
+                  @removeVote="removeVote(initiative.id)"
                 />
               </b-col>
             </b-row>
@@ -115,7 +120,12 @@ export default {
   data () {
     return {
       drafts: [],
-      published: []
+      published: [],
+      editLink: {
+        MM: 'moti-me',
+        ZM: 'zanima-me',
+        II: 'imam-idejo'
+      }
     }
   },
   methods: {
@@ -127,15 +137,28 @@ export default {
         id
       })
       if (success) { // voted successfully
-        for (const initiative of this.published) {
-          if (initiative.id === id) {
-            initiative.has_voted = true
-            initiative.vote_count += 1
-            break
-          }
-        }
+        this.updateVotes(id, true)
       } else { // error
         console.log('error')
+      }
+    },
+    async removeVote (id) {
+      const success = await this.$store.dispatch('deleteVote', {
+        id
+      })
+      if (success) { // unvoted successfully
+        this.updateVotes(id, false)
+      } else { // error
+        console.log('error')
+      }
+    },
+    updateVotes (id, hasVoted) {
+      for (const initiative of this.published) {
+        if (initiative.id === id) {
+          initiative.has_voted = hasVoted
+          initiative.vote_count += hasVoted ? 1 : -1
+          break
+        }
       }
     },
     date (date) {

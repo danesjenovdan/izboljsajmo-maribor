@@ -109,7 +109,7 @@
     <b-form-group v-slot="{ ariaDescribedby }">
       <b-form-checkbox
         id="no-location-allowed"
-        v-model="initiativeLocationIsEmpty"
+        v-model="initiativeHasNoLocation"
         :aria-describedby="ariaDescribedby"
         @change="initiativeLocationEmpty"
       >
@@ -122,9 +122,10 @@
         Izpolnite polje.
       </span>
       <div :class="{ dropzone: true, 'drop-active': dropzone1Active }">
-        <div v-if="coverImageFile">
+        <div v-if="coverImageFile || coverImageDraft">
           <div class="filenames">
-            <span class="mr-1">{{ coverImageFile.name }}</span>
+            <span v-if="coverImageFile" class="mr-1">{{ coverImageFile.name }}</span>
+            <span class="mr-1"><a v-if="coverImageDraft" :href="coverImageDraft.image" target="_blank">{{ coverImageDraft.id }}</a></span>
             <img
               src="~/assets/img/icons/trashcan.svg"
               alt="trashcan"
@@ -244,10 +245,15 @@ export default {
     descriptions: {
       type: Array,
       default: () => []
+    },
+    errorDraft: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
     return {
+      id: -1,
       title: '',
       errorInitiativeTitle: false,
       area: null,
@@ -260,8 +266,9 @@ export default {
       },
       mapIcon: null,
       errorInitiativeLocation: false,
-      initiativeLocationIsEmpty: false,
+      initiativeHasNoLocation: false,
       coverImageFile: null,
+      coverImageDraft: null,
       errorCoverImage: false,
       dropzone1Active: false,
       files: [],
@@ -272,23 +279,38 @@ export default {
       errorUploadMessage: 'Prišlo je do napake pri oddaji predloga.'
     }
   },
-  computed: {
-    form () {
-      return {
-        initiativeTitle: this.title,
-        initiativeArea: this.area,
-        initiativeAddress: this.address,
-        initiativeLocation: {
-          type: 'Point',
-          coordinates: [this.mapMarkerPosition.lat, this.mapMarkerPosition.lng]
-        },
-        initiativeCoverImage: '',
-        initiativeFiles: []
+  async created () {
+    await this.fetchAreas()
+
+    if (this.$route.query.id) {
+      this.id = this.$route.query.id
+      console.log('id', this.id)
+      const response = await this.$axios.get(`v1/initiatives/${this.id}`)
+      console.log(response)
+      if (response.status === 200) {
+        const initiative = response.data
+        if (!initiative.is_draft) {
+          return this.$router.push(`/predlogi/${this.id}`)
+        }
+        if (initiative.title) {
+          this.title = initiative.title
+        }
+        if (initiative.area) {
+          this.area = initiative.area.id
+        }
+        if (initiative.address) {
+          this.address = initiative.address
+        }
+        if (initiative.location) {
+          this.mapMarkerPosition.lat = initiative.location.coordinates[0]
+          this.mapMarkerPosition.lng = initiative.location.coordinates[1]
+        }
+        // to do: naloadi cover image in files
+        if (initiative.cover_image) {
+          this.coverImageDraft = initiative.cover_image
+        }
       }
     }
-  },
-  created () {
-    this.fetchAreas()
   },
   methods: {
     setIconStyles () {
@@ -325,7 +347,7 @@ export default {
         'https://nominatim.openstreetmap.org/search?',
         {
           params: {
-            q: this.form.initiativeAddress,
+            q: this.address,
             format: 'jsonv2',
             addressdetails: 1,
             countrycodes: 'si',
@@ -370,12 +392,12 @@ export default {
       return `${streetAndHouseNo}${postcodeAndCity}${address.country}`
     },
     checkInitiativeLocation () {
-      if (!this.initiativeLocationIsEmpty) {
+      if (!this.initiativeHasNoLocation) {
         this.errorInitiativeLocation = this.address.length === 0
       }
     },
     initiativeLocationEmpty () {
-      if (this.initiativeLocationIsEmpty) {
+      if (this.initiativeHasNoLocation) {
         this.errorInitiativeLocation = false
       }
     },
@@ -383,11 +405,13 @@ export default {
       this.dropzone1Active = false
       const files = event.target.files || event.dataTransfer.files
       if (files) {
+        this.coverImageDraft = null
         this.coverImageFile = files[0]
       }
       console.log(this.form)
     },
     removeCoverImage () {
+      this.coverImageDraft = null
       this.coverImageFile = null
     },
     processFiles (event) {
@@ -421,12 +445,19 @@ export default {
       this.errorUpload = false
       // this.errorForm = false
 
-      // remove location if empty
-      if (this.initiativeLocationIsEmpty) {
-        this.form.initiativeLocation = null
-        this.form.initiativeAddress = null
+      const form = {}
+      form.title = this.title
+      form.area = this.area
+      if (this.initiativeHasNoLocation) {
+        form.location = null
+        form.address = null
+      } else {
+        form.location = {
+          type: 'Point',
+          coordinates: [this.mapMarkerPosition.lat, this.mapMarkerPosition.lng]
+        }
+        form.address = this.address
       }
-
       // upload and set cover image
       if (this.coverImageFile) {
         const imageID = await this.$store.dispatch('postCoverImage', {
@@ -437,27 +468,31 @@ export default {
           this.errorUpload = true
           return
         }
-        this.form.initiativeCoverImage = {
+        form.cover_image = {
           id: imageID
+        }
+      } else if (!this.coverImageDraft) { // it was reset to null
+        form.cover_image = null
+      }
+      if (this.files.length > 0) {
+        form.uploaded_files = []
+        // upload and set image files
+        for (let i = 0; i < this.files.length; i++) {
+          console.log({
+            file: this.files[i],
+            name: this.files[i].name
+          })
+          const filesID = await this.$store.dispatch('postFiles', {
+            file: this.files[i],
+            name: this.files[i].name
+          })
+          form.uploaded_files.push({
+            id: filesID
+          })
         }
       }
 
-      // upload and set image files
-      for (let i = 0; i < this.files.length; i++) {
-        console.log({
-          file: this.files[i],
-          name: this.files[i].name
-        })
-        const filesID = await this.$store.dispatch('postFiles', {
-          file: this.files[i],
-          name: this.files[i].name
-        })
-        this.form.initiativeFiles.push({
-          id: filesID
-        })
-      }
-
-      this.$emit('create-draft', this.form)
+      this.$emit('create-draft', form, this.id)
     },
     async createInitiative () {
       this.errorUpload = false
@@ -476,10 +511,15 @@ export default {
         !this.errorInitiativeLocation &&
         !this.errorCoverImage
       ) {
-        // remove location if empty
-        if (this.initiativeLocationIsEmpty) {
-          this.form.initiativeLocation = null
-          this.form.initiativeAddress = null
+        const form = {}
+        form.title = this.title
+        form.area = this.area
+        if (!this.initiativeHasNoLocation) {
+          form.location = {
+            type: 'Point',
+            coordinates: [this.mapMarkerPosition.lat, this.mapMarkerPosition.lng]
+          }
+          form.address = this.address
         }
         // upload and set cover image
         const imageID = await this.$store.dispatch('postCoverImage', {
@@ -490,26 +530,30 @@ export default {
           this.errorUpload = true
           return
         }
-        this.form.initiativeCoverImage = {
+        form.cover_image = {
           id: imageID
         }
         console.log('img', imageID)
         // upload and set image files
-        for (let i = 0; i < this.files.length; i++) {
-          console.log({
-            file: this.files[i],
-            name: this.files[i].name
-          })
-          const filesID = await this.$store.dispatch('postFiles', {
-            file: this.files[i],
-            name: this.files[i].name
-          })
-          this.form.initiativeFiles.push({
-            id: filesID
-          })
+        if (this.files.length > 0) {
+          form.uploaded_files = []
+          // upload and set image files
+          for (let i = 0; i < this.files.length; i++) {
+            console.log({
+              file: this.files[i],
+              name: this.files[i].name
+            })
+            const filesID = await this.$store.dispatch('postFiles', {
+              file: this.files[i],
+              name: this.files[i].name
+            })
+            form.uploaded_files.push({
+              id: filesID
+            })
+          }
         }
-        console.log(this.form)
-        this.$emit('create-initiative', this.form)
+        console.log(form)
+        this.$emit('create-initiative', form, this.id)
       } else {
         this.errorForm = true
       }

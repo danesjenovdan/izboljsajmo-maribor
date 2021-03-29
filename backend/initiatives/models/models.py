@@ -9,6 +9,8 @@ from django.contrib.auth.models import Group
 
 from behaviors.behaviors import Timestamped, Authored, Published
 
+from initiatives.utils import validate_file_extension
+
 import logging
 logger = logging.getLogger(__name__)
 
@@ -24,6 +26,9 @@ class Reviwers(models.TextChoices):
     AREA_ADMIN = 'AA', _('AREA ADMIN')
     AREA_APPRAISER = 'AP', _('AREA APPRAISER')
     CONTRACTOR_APPRAISER = 'CA', _('CONTRACTOR APPRAISER')
+
+    def get_order():
+        return ['SA', 'AA', 'AP', 'CA']
 
 
 class CommentStatus(models.TextChoices):
@@ -266,6 +271,7 @@ class User(AbstractUser, Timestamped):
         validators=[
             validators.RegexValidator(r'^[\w.@+ -]+$', _('Enter a valid username.'), 'invalid')
         ])
+    email_confirmed = models.BooleanField(default=False)
 
 
 class SuperAdminManager(BaseUserManager):
@@ -403,7 +409,7 @@ class File(Timestamped):
     file = models.FileField(
         _('File'),
         upload_to='files',
-        max_length=100)
+        validators=[validate_file_extension])
 
     def __str__(self):
         return self.name
@@ -413,6 +419,11 @@ class Image(Timestamped):
     image = models.ImageField(
         _('Image'),
         upload_to='images',
+        null=True,
+        blank=True)
+    name = models.CharField(
+        _('Display name'),
+        max_length=50,
         null=True,
         blank=True)
 
@@ -436,3 +447,26 @@ class DescriptionDefinition(Timestamped, Authored):
     title = models.CharField(
         _('Title'),
         max_length=100)
+
+
+class RestorePassword(Timestamped):
+    user = models.ForeignKey(
+        'User',
+        verbose_name=_('User'),
+        related_name='restore_passwords',
+        on_delete=models.CASCADE)
+    key = models.CharField(
+        _('Description type'),
+        max_length=50)
+
+
+class ConfirmEmail(Timestamped):
+    user = models.ForeignKey(
+        'User',
+        verbose_name=_('User'),
+        related_name='conform_emails',
+        on_delete=models.CASCADE)
+    key = models.CharField(
+        _('Description type'),
+        max_length=50)
+

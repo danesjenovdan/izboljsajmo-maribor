@@ -1,12 +1,12 @@
 from django.contrib import admin
-
-# Register your models here.
+from django import forms
+from django.shortcuts import render
 
 from initiatives.models import (
     Initiative, BothersInitiativeSuper, BothersInitiativeArea, BothersInitiativeAppraiser, BothersInitiativeContractor,
     IdeaInitiativeSuper, IdeaInitiativeArea, IdeaInitiativeAppraiser, IdeaInitiativeContractor,
     InterestedInitiativeSuper, InterestedInitiativeArea, InterestedInitiativeAppraiser,
-    ArchivedInitiative
+    ArchivedInitiative, User, Reviwers
 )
 
 from initiatives.admin.admin import (DescriptionInline, FileInline, StatusInitiativeHearInline, StatusInitiativeEditingInline,
@@ -21,10 +21,10 @@ from import_export.admin import ImportExportModelAdmin
 
 class InitiativeAdmin(ImportExportModelAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['author', 'publisher', 'area', 'zone']
+    autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type']
     date_hierarchy = 'created'
-    readonly_fields = ['status_history', 'created']
+    readonly_fields = ['status_history', 'created', 'images_preview']
     list_display = [
         'title',
         'reviewer',
@@ -37,7 +37,9 @@ class InitiativeAdmin(ImportExportModelAdmin):
         'zone',
         'created',
         'comment_count',
-        'vote_count'
+        'vote_count',
+        '_is_published',
+        '_needs_publish'
     ]
     inlines = (
         DescriptionInline,
@@ -51,16 +53,22 @@ class InitiativeAdmin(ImportExportModelAdmin):
         CommentInline)
 
     resource_class = InitiativeResource
+    actions = ['printer']
+
+    def printer(self, request, queryset):
+        return render(request, 'print/initiatives.html', {'initiatives': queryset})
+
+    printer.short_description = "Print initiatives"
 
 
 # ---- ZANIMA ME -> interested in
 
 class InterestedInitiativeSuperAdmin(ImportExportModelAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['author', 'publisher', 'area', 'zone']
+    autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type']
     date_hierarchy = 'created'
-    readonly_fields = ['status_history', 'created']
+    readonly_fields = ['status_history', 'created', 'images_preview']
     list_display = [
         'title',
         'author',
@@ -72,7 +80,9 @@ class InterestedInitiativeSuperAdmin(ImportExportModelAdmin):
         'created',
         'comment_count',
         'vote_count',
-        'reviewer'
+        'reviewer',
+        '_is_published',
+        '_needs_publish'
     ]
     inlines = (
         DescriptionInline,
@@ -83,14 +93,20 @@ class InterestedInitiativeSuperAdmin(ImportExportModelAdmin):
         CommentInline)
 
     resource_class = InitiativeResource
+    actions = ['printer']
+
+    def printer(self, request, queryset):
+        return render(request, 'print/initiatives.html', {'initiatives': queryset})
+
+    printer.short_description = "Print initiatives"
 
 
 class InterestedInitiativeAreaAdmin(ImportExportModelAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['area', 'zone']
+    autocomplete_fields = ['area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type']
     date_hierarchy = 'created'
-    readonly_fields = ['status_history', 'created']
+    readonly_fields = ['status_history', 'created', 'images_preview']
     list_display = [
         'title',
         'author',
@@ -112,10 +128,16 @@ class InterestedInitiativeAreaAdmin(ImportExportModelAdmin):
         CommentInline)
 
     resource_class = InitiativeResource
+    actions = ['printer']
+
+    def printer(self, request, queryset):
+        return render(request, 'print/initiatives.html', {'initiatives': queryset})
+
+    printer.short_description = "Print initiatives"
 
 
 class InterestedInitiativeAppraiserAdmin(ImportExportModelAdmin):
-    readonly_fields = ['title', 'author', 'address', 'type', 'area', 'location', 'cover_image', 'zone', 'modified', 'archived', 'status_history', 'created']
+    readonly_fields = ['title', 'author', 'address', 'type', 'area', 'location', 'cover_image', 'zone', 'modified', 'archived', 'status_history', 'created', 'images_preview']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -140,15 +162,21 @@ class InterestedInitiativeAppraiserAdmin(ImportExportModelAdmin):
         CommentInline)
 
     resource_class = InitiativeResource
+    actions = ['printer']
+
+    def printer(self, request, queryset):
+        return render(request, 'print/initiatives.html', {'initiatives': queryset})
+
+    printer.short_description = "Print initiatives"
 
 # ---- IDEJA Idea
 
 class IdeaInitiativeSuperAdmin(ImportExportModelAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['author', 'publisher', 'area', 'zone']
+    autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type']
     date_hierarchy = 'created'
-    readonly_fields = ['status_history', 'created']
+    readonly_fields = ['status_history', 'created', 'images_preview']
     list_display = [
         'title',
         'author',
@@ -160,7 +188,9 @@ class IdeaInitiativeSuperAdmin(ImportExportModelAdmin):
         'created',
         'comment_count',
         'vote_count',
-        'reviewer'
+        'reviewer',
+        '_is_published',
+        '_needs_publish'
     ]
     inlines = (
         DescriptionInline,
@@ -171,14 +201,29 @@ class IdeaInitiativeSuperAdmin(ImportExportModelAdmin):
         CommentInline)
 
     resource_class = InitiativeResource
+    actions = ['printer']
 
+    def printer(self, request, queryset):
+        return render(request, 'print/initiatives.html', {'initiatives': queryset})
+
+    printer.short_description = "Print initiatives"
+
+
+class IteaAdminForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        idx = Reviwers.get_order().index(self.instance.reviewer)
+        self.fields['reviewer_user'].queryset = User.objects.filter(
+            role=Reviwers.get_order()[idx+1],
+            area=self.instance.area)
 
 class IdeaInitiativeAreaAdmin(ImportExportModelAdmin):
+    form = IteaAdminForm
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type']
     date_hierarchy = 'created'
-    readonly_fields = ['status_history', 'created']
+    readonly_fields = ['status_history', 'created', 'images_preview']
     list_display = [
         'title',
         'author',
@@ -200,10 +245,16 @@ class IdeaInitiativeAreaAdmin(ImportExportModelAdmin):
         CommentInline)
 
     resource_class = InitiativeResource
+    actions = ['printer']
+
+    def printer(self, request, queryset):
+        return render(request, 'print/initiatives.html', {'initiatives': queryset})
+
+    printer.short_description = "Print initiatives"
 
 
 class IdeaInitiativeAppraiserAdmin(ImportExportModelAdmin):
-    readonly_fields = ['title', 'author', 'address', 'type', 'area', 'location', 'cover_image', 'zone', 'modified', 'archived', 'status_history', 'created']
+    readonly_fields = ['title', 'author', 'address', 'type', 'area', 'location', 'cover_image', 'zone', 'modified', 'archived', 'status_history', 'created', 'images_preview']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -228,10 +279,16 @@ class IdeaInitiativeAppraiserAdmin(ImportExportModelAdmin):
         CommentInline)
 
     resource_class = InitiativeResource
+    actions = ['printer']
+
+    def printer(self, request, queryset):
+        return render(request, 'print/initiatives.html', {'initiatives': queryset})
+
+    printer.short_description = "Print initiatives"
 
 
 class IdeaInitiativeContractorAdmin(ImportExportModelAdmin):
-    readonly_fields = ['title', 'author', 'address', 'type', 'area', 'location', 'cover_image', 'zone', 'modified', 'archived', 'status_history', 'created']
+    readonly_fields = ['title', 'author', 'address', 'type', 'area', 'location', 'cover_image', 'zone', 'modified', 'archived', 'status_history', 'created', 'images_preview']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -256,16 +313,22 @@ class IdeaInitiativeContractorAdmin(ImportExportModelAdmin):
         CommentInline)
 
     resource_class = InitiativeResource
+    actions = ['printer']
+
+    def printer(self, request, queryset):
+        return render(request, 'print/initiatives.html', {'initiatives': queryset})
+
+    printer.short_description = "Print initiatives"
 
 
 # MOTI ME -> bothers me
 
 class BothersInitiativeSuperAdmin(ImportExportModelAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['author', 'publisher', 'area', 'zone']
+    autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type']
     date_hierarchy = 'created'
-    readonly_fields = ['status_history', 'created']
+    readonly_fields = ['status_history', 'created', 'images_preview']
     list_display = [
         'title',
         'author',
@@ -277,7 +340,9 @@ class BothersInitiativeSuperAdmin(ImportExportModelAdmin):
         'created',
         'comment_count',
         'vote_count',
-        'reviewer'
+        'reviewer',
+        '_is_published',
+        '_needs_publish'
     ]
     inlines = (
         DescriptionInline,
@@ -288,14 +353,20 @@ class BothersInitiativeSuperAdmin(ImportExportModelAdmin):
         CommentInline)
 
     resource_class = InitiativeResource
+    actions = ['printer']
+
+    def printer(self, request, queryset):
+        return render(request, 'print/initiatives.html', {'initiatives': queryset})
+
+    printer.short_description = "Print initiatives"
 
 
 class BothersInitiativeAreaAdmin(ImportExportModelAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['area', 'zone']
+    autocomplete_fields = ['area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type']
     date_hierarchy = 'created'
-    readonly_fields = ['status_history', 'created']
+    readonly_fields = ['status_history', 'created', 'images_preview']
     list_display = [
         'title',
         'author',
@@ -317,10 +388,16 @@ class BothersInitiativeAreaAdmin(ImportExportModelAdmin):
         CommentInline)
 
     resource_class = InitiativeResource
+    actions = ['printer']
+
+    def printer(self, request, queryset):
+        return render(request, 'print/initiatives.html', {'initiatives': queryset})
+
+    printer.short_description = "Print initiatives"
 
 
 class BothersInitiativeAppraiserAdmin(ImportExportModelAdmin):
-    readonly_fields = ['title', 'author', 'address', 'type', 'area', 'location', 'cover_image', 'zone', 'modified', 'archived', 'status_history', 'created']
+    readonly_fields = ['title', 'author', 'address', 'type', 'area', 'location', 'cover_image', 'zone', 'modified', 'archived', 'status_history', 'created', 'images_preview']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -345,10 +422,16 @@ class BothersInitiativeAppraiserAdmin(ImportExportModelAdmin):
         CommentInline)
 
     resource_class = InitiativeResource
+    actions = ['printer']
+
+    def printer(self, request, queryset):
+        return render(request, 'print/initiatives.html', {'initiatives': queryset})
+
+    printer.short_description = "Print initiatives"
 
 
 class BothersInitiativeContractorAdmin(ImportExportModelAdmin):
-    readonly_fields = ['title', 'author', 'address', 'type', 'area', 'location', 'cover_image', 'zone', 'modified', 'archived', 'status_history', 'created']
+    readonly_fields = ['title', 'author', 'address', 'type', 'area', 'location', 'cover_image', 'zone', 'modified', 'archived', 'status_history', 'created', 'images_preview']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -373,10 +456,16 @@ class BothersInitiativeContractorAdmin(ImportExportModelAdmin):
         CommentInline)
 
     resource_class = InitiativeResource
+    actions = ['printer']
+
+    def printer(self, request, queryset):
+        return render(request, 'print/initiatives.html', {'initiatives': queryset})
+
+    printer.short_description = "Print initiatives"
 
 
-admin.site.register(Initiative)
-admin.site.register(ArchivedInitiative, InitiativeAdmin)
+admin.site.register(Initiative, InitiativeAdmin)
+admin.site.register(ArchivedInitiative)
 
 admin.site.register(InterestedInitiativeSuper, InterestedInitiativeSuperAdmin)
 admin.site.register(InterestedInitiativeArea, InterestedInitiativeAreaAdmin)

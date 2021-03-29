@@ -1,0 +1,12 @@
+<html>
+    <head></head>
+    <body>
+        {% for initiative in initiatives %}
+            {% include "print/initiative.html" %}
+        {% endfor %}
+        <hr>
+        <script>
+            window.print()
+        </script>
+    </body>
+</html>

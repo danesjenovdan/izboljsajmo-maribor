@@ -30,12 +30,7 @@ export const actions = {
       password: payload.form.password,
       client_secret: context.getters.client_secret
     }
-    // console.log(loginData)
-    // const response = await this.$axios.post('auth/token/', loginData)
     await this.$auth.loginWith('local', { data: loginData })
-    await this.$axios.setHeader('Authorization', 'Bearer ' + context.getters.token)
-    const user = await this.$axios.get('v1/users/me/')
-    this.$auth.setUser(user.data)
   },
 
   async logout () {
@@ -85,6 +80,18 @@ export const actions = {
     }
   },
 
+  async deleteVote (context, payload) {
+    const response = await this.$axios.delete(`v1/initiatives/${payload.id}/vote/`)
+
+    if (response.status === 204) {
+      return true // deleted successfully
+    } else if (response.status === 409) {
+      return false // user did not vote in the first place
+    } else {
+      return false // error
+    }
+  },
+
   async postCoverImage (context, payload) {
     const formData = new FormData()
     formData.append('image', payload.image)
@@ -126,15 +133,15 @@ export const actions = {
 
   async postInitiative (context, payload) {
     const form = {
-      title: payload.initiativeTitle,
-      type: payload.initiativeType,
-      area: payload.initiativeArea,
-      address: payload.initiativeAddress,
-      location: payload.initiativeLocation,
+      title: payload.title,
+      type: payload.type,
+      area: payload.area,
+      address: payload.address,
+      location: payload.location,
       descriptions: [],
-      cover_image: payload.initiativeCoverImage,
-      uploaded_files: payload.initiativeFiles,
-      is_draft: payload.isDraft
+      cover_image: payload.cover_image,
+      uploaded_files: payload.uploaded_files,
+      is_draft: payload.is_draft
     }
     console.log(JSON.stringify(form))
     const response = await this.$axios.post('v1/initiatives/', form)
@@ -146,6 +153,18 @@ export const actions = {
     } else {
       console.log('ni ok', responseData)
       // throw error
+    }
+  },
+
+  async patchInitiative (context, payload) {
+    console.log(JSON.stringify(payload.form))
+    const response = await this.$axios.patch(`v1/initiatives/${payload.id}/`, payload.form)
+    const responseData = await response.data
+    console.log(response)
+    if (response.statusText === "OK") {
+      return responseData.id
+    } else {
+      return -1
     }
   },
 

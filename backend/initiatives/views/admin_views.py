@@ -1,5 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
+from django.shortcuts import render
+from django.views import View
 
 from rest_framework import viewsets, mixins, permissions, views, authentication
 from rest_framework.decorators import action
@@ -37,3 +39,9 @@ class RejectionViewSet(
     permission_classes = []
     serializer_class = RejectionSerializer
     queryset = Rejection.objects.all()
+
+
+class PrintInitiativesView(View):
+    def get(self, request, pk):
+        initiatives = Initiative.objects.filter(pk=pk)
+        return render(request, 'print/initiatives.html', {'initiatives': initiatives})

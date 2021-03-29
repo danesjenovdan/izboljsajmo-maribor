@@ -186,6 +186,7 @@ textarea.form-control {
 
   .custom-control-input:focus ~ .custom-control-label::before {
     box-shadow: none;
+    border-color: #adb5bd;
   }
 }
 
@@ -203,6 +204,14 @@ textarea.form-control {
 
     img {
       height: 1.2rem;
+    }
+
+    a {
+      color: unset;
+      &:hover {
+        text-decoration: none;
+        color: unset;
+      }
     }
   }
 

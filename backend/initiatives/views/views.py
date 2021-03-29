@@ -1,6 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.translation import gettext as _
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError 
+
 from rest_framework import viewsets, mixins, permissions, status, views, authentication, exceptions
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -13,9 +16,12 @@ from initiatives.serializers import (
     CommentSerializer, AreaSerializer, FAQSerializer, FileSerializer, ImageSerializer,
     InitiativeDetailsSerializer, InitiativeListSerializer
 )
-from initiatives.models import Zone, Area, FAQ, DescriptionDefinition, InitiativeType, Initiative, Reviwers, Vote
+from initiatives.models import (
+    Zone, Area, FAQ, DescriptionDefinition, InitiativeType, Initiative, Reviwers, Vote, RestorePassword,
+    ConfirmEmail, User
+)
 
-from initiatives.permissions import IsOwnerOrReadOnly
+from initiatives.permissions import IsOwnerOrReadOnly, IsVerified
 
 import logging
 logger = logging.getLogger(__name__)
@@ -31,7 +37,7 @@ class UserViewSet(
         detail=False,
         url_path='me',
         url_name='me',
-        permission_classes=[permissions.IsAuthenticated,])
+        permission_classes=[permissions.IsAuthenticated, IsVerified])
     def my_initiatives(self, request):
         return Response(UserSerializer(request.user).data)
 
@@ -63,14 +69,14 @@ class FilesViewSet(viewsets.GenericViewSet,
                    mixins.CreateModelMixin):
     serializer_class = FileSerializer
     parser_classes = (MultiPartParser, FormParser,)
-    permission_classes = [permissions.IsAuthenticated,]
+    permission_classes = [permissions.IsAuthenticated, IsVerified]
 
 
 class ImagesViewSet(viewsets.GenericViewSet,
                    mixins.CreateModelMixin):
     serializer_class = ImageSerializer
     parser_classes = (MultiPartParser, FormParser,)
-    permission_classes = [permissions.IsAuthenticated,]
+    permission_classes = [permissions.IsAuthenticated, IsVerified]
 
 
 class FAQViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
@@ -123,19 +129,38 @@ class InitiativeViewSet(
 
 
     def create(self, request, *args, **kwargs):
-        area = request.data['area']
-        area = Area.objects.get(id=area)
-        for i, desctription in enumerate(request.data['descriptions']):
+        area = request.data.get('area', None)
+        if area:
+            area = Area.objects.get(id=area)
+        for i, desctription in enumerate(request.data.get('descriptions', [])):
             request.data['descriptions'][i]['order'] = i + 1
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        # TODO get zone from location
-        zone = Zone.objects.first()
-
-        serializer.save(zone=zone, author=request.user, area=area)
+        serializer.save(author=request.user, area=area)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        data = request.data
+        area = data.get('area', None)
+        if area:
+            area = Area.objects.get(id=area)
+        for i, desctription in enumerate(data.get('descriptions', [])):
+            data['descriptions'][i]['order'] = i + 1
+
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(area=area)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
 
     @action(
         methods=['post'],
@@ -192,3 +217,37 @@ class InitiativeViewSet(
         serializer = InitiativeListSerializer(published, context = {'request':request}, many=True)
         return Response({'drafts': draft_serializer.data, 'published': serializer.data})
 
+
+class RestorePasswordApiView(views.APIView):
+    permission_classes = []
+    authentication_classes = []
+    def post(self, request):
+        data = request.data
+        user = get_object_or_404(User, email=data.get('email', ''))
+        RestorePassword(user=user).save()
+        return Response({'status': _('Email will be send.')}, status=status.HTTP_201_CREATED)
+
+    def patch(self, request, key):
+        restore_password = get_object_or_404(RestorePassword, key=key)
+        password = request.data.get('new_password')
+        try:
+            validate_password(password, user=None, password_validators=None)
+        except ValidationError as e:
+            return Response({'detail': e}, status=status.HTTP_409_CONFLICT)
+        user = restore_password.user
+        user.set_password(password)
+        user.save()
+        restore_password.delete()
+        return Response({'status': _('Password has been set.')})
+
+
+class ConfirmEmailApiView(views.APIView):
+    permission_classes = []
+    authentication_classes = []
+    def get(self, request, key):
+        confirm_email = get_object_or_404(ConfirmEmail, key=key)
+        user = confirm_email.user
+        user.email_confirmed = True
+        user.save()
+        confirm_email.delete()
+        return Response({'status': _('Email confirmed.')})

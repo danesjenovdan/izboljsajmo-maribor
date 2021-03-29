@@ -6,7 +6,7 @@ from django.contrib.gis.db import models as geo_models
 from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
 
-from behaviors.behaviors import Timestamped, Authored
+from behaviors.behaviors import Timestamped, Authored, Published
 
 from initiatives.models import CommentStatus, InitiativeType, Reviwers, Zone
 
@@ -21,7 +21,7 @@ class Initiative(Timestamped, Authored):
         _('Reviewer role'),
         max_length=2,
         choices=Reviwers.choices,
-        default=Reviwers.AREA_ADMIN)
+        default=Reviwers.AREA_ADMIN,)
     reviewer_user = models.ForeignKey(
         'initiatives.User',
         verbose_name=_('Reviewer'),
@@ -31,7 +31,9 @@ class Initiative(Timestamped, Authored):
         blank=True)
     title = models.CharField(
         _('Title'),
-        max_length=50)
+        max_length=50,
+        null=True,
+        blank=True)
     statuses = models.ManyToManyField(
         'initiatives.Status',
         verbose_name=_('Status of initiative'),
@@ -40,7 +42,9 @@ class Initiative(Timestamped, Authored):
         'initiatives.Area',
         verbose_name=_('Area'),
         on_delete=models.CASCADE,
-        related_name='initiatives')
+        related_name='initiatives',
+        null=True,
+        blank=True)
     location = geo_models.PointField(
         null=True,
         blank=True)
@@ -52,8 +56,10 @@ class Initiative(Timestamped, Authored):
     zone = models.ForeignKey(
         'initiatives.Zone',
         verbose_name=_('GEO Zone of initiative'),
-        on_delete=models.CASCADE,
-        related_name='initiatives')
+        on_delete=models.SET_NULL,
+        related_name='initiatives',
+        null=True,
+        blank=True)
     publisher = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -63,14 +69,14 @@ class Initiative(Timestamped, Authored):
     cover_image = models.ForeignKey(
         'initiatives.Image',
         verbose_name=_('Cover image before'),
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='initiative_before',
         null=True,
         blank=True)
     cover_image_after = models.ForeignKey(
         'initiatives.Image',
         verbose_name=_('Cover image after'),
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='initiative_after',
         null=True,
         blank=True)
@@ -107,6 +113,26 @@ class Initiative(Timestamped, Authored):
             '''
             )
 
+    def images_preview(self):
+        images = ""
+        if self.cover_image:
+            images += f'''<img src="{self.cover_image}" style"width=25%;">'''
+        if self.cover_image_after:
+            images += f'''<img src="{self.cover_image_after}" style"width=25%;">'''
+        return mark_safe(
+            f'''
+            <div style"width=50%;">
+                {images}
+            </div>
+            '''
+        )
+
+    def _is_published(self):
+        return bool(self.initiative_statuses.filter(publication_status=Published.PUBLISHED))
+
+    def _needs_publish(self):
+        return bool(self.initiative_statuses.filter(publication_status=Published.DRAFT))
+
     def vote_count(self):
         return self.votes.count()
 
@@ -119,6 +145,11 @@ class Initiative(Timestamped, Authored):
                 _('Object must be created before it can be archived'))
         self.archived = timezone.now()
         return super(StoreDeleted, self).save(*args, **kwargs)
+
+    _needs_publish.boolean = True
+    _is_published.boolean = True
+    is_published = property(_is_published)
+    needs_published = property(_needs_publish)
 
 
 class ArchivedManager(models.Manager):

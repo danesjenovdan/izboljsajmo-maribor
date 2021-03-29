@@ -3,6 +3,9 @@
 {% load filters %}
 {% block object-tools-items %}
     <li>
+        <a href="{% url 'initiatives:print' pk=original.pk %}" class="historylink">{% translate "Print" %}</a>
+    </li>
+    <li>
         <a href="{% url 'initiatives:move-responsibility' pk=original.pk label=original|get_class next='SA' %}" class="historylink">{% translate "Pošlji super adminu v pregled" %}</a>
     </li>
     <li>

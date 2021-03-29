@@ -1,0 +1,21 @@
+<div>
+    <h2>{{ initiative.title }}</h2>
+</div>
+<div>{{ initiative.created.isoformat }}</div>
+<div>{{ initiative.area.name }}</div>
+<div>{{ initiative.address }}</div>
+<div><img src="{{ initiative.cover_image.url }}"></div>
+<div><img src="{{ initiative.cover_image_after.url }}"></div>
+<hr>
+<div>
+    {% for status in initiative.initiative_statuses.all %}
+        <div><t>{{ status.status.name }}</div>
+        <div>{{ status.created.isoformat }}</div>
+        <div>{{ status.note }}</div>
+        {% if status.reason_for_rejection %}
+            <div>{{ status.reason_for_rejection.name }}</div>
+        {% endif %}
+        <hr>
+    {% endfor %}
+</div>
+

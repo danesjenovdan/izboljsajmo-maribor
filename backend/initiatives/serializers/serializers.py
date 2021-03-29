@@ -119,7 +119,6 @@ class FileSerializer(serializers.ModelSerializer):
         fields = ('id', 'file', 'name')
 
 
-
 class FileDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = File
@@ -133,7 +132,7 @@ class FileDetailsSerializer(serializers.ModelSerializer):
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
-        fields = ('id', 'image')
+        fields = ('id', 'image', 'name')
 
 
 class CommentSerializer(serializers.ModelSerializer):

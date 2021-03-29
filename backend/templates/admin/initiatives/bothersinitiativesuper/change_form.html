@@ -3,6 +3,12 @@
 {% load filters %}
 {% block object-tools-items %}
     <li>
+        <a href="{% url 'initiatives:print' pk=original.pk %}" class="historylink">{% translate "Print" %}</a>
+    </li>
+    <li>
+        <a href="{% url 'initiatives:print' pk=original.pk %}" class="historylink">{% translate "Print" %}</a>
+    </li>
+    <li>
         <a href="{% url 'initiatives:archive' pk=original.pk label=original|get_class %}" class="deletelink">{% translate "Archive" %}</a>
     </li>
     <li>
