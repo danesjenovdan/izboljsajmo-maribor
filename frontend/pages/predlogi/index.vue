@@ -21,7 +21,7 @@
             <NuxtLink to="/predlogi/oddaj/zanima-me" class="action-card d-block h-100">
               <h6 class="d-flex align-items-center">
                 ZANIMA ME!
-                <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
+                <ArrowRightIcon />
               </h6>
               <p>Splošna vprašanja / pohvale</p>
             </NuxtLink>
@@ -31,7 +31,7 @@
             <NuxtLink to="/predlogi/oddaj/moti-me" class="action-card d-block h-100">
               <h6 class="d-flex align-items-center">
                 MOTI ME!
-                <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
+                <ArrowRightIcon />
               </h6>
               <p>Zaznane okvare, poškodbe, slabosti, pomanjkljivosti, nepravilnosti ...</p>
             </NuxtLink>
@@ -41,7 +41,7 @@
             <NuxtLink to="/predlogi/oddaj/imam-idejo" class="action-card d-block h-100">
               <h6 class="d-flex align-items-center">
                 IMAM IDEJO!
-                <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
+                <ArrowRightIcon />
               </h6>
               <p>Projektni predlogi, novosti, predlogi za izboljšave, družbene inovacije ...</p>
             </NuxtLink>
@@ -215,12 +215,7 @@
                 @click="sortInitiativesByDateAscending = !sortInitiativesByDateAscending"
               >
                 <span class="mr-1">Sortiraj po datumu objave</span>
-                <img
-                  src="~/assets/img/icons/down-arrow.svg"
-                  alt="down-arrow"
-                  class="ml-1"
-                  :class="{ 'sort-ascending': sortInitiativesByDateAscending }"
-                >
+                <ArrowDownIcon class="ml-1" :class="{ 'sort-ascending': sortInitiativesByDateAscending }" />
               </div>
             </b-col>
           </b-row>
@@ -270,10 +265,12 @@
 </template>
 
 <script>
+import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
+import ArrowDownIcon from '~/assets/img/icons/arrow-down.svg?inline'
 import InitiativeCard from '~/components/InitiativeCard'
 
 export default {
-  components: { InitiativeCard },
+  components: { ArrowRightIcon, ArrowDownIcon, InitiativeCard },
   data () {
     return {
       search: '',
@@ -417,8 +414,9 @@ export default {
     letter-spacing: 0.1rem;
     line-height: 1;
 
-    img {
+    svg {
       height: 1.2rem;
+      width: 1.2rem;
       margin-left: 0.5rem;
     }
   }
@@ -480,8 +478,17 @@ h4 {
   margin-left: 0.5rem;
   margin-top: 0.25rem;
 
+  &:hover {
+    background-color: white;
+    border-color: white;
+  }
+
   &.dropdown-open {
     border: 2px solid #ef7782;
+
+    &:hover {
+      border-color: #ef7782;
+    }
 
     & > img {
       transform: rotate(-180deg);
@@ -530,12 +537,17 @@ h4 {
   cursor: pointer;
 
   &:hover {
-    background-color: #5a6268;
+    background-color: #1A365D;
     color: white;
+
+    svg {
+      fill: white;
+    }
   }
 
-  img {
-    height: 0.7rem;
+  svg {
+    max-height: 0.7rem;
+    max-width: 0.7rem;
     transition: transform 500ms;
 
     &.sort-ascending {

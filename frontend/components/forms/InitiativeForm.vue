@@ -126,12 +126,7 @@
           <div class="filenames">
             <span v-if="coverImageFile" class="mr-1">{{ coverImageFile.name }}</span>
             <span class="mr-1"><a v-if="coverImageDraft" :href="coverImageDraft.image" target="_blank">{{ coverImageDraft.id }}</a></span>
-            <img
-              src="~/assets/img/icons/trashcan.svg"
-              alt="trashcan"
-              class="trashcan"
-              @click="removeCoverImage"
-            >
+            <TrashcanIcon class="trashcan" @click="removeCoverImage" />
           </div>
           <hr class="hr-upper">
           <hr class="hr-lower">
@@ -154,7 +149,7 @@
           >
           <div class="d-flex align-items-center">
             <div class="drop-circle btn d-flex justify-content-center align-items-center">
-              <img src="~/assets/img/icons/add.svg" alt="add">
+              <AddIcon />
             </div>
             <p>Dodajte sliko ali pa jo povlecite in odložite. Dovoljeni formati so: gif, jpg, png. Velikost naj ne presega 5 MB.</p>
           </div>
@@ -170,12 +165,7 @@
         <div v-if="files.length > 0">
           <div v-for="file in files" :key="file.name" class="filenames">
             <span class="mr-1">{{ file.name }}</span>
-            <img
-              src="~/assets/img/icons/trashcan.svg"
-              alt="trashcan"
-              class="trashcan"
-              @click="removeFile(file.name)"
-            >
+            <TrashcanIcon class="trashcan" @click="removeFile(file.name)" />
           </div>
           <hr class="hr-upper">
           <hr class="hr-lower">
@@ -199,7 +189,7 @@
           >
           <div class="d-flex align-items-center">
             <div class="drop-circle btn d-flex justify-content-center align-items-center">
-              <img src="~/assets/img/icons/add.svg" alt="add">
+              <AddIcon />
             </div>
             <p>Dodaj datoteke ali pa jih povleci in odloži. Dovoljeni formati so: gif, jpg, png, doc, docx, pdf, odt. Velikost naj ne presega 5 MB.</p>
           </div>
@@ -232,14 +222,19 @@
       </div>
       <b-button type="submit" class="d-flex align-items-center pl-4 pr-3">
         <span class="mr-4">ODDAJ</span>
-        <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
+        <ArrowRightIcon />
       </b-button>
     </div>
   </form>
 </template>
 
 <script>
+import TrashcanIcon from '~/assets/img/icons/trashcan.svg?inline'
+import AddIcon from '~/assets/img/icons/add.svg?inline'
+import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
+
 export default {
+  components: { TrashcanIcon, AddIcon, ArrowRightIcon },
   middleware: 'auth',
   props: {
     descriptions: {
@@ -592,6 +587,8 @@ hr {
 
 .trashcan {
   cursor: pointer;
+  max-height: 1.25rem;
+  max-width: 1.25rem;
 }
 
 .save-button,
@@ -605,7 +602,7 @@ hr {
 .cancel-button {
   background-color: #d7d7d7;
   &:hover {
-    background-color: #6c757d;
+    background-color: #1A365D;
   }
 }
 </style>

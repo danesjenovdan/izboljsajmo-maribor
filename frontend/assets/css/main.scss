@@ -1,5 +1,6 @@
 body {
   font-family: 'Barlow', sans-serif;
+  color: black;
 }
 
 hr {
@@ -29,10 +30,20 @@ hr {
   margin: 1rem 0;
   padding: 0.4rem 0.75rem;
 
-  img {
-    max-width: 1.25rem;
-    max-height: 1.25rem;
+  svg {
+    width: 1rem;
+    height: 1rem;
     right: 1rem;
+    transition: fill 0.15s ease-in-out;
+  }
+
+  &:hover {
+    background-color: #1A365D;
+    color: white;
+
+    svg {
+      fill: white !important;
+    }
   }
 }
 
@@ -251,8 +262,8 @@ textarea.form-control {
 
       &:hover {
         color: #fff;
-        background-color: #5a6268;
-        border-color: #545b62;
+        background-color: #1A365D;
+        border-color: #1A365D;
       }
     }
 

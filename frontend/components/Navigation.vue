@@ -6,7 +6,7 @@
           <img src="~/assets/img/izboljsajmo_maribor_logo.png" alt="Izboljšajmo Maribor LOGO">
         </NuxtLink>
         <b-navbar-toggle target="nav_collapse">
-          <img src="~/assets/img/icons/more.png" alt="toggle menu">
+          <MoreIcon />
         </b-navbar-toggle>
         <b-collapse is-nav id="nav_collapse" class="py-4 py-md-0">
           <b-navbar-nav class="ml-auto">
@@ -44,14 +44,14 @@
                   @click="myInitiatives"
                 >
                   MOJI PREDLOGI
-                  <img src="~/assets/img/icons/arrow-right.svg" alt="logout icon" class="position-absolute">
+                  <ArrowRightIcon class="position-absolute" />
                 </b-button>
                 <b-button
                   class="logout-button w-75 position-relative d-inline-flex justify-content-center align-items-center"
                   @click="logout"
                 >
                   ODJAVA
-                  <img src="~/assets/img/icons/exit-right.svg" alt="logout icon" class="position-absolute">
+                  <ExitRightIcon class="position-absolute" />
                 </b-button>
               </div>
             </div>
@@ -63,7 +63,12 @@
 </template>
 
 <script>
+import MoreIcon from '~/assets/img/icons/more.svg?inline'
+import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
+import ExitRightIcon from '~/assets/img/icons/exit-right.svg?inline'
+
 export default {
+  components: { MoreIcon, ArrowRightIcon, ExitRightIcon },
   data () {
     return {
       showProfileDropdown: false
@@ -138,8 +143,8 @@ export default {
       color: black;
 
       &:hover {
-        background-color: #6c757d;
-        border-color: #6c757d;
+        background-color: #1A365D;
+        border-color: #1A365D;
         color: white;
         transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
       }
@@ -147,8 +152,9 @@ export default {
   }
 
   .navbar-toggler {
-    img {
-      height: 1rem;
+    svg {
+      max-height: 1rem;
+      max-width: 1rem;
     }
   }
 
@@ -171,7 +177,8 @@ export default {
       padding-right: 2rem;
 
       &:hover {
-        background-color: #6c757d;
+        background-color: #1A365D;
+        border-color: #1A365D;
       }
     }
   }

@@ -1,75 +1,67 @@
 <template>
-  <div class="initiative-card h-100">
-    <img
-      v-if="cover_image"
-      class="cover-image"
-      :src="cover_image.image"
-      alt=""
-    >
-    <div class="initiative-card-body">
-      <h4>
-        <NuxtLink :to="`/predlogi/${id}`">
+  <NuxtLink :to="`/predlogi/${id}`">
+    <div class="initiative-card h-100">
+      <img
+        v-if="cover_image"
+        class="cover-image"
+        :src="cover_image.image"
+        alt=""
+      >
+      <div class="initiative-card-body">
+        <h4>
           {{ title }}
-        </NuxtLink>
-      </h4>
-      <span class="author">{{ author }}</span>
-      <div class="my-1">
-        <span class="tag">{{ status }}</span>
-        <span class="tag">{{ area.name }}</span>
-        <span class="tag">{{ date(created) }}</span>
-      </div>
-      <p>
-        {{ description }}
-      </p>
-      <hr class="hr-upper">
-      <hr class="hr-lower">
-      <div class="d-flex justify-content-between">
-        <div class="d-inline-flex align-items-center">
-          <b-button
-            v-if="!has_voted"
-            class="d-flex align-items-center"
-            @click="vote"
-          >
-            <img
-              src="~/assets/img/icons/love.svg"
-              alt="love"
-              class="mr-1"
-            >
-            <span>Podpri</span>
-          </b-button>
-          <b-button
-            v-if="has_voted"
-            class="d-flex align-items-center"
-            @click="removeVote"
-          >
-            <img
-              src="~/assets/img/icons/love.svg"
-              alt="love"
-              class="mr-1"
-            >
-            <span>Glas oddan!</span>
-          </b-button>
-          <span class="ml-1">{{ vote_count }}</span>
+        </h4>
+        <span class="author">{{ author }}</span>
+        <div class="my-1">
+          <span class="tag">{{ status }}</span>
+          <span class="tag">{{ area.name }}</span>
+          <span class="tag">{{ date(created) }}</span>
         </div>
-        <div class="d-inline-flex align-items-center">
-          <NuxtLink :to="`/predlogi/${id}`" class="btn d-flex align-items-center">
-            <img
-              src="~/assets/img/icons/comment.svg"
-              alt="comment"
-              class="mr-1"
+        <p>
+          {{ description }}
+        </p>
+        <hr class="hr-upper">
+        <hr class="hr-lower">
+        <div class="d-flex justify-content-between">
+          <div class="d-inline-flex align-items-center">
+            <b-button
+              v-if="!has_voted"
+              class="d-flex align-items-center"
+              @click="vote"
             >
-            Komentiraj
-          </NuxtLink>
-          <span class="ml-1">{{ comment_count }}</span>
+              <LikeIcon class="mr-1" />
+              <span>Podpri</span>
+            </b-button>
+            <b-button
+              v-if="has_voted"
+              class="d-flex align-items-center"
+              @click="removeVote"
+            >
+              <LikeIcon class="mr-1" />
+              <span>Glas oddan!</span>
+            </b-button>
+            <span class="ml-1">{{ vote_count }}</span>
+          </div>
+          <div class="d-inline-flex align-items-center">
+            <NuxtLink :to="`/predlogi/${id}`" class="btn d-flex align-items-center">
+              <CommentIcon class="mr-1" />
+              Komentiraj
+            </NuxtLink>
+            <span class="ml-1">{{ comment_count }}</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </NuxtLink>
 </template>
 
 <script>
+import CommentIcon from '~/assets/img/icons/comment.svg?inline'
+import LikeIcon from '~/assets/img/icons/like.svg?inline'
+
 export default {
   name: 'InitiativeCard',
+  components: { CommentIcon, LikeIcon },
   props: {
     id: {
       type: Number,
@@ -134,12 +126,24 @@ export default {
 
 <style scoped lang="scss">
 
+a {
+  color: unset;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
 h4 {
   font-weight: 600;
 }
 
 .initiative-card {
   box-shadow: 4px 4px 6px #d3d7df, -4px -4px 6px #ffffff;
+
+  &:hover {
+    background-color: white;
+  }
 
   .cover-image {
     width: 100%;

@@ -20,11 +20,7 @@
     </div>
     <b-button type="submit" class="w-100 d-flex justify-content-center align-items-center position-relative text-uppercase">
       Pošlji
-      <img
-        src="~/assets/img/icons/arrow-right.svg"
-        class="position-absolute"
-        alt="right arrow"
-      >
+      <ArrowRightIcon class="position-absolute" />
     </b-button>
     <div class="form-note text-center">
       <NuxtLink to="/prijava">
@@ -35,7 +31,10 @@
 </template>
 
 <script>
+import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
+
 export default {
+  components: { ArrowRightIcon },
   layout: 'login',
   data () {
     return {

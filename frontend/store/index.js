@@ -5,6 +5,13 @@ export const state = () => ({
     MM: 'MOTI ME!',
     II: 'IMAM IDEJO!',
     ZM: 'ZANIMA ME!'
+  },
+  initiativeStatuses: {
+    Slišimo: 'slisimo',
+    Urejamo: 'urejamo',
+    'V izvajanju': 'v-izvajanju',
+    Zaključeno: 'zakljuceno',
+    Izvedeno: 'izvedeno'
   }
 })
 
@@ -17,6 +24,9 @@ export const getters = {
   },
   initiativeTypes (state) {
     return state.initiativeTypes
+  },
+  initiativeStatuses (state) {
+    return state.initiativeStatuses
   }
 }
 
