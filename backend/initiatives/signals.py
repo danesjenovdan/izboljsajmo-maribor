@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group
 from django.db.models.signals import pre_save, post_save
 from django.conf import settings
 from django.utils.translation import gettext as _
+from django.contrib.gis.geos import GEOSGeometry
 
 from behaviors.behaviors import Published
 
@@ -73,12 +74,18 @@ def set_contractor_appraiser_to_group(sender, instance, created, **kwargs):
 
 
 # initiatives signals
-def set_zone_from_location(sender, instance, created, **kwargs):
-    if created and instance.location:
+def set_zone_from_location(sender, instance, **kwargs):
+    if instance.id is None and instance.location:
         zones = Zone.objects.filter(polygon__intersects=instance.location)
         if zones:
             instance.zone = zones[0]
             instance.save()
+
+    elif instance.location and instance.location.distance(sender.objects.get(id=instance.id).location)*100 > 1:
+        zones = Zone.objects.filter(polygon__intersects=instance.location)
+        if zones:
+            instance.zone = zones[0]
+    logger.warning('Signal done')
 
 # key generator
 def set_key(sender, instance, created, **kwargs):
@@ -94,11 +101,11 @@ def set_key(sender, instance, created, **kwargs):
         if sender == RestorePassword:
             subject = _('Restore password Izboljšajmo Maribor')
             template = 'emails/restore_password.html'
-            url = f'{settings.FRONT_URL}restore-password/{instance.key}/'
+            url = f'{settings.FRONT_URL}pozabljeno-geslo/{instance.key}/'
         elif sender == ConfirmEmail:
             subject = _('Confirm email Izboljšajmo Maribor')
             template = 'emails/restore_password.html'
-            url = f'{settings.FRONT_URL}confirm-email/{instance.key}/'
+            url = f'{settings.FRONT_URL}potrdi-racun/{instance.key}/'
 
         send_email(
             subject,
@@ -119,9 +126,8 @@ post_save.connect(set_area_appraiser_to_group, sender=AreaAppraiserUser)
 post_save.connect(set_super_admin_to_group, sender=SuperAdminUser)
 post_save.connect(set_area_admin_to_group, sender=AreaAdminUser)
 
-post_save.connect(set_zone_from_location, sender=Initiative)
+pre_save.connect(set_zone_from_location, sender=Initiative)
 
 post_save.connect(set_key, sender=RestorePassword)
 post_save.connect(set_key, sender=ConfirmEmail)
 post_save.connect(send_confirm_emil, sender=User)
-

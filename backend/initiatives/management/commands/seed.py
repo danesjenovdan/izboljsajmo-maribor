@@ -41,7 +41,49 @@ class Command(BaseCommand):
         ct = ContentType.objects.get_for_model(models.AreaAppraiserUser, self.options)
         permissions = self.get_permissions('areaappraiseruser', ct)
         admin_group.permissions.add(*permissions)
-        
+        ct = ContentType.objects.get_for_model(models.Image)
+        permissions = self.get_permissions('image', ct, self.options)
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.Area)
+        permissions = self.get_permissions('area', ct, self.options)
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.Zone)
+        permissions = self.get_permissions('zone', ct, self.options)
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.File)
+        permissions = self.get_permissions('file', ct, self.options)
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.User)
+        permissions = self.get_permissions('user', ct, [('view_', 'Can view ')])
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.Comment)
+        permissions = self.get_permissions('comment', ct, [('view_', 'Can view '), ('change_', 'Can change ')])
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.Status)
+        permissions = self.get_permissions('status', ct, self.basc_options)
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.Rejection)
+        permissions = self.get_permissions('rejection', ct, self.options)
+        admin_group.permissions.add(*permissions)
+
+        ct = ContentType.objects.get_for_model(models.StatusInitiativeHear)
+        permissions = self.get_permissions('statusinitiativehear', ct, self.options)
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.StatusInitiativeEditing)
+        permissions = self.get_permissions('statusinitiativeediting', ct, self.options)
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.StatusInitiativeProgress)
+        permissions = self.get_permissions('statusinitiativeprogress', ct, self.options)
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.StatusInitiativeFinished)
+        permissions = self.get_permissions('statusinitiativefinished', ct, self.options)
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.StatusInitiativeDone)
+        permissions = self.get_permissions('statusinitiativedone', ct, self.options)
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.StatusInitiativeRejected)
+        permissions = self.get_permissions('statusinitiativerejected', ct, self.options)
+        admin_group.permissions.add(*permissions)
 
         # Area admin
         area_admin_group, created = Group.objects.get_or_create(name='Area admin')
@@ -62,6 +104,9 @@ class Command(BaseCommand):
         ct = ContentType.objects.get_for_model(models.ContractorAppraiserUser)
         permissions = self.get_permissions('contractorappraiseruser', ct, self.options)
         area_admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.Image)
+        permissions = self.get_permissions('image', ct, self.options)
+        area_admin_group.permissions.add(*permissions)
 
         # Appraiser group
         appraiser_group, created = Group.objects.get_or_create(name='Appraiser')
@@ -78,6 +123,9 @@ class Command(BaseCommand):
         ct = ContentType.objects.get_for_model(models.ContractorAppraiserUser)
         permissions = self.get_permissions('contractorappraiseruser', ct, self.options)
         appraiser_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.Image)
+        permissions = self.get_permissions('image', ct, self.options)
+        appraiser_group.permissions.add(*permissions)
 
         # Contracotr group
         contractor_group, created = Group.objects.get_or_create(name='Contractor')
@@ -86,6 +134,10 @@ class Command(BaseCommand):
         contractor_group.permissions.add(*permissions)
         ct = ContentType.objects.get_for_model(models.IdeaInitiativeContractor)
         permissions = self.get_permissions('ideainitiativecontractor', ct)
+        contractor_group.permissions.add(*permissions)
+
+        ct = ContentType.objects.get_for_model(models.Image)
+        permissions = self.get_permissions('image', ct, self.options)
         contractor_group.permissions.add(*permissions)
 
         organization = models.Organization(
@@ -128,12 +180,24 @@ class Command(BaseCommand):
         )
         competent_service.save()
 
-        area = models.Area(
-            name='GOSPODARSTVO/TURIZEM',
-            note='dogodki, prireditve, praznična okrasitev mesta, turistične table',
-            competent_service=competent_service
-        )
-        area.save()
+        areas = [
+            'KOMUNALNE STORITVE, PROMET, PROSTOR'
+            'OKOLJE, NARAVA, ŽIVALI'
+            'ŠPORT, REKREACIJA'
+            'GOSPODARSTVO/TURIZEM'
+            'KULTURA'
+            'SOCIALNA VARNOST/ ZDRAVJE'
+            'VZGOJA IN IZOBRAŽEVANJE, IZOBRAŽEVANJE ODRASLIH IN RAZVOJ KADROV ZA PODJETJA IN ORGANIZACIJE'
+            'TRG DELA/ZAPOSLOVANJE'
+            'DRUGO'
+        ]
+        for a in areas:
+            area = models.Area(
+                name=a,
+                note='Napisi opis',
+                competent_service=competent_service
+            )
+            area.save()
 
         gos_admin = models.User(
             first_name='gos admin',

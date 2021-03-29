@@ -49,9 +49,13 @@ class StatusInitiative(Timestamped, Published):
         related_name='initiative_statuses',
         on_delete=models.CASCADE)
     note = models.TextField(
-        _('Note of status'))
+        _('Note of status'),
+        blank=True,
+        null=True)
     email_content = models.TextField(
-        _('Email response'))
+        _('Email response'),
+        blank=True,
+        null=True)
     reason_for_rejection = models.ForeignKey(
         'Rejection',
         null=True,
