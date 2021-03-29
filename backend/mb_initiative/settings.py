@@ -208,8 +208,6 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 FRONT_URL = 'http://localhost:3000/'
 
-
-FROM_EMAIL = 'dummy@email.si'
 if os.getenv('APP_ENV', 'development') == 'production':
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_HOST = os.getenv('EMAIL_HOST', '')
@@ -217,5 +215,8 @@ if os.getenv('APP_ENV', 'development') == 'production':
     EMAIL_HOST_USER = os.getenv('EMAIL_USERNAME', '')
     EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD', '')
     EMAIL_USE_TLS = True
+    FROM_EMAIL = os.getenv('FROM_EMAIL', 'dummy@email.com')
+
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    FROM_EMAIL = 'dummy@email.com'
