@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.conf import settings
 from django.utils import timezone
@@ -267,7 +268,9 @@ class User(AbstractUser, Timestamped):
         _('Role'),
         max_length=2,
         choices=Reviwers.choices,
-        default=Reviwers.AREA_ADMIN)
+        default=None,
+        null=True,
+        blank=True)
     # a username field that allows a space
     username = models.CharField(_('username'), max_length=30, unique=True,
         help_text=_('Required. 30 characters or fewer. Letters, digits and '
@@ -293,6 +296,21 @@ class SuperAdminUser(User):
             self.is_staff = True
             self.role = Reviwers.SUPER_ADMIN
         return super().save(*args, **kwargs)
+
+
+class UserManager(BaseUserManager):
+    def get_queryset(self):
+        return super().get_queryset().exclude(
+            Q(role=Reviwers.SUPER_ADMIN) |
+            Q(role=Reviwers.AREA_ADMIN) |
+            Q(role=Reviwers.AREA_APPRAISER) |
+            Q(role=Reviwers.CONTRACTOR_APPRAISER))
+
+
+class BasicUser(User):
+    objects = UserManager()
+    class Meta:
+        proxy=True
 
 
 class AreaAdminManager(BaseUserManager):
@@ -359,7 +377,7 @@ class Organization(Timestamped):
 class Area(Timestamped):
     name = models.CharField(
         _('Area name'),
-        max_length=50)
+        max_length=128)
     note = models.TextField(
         _('Notes'))
     competent_service = models.ForeignKey(

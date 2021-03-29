@@ -238,15 +238,15 @@ class Command(BaseCommand):
         competent_service.save()
 
         areas = [
-            'KOMUNALNE STORITVE, PROMET, PROSTOR'
-            'OKOLJE, NARAVA, ŽIVALI'
-            'ŠPORT, REKREACIJA'
-            'GOSPODARSTVO/TURIZEM'
-            'KULTURA'
-            'SOCIALNA VARNOST/ ZDRAVJE'
-            'VZGOJA IN IZOBRAŽEVANJE, IZOBRAŽEVANJE ODRASLIH IN RAZVOJ KADROV ZA PODJETJA IN ORGANIZACIJE'
-            'TRG DELA/ZAPOSLOVANJE'
-            'DRUGO'
+            'KOMUNALNE STORITVE, PROMET, PROSTOR',
+            'OKOLJE, NARAVA, ŽIVALI',
+            'ŠPORT, REKREACIJA',
+            'GOSPODARSTVO/TURIZEM',
+            'KULTURA',
+            'SOCIALNA VARNOST/ ZDRAVJE',
+            'VZGOJA IN IZOBRAŽEVANJE, IZOBRAŽEVANJE ODRASLIH IN RAZVOJ KADROV ZA PODJETJA IN ORGANIZACIJE',
+            'TRG DELA/ZAPOSLOVANJE',
+            'DRUGO',
         ]
         for a in areas:
             area = models.Area(
