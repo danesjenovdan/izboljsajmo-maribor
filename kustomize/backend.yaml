@@ -55,19 +55,9 @@ spec:
           initialDelaySeconds: 15
           periodSeconds: 30
           timeoutSeconds: 5
-        env:
-          - name: APP_ENV
-            value: production
-          - name: SECRET_DB_NAME
-            value: mb-initiative
-          - name: SECRET_DB_USERNAME
-            value: postgres
-          - name: SECRET_DB_PASSWORD
-            value: initititit!
-          - name: STATIC_URL_BASE
-            value: https://files.izboljsajmo-maribor.k8s.djnd.si
-          - name: MEDIA_URL_BASE
-            value: https://files.izboljsajmo-maribor.k8s.djnd.si
+        envFrom:
+          - secretRef:
+              name: izboljsajmo-maribor-credentials
       - name: izboljsajmo-maribor-nginx
         ports:
         - name: http

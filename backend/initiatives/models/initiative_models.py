@@ -88,7 +88,7 @@ class Initiative(Timestamped, Authored):
         default=False)
 
     def __str__(self):
-        return self.title
+        return self.title if self.title else 'unnamed'
 
     def comment_count(self):
         return self.initiative_comments.filter(status=CommentStatus.PUBLISHED).count()
@@ -116,12 +116,12 @@ class Initiative(Timestamped, Authored):
     def images_preview(self):
         images = ""
         if self.cover_image:
-            images += f'''<img src="{self.cover_image}" style"width=25%;">'''
+            images += f'''<img src="{self.cover_image}" style="width:50%;">'''
         if self.cover_image_after:
-            images += f'''<img src="{self.cover_image_after}" style"width=25%;">'''
+            images += f'''<img src="{self.cover_image_after}" style="width:50%;">'''
         return mark_safe(
             f'''
-            <div style"width=50%;">
+            <div style="width:100%;">
                 {images}
             </div>
             '''

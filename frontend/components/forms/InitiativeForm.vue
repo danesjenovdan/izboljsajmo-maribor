@@ -310,7 +310,8 @@ export default {
   methods: {
     setIconStyles () {
       this.mapIcon = this.$L.icon({
-        iconUrl: require('@/assets/img/icons/pin.svg')
+        iconUrl: require('@/assets/img/icons/pin.svg'),
+        iconSize: [32, 32]
       })
     },
     async fetchAreas () {
