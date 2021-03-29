@@ -219,7 +219,7 @@
               </div>
             </b-col>
           </b-row>
-          <b-row class="p-4 p-md-0">
+          <b-row v-if="sortedInitiatives.length > 0" class="p-4 p-md-0">
             <b-col
               v-for="initiative in sortedInitiatives"
               :key="initiative.id"
@@ -232,6 +232,14 @@
                 @vote="vote(initiative.id)"
                 @removeVote="removeVote(initiative.id)"
               />
+            </b-col>
+          </b-row>
+          <b-row v-if="sortedInitiatives.length === 0">
+            <b-col cols="12" class="d-inline-flex justify-content-center">
+              <div class="d-flex justify-content-center align-items-center my-4 no-initiatives">
+                <FolderEmptyIcon />
+                <span class="ml-2">Za izbrane filtre ni oddane nobene pobude.</span>
+              </div>
             </b-col>
           </b-row>
         </div>
@@ -267,15 +275,16 @@
 <script>
 import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
 import ArrowDownIcon from '~/assets/img/icons/arrow-down.svg?inline'
+import FolderEmptyIcon from '~/assets/img/icons/folder-question-mark.svg?inline'
 import InitiativeCard from '~/components/InitiativeCard'
 
 export default {
-  components: { ArrowRightIcon, ArrowDownIcon, InitiativeCard },
+  components: { ArrowRightIcon, ArrowDownIcon, FolderEmptyIcon, InitiativeCard },
   data () {
     return {
       search: '',
       showType: false,
-      filterTypes: Object.keys(this.$store.getters.initiativeTypes),
+      filterTypes: [],
       areas: [],
       showArea: false,
       filterAreas: [],
@@ -314,7 +323,8 @@ export default {
   methods: {
     setIconStyles () {
       this.mapIcon = this.$L.icon({
-        iconUrl: require('@/assets/img/icons/pin.svg')
+        iconUrl: require('@/assets/img/icons/pin.svg'),
+        iconSize: [32, 32]
       })
     },
     async fetchInitiatives () {
@@ -329,11 +339,11 @@ export default {
     },
     async fetchAreas () {
       this.areas = await this.$store.dispatch('getAreas')
-      this.filterAreas = this.areas.map(a => a.id)
+      // this.filterAreas = this.areas.map(a => a.id)
     },
     async fetchZones () {
       this.zones = await this.$store.dispatch('getZones')
-      this.filterZones = this.zones.map(z => z.id)
+      // this.filterZones = this.zones.map(z => z.id)
     },
     switchType () {
       this.showType = !this.showType
@@ -403,7 +413,6 @@ export default {
   text-decoration: none;
 
   &:hover {
-    // background-color: #eff3fb;
     background-color: white;
   }
 
@@ -553,6 +562,17 @@ h4 {
     &.sort-ascending {
       transform: rotate(180deg);
     }
+  }
+}
+
+.no-initiatives {
+  background-color: #e8ebef;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+
+  svg {
+    max-width: 2rem;
+    max-height: 2rem;
   }
 }
 
