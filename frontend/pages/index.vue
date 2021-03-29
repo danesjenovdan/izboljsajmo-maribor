@@ -74,13 +74,60 @@
                 <div class="initiative-card py-5 px-3 empty h-100 text-center">
                   <h4>Oddajte predlog izboljšave, popravek ali postavite vprašanje</h4>
                   <div>
-                    <NuxtLink
-                      to="/predlogi/nov?tip=II"
-                      class="new-initiative-button btn position-relative d-inline-flex justify-content-center text-uppercase"
+                    <button
+                      class="new-initiative-dropdown-btn d-inline-flex align-items-center position-relative ml-0 mt-3"
+                      :class="{ 'dropdown-open': newInitiativeDropdown }"
+                      @click="openNewInitiativeDropdown"
                     >
-                      Predlagaj
-                      <img src="~/assets/img/icons/arrow-right.svg" alt="logout icon" class="position-absolute">
-                    </NuxtLink>
+                      Kakšno pobudo želite oddati?
+                      <ArrowDownIcon class="ml-2" />
+                      <div
+                        v-if="newInitiativeDropdown"
+                        class="new-initiative-dropdown position-absolute"
+                        @click.stop=""
+                      >
+                        <div class="form-note">Izberite tip pobude.</div>
+                        <hr class="hr-upper mt-0">
+                        <hr class="hr-lower mb-0">
+                        <div>
+                          <b-form-group>
+                            <b-form-radio v-model="newInitiativeType" value="MM" class="p-0 pl-4">
+                              <h5 class="font-weight-bold">
+                                MOTI ME!
+                              </h5>
+                              <p class="form-note">
+                                Naznani okvare, poškodbe, slabosti (pomanjkljivosti), ki jih zaznavaš v svojem okolju.
+                              </p>
+                            </b-form-radio>
+                            <b-form-radio v-model="newInitiativeType" value="II" class="p-0 pl-4">
+                              <h5 class="font-weight-bold">
+                                IMAM IDEJO!
+                              </h5>
+                              <p class="form-note">
+                                Predlagaj novosti,  predloge za izboljšave, družbene inovacije, ki izboljšujejo kakovost življenja v MO Maribor.
+                              </p>
+                            </b-form-radio>
+                            <b-form-radio v-model="newInitiativeType" value="ZM" class="p-0 pl-4">
+                              <h5 class="font-weight-bold">
+                                ZANIMA ME!
+                              </h5>
+                              <p class="form-note">
+                                Zastavi splošna vprašanja ali izreči pohvale.
+                              </p>
+                            </b-form-radio>
+                          </b-form-group>
+                          <div class="p-0 my-3 w-100 d-flex justify-content-center">
+                            <NuxtLink
+                              :to="`/predlogi/oddaj/${editLink[newInitiativeType]}`"
+                              class="new-initiative-button btn d-inline-flex justify-content-center align-items-center text-uppercase"
+                            >
+                              Predlagaj
+                              <ArrowRightIcon class="ml-2" />
+                            </NuxtLink>
+                          </div>
+                        </div>
+                      </div>
+                    </button>
                   </div>
                 </div>
               </b-col>
@@ -110,9 +157,11 @@
 import InitiativeCard from '~/components/InitiativeCard'
 import ExitRightIcon from '~/assets/img/icons/exit-right.svg?inline'
 import EditIcon from '~/assets/img/icons/edit.svg?inline'
+import ArrowDownIcon from '~/assets/img/icons/arrow-down.svg?inline'
+import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
 
 export default {
-  components: { InitiativeCard, ExitRightIcon, EditIcon },
+  components: { InitiativeCard, ExitRightIcon, EditIcon, ArrowDownIcon, ArrowRightIcon },
   middleware: 'auth',
   asyncData ({ store }) {
     return store.dispatch('getMyInitiatives')
@@ -125,7 +174,9 @@ export default {
         MM: 'moti-me',
         ZM: 'zanima-me',
         II: 'imam-idejo'
-      }
+      },
+      newInitiativeDropdown: false,
+      newInitiativeType: ''
     }
   },
   methods: {
@@ -164,6 +215,9 @@ export default {
     date (date) {
       const d = new Date(date)
       return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`
+    },
+    openNewInitiativeDropdown () {
+      this.newInitiativeDropdown = !this.newInitiativeDropdown
     }
   }
 }
@@ -198,10 +252,6 @@ a {
 
 .initiative-card {
   box-shadow: 4px 4px 6px #d3d7df, -4px -4px 6px #ffffff;
-
-  &:hover {
-    background-color: white;
-  }
 
   .cover-image {
     width: 100%;
@@ -258,6 +308,10 @@ a {
   }
 
   &.draft {
+    &:hover {
+      background-color: white;
+    }
+
     .btn {
       padding: 0.75rem 3rem;
       font-size: 1rem;
@@ -294,18 +348,85 @@ a {
     }
 
     .new-initiative-button {
-      padding-right: 2.5rem;
-      padding-left: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1.25rem;
+      letter-spacing: 2px;
 
       &:hover {
-        background-color: #6c757d;
+        background-color: #1A365D;
         color: white;
       }
 
-      img {
+      svg {
         right: 0.5rem;
         height: 1.5rem;
+        width: 1.5rem;
       }
+    }
+  }
+}
+
+.new-initiative-dropdown-btn {
+  box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
+  border-radius: 1.5rem;
+  border: 2px solid #f8f8f8;
+  background-color: #f8f8f8;
+  font-style: italic;
+  padding: 0.25rem 1rem;
+
+  &:hover {
+    background-color: white;
+    border-color: white;
+  }
+
+  &.dropdown-open {
+    border: 2px solid #ef7782;
+
+    &:hover {
+      border-color: #ef7782;
+    }
+  }
+
+  & > svg {
+    max-width: 0.5rem;
+    max-height: 0.5rem;
+  }
+
+  .new-initiative-dropdown {
+    background-color: #f8f8f8;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+    top: 6rem;
+    z-index: 10;
+    text-align: left;
+    cursor: default;
+
+    h5 {
+      letter-spacing: 2px;
+    }
+
+    div.form-note {
+      padding: 1rem 2rem;
+    }
+
+    .form-note {
+      font-size: 0.8rem;
+      font-weight: 400;
+      margin-bottom: 0;
+    }
+
+    div {
+      padding-left: 1.5rem;
+      padding-right: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      top: 3rem;
+    }
+
+    @media (min-width: 992px) {
+      left: auto;
+      right: auto;
     }
   }
 }
