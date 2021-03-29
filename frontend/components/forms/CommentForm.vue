@@ -16,15 +16,17 @@
     <div class="d-flex justify-content-end">
       <b-button type="submit" class="d-inline-flex align-items-center">
         <span>KOMENTIRAJ</span>
-        <img src="~/assets/img/icons/arrow-right.svg" alt="arrow right">
+        <ArrowRightIcon />
       </b-button>
     </div>
   </b-form>
 </template>
 
 <script>
+import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
 
 export default {
+  components: { ArrowRightIcon },
   props: {
     id: String
   },
@@ -71,7 +73,7 @@ h5 {
 button {
   padding: 0.5rem 1rem;
 
-  img {
+   svg {
     height: 1.2rem;
     margin-left: 0.5rem;
   }

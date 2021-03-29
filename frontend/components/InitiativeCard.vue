@@ -1,5 +1,5 @@
 <template>
-  <div class="initiative-card h-100">
+  <div class="initiative-card h-100" @click="openInitiative">
     <img
       v-if="cover_image"
       class="cover-image"
@@ -8,9 +8,7 @@
     >
     <div class="initiative-card-body">
       <h4>
-        <NuxtLink :to="`/predlogi/${id}`">
-          {{ title }}
-        </NuxtLink>
+        {{ title }}
       </h4>
       <span class="author">{{ author }}</span>
       <div class="my-1">
@@ -28,36 +26,24 @@
           <b-button
             v-if="!has_voted"
             class="d-flex align-items-center"
-            @click="vote"
+            @click.stop="vote"
           >
-            <img
-              src="~/assets/img/icons/love.svg"
-              alt="love"
-              class="mr-1"
-            >
+            <LikeIcon class="mr-1" />
             <span>Podpri</span>
           </b-button>
           <b-button
             v-if="has_voted"
             class="d-flex align-items-center"
-            @click="removeVote"
+            @click.stop="removeVote"
           >
-            <img
-              src="~/assets/img/icons/love.svg"
-              alt="love"
-              class="mr-1"
-            >
+            <LikeIcon class="mr-1" />
             <span>Glas oddan!</span>
           </b-button>
           <span class="ml-1">{{ vote_count }}</span>
         </div>
         <div class="d-inline-flex align-items-center">
           <NuxtLink :to="`/predlogi/${id}`" class="btn d-flex align-items-center">
-            <img
-              src="~/assets/img/icons/comment.svg"
-              alt="comment"
-              class="mr-1"
-            >
+            <CommentIcon class="mr-1" />
             Komentiraj
           </NuxtLink>
           <span class="ml-1">{{ comment_count }}</span>
@@ -68,8 +54,12 @@
 </template>
 
 <script>
+import CommentIcon from '~/assets/img/icons/comment.svg?inline'
+import LikeIcon from '~/assets/img/icons/like.svg?inline'
+
 export default {
   name: 'InitiativeCard',
+  components: { CommentIcon, LikeIcon },
   props: {
     id: {
       type: Number,
@@ -127,6 +117,9 @@ export default {
     },
     removeVote () {
       this.$emit('removeVote')
+    },
+    openInitiative () {
+      this.$router.push(`/predlogi/${this.id}`)
     }
   }
 }
@@ -134,12 +127,13 @@ export default {
 
 <style scoped lang="scss">
 
-h4 {
-  font-weight: 600;
-}
-
 .initiative-card {
   box-shadow: 4px 4px 6px #d3d7df, -4px -4px 6px #ffffff;
+
+  &:hover {
+    background-color: white;
+    cursor: pointer;
+  }
 
   .cover-image {
     width: 100%;
@@ -148,9 +142,9 @@ h4 {
   }
 
   .initiative-card-body {
-    padding: 0.5rem;
+    padding: 0.75rem;
 
-    h4 a {
+    h4 {
       color: black;
       line-height: 1;
       font-weight: 700;
@@ -179,8 +173,9 @@ h4 {
       font-size: 0.75rem;
       font-weight: 400;
       letter-spacing: normal;
+      z-index: 10;
 
-      img {
+      svg {
         height: 0.8rem;
       }
     }

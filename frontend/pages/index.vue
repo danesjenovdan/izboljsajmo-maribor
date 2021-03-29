@@ -8,7 +8,7 @@
           @click="logout"
         >
           ODJAVA
-          <img src="~/assets/img/icons/exit-right.svg" alt="logout icon" class="position-absolute">
+          <ExitRightIcon class="position-absolute" />
         </b-button>
       </b-col>
       <b-col cols="12" lg="9">
@@ -26,33 +26,31 @@
                 xl="4"
                 class="mb-4"
               >
-                <div class="initiative-card draft h-100">
-                  <img
-                    v-if="draft.cover_image"
-                    class="cover-image"
-                    :src="draft.cover_image.image"
-                    alt="Initiative draft cover image"
-                  >
-                  <div class="initiative-card-body">
-                    <h4>{{ draft.title }}</h4>
-                    <p>{{ draft.description }}</p>
-                    <div class="d-flex justify-content-center">
-                      <div class="d-inline-flex align-items-center">
-                        <NuxtLink
-                          :to="`/predlogi/oddaj/${editLink[draft.type]}?id=${draft.id}`"
-                          class="btn d-flex align-items-center position-relative"
-                        >
-                          <span class="text-uppercase pr-2">Uredi</span>
-                          <img
-                            src="~/assets/img/icons/edit.png"
-                            alt="edit icon"
-                            class="position-absolute"
+                <NuxtLink :to="`/predlogi/oddaj/${editLink[draft.type]}?id=${draft.id}`">
+                  <div class="initiative-card draft h-100">
+                    <img
+                      v-if="draft.cover_image"
+                      class="cover-image"
+                      :src="draft.cover_image.image"
+                      alt="Initiative draft cover image"
+                    >
+                    <div class="initiative-card-body">
+                      <h4>{{ draft.title }}</h4>
+                      <p>{{ draft.description }}</p>
+                      <div class="d-flex justify-content-center">
+                        <div class="d-inline-flex align-items-center">
+                          <NuxtLink
+                            :to="`/predlogi/oddaj/${editLink[draft.type]}?id=${draft.id}`"
+                            class="btn d-flex align-items-center position-relative"
                           >
-                        </NuxtLink>
+                            <span class="text-uppercase pr-2">Uredi</span>
+                            <EditIcon class="position-absolute" />
+                          </NuxtLink>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </NuxtLink>
               </b-col>
             </b-row>
           </b-col>
@@ -110,9 +108,11 @@
 
 <script>
 import InitiativeCard from '~/components/InitiativeCard'
+import ExitRightIcon from '~/assets/img/icons/exit-right.svg?inline'
+import EditIcon from '~/assets/img/icons/edit.svg?inline'
 
 export default {
-  components: { InitiativeCard },
+  components: { InitiativeCard, ExitRightIcon, EditIcon },
   middleware: 'auth',
   asyncData ({ store }) {
     return store.dispatch('getMyInitiatives')
@@ -179,7 +179,7 @@ h1, h4 {
   background-color: #d7d7d7;
 
   &:hover {
-    background-color: #6c757d;
+    background-color: #1A365D;
   }
 }
 
@@ -188,8 +188,20 @@ h1, h4 {
   border-radius: 0.5rem;
 }
 
+a {
+  color: unset;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
 .initiative-card {
-  box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
+  box-shadow: 4px 4px 6px #d3d7df, -4px -4px 6px #ffffff;
+
+  &:hover {
+    background-color: white;
+  }
 
   .cover-image {
     width: 100%;
@@ -202,6 +214,8 @@ h1, h4 {
 
     h4 a {
       color: black;
+      line-height: 1;
+      font-weight: 700;
     }
 
     .author {
@@ -220,6 +234,19 @@ h1, h4 {
       font-size: 0.9rem;
     }
 
+    .btn {
+      margin: 0;
+      padding: 0.25rem 0.5rem;
+      font-style: normal;
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: normal;
+
+      img {
+        height: 0.8rem;
+      }
+    }
+
     hr {
       &.hr-upper {
         margin-top: 1rem
@@ -233,10 +260,15 @@ h1, h4 {
   &.draft {
     .btn {
       padding: 0.75rem 3rem;
+      font-size: 1rem;
+      font-style: italic;
+      font-weight: 700;
+      letter-spacing: 2px;
 
-      img {
+      svg {
         height: 1.5rem;
-        right: 0.75rem;
+        width: 1.5rem;
+        right: 1rem;
       }
     }
   }

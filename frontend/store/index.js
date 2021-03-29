@@ -5,6 +5,13 @@ export const state = () => ({
     MM: 'MOTI ME!',
     II: 'IMAM IDEJO!',
     ZM: 'ZANIMA ME!'
+  },
+  initiativeStatuses: {
+    Slišimo: 'slisimo',
+    Urejamo: 'urejamo',
+    'V izvajanju': 'v-izvajanju',
+    Zaključeno: 'zakljuceno',
+    Izvedeno: 'izvedeno'
   }
 })
 
@@ -17,6 +24,9 @@ export const getters = {
   },
   initiativeTypes (state) {
     return state.initiativeTypes
+  },
+  initiativeStatuses (state) {
+    return state.initiativeStatuses
   }
 }
 
@@ -59,6 +69,12 @@ export const actions = {
     }
     console.log(registerData)
     await this.$axios.post('v1/organizations/', registerData)
+  },
+
+  async resetPassword (context, payload) {
+    await this.$axios.post('v1/restore-password/', {
+      email: payload.email
+    })
   },
 
   async postComment (context, payload) {
@@ -161,11 +177,15 @@ export const actions = {
     const response = await this.$axios.patch(`v1/initiatives/${payload.id}/`, payload.form)
     const responseData = await response.data
     console.log(response)
-    if (response.statusText === "OK") {
+    if (response.statusText === 'OK') {
       return responseData.id
     } else {
       return -1
     }
+  },
+
+  async deleteInitiative (context, payload) {
+    return await this.$axios.delete(`v1/initiatives/${payload.id}`)
   },
 
   async getInitiatives (context, payload) {

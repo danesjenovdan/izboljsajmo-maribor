@@ -96,7 +96,7 @@
                   >
                 </div>
                 <b-button v-if="!data.has_voted" class="support-button" @click="vote">
-                  <img src="~/assets/img/icons/love.svg" alt="heart">
+                  <LikeIcon />
                   <span>PODPRI</span>
                 </b-button>
                 <b-button v-if="data.has_voted" class="support-button" @click="removeVote">
@@ -161,9 +161,10 @@
 
 <script>
 import CommentForm from '~/components/forms/CommentForm'
+import LikeIcon from '~/assets/img/icons/like.svg?inline'
 
 export default {
-  components: { CommentForm },
+  components: { CommentForm, LikeIcon },
   asyncData ({ params, $axios, redirect }) {
     const id = params.id
     return $axios.get(`v1/initiatives/${id}`)
@@ -198,7 +199,8 @@ export default {
     },
     statusImage (s) {
       try {
-        return require(`~/assets/img/icons/${s}.png`)
+        const icon = this.$store.getters.initiativeStatuses[s]
+        return require(`~/assets/img/icons/${icon}.svg`)
       } catch (e) {
         return ''
       }
