@@ -1,0 +1,460 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-03-29 21:29+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
+"%100==4 ? 2 : 3);\n"
+
+#: about/models.py:10 initiatives/models/initiative_models.py:33
+#: initiatives/models/models.py:470
+msgid "Title"
+msgstr ""
+
+#: about/models.py:11
+msgid "Title2"
+msgstr "Naslov 2"
+
+#: about/models.py:12
+msgid "Text"
+msgstr "Besedilo"
+
+#: about/models.py:13 about/models.py:27 initiatives/models/models.py:442
+msgid "Image"
+msgstr "Slika"
+
+#: about/models.py:14
+msgid "YoutubeEmbed"
+msgstr "Youtube Embed"
+
+#: about/models.py:15
+msgid "Link"
+msgstr "Povezava"
+
+#: about/models.py:19 initiatives/models/models.py:407
+msgid "Order"
+msgstr "Vstni red"
+
+#: about/models.py:21
+msgid "About section type"
+msgstr ""
+
+#: about/models.py:25
+msgid "Content"
+msgstr "Vsebina"
+
+#: about/models.py:32
+msgid "Description of section"
+msgstr "Opis sekcije"
+
+#: initiatives/admin/admin.py:31
+msgid "Personal info"
+msgstr "Osebni podatki"
+
+#: initiatives/admin/admin.py:32
+msgid "Permissions"
+msgstr "Dovoljenja"
+
+#: initiatives/admin/admin.py:35
+msgid "Important dates"
+msgstr "Pomembni podatki"
+
+#: initiatives/admin/admin.py:36
+msgid "MB datas"
+msgstr "MB podatki"
+
+#: initiatives/admin/admin.py:37 initiatives/models/models.py:382
+msgid "Notes"
+msgstr "Opisi"
+
+#: initiatives/admin/admin.py:271
+msgid "Initiatives"
+msgstr "Pobude"
+
+#: initiatives/cronjobs.py:25 initiatives/cronjobs.py:64
+msgid "New initiatives which needs you attention"
+msgstr "Nove pobude, ki potrebujejo tvojo pozornost"
+
+#: initiatives/management/commands/set_permissions.py:20
+msgid "Area admin"
+msgstr "Admin področni"
+
+#: initiatives/models/initiative_models.py:16 initiatives/models/models.py:461
+msgid "Initiative type"
+msgstr "Tip pobude"
+
+#: initiatives/models/initiative_models.py:21
+msgid "Reviewer role"
+msgstr "Reviewer role"
+
+#: initiatives/models/initiative_models.py:27
+msgid "Reviewer"
+msgstr "Reviewer"
+
+#: initiatives/models/initiative_models.py:39 initiatives/models/models.py:49
+msgid "Status of initiative"
+msgstr "Status pobude"
+
+#: initiatives/models/initiative_models.py:43 initiatives/models/models.py:266
+msgid "Area"
+msgstr "Področje"
+
+#: initiatives/models/initiative_models.py:52
+msgid "Address of initiative"
+msgstr "Naslov pobude"
+
+#: initiatives/models/initiative_models.py:58
+msgid "GEO Zone of initiative"
+msgstr "Območje pobude"
+
+#: initiatives/models/initiative_models.py:71
+msgid "Cover image before"
+msgstr "Naslovna slika prej"
+
+#: initiatives/models/initiative_models.py:78
+msgid "Cover image after"
+msgstr "Naslovna slika potem"
+
+#: initiatives/models/initiative_models.py:87
+msgid "In review"
+msgstr "V pregledu"
+
+#: initiatives/models/initiative_models.py:145
+msgid "Object must be created before it can be archived"
+msgstr "Objekt mora biti shranjen preden ga lahko arhivirate"
+
+#: initiatives/models/models.py:20
+msgid "MOTI ME!"
+msgstr "MOTI ME!"
+
+#: initiatives/models/models.py:21
+msgid "IMAM IDEJO!"
+msgstr "IMAM IDEJO!"
+
+#: initiatives/models/models.py:22
+msgid "ZANIMA ME!"
+msgstr "ZANIMA ME!"
+
+#: initiatives/models/models.py:26
+msgid "SUPER ADMIN"
+msgstr "SUPER ADMIN"
+
+#: initiatives/models/models.py:27
+msgid "AREA ADMIN"
+msgstr "ADMIN PODROČNI"
+
+#: initiatives/models/models.py:28
+msgid "AREA APPRAISER"
+msgstr "OCENJEVALEC PODROČNI"
+
+#: initiatives/models/models.py:29
+msgid "CONTRACTOR APPRAISER"
+msgstr "IZVAJALEC PODROČNI"
+
+#: initiatives/models/models.py:44 initiatives/models/models.py:183
+#: initiatives/models/models.py:216 initiatives/models/models.py:231
+#: initiatives/models/models.py:416
+msgid "Initiative"
+msgstr "Pobuda"
+
+#: initiatives/models/models.py:53
+msgid "Note of status"
+msgstr "Opis statusa"
+
+#: initiatives/models/models.py:57
+msgid "Email response"
+msgstr "Vsebina email odgovora"
+
+#: initiatives/models/models.py:64
+msgid "Rejection"
+msgstr "Zavrnitev"
+
+#: initiatives/models/models.py:70
+msgid "CompetentService"
+msgstr "Pristojna služba"
+
+#: initiatives/models/models.py:74
+msgid "Is email sent"
+msgstr "Je email poslan?"
+
+#: initiatives/models/models.py:172
+msgid "Status"
+msgstr "Status"
+
+#: initiatives/models/models.py:173
+msgid "Default note of status"
+msgstr "Privzet opis statusa"
+
+#: initiatives/models/models.py:174
+msgid "Default email response"
+msgstr "Privzet email odgovor"
+
+#: initiatives/models/models.py:187 initiatives/models/models.py:481
+#: initiatives/models/models.py:492
+msgid "Description type"
+msgstr "Tip opisa"
+
+#: initiatives/models/models.py:190
+msgid "Description title"
+msgstr "Naslov opisa"
+
+#: initiatives/models/models.py:194
+msgid "Description content"
+msgstr "Vsebina opisa"
+
+#: initiatives/models/models.py:198 initiatives/models/models.py:206
+msgid "Name of zone"
+msgstr "Ime območja"
+
+#: initiatives/models/models.py:199
+msgid "Polygon of zone"
+msgstr "Meje območja"
+
+#: initiatives/models/models.py:207
+msgid "Description of service"
+msgstr "Opis storitve"
+
+#: initiatives/models/models.py:220
+msgid "Comment"
+msgstr "Komentar"
+
+#: initiatives/models/models.py:222
+msgid "Comment status"
+msgstr "Status komentarja"
+
+#: initiatives/models/models.py:238
+msgid "Note"
+msgstr "Opis"
+
+#: initiatives/models/models.py:243
+msgid "Phone number"
+msgstr "Telefonska številka"
+
+#: initiatives/models/models.py:251
+msgid "Organization"
+msgstr "Organizacija"
+
+#: initiatives/models/models.py:256
+msgid "MČ/KS"
+msgstr "MČ/KS"
+
+#: initiatives/models/models.py:261 initiatives/models/models.py:385
+msgid "Competent service"
+msgstr "Pristojna služba"
+
+#: initiatives/models/models.py:268
+msgid "Role"
+msgstr "Vloga"
+
+#: initiatives/models/models.py:275
+msgid "username"
+msgstr "uporabniško ime"
+
+#: initiatives/models/models.py:276
+msgid "Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."
+msgstr "Zahtevan podatek, manj kot 30 zanekov, črke, številke in samo @/./+/-/_."
+
+#: initiatives/models/models.py:279
+msgid "Enter a valid username."
+msgstr "Vnesite ustrezno uporabniško ime."
+
+#: initiatives/models/models.py:368
+msgid "name"
+msgstr "ime"
+
+#: initiatives/models/models.py:371
+msgid "Number of members"
+msgstr "Število članov"
+
+#: initiatives/models/models.py:379
+msgid "Area name"
+msgstr "Ime območja"
+
+#: initiatives/models/models.py:395
+msgid "Name of rejection"
+msgstr "Ime zavrnitve"
+
+#: initiatives/models/models.py:398
+msgid "Note for rejection"
+msgstr "Opis zavrnitve"
+
+#: initiatives/models/models.py:405
+msgid "question"
+msgstr "vprašanje"
+
+#: initiatives/models/models.py:406
+msgid "answer"
+msgstr "odgovor"
+
+#: initiatives/models/models.py:423
+msgid "Status Initiative"
+msgstr "Status pobude"
+
+#: initiatives/models/models.py:429 initiatives/models/models.py:447
+msgid "Display name"
+msgstr "Prikazno ime"
+
+#: initiatives/models/models.py:432
+msgid "File"
+msgstr "Datoteka"
+
+#: initiatives/models/models.py:467
+msgid "Field name"
+msgstr "Ime polja"
+
+#: initiatives/models/models.py:477 initiatives/models/models.py:488
+msgid "User"
+msgstr "Uporabnik"
+
+#: initiatives/signals.py:102
+msgid "Restore password Izboljšajmo Maribor"
+msgstr "Ponastavite geslo za IM"
+
+#: initiatives/signals.py:106
+msgid "Confirm email Izboljšajmo Maribor"
+msgstr "Potrdite email naslov za IM"
+
+#: initiatives/utils.py:33
+msgid "File not supported!"
+msgstr "Datoteka ni podprta"
+
+#: initiatives/views/views.py:191
+msgid "You already voted for this initiative."
+msgstr "Za to pobudo ste že glasovali"
+
+#: initiatives/views/views.py:202
+msgid "You need to vote first."
+msgstr "Najprej glasujte"
+
+#: initiatives/views/views.py:228
+msgid "Email will be send."
+msgstr "Email bo poslan"
+
+#: initiatives/views/views.py:241
+msgid "Password has been set."
+msgstr "Geslo je bilo nastavljeno"
+
+#: initiatives/views/views.py:253
+msgid "Email confirmed."
+msgstr "Račun je potrjen"
+
+#: templates/admin/initiatives/bothersinitiativeappraiser/change_form.html:6
+#: templates/admin/initiatives/bothersinitiativearea/change_form.html:6
+#: templates/admin/initiatives/bothersinitiativecontractor/change_form.html:6
+#: templates/admin/initiatives/bothersinitiativesuper/change_form.html:6
+#: templates/admin/initiatives/bothersinitiativesuper/change_form.html:9
+#: templates/admin/initiatives/ideainitiativeappraiser/change_form.html:6
+#: templates/admin/initiatives/ideainitiativearea/change_form.html:6
+#: templates/admin/initiatives/ideainitiativecontractor/change_form.html:6
+#: templates/admin/initiatives/ideainitiativesuper/change_form.html:6
+#: templates/admin/initiatives/interestedinitiativeappraiser/change_form.html:6
+#: templates/admin/initiatives/interestedinitiativesuper/change_form.html:6
+#: templates/admin/initiatives/interetedinitiativearea/change_form.html:6
+msgid "Print"
+msgstr "Natisni"
+
+#: templates/admin/initiatives/bothersinitiativeappraiser/change_form.html:9
+#: templates/admin/initiatives/ideainitiativeappraiser/change_form.html:9
+#: templates/admin/initiatives/ideainitiativearea/change_form.html:9
+#: templates/admin/initiatives/interestedinitiativeappraiser/change_form.html:9
+#: templates/admin/initiatives/interetedinitiativearea/change_form.html:9
+msgid "Pošlji super adminu v pregled"
+msgstr "Pošlji super adminu v pregled"
+
+#: templates/admin/initiatives/bothersinitiativeappraiser/change_form.html:12
+#: templates/admin/initiatives/ideainitiativeappraiser/change_form.html:12
+msgid "Pošlji cenilcu izvajalcu"
+msgstr "Pošlji cenilcu izvajalcu"
+
+#: templates/admin/initiatives/bothersinitiativeappraiser/change_form.html:15
+#: templates/admin/initiatives/bothersinitiativearea/change_form.html:15
+#: templates/admin/initiatives/bothersinitiativecontractor/change_form.html:12
+#: templates/admin/initiatives/bothersinitiativesuper/change_form.html:15
+#: templates/admin/initiatives/ideainitiativeappraiser/change_form.html:15
+#: templates/admin/initiatives/ideainitiativearea/change_form.html:15
+#: templates/admin/initiatives/ideainitiativecontractor/change_form.html:12
+#: templates/admin/initiatives/ideainitiativesuper/change_form.html:12
+#: templates/admin/initiatives/interestedinitiativeappraiser/change_form.html:12
+#: templates/admin/initiatives/interestedinitiativesuper/change_form.html:12
+#: templates/admin/initiatives/interetedinitiativearea/change_form.html:15
+msgid "History"
+msgstr "Zgodovina"
+
+#: templates/admin/initiatives/bothersinitiativeappraiser/change_form.html:19
+#: templates/admin/initiatives/bothersinitiativearea/change_form.html:19
+#: templates/admin/initiatives/bothersinitiativecontractor/change_form.html:16
+#: templates/admin/initiatives/bothersinitiativesuper/change_form.html:19
+#: templates/admin/initiatives/ideainitiativeappraiser/change_form.html:19
+#: templates/admin/initiatives/ideainitiativearea/change_form.html:19
+#: templates/admin/initiatives/ideainitiativecontractor/change_form.html:16
+#: templates/admin/initiatives/ideainitiativesuper/change_form.html:16
+#: templates/admin/initiatives/interestedinitiativeappraiser/change_form.html:16
+#: templates/admin/initiatives/interestedinitiativesuper/change_form.html:16
+#: templates/admin/initiatives/interetedinitiativearea/change_form.html:19
+msgid "View on site"
+msgstr "Poglej na strani"
+
+#: templates/admin/initiatives/bothersinitiativearea/change_form.html:9
+msgid "Pošlji super adminu  v pregled"
+msgstr "Pošlji super adminu  v pregled"
+
+#: templates/admin/initiatives/bothersinitiativearea/change_form.html:12
+#: templates/admin/initiatives/bothersinitiativecontractor/change_form.html:9
+#: templates/admin/initiatives/ideainitiativearea/change_form.html:12
+#: templates/admin/initiatives/ideainitiativecontractor/change_form.html:9
+#: templates/admin/initiatives/interetedinitiativearea/change_form.html:12
+msgid "Pošlji cenilcu področnemu"
+msgstr "Pošlji cenilcu področnemu"
+
+#: templates/admin/initiatives/bothersinitiativesuper/change_form.html:12
+#: templates/admin/initiatives/ideainitiativesuper/change_form.html:9
+#: templates/admin/initiatives/interestedinitiativesuper/change_form.html:9
+msgid "Archive"
+msgstr "Arhiviraj"
+
+#: templates/emails/confirm_email.html:4 templates/emails/confirm_email.html:6
+msgid "Confirm email"
+msgstr "Potrdi email naslov"
+
+#: templates/emails/confirm_email.html:5
+msgid ""
+"We just need you to confirm your email address by clicking the button below:"
+msgstr "Registracijo končate s potrditvijo da ste prejeli to sporočilo s klikom na spodnji naslov."
+
+#: templates/emails/daily_admin_notification_email.html:4
+#: templates/emails/daily_notification_email.html:4
+msgid "Pobude za obravnavo:"
+msgstr ""
+
+#: templates/emails/daily_admin_notification_email.html:9
+#: templates/emails/daily_admin_notification_email.html:19
+#: templates/emails/daily_notification_email.html:9
+msgid "Open initiative"
+msgstr "Odpri pobude"
+
+#: templates/emails/restore_password.html:4
+msgid "Restore password"
+msgstr "POnastavi geslo"
+
+#: templates/emails/restore_password.html:5
+msgid ""
+"Someone has requested a link to change your password. You can do this "
+"through the link below."
+msgstr "Nekdo je zahteval ponastavitev glesla. Nadaljujete lahko s klikom na spodnji naslov."
+
+#: templates/emails/restore_password.html:6
+msgid "Change my password"
+msgstr "Zamenjaj geslo"

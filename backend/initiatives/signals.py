@@ -79,7 +79,7 @@ def set_zone_from_location(sender, instance, **kwargs):
         zones = Zone.objects.filter(polygon__intersects=instance.location)
         if zones:
             instance.zone = zones[0]
-            instance.save()
+            #instance.save()
 
     elif instance.location and instance.location.distance(sender.objects.get(id=instance.id).location)*100 > 1:
         zones = Zone.objects.filter(polygon__intersects=instance.location)

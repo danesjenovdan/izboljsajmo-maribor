@@ -106,7 +106,7 @@ class InterestedInitiativeAreaAdmin(ImportExportModelAdmin):
     autocomplete_fields = ['area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type']
     date_hierarchy = 'created'
-    readonly_fields = ['status_history', 'created', 'images_preview']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'is_draft']
     list_display = [
         'title',
         'author',
@@ -137,7 +137,7 @@ class InterestedInitiativeAreaAdmin(ImportExportModelAdmin):
 
 
 class InterestedInitiativeAppraiserAdmin(ImportExportModelAdmin):
-    readonly_fields = ['title', 'author', 'address', 'type', 'area', 'location', 'cover_image', 'zone', 'modified', 'archived', 'status_history', 'created', 'images_preview']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'is_draft', 'reviewer_user', 'reviewer']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -224,6 +224,7 @@ class IdeaInitiativeAreaAdmin(ImportExportModelAdmin):
     list_filter = ['statuses', 'zone__name', 'area__name', 'type']
     date_hierarchy = 'created'
     readonly_fields = ['status_history', 'created', 'images_preview']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'is_draft']
     list_display = [
         'title',
         'author',
@@ -254,7 +255,7 @@ class IdeaInitiativeAreaAdmin(ImportExportModelAdmin):
 
 
 class IdeaInitiativeAppraiserAdmin(ImportExportModelAdmin):
-    readonly_fields = ['title', 'author', 'address', 'type', 'area', 'location', 'cover_image', 'zone', 'modified', 'archived', 'status_history', 'created', 'images_preview']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'is_draft', 'reviewer_user', 'reviewer']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -288,7 +289,7 @@ class IdeaInitiativeAppraiserAdmin(ImportExportModelAdmin):
 
 
 class IdeaInitiativeContractorAdmin(ImportExportModelAdmin):
-    readonly_fields = ['title', 'author', 'address', 'type', 'area', 'location', 'cover_image', 'zone', 'modified', 'archived', 'status_history', 'created', 'images_preview']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'is_draft', 'reviewer_user', 'reviewer']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -366,7 +367,7 @@ class BothersInitiativeAreaAdmin(ImportExportModelAdmin):
     autocomplete_fields = ['area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type']
     date_hierarchy = 'created'
-    readonly_fields = ['status_history', 'created', 'images_preview']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'is_draft']
     list_display = [
         'title',
         'author',
@@ -397,7 +398,7 @@ class BothersInitiativeAreaAdmin(ImportExportModelAdmin):
 
 
 class BothersInitiativeAppraiserAdmin(ImportExportModelAdmin):
-    readonly_fields = ['title', 'author', 'address', 'type', 'area', 'location', 'cover_image', 'zone', 'modified', 'archived', 'status_history', 'created', 'images_preview']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'is_draft', 'reviewer_user', 'reviewer']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -431,7 +432,7 @@ class BothersInitiativeAppraiserAdmin(ImportExportModelAdmin):
 
 
 class BothersInitiativeContractorAdmin(ImportExportModelAdmin):
-    readonly_fields = ['title', 'author', 'address', 'type', 'area', 'location', 'cover_image', 'zone', 'modified', 'archived', 'status_history', 'created', 'images_preview']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'is_draft', 'reviewer_user', 'reviewer']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']

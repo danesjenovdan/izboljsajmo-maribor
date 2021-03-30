@@ -1,7 +1,8 @@
 FROM python:3.8
 
 RUN apt-get update && apt-get install --yes proj-bin \
-                        libgdal-dev
+                        libgdal-dev \
+                        gettext
 RUN export CPLUS_INCLUDE_PATH=/usr/include/gdal
 RUN export C_INCLUDE_PATH=/usr/include/gdal
 
