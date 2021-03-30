@@ -104,8 +104,8 @@ class Command(BaseCommand):
         permissions = self.get_permissions('file', ct, self.options)
         admin_group.permissions.add(*permissions)
 
-        ct = ContentType.objects.get_for_model(models.User)
-        permissions = self.get_permissions('user', ct, self.basc_options)
+        ct = ContentType.objects.get_for_model(models.BasicUser)
+        permissions = self.get_permissions('basicuser', ct, [('view_', 'Can view ')])
         admin_group.permissions.add(*permissions)
         ct = ContentType.objects.get_for_model(models.AreaAppraiserUser)
         permissions = self.get_permissions('areaappraiseruser', ct, self.options)
@@ -145,6 +145,9 @@ class Command(BaseCommand):
         permissions = self.get_permissions('interestedinitiativeappraiser', ct)
         appraiser_group.permissions.add(*permissions)
 
+        ct = ContentType.objects.get_for_model(models.BasicUser)
+        permissions = self.get_permissions('basicuser', ct, [('view_', 'Can view ')])
+        admin_group.permissions.add(*permissions)
         ct = ContentType.objects.get_for_model(models.ContractorAppraiserUser)
         permissions = self.get_permissions('contractorappraiseruser', ct, self.options)
         appraiser_group.permissions.add(*permissions)
@@ -177,6 +180,9 @@ class Command(BaseCommand):
         permissions = self.get_permissions('ideainitiativecontractor', ct)
         contractor_group.permissions.add(*permissions)
 
+        ct = ContentType.objects.get_for_model(models.BasicUser)
+        permissions = self.get_permissions('basicuser', ct, [('view_', 'Can view ')])
+        admin_group.permissions.add(*permissions)
         ct = ContentType.objects.get_for_model(models.Image)
         permissions = self.get_permissions('image', ct, self.options)
         admin_group.permissions.add(*permissions)
