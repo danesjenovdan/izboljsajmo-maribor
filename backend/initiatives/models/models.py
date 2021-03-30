@@ -384,7 +384,9 @@ class Area(Timestamped):
         'CompetentService',
         verbose_name=_('Competent service'),
         related_name='areas',
-        on_delete=models.CASCADE)
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True)
 
     def __str__(self):
         return self.name

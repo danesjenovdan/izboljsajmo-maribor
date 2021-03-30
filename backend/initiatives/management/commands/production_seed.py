@@ -197,6 +197,12 @@ class Command(BaseCommand):
         permissions = self.get_permissions('statusinitiativedone', ct, self.options)
         admin_group.permissions.add(*permissions)
 
+        user = models.User(
+            first_name='Auth user',
+            username='auth',
+            is_active=True,
+        )
+        user.save()
         Application(
             client_id='kIZWxeodL29mfaKSIGQWPUuuck8CXv3m58XuJ8Y7',
             client_secret='54pWmrpj1y9FiwkUDofjeP4B5tbLQ4wW6F2wqsMT3JuQN4ApIqcveKlzOC1laQIJp8JpVi99EheHCkumEJ0o81J9f2uHK3eXjUdxprzDnWlsTuZM6cgv1Eo35KSr7Mfg',
@@ -207,15 +213,15 @@ class Command(BaseCommand):
         ).save()
 
         areas = [
-            'KOMUNALNE STORITVE, PROMET, PROSTOR'
-            'OKOLJE, NARAVA, ŽIVALI'
-            'ŠPORT, REKREACIJA'
-            'GOSPODARSTVO/TURIZEM'
-            'KULTURA'
-            'SOCIALNA VARNOST/ ZDRAVJE'
-            'VZGOJA IN IZOBRAŽEVANJE, IZOBRAŽEVANJE ODRASLIH IN RAZVOJ KADROV ZA PODJETJA IN ORGANIZACIJE'
-            'TRG DELA/ZAPOSLOVANJE'
-            'DRUGO'
+            'KOMUNALNE STORITVE, PROMET, PROSTOR',
+            'OKOLJE, NARAVA, ŽIVALI',
+            'ŠPORT, REKREACIJA',
+            'GOSPODARSTVO/TURIZEM',
+            'KULTURA',
+            'SOCIALNA VARNOST/ ZDRAVJE',
+            'VZGOJA IN IZOBRAŽEVANJE, IZOBRAŽEVANJE ODRASLIH IN RAZVOJ KADROV ZA PODJETJA IN ORGANIZACIJE',
+            'TRG DELA/ZAPOSLOVANJE',
+            'DRUGO',
         ]
         for a in areas:
             area = models.Area(
