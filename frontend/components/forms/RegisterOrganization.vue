@@ -84,6 +84,9 @@
       ZAKLJUČI REGISTRACIJO
       <ArrowRightIcon class="position-absolute" />
     </b-button>
+    <p v-if="success" class="success-message text-center mt-4">
+      Registracija uspešna! Prosimo, potrdite račun s klikom na povezavo, ki ste jo prejeli na svoj e-naslov.
+    </p>
     <div class="form-note text-center">
       Že imate račun? <NuxtLink to="/prijava">
         Prijavite se.
@@ -113,7 +116,8 @@ export default {
       errorEmail: false,
       errorPhone: false,
       errorPassword: false,
-      errorRegister: false
+      errorRegister: false,
+      success: false
     }
   },
   methods: {
@@ -132,10 +136,20 @@ export default {
     checkPassword () {
       this.errorPassword = this.form.password.length === 0
     },
+    emptyForm () {
+      this.form.username = ''
+      this.form.name = ''
+      this.form.membersNumber = 1
+      this.form.email = ''
+      this.form.phone = ''
+      this.form.password = ''
+    },
     async register (event) {
       try {
         await this.$store.dispatch('registerOrganization', { form: this.form })
-        await this.$router.push('/login')
+        this.emptyForm()
+        this.success = true
+        // await this.$router.push('/login')
       } catch (err) {
         this.errorRegister = true
         console.log(err)
