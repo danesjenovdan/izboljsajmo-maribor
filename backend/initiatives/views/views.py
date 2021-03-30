@@ -101,10 +101,12 @@ class InitiativeFilterSet(filters.FilterSet):
     type = CharInFilter(field_name='type', lookup_expr='in')
     zone = CharInFilter(field_name='zone', lookup_expr='in')
     area = CharInFilter(field_name='area', lookup_expr='in')
+    no_zone = filters.BooleanFilter(field_name='zone', lookup_expr='isnull')
+
 
     class Meta:
         model = Initiative
-        fields = ['zone', 'area', 'type']
+        fields = ['zone', 'area', 'type', 'no_zone']
 
 
 class InitiativeViewSet(
