@@ -1,7 +1,11 @@
 from django.contrib import admin
 from django import forms
 from django.shortcuts import render
+from django.contrib.admin import SimpleListFilter
 from django.contrib.gis import admin as gis_admin
+from django.db.models import Q
+from django.utils.translation import gettext as _
+from behaviors.behaviors import Published
 
 from initiatives.models import (
     Initiative, BothersInitiativeSuper, BothersInitiativeArea, BothersInitiativeAppraiser, BothersInitiativeContractor,
@@ -19,12 +23,31 @@ from initiatives.admin.admin import (DescriptionInline, FileInline, StatusInitia
 from initiatives.export_resources import InitiativeResource
 from import_export.admin import ImportExportModelAdmin
 
+import logging
+logger = logging.getLogger(__name__)
+
+
+class PublicFilter(SimpleListFilter):
+    title = _('is publuc')
+    parameter_name = 'public'
+
+    def lookups(self, request, model_admin):
+        statuses = list(set(list(model_admin.model.objects.all().values_list("initiative_statuses__status__name", flat=True))))
+        return [('Public', _('Objavleno')), ('Private', _('Nepregledano'))]
+
+    def queryset(self, request, queryset):
+        if self.value() == 'Public':
+            return queryset.exclude(Q(initiative_statuses__publication_status=Published.DRAFT) | Q(initiative_statuses__publication_status=None))
+        elif self.value() == 'Private':
+            return queryset.exclude(initiative_statuses__publication_status=Published.PUBLISHED)
+        else:
+            return queryset
 
 
 class InitiativeAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
-    list_filter = ['statuses', 'zone__name', 'area__name', 'type']
+    list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
     readonly_fields = ['status_history', 'created', 'images_preview']
     list_display = [
@@ -68,7 +91,7 @@ class InitiativeAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
 class InterestedInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
-    list_filter = ['statuses', 'zone__name', 'area__name', 'type']
+    list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
     readonly_fields = ['status_history', 'created', 'images_preview']
     list_display = [
@@ -116,7 +139,7 @@ class InterestedInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmi
     form = InterestedAdminForm
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
-    list_filter = ['statuses', 'zone__name', 'area__name', 'type']
+    list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'is_draft']
     modifiable = False
@@ -155,7 +178,7 @@ class InterestedInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, ImportExportMode
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
     date_hierarchy = 'created'
-    list_filter = ['statuses', 'zone__name', 'area__name', 'type']
+    list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     modifiable = False
     list_display = [
         'title',
@@ -188,7 +211,7 @@ class InterestedInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, ImportExportMode
 class IdeaInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
-    list_filter = ['statuses', 'zone__name', 'area__name', 'type']
+    list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
     readonly_fields = ['status_history', 'created', 'images_preview']
     list_display = [
@@ -235,7 +258,7 @@ class IdeaInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
     form = IteaAdminForm
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
-    list_filter = ['statuses', 'zone__name', 'area__name', 'type']
+    list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'is_draft']
     modifiable = False
@@ -275,7 +298,7 @@ class IdeaInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
     date_hierarchy = 'created'
-    list_filter = ['statuses', 'zone__name', 'area__name', 'type']
+    list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     modifiable = False
     list_display = [
         'title',
@@ -310,7 +333,7 @@ class IdeaInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmi
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
     date_hierarchy = 'created'
-    list_filter = ['statuses', 'zone__name', 'area__name', 'type']
+    list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     modifiable = False
     list_display = [
         'title',
@@ -344,7 +367,7 @@ class IdeaInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmi
 class BothersInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
-    list_filter = ['statuses', 'zone__name', 'area__name', 'type']
+    list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
     readonly_fields = ['status_history', 'created', 'images_preview']
     list_display = [
@@ -392,7 +415,7 @@ class BothersInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
     form = BothersInitiativeForm
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
-    list_filter = ['statuses', 'zone__name', 'area__name', 'type']
+    list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'is_draft']
     modifiable = False
@@ -432,7 +455,7 @@ class BothersInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAd
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
     date_hierarchy = 'created'
-    list_filter = ['statuses', 'zone__name', 'area__name', 'type']
+    list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     modifiable = False
     list_display = [
         'title',
@@ -468,7 +491,7 @@ class BothersInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, ImportExportModelA
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
     date_hierarchy = 'created'
-    list_filter = ['statuses', 'zone__name', 'area__name', 'type']
+    list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     list_display = [
         'title',
         'author',
