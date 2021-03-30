@@ -64,7 +64,8 @@ class About(Timestamped):
         return content
 
     class Meta:
-        verbose_name = u"Preview"
+        verbose_name = _("Preview")
+        verbose_name_plural = _('Previews')
 
 
 class YoutubeManager(models.Manager):
@@ -96,27 +97,37 @@ class AboutYoutubeEmbed(About):
     objects = YoutubeManager()
     class Meta:
         proxy=True
+        verbose_name = _("Youtube embed")
+        verbose_name_plural = _('Youtube embedi')
 
 
 class AboutTitle(About):
     objects = TitleManager()
     class Meta:
         proxy=True
+        verbose_name = _("Naslov")
+        verbose_name_plural = _('Naslovi')
 
 
 class AboutTitle2(About):
     objects = Title2Manager()
     class Meta:
         proxy=True
+        verbose_name = _("Naslov 2")
+        verbose_name_plural = _('Naslovi 2')
 
 
 class AboutImage(About):
     objects = ImageManager()
     class Meta:
         proxy=True
+        verbose_name = _("Slika")
+        verbose_name_plural = _('Slike')
 
 
 class AboutContent(About):
     objects = ContentManager()
     class Meta:
         proxy=True
+        verbose_name = _("Vsebina")
+        verbose_name_plural = _('Vsebine')

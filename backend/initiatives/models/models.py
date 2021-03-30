@@ -78,6 +78,10 @@ class StatusInitiative(Timestamped, Published):
         draft_style = 'style="background-color: coral;"' if self.draft else 'style="background-color: lightgreen;"'
         return f'<tr><th>{self.status.name}</th><th>{self.note[:50] if self.note else ""}</th><th {draft_style}>{_("published") if self.published else _("draft")}</th><th>{self.created.date().isoformat() if self.created else 0}</th></tr>'
 
+    class Meta:
+        verbose_name = _('Status pobude')
+        verbose_name_plural = _('Statusi pobude')
+
 class HearManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(status__name='Slišimo')
@@ -112,6 +116,8 @@ class StatusInitiativeHear(StatusInitiative):
     objects = HearManager()
     class Meta:
         proxy=True
+        verbose_name = _('Status pobude slišimo')
+        verbose_name_plural = _('Statusi pobude slišimo')
 
     def save(self, *args, **kwargs):
         self.status = Status.objects.get(name='Slišimo')
@@ -122,6 +128,8 @@ class StatusInitiativeEditing(StatusInitiative):
     objects = EditingManager()
     class Meta:
         proxy=True
+        verbose_name = _('Status pobude urejamo')
+        verbose_name_plural = _('Statusi pobude urejamo')
 
     def save(self, *args, **kwargs):
         self.status = Status.objects.get(name='Urejamo')
@@ -132,6 +140,8 @@ class StatusInitiativeProgress(StatusInitiative):
     objects = ProgressManager()
     class Meta:
         proxy=True
+        verbose_name = _('Status pobude v izvajanju')
+        verbose_name_plural = _('Statusi pobude v izvajanju')
 
     def save(self, *args, **kwargs):
         self.status = Status.objects.get(name='V izvajanju')
@@ -142,6 +152,8 @@ class StatusInitiativeFinished(StatusInitiative):
     objects = FinishedManager()
     class Meta:
         proxy=True
+        verbose_name = _('Status pobude zaključeno')
+        verbose_name_plural = _('Statusi pobude zaključeno')
 
     def save(self, *args, **kwargs):
         self.status = Status.objects.get(name='Zaključeno')
@@ -152,6 +164,8 @@ class StatusInitiativeDone(StatusInitiative):
     objects = DoneManager()
     class Meta:
         proxy=True
+        verbose_name = _('Status pobude izvedeno')
+        verbose_name_plural = _('Statusi pobude izvedeno')
 
     def save(self, *args, **kwargs):
         self.status = Status.objects.get(name='Izvedeno')
@@ -162,6 +176,8 @@ class StatusInitiativeRejected(StatusInitiative):
     objects = RejectedManager()
     class Meta:
         proxy=True
+        verbose_name = _('Status pobude zavrnjeno')
+        verbose_name_plural = _('Statusi pobude zavrnjeno')
 
     def save(self, *args, **kwargs):
         self.status = Status.objects.get(name='Zavrnjeno')
@@ -175,6 +191,10 @@ class Status(Timestamped):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = _('Status')
+        verbose_name_plural = _('Statusi')
 
 
 class Description(Timestamped):
@@ -193,6 +213,10 @@ class Description(Timestamped):
     content = models.TextField(
         _('Description content'))
 
+    class Meta:
+        verbose_name = _('Opis')
+        verbose_name_plural = _('Opisi')
+
 
 class Zone(Timestamped):
     name = models.CharField(_('Name of zone'), max_length=50)
@@ -200,6 +224,10 @@ class Zone(Timestamped):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = _('Območje')
+        verbose_name_plural = _('Območja')
 
 
 class CompetentService(Timestamped):
@@ -224,6 +252,10 @@ class Comment(Timestamped, Authored):
         choices=CommentStatus.choices,
         default=CommentStatus.PENDING)
 
+    class Meta:
+        verbose_name = _('Komentar')
+        verbose_name_plural = _('Komentarji')
+
 
 class Vote(Timestamped, Authored):
     initiative = models.ForeignKey(
@@ -231,6 +263,10 @@ class Vote(Timestamped, Authored):
         verbose_name=_('Initiative'),
         related_name='votes',
         on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _('Glas')
+        verbose_name_plural = _('Glasovi')
 
 
 class User(AbstractUser, Timestamped):
@@ -280,6 +316,10 @@ class User(AbstractUser, Timestamped):
         ])
     email_confirmed = models.BooleanField(default=False)
 
+    class Meta:
+        verbose_name = _('Uporabnik')
+        verbose_name_plural = _('Uporabniki')
+
 
 class SuperAdminManager(BaseUserManager):
     def get_queryset(self):
@@ -290,6 +330,8 @@ class SuperAdminUser(User):
     objects = SuperAdminManager()
     class Meta:
         proxy=True
+        verbose_name = _('Super admin')
+        verbose_name_plural = _('Super admin')
 
     def save(self, *args, **kwargs):
         if self.pk == None:
@@ -311,6 +353,8 @@ class BasicUser(User):
     objects = UserManager()
     class Meta:
         proxy=True
+        verbose_name = _('Basic user')
+        verbose_name_plural = _('Basic users')
 
 
 class AreaAdminManager(BaseUserManager):
@@ -322,6 +366,8 @@ class AreaAdminUser(User):
     objects = AreaAdminManager()
     class Meta:
         proxy=True
+        verbose_name = _('Admin področni')
+        verbose_name_plural = _('Admini področni')
 
     def save(self, *args, **kwargs):
         if self.pk == None:
@@ -338,6 +384,8 @@ class AreaAppraiserUser(User):
     objects = AreaAppraiserManager()
     class Meta:
         proxy=True
+        verbose_name = _('Cenilec področni')
+        verbose_name_plural = _('Cenilci področni')
 
     def save(self, *args, **kwargs):
         if self.pk == None:
@@ -354,6 +402,8 @@ class ContractorAppraiserUser(User):
     objects = ContractorAppraiserManager()
     class Meta:
         proxy=True
+        verbose_name = _('Cenilec izvajalec')
+        verbose_name_plural = _('Cenilci izvajalec')
 
     def save(self, *args, **kwargs):
         logger.warning('SAVE')
@@ -373,6 +423,10 @@ class Organization(Timestamped):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = _('Organizacija')
+        verbose_name_plural = _('Organizacije')
+
 
 class Area(Timestamped):
     name = models.CharField(
@@ -391,6 +445,10 @@ class Area(Timestamped):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = _('Področje')
+        verbose_name_plural = _('Področja')
+
 
 class Rejection(Timestamped):
     name = models.CharField(
@@ -402,6 +460,10 @@ class Rejection(Timestamped):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = _('Zavrnitev')
+        verbose_name_plural = _('Zavrnitve')
+
 
 class FAQ(Timestamped):
     question = models.TextField(_('question'))
@@ -410,6 +472,10 @@ class FAQ(Timestamped):
 
     def __str__(self):
         return self.question[:50]
+
+    class Meta:
+        verbose_name = _('FAQ')
+        verbose_name_plural = _('FAQ')
 
 
 class File(Timestamped):
@@ -438,6 +504,10 @@ class File(Timestamped):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = _('Datoteka')
+        verbose_name_plural = _('Datoteke')
+
 
 class Image(Timestamped):
     image = models.ImageField(
@@ -457,6 +527,10 @@ class Image(Timestamped):
         except:
             return 'no image'
 
+    class Meta:
+        verbose_name = _('Slika')
+        verbose_name_plural = _('Slike')
+
 
 class DescriptionDefinition(Timestamped, Authored):
     type = models.CharField(
@@ -472,6 +546,10 @@ class DescriptionDefinition(Timestamped, Authored):
         _('Title'),
         max_length=100)
 
+    class Meta:
+        verbose_name = _('Razdelek opisa')
+        verbose_name_plural = _('Razdeleki opisa')
+
 
 class RestorePassword(Timestamped):
     user = models.ForeignKey(
@@ -480,8 +558,12 @@ class RestorePassword(Timestamped):
         related_name='restore_passwords',
         on_delete=models.CASCADE)
     key = models.CharField(
-        _('Description type'),
+        _('key'),
         max_length=50)
+
+    class Meta:
+        verbose_name = _('Restore password')
+        verbose_name_plural = _('Restore passwords')
 
 
 class ConfirmEmail(Timestamped):
@@ -491,6 +573,10 @@ class ConfirmEmail(Timestamped):
         related_name='conform_emails',
         on_delete=models.CASCADE)
     key = models.CharField(
-        _('Description type'),
+        _('key'),
         max_length=50)
+
+    class Meta:
+        verbose_name = _('Confirm email')
+        verbose_name_plural = _('Confirm emails')
 
