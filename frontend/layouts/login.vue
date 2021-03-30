@@ -71,6 +71,11 @@
       margin-right: -2rem;
     }
   }
+
+  .success-message {
+    font-size: 1rem;
+    color: green;
+  }
 }
 
 </style>

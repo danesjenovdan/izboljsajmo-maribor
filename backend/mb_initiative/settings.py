@@ -134,7 +134,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'sl'
 
 TIME_ZONE = 'UTC'
 
@@ -211,7 +211,7 @@ OAUTH2_PROVIDER = {
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-FRONT_URL = 'http://localhost:3000/'
+FRONT_URL = os.getenv('FRONT_URL', 'http://localhost:3000/')
 
 if os.getenv('APP_ENV', 'development') == 'production':
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

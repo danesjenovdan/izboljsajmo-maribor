@@ -87,6 +87,10 @@ class Initiative(Timestamped, Authored):
         _('In review'),
         default=False)
 
+    class Meta:
+        verbose_name = _("Pobuda")
+        verbose_name_plural = _('Pobude')
+
     def __str__(self):
         return self.title if self.title else 'unnamed'
 
@@ -161,6 +165,8 @@ class ArchivedInitiative(Initiative):
     objects = ArchivedManager()
     class Meta:
         proxy=True
+        verbose_name = _("Arhivirana pobuda")
+        verbose_name_plural = _('Arhivirane pobude')
 
 # MOTI ME
 class BothersManager(models.Manager):
@@ -178,6 +184,8 @@ class BothersInitiativeSuper(Initiative):
     objects = BothersManager(None)
     class Meta:
         proxy=True
+        verbose_name = _("Pobuda moti me (superadmin)")
+        verbose_name_plural = _('Pobude moti me (superadmin)')
 
     def get_admin_change_url(self):
         return reverse('admin:initiatives_bothersinitiativesuper_change',  args=[self.id] )
@@ -187,6 +195,8 @@ class BothersInitiativeArea(Initiative):
     objects = BothersManager(Reviwers.AREA_ADMIN)
     class Meta:
         proxy=True
+        verbose_name = _("Pobuda moti me (admin področni)")
+        verbose_name_plural = _('Pobude moti me (admin področni)')
 
     def get_admin_change_url(self):
         return reverse('admin:initiatives_bothersinitiativearea_change',  args=[self.id] )
@@ -196,6 +206,8 @@ class BothersInitiativeAppraiser(Initiative):
     objects = BothersManager(Reviwers.AREA_APPRAISER)
     class Meta:
         proxy=True
+        verbose_name = _("Pobuda moti me (cenilec področni)")
+        verbose_name_plural = _('Pobude moti me (cenilci področni)')
 
     def get_admin_change_url(self):
         return reverse('admin:initiatives_bothersinitiativeappraiser_change',  args=[self.id] )
@@ -205,6 +217,8 @@ class BothersInitiativeContractor(Initiative):
     objects = BothersManager(Reviwers.CONTRACTOR_APPRAISER)
     class Meta:
         proxy=True
+        verbose_name = _("Pobuda moti me (cenilec izvajalec)")
+        verbose_name_plural = _('Pobude moti me (cenilci izvajalci)')
 
     def get_admin_change_url(self):
         return reverse('admin:initiatives_bothersinitiativecontractor_change',  args=[self.id] )
@@ -226,6 +240,8 @@ class IdeaInitiativeSuper(Initiative):
     objects = IdeaManager(None)
     class Meta:
         proxy=True
+        verbose_name = _("Pobuda imam idejo (superadmin)")
+        verbose_name_plural = _('Pobude imam idejo (superadmin)')
 
     def get_admin_change_url(self):
         return reverse('admin:initiatives_ideainitiativesuper_change',  args=[self.id] )
@@ -235,6 +251,8 @@ class IdeaInitiativeArea(Initiative):
     objects = IdeaManager(Reviwers.AREA_ADMIN)
     class Meta:
         proxy=True
+        verbose_name = _("Pobuda imam idejo (admin področni)")
+        verbose_name_plural = _('Pobude imam idejo (admin področni)')
 
     def get_admin_change_url(self):
         return reverse('admin:initiatives_ideainitiativearea_change',  args=[self.id] )
@@ -244,6 +262,8 @@ class IdeaInitiativeAppraiser(Initiative):
     objects = IdeaManager(Reviwers.AREA_APPRAISER)
     class Meta:
         proxy=True
+        verbose_name = _("Pobuda imam idejo (cenilec področni)")
+        verbose_name_plural = _('Pobude imam idejo (cenilec področni)')
 
     def get_admin_change_url(self):
         return reverse('admin:initiatives_ideainitiativeappraiser_change',  args=[self.id] )
@@ -253,6 +273,8 @@ class IdeaInitiativeContractor(Initiative):
     objects = IdeaManager(Reviwers.CONTRACTOR_APPRAISER)
     class Meta:
         proxy=True
+        verbose_name = _("Pobuda imam idejo (cenilec izvajalec)")
+        verbose_name_plural = _('Pobude imam idejo (cenilec izvajalec)')
 
     def get_admin_change_url(self):
         return reverse('admin:initiatives_ideainitiativecontractor_change',  args=[self.id] )
@@ -274,6 +296,8 @@ class InterestedInitiativeSuper(Initiative):
     objects = InterestedManager(None)
     class Meta:
         proxy=True
+        verbose_name = _("Pobuda zanima me (superadmin)")
+        verbose_name_plural = _('Pobude zanima me (superadmin)')
 
     def get_admin_change_url(self):
         return reverse('admin:initiatives_interestedinitiativesuper_change',  args=[self.id] )
@@ -283,6 +307,8 @@ class InterestedInitiativeArea(Initiative):
     objects = InterestedManager(Reviwers.AREA_ADMIN)
     class Meta:
         proxy=True
+        verbose_name = _("Pobuda zanima me (admin področni)")
+        verbose_name_plural = _('Pobude zanima me (admin področni)')
 
     def get_admin_change_url(self):
         return reverse('admin:initiatives_interestedinitiativearea_change',  args=[self.id] )
@@ -292,6 +318,8 @@ class InterestedInitiativeAppraiser(Initiative):
     objects = InterestedManager(Reviwers.AREA_APPRAISER)
     class Meta:
         proxy=True
+        verbose_name = _("Pobuda zanima me (cenilec področni)")
+        verbose_name_plural = _('Pobude zanima me (cenilec področni)')
 
     def get_admin_change_url(self):
         return reverse('admin:initiatives_interestedinitiativeappraiser_change',  args=[self.id] )
