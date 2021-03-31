@@ -104,6 +104,14 @@ class Initiative(Timestamped, Authored):
             return None
 
     def status_history(self):
+        statuses = self.initiative_statuses.all()
+        if statuses:
+            table_lines = "".join([status.to_table_row() for status in statuses.order_by('created')])
+        else:
+            table_lines = f'''<tr>
+                <td colspan="4">{_("Pobuda je brez statusa")}</td>
+                </tr>'''
+
         return mark_safe(
             f'''<table>
             <tr>
@@ -112,7 +120,7 @@ class Initiative(Timestamped, Authored):
                 <th>{_("Published status")}</th>
                 <th>{_("Status changed at")}</th>
             </tr>
-                {"".join([status.to_table_row() for status in self.initiative_statuses.all().order_by('created')])}
+                {table_lines}
             </table>
             '''
             )
