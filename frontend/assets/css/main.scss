@@ -75,15 +75,15 @@ hr {
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
 
-  &.form-top-mm {
+  &.form-top-MM {
     background-color: #8cade2;
   }
 
-  &.form-top-ii {
+  &.form-top-II {
     background-color: #70b6a3;
   }
 
-  &.form-top-zm {
+  &.form-top-ZM {
     background-color: #d9ab27;
   }
 }
@@ -145,6 +145,28 @@ textarea.form-control {
   color: green;
   font-size: 0.8rem;
   padding-left: 1rem;
+}
+
+.message {
+  background-color: #fad6da;
+  border-radius: 1rem;
+  margin: 1rem 0;
+  padding: 0.25rem 0;
+  font-style: italic;
+  font-size: 0.9rem;
+
+  span {
+    right: 1rem;
+    font-style: normal;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  svg {
+    max-height: 1.25rem;
+    max-width: 1.25rem;
+    margin-right: 0.25rem;
+  }
 }
 
 .error-input {
