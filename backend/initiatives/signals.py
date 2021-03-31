@@ -45,7 +45,8 @@ def set_super_admin_to_group(sender, instance, created, **kwargs):
         if admin_group:
             instance.groups.add(admin_group[0])
             admin_group = admin_group[0]
-            instance.is_staff=True
+            instance.is_staff = True
+            instance.email_confirmed = True
             instance.save()
 
 
@@ -55,7 +56,8 @@ def set_area_admin_to_group(sender, instance, created, **kwargs):
         if admin_group:
             instance.groups.add(admin_group[0])
             admin_group = admin_group[0]
-            instance.is_staff=True
+            instance.is_staff = True
+            instance.email_confirmed = True
             instance.save()
 
 
@@ -65,7 +67,8 @@ def set_area_appraiser_to_group(sender, instance, created, **kwargs):
         if admin_group:
             instance.groups.add(admin_group[0])
             admin_group = admin_group[0]
-            instance.is_staff=True
+            instance.is_staff = True
+            instance.email_confirmed = True
             instance.save()
 
 
@@ -75,7 +78,8 @@ def set_contractor_appraiser_to_group(sender, instance, created, **kwargs):
         if admin_group:
             instance.groups.add(admin_group[0])
             admin_group = admin_group[0]
-            instance.is_staff=True
+            instance.is_staff = True
+            instance.email_confirmed = True
             instance.save()
 
 
