@@ -21,7 +21,7 @@ from initiatives.models import (
     ConfirmEmail, User
 )
 
-from initiatives.permissions import IsOwnerOrReadOnly, IsVerified
+from initiatives.permissions import IsOwnerOrReadOnly, IsVerified, IsBlocked
 
 import logging
 logger = logging.getLogger(__name__)
@@ -69,14 +69,14 @@ class FilesViewSet(viewsets.GenericViewSet,
                    mixins.CreateModelMixin):
     serializer_class = FileSerializer
     parser_classes = (MultiPartParser, FormParser,)
-    permission_classes = [permissions.IsAuthenticated, IsVerified]
+    permission_classes = [permissions.IsAuthenticated, IsVerified, IsBlocked]
 
 
 class ImagesViewSet(viewsets.GenericViewSet,
                    mixins.CreateModelMixin):
     serializer_class = ImageSerializer
     parser_classes = (MultiPartParser, FormParser,)
-    permission_classes = [permissions.IsAuthenticated, IsVerified]
+    permission_classes = [permissions.IsAuthenticated, IsVerified, IsBlocked]
 
 
 class FAQViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
