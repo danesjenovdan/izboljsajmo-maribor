@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-01 10:56+0000\n"
+"POT-Creation-Date: 2021-04-01 12:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -61,26 +61,18 @@ msgid "Description of section"
 msgstr "Opis sekcije"
 
 #: about/models.py:67
-#, fuzzy
-#| msgid "In review"
 msgid "Preview"
-msgstr "V pregledu"
+msgstr "Predogled"
 
 #: about/models.py:68
-#, fuzzy
-#| msgid "In review"
 msgid "Previews"
-msgstr "V pregledu"
+msgstr "Predogled"
 
 #: about/models.py:100
-#, fuzzy
-#| msgid "YoutubeEmbed"
 msgid "Youtube embed"
 msgstr "Youtube Embed"
 
 #: about/models.py:101
-#, fuzzy
-#| msgid "YoutubeEmbed"
 msgid "Youtube embedi"
 msgstr "Youtube Embed"
 
@@ -713,7 +705,7 @@ msgstr "Uporabnik"
 msgid "key"
 msgstr ""
 
-#: initiatives/models/models.py:565 templates/emails/restore_password.html:4
+#: initiatives/models/models.py:565
 msgid "Restore password"
 msgstr "Ponastavitev gesla za dostop do platforme Izboljšajmo Maribor"
 
@@ -721,7 +713,7 @@ msgstr "Ponastavitev gesla za dostop do platforme Izboljšajmo Maribor"
 msgid "Restore passwords"
 msgstr "Ponastavi geslo"
 
-#: initiatives/models/models.py:580 templates/emails/confirm_email.html:4
+#: initiatives/models/models.py:580
 msgid "Confirm email"
 msgstr "Potrditev registracije na platformi Izboljšajmo Maribor"
 
@@ -729,11 +721,11 @@ msgstr "Potrditev registracije na platformi Izboljšajmo Maribor"
 msgid "Confirm emails"
 msgstr "Potrdi email naslov"
 
-#: initiatives/signals.py:110
+#: initiatives/signals.py:94
 msgid "Restore password Izboljšajmo Maribor"
 msgstr "Ponastavitev gesla za dostop do platforme Izboljšajmo Maribor"
 
-#: initiatives/signals.py:114
+#: initiatives/signals.py:98
 msgid "Confirm email Izboljšajmo Maribor"
 msgstr "Potrditev registracije na platformi Izboljšajmo Maribor"
 
@@ -835,21 +827,6 @@ msgstr "Pošlji cenilcu področnemu"
 msgid "Archive"
 msgstr "Arhiviraj"
 
-#: templates/emails/confirm_email.html:5
-msgid ""
-"We just need you to confirm your email address by clicking the button below:"
-msgstr ""
-"Uspešno ste se registrirali na platformi Izboljšajmo Maribor. Dobrodošli!Za "
-"prijavo sledite tej povezavi: "
-
-#: templates/emails/confirm_email.html:6
-msgid "Confirm email url"
-msgstr "Povezava"
-
-#: templates/emails/confirm_email.html:8
-msgid "after confirm email"
-msgstr "Z veseljem bomo obravnavali vaše pobude, ki jih boste oddali na spletnem mestu <a href='https://izboljsajmo.maribor.si/'>https://izboljsajmo.maribor.si/</a>"
-
 #: templates/emails/daily_admin_notification_email.html:4
 #: templates/emails/daily_notification_email.html:4
 msgid "Initiatives to resolve:"
@@ -861,15 +838,31 @@ msgstr "Pobude ki jih je potrebno rpegledati"
 msgid "Open initiative"
 msgstr "Odpri pobude"
 
-#: templates/emails/restore_password.html:5
-msgid ""
-"Someone has requested a link to change your password. You can do this "
-"through the link below."
-msgstr ""
-"Spoštovani uporabnik, </br>"
-"na vašo zahtevo vam pošiljamo povezavo za spremembo gesla na platformi IzboljšajmoMaribor. V kolikor menite, da ste to sporočilo prejeli po pomoti, ga preprosto ignorirajte in za prijavo uporabljajte obstoječe geslo.</br></br>"
-"Za spremembo gesla sledite spodnji povezavi, kjer si boste izbrali novo geslo: "
+#~ msgid ""
+#~ "We just need you to confirm your email address by clicking the button "
+#~ "below:"
+#~ msgstr ""
+#~ "Uspešno ste se registrirali na platformi Izboljšajmo Maribor. Dobrodošli!"
+#~ "Za prijavo sledite tej povezavi: "
 
-#: templates/emails/restore_password.html:6
-msgid "Change my password"
-msgstr "Zamenjaj geslo"
+#~ msgid "Confirm email url"
+#~ msgstr "Povezava"
+
+#~ msgid "after confirm email"
+#~ msgstr ""
+#~ "Z veseljem bomo obravnavali vaše pobude, ki jih boste oddali na spletnem "
+#~ "mestu <a href='https://izboljsajmo.maribor.si/'>https://izboljsajmo."
+#~ "maribor.si/</a>"
+
+#~ msgid ""
+#~ "Someone has requested a link to change your password. You can do this "
+#~ "through the link below."
+#~ msgstr ""
+#~ "Spoštovani uporabnik, </br>na vašo zahtevo vam pošiljamo povezavo za "
+#~ "spremembo gesla na platformi IzboljšajmoMaribor. V kolikor menite, da ste "
+#~ "to sporočilo prejeli po pomoti, ga preprosto ignorirajte in za prijavo "
+#~ "uporabljajte obstoječe geslo.</br></br>Za spremembo gesla sledite spodnji "
+#~ "povezavi, kjer si boste izbrali novo geslo: "
+
+#~ msgid "Change my password"
+#~ msgstr "Zamenjaj geslo"
