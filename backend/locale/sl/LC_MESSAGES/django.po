@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-30 20:16+0000\n"
+"POT-Creation-Date: 2021-04-01 10:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -132,12 +132,11 @@ msgstr "Pomembni podatki"
 msgid "MB datas"
 msgstr "MB podatki"
 
-#: initiatives/admin/admin.py:37 initiatives/admin/admin.py:62
-#: initiatives/models/models.py:436
+#: initiatives/admin/admin.py:37 initiatives/models/models.py:436
 msgid "Notes"
 msgstr "Opisi"
 
-#: initiatives/admin/admin.py:296
+#: initiatives/admin/admin.py:295
 msgid "Initiatives"
 msgstr "Pobude"
 
@@ -716,32 +715,27 @@ msgstr ""
 
 #: initiatives/models/models.py:565 templates/emails/restore_password.html:4
 msgid "Restore password"
-msgstr "POnastavi geslo"
+msgstr "Ponastavitev gesla za dostop do platforme Izboljšajmo Maribor"
 
 #: initiatives/models/models.py:566
-#, fuzzy
-#| msgid "Restore password"
 msgid "Restore passwords"
-msgstr "POnastavi geslo"
+msgstr "Ponastavi geslo"
 
 #: initiatives/models/models.py:580 templates/emails/confirm_email.html:4
-#: templates/emails/confirm_email.html:6
 msgid "Confirm email"
-msgstr "Potrdi email naslov"
+msgstr "Potrditev registracije na platformi Izboljšajmo Maribor"
 
 #: initiatives/models/models.py:581
-#, fuzzy
-#| msgid "Confirm email"
 msgid "Confirm emails"
 msgstr "Potrdi email naslov"
 
-#: initiatives/signals.py:106
-msgid "Restore password Izboljšajmo Maribor"
-msgstr "Ponastavite geslo za IM"
-
 #: initiatives/signals.py:110
+msgid "Restore password Izboljšajmo Maribor"
+msgstr "Ponastavitev gesla za dostop do platforme Izboljšajmo Maribor"
+
+#: initiatives/signals.py:114
 msgid "Confirm email Izboljšajmo Maribor"
-msgstr "Potrdite email naslov za IM"
+msgstr "Potrditev registracije na platformi Izboljšajmo Maribor"
 
 #: initiatives/utils.py:33
 msgid "File not supported!"
@@ -845,15 +839,21 @@ msgstr "Arhiviraj"
 msgid ""
 "We just need you to confirm your email address by clicking the button below:"
 msgstr ""
-"Registracijo končate s potrditvijo da ste prejeli to sporočilo s klikom na "
-"spodnji naslov."
+"Uspešno ste se registrirali na platformi Izboljšajmo Maribor. Dobrodošli!Za "
+"prijavo sledite tej povezavi: "
+
+#: templates/emails/confirm_email.html:6
+msgid "Confirm email url"
+msgstr "Povezava"
+
+#: templates/emails/confirm_email.html:8
+msgid "after confirm email"
+msgstr "Z veseljem bomo obravnavali vaše pobude, ki jih boste oddali na spletnem mestu <a href='https://izboljsajmo.maribor.si/'>https://izboljsajmo.maribor.si/</a>"
 
 #: templates/emails/daily_admin_notification_email.html:4
 #: templates/emails/daily_notification_email.html:4
-#, fuzzy
-#| msgid "Initiative type"
 msgid "Initiatives to resolve:"
-msgstr "Tip pobude"
+msgstr "Pobude ki jih je potrebno rpegledati"
 
 #: templates/emails/daily_admin_notification_email.html:9
 #: templates/emails/daily_admin_notification_email.html:19
@@ -866,8 +866,9 @@ msgid ""
 "Someone has requested a link to change your password. You can do this "
 "through the link below."
 msgstr ""
-"Nekdo je zahteval ponastavitev glesla. Nadaljujete lahko s klikom na spodnji "
-"naslov."
+"Spoštovani uporabnik, </br>"
+"na vašo zahtevo vam pošiljamo povezavo za spremembo gesla na platformi IzboljšajmoMaribor. V kolikor menite, da ste to sporočilo prejeli po pomoti, ga preprosto ignorirajte in za prijavo uporabljajte obstoječe geslo.</br></br>"
+"Za spremembo gesla sledite spodnji povezavi, kjer si boste izbrali novo geslo: "
 
 #: templates/emails/restore_password.html:6
 msgid "Change my password"
