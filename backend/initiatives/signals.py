@@ -43,34 +43,44 @@ def set_super_admin_to_group(sender, instance, created, **kwargs):
     if created:
         admin_group = Group.objects.filter(name='Super admin')
         if admin_group:
+            instance.groups.add(admin_group[0])
             admin_group = admin_group[0]
-            admin_group.user_set.add(instance)
+            instance.is_staff = True
+            instance.email_confirmed = True
+            instance.save()
 
 
 def set_area_admin_to_group(sender, instance, created, **kwargs):
     if created:
         admin_group = Group.objects.filter(name='Area admin')
         if admin_group:
+            instance.groups.add(admin_group[0])
             admin_group = admin_group[0]
-            admin_group.user_set.add(instance)
+            instance.is_staff = True
+            instance.email_confirmed = True
+            instance.save()
 
 
 def set_area_appraiser_to_group(sender, instance, created, **kwargs):
     if created:
         admin_group = Group.objects.filter(name='Appraiser')
         if admin_group:
+            instance.groups.add(admin_group[0])
             admin_group = admin_group[0]
-            admin_group.user_set.add(instance)
+            instance.is_staff = True
+            instance.email_confirmed = True
+            instance.save()
 
 
 def set_contractor_appraiser_to_group(sender, instance, created, **kwargs):
-    logger.warning("save contractor")
     if created:
-        logger.warning("set group")
         admin_group = Group.objects.filter(name='Contractor')
         if admin_group:
+            instance.groups.add(admin_group[0])
             admin_group = admin_group[0]
-            admin_group.user_set.add(instance)
+            instance.is_staff = True
+            instance.email_confirmed = True
+            instance.save()
 
 
 # initiatives signals
@@ -79,13 +89,11 @@ def set_zone_from_location(sender, instance, **kwargs):
         zones = Zone.objects.filter(polygon__intersects=instance.location)
         if zones:
             instance.zone = zones[0]
-            #instance.save()
 
     elif instance.location and instance.location.distance(sender.objects.get(id=instance.id).location)*100 > 1:
         zones = Zone.objects.filter(polygon__intersects=instance.location)
         if zones:
             instance.zone = zones[0]
-    logger.warning('Signal done')
 
 # key generator
 def set_key(sender, instance, created, **kwargs):

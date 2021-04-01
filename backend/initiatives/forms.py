@@ -8,7 +8,18 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class HearStatusInlineForm(forms.ModelForm):
+
+class InlineForceSaveNew(forms.ModelForm):
+    def has_changed(self):
+        '''
+        Force save inline form if fields if equals than default
+        '''
+        if not self.instance.pk:
+            return True
+        else:
+            return super().has_changed()
+
+class HearStatusInlineForm(InlineForceSaveNew):
     class Meta:
         model = StatusInitiativeHear
         fields = ['email_content']
@@ -28,7 +39,7 @@ class HearStatusInlineForm(forms.ModelForm):
         )
 
 
-class EditingStatusInlineForm(forms.ModelForm):
+class EditingStatusInlineForm(InlineForceSaveNew):
     class Meta:
         model = StatusInitiativeEditing
         fields = ['email_content']
@@ -48,7 +59,7 @@ class EditingStatusInlineForm(forms.ModelForm):
         )
 
 
-class ProgressStatusInlineForm(forms.ModelForm):
+class ProgressStatusInlineForm(InlineForceSaveNew):
     class Meta:
         model = StatusInitiativeProgress
         fields = ['email_content']
@@ -68,7 +79,7 @@ class ProgressStatusInlineForm(forms.ModelForm):
         )
 
 
-class DoneStatusInlineForm(forms.ModelForm):
+class DoneStatusInlineForm(InlineForceSaveNew):
     class Meta:
         model = StatusInitiativeDone
         fields = ['email_content']
@@ -88,7 +99,7 @@ class DoneStatusInlineForm(forms.ModelForm):
         )
 
 
-class FinishedStatusInlineForm(forms.ModelForm):
+class FinishedStatusInlineForm(InlineForceSaveNew):
     class Meta:
         model = StatusInitiativeFinished
         fields = ['email_content']
@@ -108,7 +119,7 @@ class FinishedStatusInlineForm(forms.ModelForm):
         )
 
 
-class RejectedStatusInlineForm(forms.ModelForm):
+class RejectedStatusInlineForm(InlineForceSaveNew):
     class Meta:
         model = StatusInitiativeRejected
         fields = ['email_content']

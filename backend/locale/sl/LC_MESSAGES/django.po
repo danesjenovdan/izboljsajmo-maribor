@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-30 09:13+0000\n"
+"POT-Creation-Date: 2021-03-30 20:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -116,29 +116,42 @@ msgstr ""
 msgid "Vsebine"
 msgstr ""
 
-#: initiatives/admin/admin.py:31
+#: initiatives/admin/admin.py:31 initiatives/admin/admin.py:56
 msgid "Personal info"
 msgstr "Osebni podatki"
 
-#: initiatives/admin/admin.py:32
+#: initiatives/admin/admin.py:32 initiatives/admin/admin.py:57
 msgid "Permissions"
 msgstr "Dovoljenja"
 
-#: initiatives/admin/admin.py:35
+#: initiatives/admin/admin.py:35 initiatives/admin/admin.py:60
 msgid "Important dates"
 msgstr "Pomembni podatki"
 
-#: initiatives/admin/admin.py:36
+#: initiatives/admin/admin.py:36 initiatives/admin/admin.py:61
 msgid "MB datas"
 msgstr "MB podatki"
 
-#: initiatives/admin/admin.py:37 initiatives/models/models.py:436
+#: initiatives/admin/admin.py:37 initiatives/admin/admin.py:62
+#: initiatives/models/models.py:436
 msgid "Notes"
 msgstr "Opisi"
 
-#: initiatives/admin/admin.py:271
+#: initiatives/admin/admin.py:296
 msgid "Initiatives"
 msgstr "Pobude"
+
+#: initiatives/admin/initiative_admin.py:31
+msgid "is publuc"
+msgstr "je objavleno"
+
+#: initiatives/admin/initiative_admin.py:36
+msgid "Objavleno"
+msgstr ""
+
+#: initiatives/admin/initiative_admin.py:36
+msgid "Nepregledano"
+msgstr ""
 
 #: initiatives/cronjobs.py:25 initiatives/cronjobs.py:64
 msgid "New initiatives which needs you attention"
@@ -196,117 +209,117 @@ msgstr ""
 msgid "Pobude"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:149
+#: initiatives/models/initiative_models.py:157
 msgid "Object must be created before it can be archived"
 msgstr "Objekt mora biti shranjen preden ga lahko arhivirate"
 
-#: initiatives/models/initiative_models.py:168
+#: initiatives/models/initiative_models.py:176
 msgid "Arhivirana pobuda"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:169
+#: initiatives/models/initiative_models.py:177
 msgid "Arhivirane pobude"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:187
+#: initiatives/models/initiative_models.py:195
 msgid "Pobuda moti me (superadmin)"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:188
+#: initiatives/models/initiative_models.py:196
 msgid "Pobude moti me (superadmin)"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:198
+#: initiatives/models/initiative_models.py:206
 msgid "Pobuda moti me (admin področni)"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:199
+#: initiatives/models/initiative_models.py:207
 msgid "Pobude moti me (admin področni)"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:209
+#: initiatives/models/initiative_models.py:217
 #, fuzzy
 #| msgid "Pošlji cenilcu področnemu"
 msgid "Pobuda moti me (cenilec področni)"
 msgstr "Pošlji cenilcu področnemu"
 
-#: initiatives/models/initiative_models.py:210
+#: initiatives/models/initiative_models.py:218
 #, fuzzy
 #| msgid "Pošlji cenilcu področnemu"
 msgid "Pobude moti me (cenilci področni)"
 msgstr "Pošlji cenilcu področnemu"
 
-#: initiatives/models/initiative_models.py:220
+#: initiatives/models/initiative_models.py:228
 #, fuzzy
 #| msgid "Pošlji cenilcu izvajalcu"
 msgid "Pobuda moti me (cenilec izvajalec)"
 msgstr "Pošlji cenilcu izvajalcu"
 
-#: initiatives/models/initiative_models.py:221
+#: initiatives/models/initiative_models.py:229
 #, fuzzy
 #| msgid "Pošlji cenilcu izvajalcu"
 msgid "Pobude moti me (cenilci izvajalci)"
 msgstr "Pošlji cenilcu izvajalcu"
 
-#: initiatives/models/initiative_models.py:243
+#: initiatives/models/initiative_models.py:251
 msgid "Pobuda imam idejo (superadmin)"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:244
+#: initiatives/models/initiative_models.py:252
 msgid "Pobude imam idejo (superadmin)"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:254
+#: initiatives/models/initiative_models.py:262
 msgid "Pobuda imam idejo (admin področni)"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:255
+#: initiatives/models/initiative_models.py:263
 msgid "Pobude imam idejo (admin področni)"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:265
+#: initiatives/models/initiative_models.py:273
 msgid "Pobuda imam idejo (cenilec področni)"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:266
+#: initiatives/models/initiative_models.py:274
 msgid "Pobude imam idejo (cenilec področni)"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:276
+#: initiatives/models/initiative_models.py:284
 #, fuzzy
 #| msgid "Pošlji cenilcu izvajalcu"
 msgid "Pobuda imam idejo (cenilec izvajalec)"
 msgstr "Pošlji cenilcu izvajalcu"
 
-#: initiatives/models/initiative_models.py:277
+#: initiatives/models/initiative_models.py:285
 #, fuzzy
 #| msgid "Pošlji cenilcu izvajalcu"
 msgid "Pobude imam idejo (cenilec izvajalec)"
 msgstr "Pošlji cenilcu izvajalcu"
 
-#: initiatives/models/initiative_models.py:299
+#: initiatives/models/initiative_models.py:307
 msgid "Pobuda zanima me (superadmin)"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:300
+#: initiatives/models/initiative_models.py:308
 msgid "Pobude zanima me (superadmin)"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:310
+#: initiatives/models/initiative_models.py:318
 msgid "Pobuda zanima me (admin področni)"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:311
+#: initiatives/models/initiative_models.py:319
 msgid "Pobude zanima me (admin področni)"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:321
+#: initiatives/models/initiative_models.py:329
 #, fuzzy
 #| msgid "Pošlji cenilcu področnemu"
 msgid "Pobuda zanima me (cenilec področni)"
 msgstr "Pošlji cenilcu področnemu"
 
-#: initiatives/models/initiative_models.py:322
+#: initiatives/models/initiative_models.py:330
 #, fuzzy
 #| msgid "Pošlji cenilcu področnemu"
 msgid "Pobude zanima me (cenilec področni)"
@@ -722,11 +735,11 @@ msgstr "Potrdi email naslov"
 msgid "Confirm emails"
 msgstr "Potrdi email naslov"
 
-#: initiatives/signals.py:102
+#: initiatives/signals.py:106
 msgid "Restore password Izboljšajmo Maribor"
 msgstr "Ponastavite geslo za IM"
 
-#: initiatives/signals.py:106
+#: initiatives/signals.py:110
 msgid "Confirm email Izboljšajmo Maribor"
 msgstr "Potrdite email naslov za IM"
 
@@ -734,23 +747,23 @@ msgstr "Potrdite email naslov za IM"
 msgid "File not supported!"
 msgstr "Datoteka ni podprta"
 
-#: initiatives/views/views.py:191
+#: initiatives/views/views.py:193
 msgid "You already voted for this initiative."
 msgstr "Za to pobudo ste že glasovali"
 
-#: initiatives/views/views.py:202
+#: initiatives/views/views.py:204
 msgid "You need to vote first."
 msgstr "Najprej glasujte"
 
-#: initiatives/views/views.py:228
+#: initiatives/views/views.py:230
 msgid "Email will be send."
 msgstr "Email bo poslan"
 
-#: initiatives/views/views.py:241
+#: initiatives/views/views.py:243
 msgid "Password has been set."
 msgstr "Geslo je bilo nastavljeno"
 
-#: initiatives/views/views.py:253
+#: initiatives/views/views.py:255
 msgid "Email confirmed."
 msgstr "Račun je potrjen"
 
