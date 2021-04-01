@@ -1,10 +1,9 @@
 {% extends 'emails/base.html' %}
 {% load i18n %}
 {% block body %}
-    <h2>{% translate 'Confirm email' %}</h2>
-    {% translate 'We just need you to confirm your email address by clicking the button below:' %}
-    <a href="{{ url }}">{% translate 'Confirm email url' %}</a>
+    Uspešno ste se registrirali na platformi Izboljšajmo Maribor. Dobrodošli!</br></br>
 
-    {% translate 'after confirm email' %}
+    Za prijavo sledite tej povezavi: <a href="{{ url }}">{{ url }}</a></br></br>
 
+    Z veseljem bomo obravnavali vaše pobude, ki jih boste oddali na spletnem mestu <a href="https://izboljsajmo.maribor.si/">https://izboljsajmo.maribor.si/</a>.
 {% endblock body %}
