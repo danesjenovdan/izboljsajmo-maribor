@@ -19,38 +19,40 @@
           <b-col cols="12" md="8" lg="10">
             <b-row>
               <b-col
-                v-for="draft in drafts"
-                :key="draft.title"
                 cols="12"
-                lg="6"
-                xl="4"
-                class="mb-4"
+                class="masonry"
               >
-                <NuxtLink :to="`/predlogi/oddaj/${editLink[draft.type]}?id=${draft.id}`">
-                  <div class="initiative-card draft h-100">
-                    <img
-                      v-if="draft.cover_image"
-                      class="cover-image"
-                      :src="draft.cover_image.image"
-                      alt="Initiative draft cover image"
-                    >
-                    <div class="initiative-card-body">
-                      <h4>{{ draft.title }}</h4>
-                      <p>{{ draft.description }}</p>
-                      <div class="d-flex justify-content-center">
-                        <div class="d-inline-flex align-items-center">
-                          <NuxtLink
-                            :to="`/predlogi/oddaj/${editLink[draft.type]}?id=${draft.id}`"
-                            class="btn d-flex align-items-center position-relative"
-                          >
-                            <span class="text-uppercase pr-2">Uredi</span>
-                            <EditIcon class="position-absolute" />
-                          </NuxtLink>
+                <div
+                  v-for="draft in drafts"
+                  :key="draft.title"
+                  class="mb-4 masonry-item"
+                >
+                  <NuxtLink :to="`/predlogi/oddaj/${editLink[draft.type]}?id=${draft.id}`">
+                    <div class="initiative-card draft h-100">
+                      <img
+                        v-if="draft.cover_image"
+                        class="cover-image"
+                        :src="draft.cover_image.image"
+                        alt="Initiative draft cover image"
+                      >
+                      <div class="initiative-card-body">
+                        <h4>{{ draft.title }}</h4>
+                        <p>{{ draft.description }}</p>
+                        <div class="d-flex justify-content-center">
+                          <div class="d-inline-flex align-items-center">
+                            <NuxtLink
+                              :to="`/predlogi/oddaj/${editLink[draft.type]}?id=${draft.id}`"
+                              class="btn d-flex align-items-center position-relative"
+                            >
+                              <span class="text-uppercase pr-2">Uredi</span>
+                              <EditIcon class="position-absolute" />
+                            </NuxtLink>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </NuxtLink>
+                  </NuxtLink>
+                </div>
               </b-col>
             </b-row>
           </b-col>
@@ -131,19 +133,20 @@
                   </div>
                 </div>
               </b-col>
-              <b-col
-                v-for="initiative in published"
-                :key="initiative.id"
-                cols="12"
-                lg="6"
-                xl="4"
-                class="mb-4"
-              >
-                <InitiativeCard
-                  v-bind="initiative"
-                  @vote="vote(initiative.id)"
-                  @removeVote="removeVote(initiative.id)"
-                />
+              <b-col>
+                <div class="masonry">
+                  <div
+                    v-for="initiative in published"
+                    :key="initiative.id"
+                    class="mb-4 masonry-item"
+                  >
+                    <InitiativeCard
+                      v-bind="initiative"
+                      @vote="vote(initiative.id)"
+                      @removeVote="removeVote(initiative.id)"
+                    />
+                  </div>
+                </div>
               </b-col>
             </b-row>
           </b-col>
@@ -176,7 +179,17 @@ export default {
         II: 'imam-idejo'
       },
       newInitiativeDropdown: false,
-      newInitiativeType: ''
+      newInitiativeType: '',
+      columns: 1
+    }
+  },
+  mounted () {
+    if (window.matchMedia('(min-width: 1500px)').matches) {
+      this.columns = 4
+    } else if (window.matchMedia('(min-width: 992px)').matches) {
+      this.columns = 3
+    } else {
+      this.columns = 1
     }
   },
   methods: {
@@ -271,13 +284,6 @@ a {
     .author {
       font-size: 0.9rem;
       font-style: italic;
-    }
-
-    .tag {
-      background-color: #eff3fb;
-      border-radius: 0.5rem;
-      padding: 0.25rem;
-      font-size: 0.75rem;
     }
 
     p {

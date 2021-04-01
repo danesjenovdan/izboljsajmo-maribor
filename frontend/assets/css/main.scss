@@ -305,3 +305,20 @@ textarea.form-control {
     }
   }
 }
+
+.masonry {
+  column-count: 1;
+
+  @media (min-width: 992px) {
+    column-count: 3;
+  }
+
+  @media (min-width: 1500px) {
+    column-count: 4;
+  }
+
+  .masonry-item {
+    display: inline-block;
+    width: 100%;
+  }
+}

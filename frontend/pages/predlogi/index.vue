@@ -215,25 +215,26 @@
                 @click="sortInitiativesByDateAscending = !sortInitiativesByDateAscending"
               >
                 <span class="mr-1">Sortiraj po datumu objave</span>
-                <ArrowDownIcon class="ml-1" :class="{ 'sort-ascending': sortInitiativesByDateAscending }" />
+                <DownArrowIcon class="ml-1" :class="{ 'sort-ascending': sortInitiativesByDateAscending }" />
               </div>
             </b-col>
           </b-row>
-          <b-row v-if="sortedInitiatives.length > 0" class="p-4 p-md-0">
-            <b-col
+          <div
+            v-if="sortedInitiatives.length > 0"
+            class="p-4 p-md-0 masonry"
+          >
+            <div
               v-for="initiative in sortedInitiatives"
               :key="initiative.id"
-              cols="12"
-              md="4"
-              class="mb-4"
+              class="mb-4 masonry-item"
             >
               <InitiativeCard
                 v-bind="initiative"
                 @vote="vote(initiative.id)"
                 @removeVote="removeVote(initiative.id)"
               />
-            </b-col>
-          </b-row>
+            </div>
+          </div>
           <b-row v-if="sortedInitiatives.length === 0">
             <b-col cols="12" class="d-inline-flex justify-content-center">
               <div class="d-flex justify-content-center align-items-center my-4 no-initiatives">
@@ -275,11 +276,12 @@
 <script>
 import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
 import ArrowDownIcon from '~/assets/img/icons/arrow-down.svg?inline'
+import DownArrowIcon from '~/assets/img/icons/down-arrow.svg?inline'
 import FolderEmptyIcon from '~/assets/img/icons/folder-question-mark.svg?inline'
 import InitiativeCard from '~/components/InitiativeCard'
 
 export default {
-  components: { ArrowRightIcon, ArrowDownIcon, FolderEmptyIcon, InitiativeCard },
+  components: { ArrowRightIcon, ArrowDownIcon, DownArrowIcon, FolderEmptyIcon, InitiativeCard },
   data () {
     return {
       search: '',
@@ -293,10 +295,11 @@ export default {
       filterZones: [],
       showStatus: false,
       filterStatuses: [],
-      sortInitiativesByDateAscending: true,
+      sortInitiativesByDateAscending: false,
       initiatives: [],
       map: null,
-      mapIcon: null
+      mapIcon: null,
+      columns: 1
     }
   },
   computed: {
@@ -308,17 +311,32 @@ export default {
       return this.initiatives.filter(initiative => initiative.location)
     },
     sortedInitiatives () {
-      const initiatives = this.initiatives.slice(0).sort((a, b) => a.created.localeCompare(b.created))
+      const sortedByTime = this.initiatives.slice(0).sort((a, b) => a.created.localeCompare(b.created))
       if (!this.sortInitiativesByDateAscending) {
-        initiatives.reverse()
+        sortedByTime.reverse()
       }
-      return initiatives
+      const sortedByTimeWithIndices = sortedByTime.map((v, i) => {
+        return { v, i }
+      })
+      const sortedByColumnsWithIndices = sortedByTimeWithIndices.sort((a, b) => {
+        return (a.i % this.columns - b.i % this.columns)
+      })
+      return sortedByColumnsWithIndices.map(x => x.v)
     }
   },
   async created () {
     await this.fetchAreas()
     await this.fetchZones()
     await this.fetchInitiatives()
+  },
+  mounted () {
+    if (window.matchMedia('(min-width: 1500px)').matches) {
+      this.columns = 4
+    } else if (window.matchMedia('(min-width: 992px)').matches) {
+      this.columns = 3
+    } else {
+      this.columns = 1
+    }
   },
   methods: {
     setIconStyles () {
