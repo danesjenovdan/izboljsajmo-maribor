@@ -141,7 +141,7 @@ class InterestedInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmi
     autocomplete_fields = ['area', 'zone']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'is_draft']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone']
     modifiable = False
     list_display = [
         'title',
@@ -173,7 +173,7 @@ class InterestedInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmi
 
 
 class InterestedInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'is_draft', 'reviewer_user', 'reviewer']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -260,7 +260,7 @@ class IdeaInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
     autocomplete_fields = ['area', 'zone']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'is_draft']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone']
     modifiable = False
     list_display = [
         'title',
@@ -293,7 +293,7 @@ class IdeaInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
 
 class IdeaInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
     form = IteaAdminForm
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'is_draft', 'reviewer']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -328,7 +328,7 @@ class IdeaInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin
 
 
 class IdeaInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'is_draft', 'reviewer_user', 'reviewer']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -417,7 +417,7 @@ class BothersInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
     autocomplete_fields = ['area', 'zone']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'is_draft']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone']
     modifiable = False
     list_display = [
         'title',
@@ -450,7 +450,7 @@ class BothersInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
 
 class BothersInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
     form = BothersInitiativeForm
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'is_draft', 'reviewer']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -485,7 +485,7 @@ class BothersInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAd
 
 
 class BothersInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'is_draft', 'reviewer_user', 'reviewer']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer']
     modifiable = False
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']

@@ -19,7 +19,7 @@ from initiatives.forms import (
 from admin_ordering.admin import OrderableAdmin
 
 
-class MBUserAdmin(UserAdmin):
+class BasicUserAdmin(UserAdmin):
     search_fields = ['username']
     autocomplete_fields = ['zones', 'organizations', 'competent_services']
     list_display = [
@@ -35,6 +35,30 @@ class MBUserAdmin(UserAdmin):
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
         (_('MB datas'), {'fields': ('role', 'zones', 'organizations', 'competent_services', 'area', 'phone_number')}),
         (_('Notes'), {'fields': ('note',)}),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'password1', 'password2'),
+        }),
+    )
+
+
+class MBUserAdmin(UserAdmin):
+    search_fields = ['username']
+    autocomplete_fields = ['zones', 'organizations', 'competent_services']
+    list_display = [
+        'username',
+        'created',
+    ]
+    fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
+        (_('Permissions'), {
+            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions', 'email_confirmed'),
+        }),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+        (_('MB datas'), {'fields': ('role', 'zones', 'organizations', 'competent_services', 'area', 'phone_number')}),
     )
     add_fieldsets = (
         (None, {
@@ -278,7 +302,7 @@ class FAQAdmin(OrderableAdmin, admin.ModelAdmin):
 
 
 admin.site.register(User, EmptyUserAdmin)
-admin.site.register(BasicUser, MBUserAdmin)
+admin.site.register(BasicUser, BasicUserAdmin)
 admin.site.register(SuperAdminUser, SuperAdminUserAdmin)
 admin.site.register(AreaAdminUser, AreaAdminUserAdmin)
 admin.site.register(AreaAppraiserUser, AreaAppraiserUserAdmin)

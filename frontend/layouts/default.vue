@@ -32,8 +32,11 @@ html, body {
 }
 
 .content {
-  flex: 1;
-  overflow: auto;
+  flex: 1 0 auto;
+}
+
+footer {
+  flex-shrink: 0;
 }
 
 </style>

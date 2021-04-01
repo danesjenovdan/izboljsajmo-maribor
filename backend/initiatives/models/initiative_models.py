@@ -183,9 +183,9 @@ class BothersManager(models.Manager):
         super().__init__()
     def get_queryset(self):
         if self.reviewer:
-            return super().get_queryset().filter(type=InitiativeType.BOTHERS_ME, archived=None, reviewer=self.reviewer)
+            return super().get_queryset().filter(type=InitiativeType.BOTHERS_ME, archived=None, reviewer=self.reviewer, is_draft=False)
         else:
-            return super().get_queryset().filter(type=InitiativeType.BOTHERS_ME, archived=None)
+            return super().get_queryset().filter(type=InitiativeType.BOTHERS_ME, archived=None, is_draft=False)
 
 
 class BothersInitiativeSuper(Initiative):
@@ -239,9 +239,9 @@ class IdeaManager(models.Manager):
         super().__init__()
     def get_queryset(self):
         if self.reviewer:
-            return super().get_queryset().filter(type=InitiativeType.HAVE_IDEA, archived=None, reviewer=self.reviewer)
+            return super().get_queryset().filter(type=InitiativeType.HAVE_IDEA, archived=None, reviewer=self.reviewer, is_draft=False)
         else:
-            return super().get_queryset().filter(type=InitiativeType.HAVE_IDEA, archived=None)
+            return super().get_queryset().filter(type=InitiativeType.HAVE_IDEA, archived=None, is_draft=False)
 
 
 class IdeaInitiativeSuper(Initiative):
@@ -295,9 +295,9 @@ class InterestedManager(models.Manager): # zanima me
         super().__init__()
     def get_queryset(self):
         if self.reviewer:
-            return super().get_queryset().filter(type=InitiativeType.INTERESTED_IN, archived=None, reviewer=self.reviewer)
+            return super().get_queryset().filter(type=InitiativeType.INTERESTED_IN, archived=None, reviewer=self.reviewer, is_draft=False)
         else:
-            return super().get_queryset().filter(type=InitiativeType.INTERESTED_IN, archived=None)
+            return super().get_queryset().filter(type=InitiativeType.INTERESTED_IN, archived=None, is_draft=False)
 
 
 class InterestedInitiativeSuper(Initiative):

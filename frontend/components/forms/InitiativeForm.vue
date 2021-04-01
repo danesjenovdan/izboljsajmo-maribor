@@ -198,16 +198,27 @@
     </div>
     <hr class="hr-upper">
     <hr class="hr-lower">
+    <!--
     <div v-if="errorForm" class="text-center">
       <p class="error-message">
         {{ errorFormMessage }}
       </p>
     </div>
-    <div v-if="errorUpload" class="text-center">
-      <p class="error-message">
-        {{ errorUploadMessage }}
-      </p>
-    </div>
+    -->
+    <!--
+    <p v-if="errorInitiative" class="message d-flex justify-content-center position-relative">
+      {{ errorUploadMessage }}
+      <span class="position-absolute" @click="errorUpload = false">Zapri</span>
+    </p>
+    -->
+    <p v-if="errorMessage" class="message d-flex justify-content-center align-items-center position-relative">
+      <IconDanger />{{ errorMessageText }}
+      <span class="position-absolute" @click="closeErrorMessage">Zapri</span>
+    </p>
+    <p v-if="successMessage" class="message d-flex justify-content-center align-items-center position-relative">
+      <IconSuccess />{{ successMessageText }}
+      <span class="position-absolute" @click="closeSuccessMessage">Zapri</span>
+    </p>
     <div class="d-flex justify-content-between align-items-center">
       <div>
         <b-button class="save-button px-4" @click="createDraft">
@@ -232,18 +243,32 @@
 import TrashcanIcon from '~/assets/img/icons/trashcan.svg?inline'
 import AddIcon from '~/assets/img/icons/add.svg?inline'
 import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
+import IconDanger from '~/assets/img/icons/danger.svg?inline'
+import IconSuccess from '~/assets/img/icons/success.svg?inline'
 
 export default {
-  components: { TrashcanIcon, AddIcon, ArrowRightIcon },
+  components: { TrashcanIcon, AddIcon, ArrowRightIcon, IconDanger, IconSuccess },
   middleware: 'auth',
   props: {
     descriptions: {
       type: Array,
       default: () => []
     },
-    errorDraft: {
+    errorMessage: {
       type: Boolean,
       default: false
+    },
+    errorMessageText: {
+      type: String,
+      default: ''
+    },
+    successMessage: {
+      type: Boolean,
+      default: false
+    },
+    successMessageText: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -267,11 +292,14 @@ export default {
       errorCoverImage: false,
       dropzone1Active: false,
       files: [],
-      dropzone2Active: false,
-      errorForm: false,
-      errorFormMessage: 'Preverite, če so vsa polja izpolnjena.',
-      errorUpload: false,
-      errorUploadMessage: 'Prišlo je do napake pri oddaji predloga.'
+      dropzone2Active: false
+    }
+  },
+  watch: {
+    successMessage () {
+      if (this.successMessage) {
+        this.resetForm()
+      }
     }
   },
   async created () {
@@ -308,6 +336,16 @@ export default {
     }
   },
   methods: {
+    resetForm () {
+      this.title = ''
+      this.area = null
+      this.address = 'Maribor, Slovenija'
+      this.mapMarkerPosition.lat = 46.5576439
+      this.mapMarkerPosition.lng = 15.6455854
+      this.initiativeHasNoLocation = false
+      this.removeCoverImage()
+      this.files = []
+    },
     setIconStyles () {
       this.mapIcon = this.$L.icon({
         iconUrl: require('@/assets/img/icons/pin.svg'),
@@ -337,6 +375,12 @@ export default {
     */
     checkCoverImage () {
       this.errorCoverImage = this.coverImageFile === null
+    },
+    closeErrorMessage () {
+      this.$emit('close-error-message')
+    },
+    closeSuccessMessage () {
+      this.$emit('close-success-message')
     },
     async findCoordinates () {
       const response = await this.$axios.get(
@@ -437,21 +481,12 @@ export default {
     dragLeaveHandler2 () {
       this.dropzone2Active = false
     },
-    async deleteInitiative () {
+    deleteInitiative () {
       if (confirm('Ali ste prepričani, da želite izbrisati ta predlog?')) {
-        if (this.id >= 0) { // delete initiative from db
-          const res = await this.$store.dispatch('deleteInitiative', {
-            id: this.id
-          })
-          // TO DO: ERROR CHECK!!!
-        }
-        await this.$router.push('/')
+        this.$emit('delete-initiative', this.id)
       }
     },
     async createDraft () {
-      this.errorUpload = false
-      // this.errorForm = false
-
       const form = {}
       form.title = this.title
       form.area = this.area
@@ -502,9 +537,6 @@ export default {
       this.$emit('create-draft', form, this.id)
     },
     async createInitiative () {
-      this.errorUpload = false
-      this.errorForm = false
-
       // check if there are errors in input fields
       this.checkInitiativeTitle()
       this.checkInitiativeArea()
