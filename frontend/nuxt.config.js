@@ -84,7 +84,7 @@ export default {
     redirect: {
       login: '/prijava',
       logout: '/predlogi',
-      home: '/'
+      home: '/predlogi'
     }
   },
   server: {

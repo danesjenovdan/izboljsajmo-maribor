@@ -2,6 +2,9 @@
   <b-form @submit.prevent="postComment">
     <h5>Oddaj komentar</h5>
     <p>Komentarji so zaradi zagotavljanja višjih standardov razprave skladno s pravili pred objavo moderirani.</p>
+    <p v-if="errorComment" class="error-message">
+      Komentar ne more biti prazen.
+    </p>
     <b-form-textarea
       id="comment"
       v-model="content"
@@ -10,8 +13,13 @@
       max-rows="10"
       @change="checkComment"
     ></b-form-textarea>
-    <p v-if="errorComment" class="error-message">
-      Komentar ne more biti prazen.
+    <p v-if="errorMessage" class="message d-flex justify-content-center position-relative">
+      {{ errorMessageText }}
+      <span class="position-absolute" @click="errorMessage = false">Zapri</span>
+    </p>
+    <p v-if="successMessage" class="message d-flex justify-content-center position-relative">
+      Vaš komentar je bil uspešno oddan.
+      <span class="position-absolute" @click="successMessage = false">Zapri</span>
     </p>
     <div class="d-flex justify-content-end">
       <b-button type="submit" class="d-inline-flex align-items-center">
@@ -33,28 +41,36 @@ export default {
   data () {
     return {
       content: '',
-      errorComment: false
+      errorComment: false,
+      errorMessage: false,
+      errorMessageText: '',
+      successMessage: false
     }
   },
   computed: {
   },
   methods: {
     async postComment () {
-      if (this.content.length > 0) {
-        try {
-          await this.$store.dispatch('postComment', { content: this.content, id: this.id })
-        } catch (err) {
-          this.errorComment = true
-          console.log(err)
+      this.checkComment()
+      if (!this.errorComment) {
+        if (this.$auth.loggedIn) {
+          try {
+            await this.$store.dispatch('postComment', { content: this.content, id: this.id })
+            this.successMessage = true
+            this.content = ''
+          } catch (err) {
+            this.errorMessage = true
+            this.errorMessageText = 'Prišlo je do napake.'
+            console.log(err)
+          }
+        } else {
+          this.errorMessage = true
+          this.errorMessageText = 'Če želite oddati komentar, se morate najprej vpisati.'
         }
-      } else {
-        this.errorComment = true
       }
     },
     checkComment () {
-      if (this.content.length > 0) {
-        this.errorComment = false
-      }
+      this.errorComment = this.content.length <= 0
     }
   }
 }
