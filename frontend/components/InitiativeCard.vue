@@ -1,5 +1,11 @@
 <template>
   <div class="initiative-card h-100" @click="openInitiative">
+    <span
+      class="id-tag"
+      :class="{ 'position-absolute': cover_image }"
+    >
+      {{ id }}
+    </span>
     <img
       v-if="cover_image"
       class="cover-image"
@@ -35,18 +41,20 @@
             v-if="has_voted"
             class="d-flex align-items-center"
             @click.stop="removeVote"
+            @mouseover="hasVotedButtonText='Odvzamite glas'"
+            @mouseleave="hasVotedButtonText='Glas oddan!'"
           >
             <LikeIcon class="mr-1" />
-            <span>Glas oddan!</span>
+            <span> {{ hasVotedButtonText }}</span>
           </b-button>
-          <span class="ml-1">{{ vote_count }}</span>
+          <span class="ml-1 count">{{ vote_count }}</span>
         </div>
         <div class="d-inline-flex align-items-center">
           <NuxtLink :to="`/predlogi/${id}`" class="btn d-flex align-items-center">
             <CommentIcon class="mr-1" />
             Komentiraj
           </NuxtLink>
-          <span class="ml-1">{{ comment_count }}</span>
+          <span class="ml-1 count">{{ comment_count }}</span>
         </div>
       </div>
     </div>
@@ -105,6 +113,7 @@ export default {
   },
   data () {
     return {
+      hasVotedButtonText: 'Glas oddan!'
     }
   },
   methods: {
@@ -135,6 +144,19 @@ export default {
     cursor: pointer;
   }
 
+  .id-tag {
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    line-height: normal;
+    padding: 0.25rem 0.75rem;
+    margin: 0.75rem 0 0 0.75rem;
+    background-color: #e8ebef;
+    border: 1px solid #ffffff;
+    border-radius: 1.5rem;
+  }
+
   .cover-image {
     width: 100%;
     height: 8rem;
@@ -157,9 +179,11 @@ export default {
 
     .tag {
       background-color: #eff3fb;
-      border-radius: 0.5rem;
-      padding: 0.25rem;
+      border-radius: 1rem;
+      padding: 0.25rem 0.5rem;
+      margin-right: 0.25rem;
       font-size: 0.75rem;
+      font-weight: 500;
     }
 
     p {
@@ -171,7 +195,7 @@ export default {
       padding: 0.25rem 0.5rem;
       font-style: normal;
       font-size: 0.75rem;
-      font-weight: 400;
+      font-weight: 500;
       letter-spacing: normal;
       z-index: 10;
 
@@ -180,12 +204,16 @@ export default {
       }
     }
 
+    .count {
+      font-weight: 500;
+    }
+
     hr {
       &.hr-upper {
          margin-top: 1rem
       }
       &.hr-lower {
-         margin-bottom: 1rem;
+         margin-bottom: 0.75rem;
       }
     }
   }
