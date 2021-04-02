@@ -96,7 +96,7 @@ def set_key(sender, instance, created, **kwargs):
             url = f'{settings.FRONT_URL}pozabljeno-geslo/{instance.key}/'
         elif sender == ConfirmEmail:
             subject = _('Confirm email Izboljšajmo Maribor')
-            template = 'emails/restore_password.html'
+            template = 'emails/confirm_email.html'
             url = f'{settings.FRONT_URL}potrdi-racun/{instance.key}/'
 
         send_email(
