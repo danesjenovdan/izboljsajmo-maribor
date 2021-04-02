@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'drf_social_oauth2',
     'corsheaders',
     'admin_ordering',
-    'import_export',
+    #'import_export',
 
     'initiatives',
     'about',
@@ -225,3 +225,5 @@ if os.getenv('APP_ENV', 'development') == 'production':
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     FROM_EMAIL = 'dummy@email.com'
+
+LOG_EMAIL = 'tomaz@djnd.si'
