@@ -231,7 +231,7 @@
           Zavrzi
         </b-button>
       </div>
-      <b-button type="submit" class="d-flex align-items-center pl-4 pr-3">
+      <b-button :disabled="!noErrors" type="submit" class="d-flex align-items-center pl-4 pr-3">
         <span class="mr-4">ODDAJ</span>
         <ArrowRightIcon />
       </b-button>
@@ -293,6 +293,11 @@ export default {
       dropzone1Active: false,
       files: [],
       dropzone2Active: false
+    }
+  },
+  computed: {
+    noErrors () {
+      return this.title && this.area && this.address && this.coverImageFile
     }
   },
   watch: {

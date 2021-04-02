@@ -315,6 +315,8 @@ class User(AbstractUser, Timestamped):
             validators.RegexValidator(r'^[\w.@+ -]+$', _('Enter a valid username.'), 'invalid')
         ])
     email_confirmed = models.BooleanField(default=False)
+    blocked = models.BooleanField(default=False)
+    blocked_email_sent = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = _('Uporabnik')

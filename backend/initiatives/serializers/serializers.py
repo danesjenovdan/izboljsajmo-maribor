@@ -5,7 +5,7 @@ from initiatives.models import (
     CommentStatus, Description, Area, FAQ, Image, DescriptionDefinition,
     Zone, Rejection
 )
-
+from behaviors.behaviors import Published
 import logging
 
 logger = logging.getLogger(__name__)
@@ -94,11 +94,18 @@ class RejectionSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'note')
 
 
+class StatusInitiativeSerializerPublishedList(serializers.ListSerializer):
+    def to_representation(self, data):
+        data = data.filter(publication_status=Published.PUBLISHED).order_by('created')
+        return super().to_representation(data)
+
+
 class StatusInitiativeSerializer(serializers.ModelSerializer):
     status = serializers.SerializerMethodField()
     competent_service = CompetentServiceSerializer()
     class Meta:
         model = StatusInitiative
+        list_serializer_class = StatusInitiativeSerializerPublishedList
         fields = (
             'note',
             'created',

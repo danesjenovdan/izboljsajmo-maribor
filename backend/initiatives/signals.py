@@ -14,7 +14,7 @@ from initiatives.models import (
     # users
     SuperAdminUser, AreaAdminUser, AreaAppraiserUser, ContractorAppraiserUser, User, RestorePassword, ConfirmEmail,
     StatusInitiativeHear, StatusInitiativeEditing, StatusInitiativeProgress, StatusInitiativeFinished, StatusInitiativeDone,
-    StatusInitiativeRejected, InitiativeType
+    StatusInitiativeRejected, InitiativeType, BasicUser
 )
 from .utils import send_email, id_generator
 
@@ -114,7 +114,6 @@ def send_confirm_emil(sender, instance, created, **kwargs):
 
 
 def send_status_initiative_response(sender, instance, created, **kwargs):
-    logger.warning('save status initiative')
     if instance.publication_status == Published.PUBLISHED and not instance.is_email_sent:
         initiative = instance.initiative
         send_email(
@@ -143,6 +142,18 @@ def send_email_after_initiative_created(sender, instance, created, **kwargs):
             {}
         )
 
+def check_is_blocked(sender, instance, created, **kwargs):
+    if instance.blocked and not instance.blocked_email_sent:
+        send_email(
+            f'Blokada elektronskega naslova',
+            instance.email,
+            'emails/blocked.html',
+            {'user': instance}
+        )
+        instance.blocked_email_sent = True
+        instance.is_active = False
+        instance.save()
+
 post_save.connect(set_contractor_appraiser_to_group, sender=ContractorAppraiserUser)
 post_save.connect(set_area_appraiser_to_group, sender=AreaAppraiserUser)
 post_save.connect(set_super_admin_to_group, sender=SuperAdminUser)
@@ -154,6 +165,7 @@ post_save.connect(send_email_after_initiative_created, sender=Initiative)
 post_save.connect(set_key, sender=RestorePassword)
 post_save.connect(set_key, sender=ConfirmEmail)
 post_save.connect(send_confirm_emil, sender=User)
+post_save.connect(check_is_blocked, sender=BasicUser)
 
 post_save.connect(send_status_initiative_response, sender=StatusInitiativeHear)
 post_save.connect(send_status_initiative_response, sender=StatusInitiativeEditing)
