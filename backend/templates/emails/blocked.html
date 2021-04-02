@@ -1,0 +1,8 @@
+{% extends 'emails/base.html' %}
+{% load i18n %}
+{% block body %}
+
+Obveščamo vas, da smo na platformi Izboljšajmo Maribor blokirali elektronski naslov, s katerim ste se na platformi registrirali.</br></br>
+Razlog blokade: {{ user.note }}
+
+{% endblock body %}
