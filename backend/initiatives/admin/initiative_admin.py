@@ -20,9 +20,6 @@ from initiatives.admin.admin import (DescriptionInline, FileInline, StatusInitia
     StatusInitiativeRejectedAdminInline, CommentInline
 )
 
-from initiatives.export_resources import InitiativeResource
-from import_export.admin import ImportExportModelAdmin
-
 import logging
 logger = logging.getLogger(__name__)
 
@@ -44,7 +41,7 @@ class PublicFilter(SimpleListFilter):
             return queryset
 
 
-class InitiativeAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
+class InitiativeAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
@@ -77,7 +74,6 @@ class InitiativeAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
         StatusInitiativeRejectedInline,
         CommentInline)
 
-    resource_class = InitiativeResource
     actions = ['printer']
 
     def printer(self, request, queryset):
@@ -88,7 +84,7 @@ class InitiativeAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
 
 # ---- ZANIMA ME -> interested in
 
-class InterestedInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
+class InterestedInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
@@ -117,7 +113,6 @@ class InterestedInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdm
         StatusInitiativeRejectedAdminInline,
         CommentInline)
 
-    resource_class = InitiativeResource
     actions = ['printer']
 
     def printer(self, request, queryset):
@@ -135,7 +130,7 @@ class InterestedAdminForm(forms.ModelForm):
             area=self.instance.area)
 
 
-class InterestedInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
+class InterestedInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     form = InterestedAdminForm
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -163,7 +158,6 @@ class InterestedInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmi
         StatusInitiativeRejectedInline,
         CommentInline)
 
-    resource_class = InitiativeResource
     actions = ['printer']
 
     def printer(self, request, queryset):
@@ -172,7 +166,7 @@ class InterestedInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmi
     printer.short_description = "Print initiatives"
 
 
-class InterestedInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
+class InterestedInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
@@ -198,7 +192,6 @@ class InterestedInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, ImportExportMode
         StatusInitiativeFinishedInline,
         CommentInline)
 
-    resource_class = InitiativeResource
     actions = ['printer']
 
     def printer(self, request, queryset):
@@ -208,7 +201,7 @@ class InterestedInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, ImportExportMode
 
 # ---- IDEJA Idea
 
-class IdeaInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
+class IdeaInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
@@ -237,7 +230,6 @@ class IdeaInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
         StatusInitiativeRejectedAdminInline,
         CommentInline)
 
-    resource_class = InitiativeResource
     actions = ['printer']
 
     def printer(self, request, queryset):
@@ -254,7 +246,7 @@ class IteaAdminForm(forms.ModelForm):
             role=Reviwers.get_order()[idx+1],
             area=self.instance.area)
 
-class IdeaInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
+class IdeaInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     form = IteaAdminForm
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -282,7 +274,6 @@ class IdeaInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
         StatusInitiativeRejectedInline,
         CommentInline)
 
-    resource_class = InitiativeResource
     actions = ['printer']
 
     def printer(self, request, queryset):
@@ -291,7 +282,7 @@ class IdeaInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
     printer.short_description = "Print initiatives"
 
 
-class IdeaInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
+class IdeaInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     form = IteaAdminForm
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer']
     exclude = ['publisher', ]
@@ -318,7 +309,6 @@ class IdeaInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin
         StatusInitiativeFinishedInline,
         CommentInline)
 
-    resource_class = InitiativeResource
     actions = ['printer']
 
     def printer(self, request, queryset):
@@ -327,7 +317,7 @@ class IdeaInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin
     printer.short_description = "Print initiatives"
 
 
-class IdeaInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
+class IdeaInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
@@ -353,7 +343,6 @@ class IdeaInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmi
         StatusInitiativeFinishedInline,
         CommentInline)
 
-    resource_class = InitiativeResource
     actions = ['printer']
 
     def printer(self, request, queryset):
@@ -364,7 +353,7 @@ class IdeaInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmi
 
 # MOTI ME -> bothers me
 
-class BothersInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
+class BothersInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
@@ -393,7 +382,6 @@ class BothersInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin)
         StatusInitiativeRejectedAdminInline,
         CommentInline)
 
-    resource_class = InitiativeResource
     actions = ['printer']
 
     def printer(self, request, queryset):
@@ -411,7 +399,7 @@ class BothersInitiativeForm(forms.ModelForm):
             area=self.instance.area)
 
 
-class BothersInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
+class BothersInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     form = BothersInitiativeForm
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -439,7 +427,6 @@ class BothersInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
         StatusInitiativeRejectedInline,
         CommentInline)
 
-    resource_class = InitiativeResource
     actions = ['printer']
 
     def printer(self, request, queryset):
@@ -448,7 +435,7 @@ class BothersInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
     printer.short_description = "Print initiatives"
 
 
-class BothersInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
+class BothersInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     form = BothersInitiativeForm
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer']
     exclude = ['publisher', ]
@@ -475,7 +462,6 @@ class BothersInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAd
         StatusInitiativeFinishedInline,
         CommentInline)
 
-    resource_class = InitiativeResource
     actions = ['printer']
 
     def printer(self, request, queryset):
@@ -484,7 +470,7 @@ class BothersInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAd
     printer.short_description = "Print initiatives"
 
 
-class BothersInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, ImportExportModelAdmin):
+class BothersInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer']
     modifiable = False
     exclude = ['publisher', ]
@@ -510,7 +496,6 @@ class BothersInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, ImportExportModelA
         StatusInitiativeFinishedInline,
         CommentInline)
 
-    resource_class = InitiativeResource
     actions = ['printer']
 
     def printer(self, request, queryset):

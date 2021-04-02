@@ -318,3 +318,5 @@ admin.site.register(Image)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(FAQ, FAQAdmin)
 admin.site.register(Rejection, RejectionAdmin)
+
+admin.site.site_header = _('Izboljšajmo Maribor')
