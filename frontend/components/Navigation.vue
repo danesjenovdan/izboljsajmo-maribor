@@ -8,12 +8,9 @@
         <b-navbar-toggle target="nav_collapse">
           <MoreIcon />
         </b-navbar-toggle>
-        <b-collapse is-nav id="nav_collapse" class="py-4 py-md-0">
+        <b-collapse id="nav_collapse" is-nav class="py-4 py-md-0">
           <b-navbar-nav class="ml-auto">
-            <NuxtLink v-if="!isAuthenticated" class="nav-link" to="/predlogi">
-              Domov
-            </NuxtLink>
-            <NuxtLink v-if="isAuthenticated" class="nav-link" to="/predlogi" @click.prevent="">
+            <NuxtLink class="nav-link" to="/predlogi">
               Vsi predlogi
             </NuxtLink>
             <NuxtLink class="nav-link" to="/o-izboljsajmo-maribor">
@@ -24,15 +21,16 @@
             </NuxtLink>
             <NuxtLink
               v-if="isAuthenticated"
-              class="profile nav-link"
+              id="profile-button"
+              class="profile"
               to="/"
               event=""
-              @click.native="showProfileDropdown = !showProfileDropdown"
+              @click.native="toggleDropdown"
             >
               <!-- event="" is to disable the link -->
               Moj profil
             </NuxtLink>
-            <div v-if="showProfileDropdown" class="profileDropdown">
+            <div v-if="showProfileDropdown" v-click-outside="closeProfileDropdown" class="profileDropdown">
               <h3 class="pt-4 text-center font-weight-bold">
                 {{ this.$auth.user.username }}
               </h3>
@@ -40,7 +38,7 @@
               <hr class="hr-lower">
               <div class="text-center">
                 <b-button
-                  class="my-initiatives-button w-75 position-relative d-inline-flex justify-content-center align-items-center"
+                  class="nav-link my-initiatives-button w-75 position-relative d-inline-flex justify-content-center align-items-center"
                   @click="myInitiatives"
                 >
                   MOJI PREDLOGI
@@ -87,6 +85,14 @@ export default {
     async logout () {
       this.showProfileDropdown = !this.showProfileDropdown
       await this.$store.dispatch('logout')
+    },
+    closeProfileDropdown (e) {
+      if (e.target.id !== 'profile-button') {
+        this.showProfileDropdown = false
+      }
+    },
+    toggleDropdown () {
+      this.showProfileDropdown = !this.showProfileDropdown
     }
   }
 }
@@ -104,7 +110,7 @@ export default {
     height: 50px;
   }
 
-  .navbar-nav .nav-link {
+  .navbar-nav .nav-link, .profile {
     text-align: center;
     color: #606060;
     font-size: 0.8rem;
@@ -118,14 +124,6 @@ export default {
       padding: 0.25rem 0.75rem;
     }
 
-    &.nuxt-link-exact-active {
-      border: 2px solid #a92332;
-    }
-
-    &.profile.nuxt-link-exact-active {
-      font-weight: 600;
-    }
-
     &.login {
       background-color: rgba(239, 119, 130, 0.3);
       border-radius: 1.5rem;
@@ -135,19 +133,29 @@ export default {
       text-decoration: none;
       color: #a92332;
     }
+  }
 
-    &.profile {
-      background-color: #ef7782;
-      border-color: #ef7782;
-      box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
-      color: black;
+  .navbar-nav .nav-link.nuxt-link-exact-active {
+    border: 2px solid #a92332;
+  }
 
-      &:hover {
-        background-color: #1A365D;
-        border-color: #1A365D;
-        color: white;
-        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-      }
+  .profile {
+    background-color: #ef7782;
+    border-color: #ef7782;
+    box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
+    color: black;
+    padding: 0.25rem 0.75rem;
+
+    &:hover {
+      text-decoration: none;
+      background-color: #1A365D;
+      border-color: #1A365D;
+      color: white;
+      transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    &.nuxt-link-exact-active {
+      font-weight: 600;
     }
   }
 
@@ -172,13 +180,16 @@ export default {
     }
 
     .logout-button, .my-initiatives-button {
-      margin-top: 0;
-      margin-bottom: 1.5rem;
-      padding-right: 2rem;
+      margin: 0 0 1.5rem 0;
+      padding: 0.4rem 2rem 0.4rem 0.75rem;
+      font-size: 1rem;
+      border: none;
+      color: black;
 
       &:hover {
         background-color: #1A365D;
         border-color: #1A365D;
+        color: white;
       }
     }
   }
