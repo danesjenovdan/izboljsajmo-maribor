@@ -123,7 +123,7 @@ textarea.form-control {
 }
 
 .custom-select {
-  width: unset;
+  //width: unset;
 }
 
 .form-note {
@@ -322,7 +322,12 @@ textarea.form-control {
   }
 
   .masonry-item {
-    display: inline-block;
-    width: 100%;
+    display: block;
+    //margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    -webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
+    page-break-inside: avoid; /* Firefox */
+    break-inside: avoid; /* IE 10+ */
   }
+
 }

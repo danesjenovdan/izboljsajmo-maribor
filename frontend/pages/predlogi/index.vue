@@ -226,7 +226,7 @@
             <div
               v-for="initiative in sortedInitiatives"
               :key="initiative.id"
-              class="mb-4 masonry-item"
+              class="masonry-item"
             >
               <InitiativeCard
                 v-bind="initiative"
@@ -537,10 +537,12 @@ h4 {
     top: 6rem;
     left: 2rem;
     right: 2rem;
-    z-index: 10;
+    z-index: 15;
     padding: 1rem;
     text-align: left;
     cursor: default;
+    max-height: 24rem;
+    overflow-y: auto;
 
     @media (min-width: 768px) {
       top: 3rem;

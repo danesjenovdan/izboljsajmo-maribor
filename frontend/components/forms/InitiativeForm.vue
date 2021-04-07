@@ -453,7 +453,6 @@ export default {
         this.coverImageDraft = null
         this.coverImageFile = files[0]
       }
-      console.log(this.form)
     },
     removeCoverImage () {
       this.coverImageDraft = null
@@ -465,7 +464,6 @@ export default {
       for (let f = 0; f < files.length; f++) {
         this.files.push(files[f])
       }
-      console.log(this.form)
     },
     removeFile (filename) {
       for (let i = 0; i < this.files.length; i++) {
@@ -492,73 +490,14 @@ export default {
       }
     },
     async createDraft () {
-      const form = {}
-      form.title = this.title
-      form.area = this.area
-      if (this.initiativeHasNoLocation) {
-        form.location = null
-        form.address = null
-      } else {
-        form.location = {
-          type: 'Point',
-          coordinates: [this.mapMarkerPosition.lat, this.mapMarkerPosition.lng]
-        }
-        form.address = this.address
-      }
-      // upload and set cover image
-      if (this.coverImageFile) {
-        const imageID = await this.$store.dispatch('postCoverImage', {
-          image: this.coverImageFile
-        })
-        // if upload is unsuccessful, show error message and return
-        if (imageID < 0) {
-          this.errorUpload = true
-          return
-        }
-        form.cover_image = {
-          id: imageID
-        }
-      } else if (!this.coverImageDraft) { // it was reset to null
-        form.cover_image = null
-      }
-      if (this.files.length > 0) {
-        form.uploaded_files = []
-        // upload and set image files
-        for (let i = 0; i < this.files.length; i++) {
-          console.log({
-            file: this.files[i],
-            name: this.files[i].name
-          })
-          const filesID = await this.$store.dispatch('postFiles', {
-            file: this.files[i],
-            name: this.files[i].name
-          })
-          form.uploaded_files.push({
-            id: filesID
-          })
-        }
-      }
-
-      this.$emit('create-draft', form, this.id)
-    },
-    async createInitiative () {
-      // check if there are errors in input fields
-      this.checkInitiativeTitle()
-      this.checkInitiativeArea()
-      this.checkInitiativeLocation()
-      this.checkCoverImage()
-
-      // if everything is ok, start uploading
-      if (
-        !this.errorInitiativeTitle &&
-        !this.errorInitiativeArea &&
-        !this.errorInitiativeLocation &&
-        !this.errorCoverImage
-      ) {
+      try {
         const form = {}
         form.title = this.title
         form.area = this.area
-        if (!this.initiativeHasNoLocation) {
+        if (this.initiativeHasNoLocation) {
+          form.location = null
+          form.address = null
+        } else {
           form.location = {
             type: 'Point',
             coordinates: [this.mapMarkerPosition.lat, this.mapMarkerPosition.lng]
@@ -566,19 +505,16 @@ export default {
           form.address = this.address
         }
         // upload and set cover image
-        const imageID = await this.$store.dispatch('postCoverImage', {
-          image: this.coverImageFile
-        })
-        // if upload is unsuccessful, show error message and return
-        if (imageID < 0) {
-          this.errorUpload = true
-          return
+        if (this.coverImageFile) {
+          const imageID = await this.$store.dispatch('postCoverImage', {
+            image: this.coverImageFile
+          })
+          form.cover_image = {
+            id: imageID
+          }
+        } else if (!this.coverImageDraft) { // it was reset to null
+          form.cover_image = null
         }
-        form.cover_image = {
-          id: imageID
-        }
-        console.log('img', imageID)
-        // upload and set image files
         if (this.files.length > 0) {
           form.uploaded_files = []
           // upload and set image files
@@ -596,10 +532,73 @@ export default {
             })
           }
         }
-        console.log(form)
-        this.$emit('create-initiative', form, this.id)
-      } else {
-        this.errorForm = true
+
+        this.$emit('create-draft', form, this.id)
+      } catch {
+        this.$emit('on-error')
+      }
+    },
+    async createInitiative () {
+      // check if there are errors in input fields
+      this.checkInitiativeTitle()
+      this.checkInitiativeArea()
+      this.checkInitiativeLocation()
+      this.checkCoverImage()
+
+      // if everything is ok, start uploading
+      if (
+        !this.errorInitiativeTitle &&
+        !this.errorInitiativeArea &&
+        !this.errorInitiativeLocation &&
+        !this.errorCoverImage
+      ) {
+        try {
+          const form = {}
+          form.title = this.title
+          form.area = this.area
+          if (!this.initiativeHasNoLocation) {
+            form.location = {
+              type: 'Point',
+              coordinates: [this.mapMarkerPosition.lat, this.mapMarkerPosition.lng]
+            }
+            form.address = this.address
+          }
+          // upload and set cover image
+          const imageID = await this.$store.dispatch('postCoverImage', {
+            image: this.coverImageFile
+          })
+          // if upload is unsuccessful, show error message and return
+          if (imageID < 0) {
+            this.errorUpload = true
+            return
+          }
+          form.cover_image = {
+            id: imageID
+          }
+          console.log('img', imageID)
+          // upload and set image files
+          if (this.files.length > 0) {
+            form.uploaded_files = []
+            // upload and set image files
+            for (let i = 0; i < this.files.length; i++) {
+              console.log({
+                file: this.files[i],
+                name: this.files[i].name
+              })
+              const filesID = await this.$store.dispatch('postFiles', {
+                file: this.files[i],
+                name: this.files[i].name
+              })
+              form.uploaded_files.push({
+                id: filesID
+              })
+            }
+          }
+          console.log(form)
+          this.$emit('create-initiative', form, this.id)
+        } catch {
+          this.$emit('on-error')
+        }
       }
     }
   }
