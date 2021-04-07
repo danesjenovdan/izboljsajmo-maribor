@@ -236,7 +236,7 @@
             </div>
           </div>
           <b-row v-if="sortedInitiatives.length === 0">
-            <b-col cols="12" class="d-inline-flex justify-content-center">
+            <b-col cols="12" class="d-inline-flex justify-content-center mb-5">
               <div class="d-flex justify-content-center align-items-center my-4 no-initiatives">
                 <FolderEmptyIcon />
                 <span class="ml-2">Za izbrane filtre ni oddane nobene pobude.</span>
@@ -245,11 +245,11 @@
           </b-row>
         </div>
       </b-col>
-      <b-col lg="5">
+      <b-col lg="5" class="px-0">
         <div id="map-wrap" class="h-100">
           <client-only>
             <l-map
-              :zoom="13"
+              :zoom="14"
               :min-zoom="11"
               :center="[46.554650, 15.645881]"
               :max-bounds="[
@@ -330,10 +330,12 @@ export default {
     await this.fetchInitiatives()
   },
   mounted () {
-    if (window.matchMedia('(min-width: 1500px)').matches) {
+    if (window.matchMedia('(min-width: 1800px)').matches) {
       this.columns = 4
-    } else if (window.matchMedia('(min-width: 992px)').matches) {
+    } else if (window.matchMedia('(min-width: 1200px)').matches) {
       this.columns = 3
+    } else if (window.matchMedia('(min-width: 576px)').matches) {
+      this.columns = 2
     } else {
       this.columns = 1
     }
@@ -452,6 +454,7 @@ export default {
     font-size: 0.8rem;
     font-style: italic;
     line-height: 1.4;
+    margin-bottom: 0;
   }
 }
 
@@ -592,6 +595,13 @@ h4 {
     max-width: 2rem;
     max-height: 2rem;
   }
+}
+
+#map-wrap {
+  max-height: calc(100vh - 66px);
+  position: sticky;
+  top: 66px;
+  z-index: 0;
 }
 
 </style>

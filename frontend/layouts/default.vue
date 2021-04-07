@@ -1,6 +1,8 @@
 <template>
   <div class="wrapper">
-    <Navigation />
+    <div class="navigation">
+      <Navigation />
+    </div>
     <div class="content">
       <Nuxt />
     </div>
@@ -29,14 +31,23 @@ html, body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-}
 
-.content {
-  flex: 1 0 auto;
-}
+  .navigation {
+    nav {
+      position: fixed;
+      z-index: 500;
+    }
+  }
 
-footer {
-  flex-shrink: 0;
+  .content {
+    flex: 1 0 auto;
+    margin-top: 66px;
+  }
+
+  footer {
+    flex-shrink: 0;
+    z-index: 1;
+  }
 }
 
 </style>

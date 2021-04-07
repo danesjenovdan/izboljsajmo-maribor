@@ -1,6 +1,12 @@
 version: '3.7'
 
 services:
+  redis:
+    image: redis:latest
+    container_name: rd01
+    ports:
+     - '6379:6379'
+
   postgis:
     image: mdillon/postgis
     ports:
@@ -24,6 +30,12 @@ services:
         - "8000:8000"
     depends_on:
         - postgis
+
+  celery:
+    build: backend/.
+    command: celery -A mb_initiative worker -l INFO
+    volumes:
+        - .:/usr/src/app
 
 volumes:
   db-data:

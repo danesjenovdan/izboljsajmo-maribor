@@ -23,4 +23,4 @@ class IsBlocked(permissions.BasePermission):
     message = 'You are blocked.'
     def has_permission(self, request, view):
         user = request.user
-        return user.blocked
+        return not user.blocked

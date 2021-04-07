@@ -184,10 +184,12 @@ export default {
     }
   },
   mounted () {
-    if (window.matchMedia('(min-width: 1500px)').matches) {
+    if (window.matchMedia('(min-width: 1800px)').matches) {
       this.columns = 4
-    } else if (window.matchMedia('(min-width: 992px)').matches) {
+    } else if (window.matchMedia('(min-width: 1200px)').matches) {
       this.columns = 3
+    } else if (window.matchMedia('(min-width: 576px)').matches) {
+      this.columns = 2
     } else {
       this.columns = 1
     }

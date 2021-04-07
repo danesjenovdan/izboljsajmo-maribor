@@ -6,3 +6,4 @@ class InitiativesConfig(AppConfig):
     name = 'initiatives'
     def ready(self):
         import initiatives.signals
+        import initiatives.tasks
