@@ -10,6 +10,8 @@ from behaviors.behaviors import Timestamped, Authored, Published
 
 from initiatives.models import CommentStatus, InitiativeType, Reviwers, Zone
 
+import logging
+logger = logging.getLogger(__name__)
 
 class Initiative(Timestamped, Authored):
     type = models.CharField(
@@ -157,6 +159,28 @@ class Initiative(Timestamped, Authored):
                 _('Object must be created before it can be archived'))
         self.archived = timezone.now()
         return super(StoreDeleted, self).save(*args, **kwargs)
+
+    def get_admin_url(self, role):
+        role_str = self.get_role_url_key(role)
+        type_str = self.get_type_url_key(self.type)
+        logger.debug(f'admin:{type_str}initiative{role_str}_change')
+        return reverse(f'admin:initiatives_{type_str}initiative{role_str}_change',  args=[self.id] )
+
+    def get_role_url_key(self, key):
+        return {
+            'SA': 'super',
+            'AA': 'area',
+            'AP': 'appraiser',
+            'CA': 'contractor'
+            }[key]
+
+    def get_type_url_key(self, key):
+        return {
+            InitiativeType.BOTHERS_ME : 'bothers',
+            InitiativeType.HAVE_IDEA: 'idea',
+            InitiativeType.INTERESTED_IN: 'interested'
+
+        }[key]
 
     _needs_publish.boolean = True
     _is_published.boolean = True

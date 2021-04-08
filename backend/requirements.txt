@@ -41,3 +41,4 @@ django-admin-ordering==0.13.1
 django-import-export==2.5.0
 celery==5.0.5
 redis==3.5.3
+django-celery-beat==2.2.0
