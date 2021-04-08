@@ -105,7 +105,7 @@ export default {
       form: {
         username: '',
         name: '',
-        membersNumber: 1,
+        membersNumber: null,
         email: '',
         phone: '',
         password: ''
@@ -139,7 +139,7 @@ export default {
     emptyForm () {
       this.form.username = ''
       this.form.name = ''
-      this.form.membersNumber = 1
+      this.form.membersNumber = null
       this.form.email = ''
       this.form.phone = ''
       this.form.password = ''

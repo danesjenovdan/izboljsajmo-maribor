@@ -6,25 +6,28 @@
     <div class="form-group">
       <label for="initiative-title" class="mt-4">Naslov pobude*</label>
       <span
-        v-if="errorInitiativeTitle"
+        v-if="showErrors"
         class="error-message"
       >
         Izpolnite polje.
       </span>
+      <p class="form-note">
+        Maksimalna dolžina je 50 znakov.
+      </p>
       <input
         id="initiative-title"
         v-model.trim="title"
         class="form-control"
-        :class="{ 'error-input': errorInitiativeTitle }"
+        :class="{ 'error-input': showErrors }"
         name="initiative-title"
         placeholder="Vpišite naslov pobude"
         type="text"
-      > <!-- @keyup="checkInitiativeTitle" -->
+      >
     </div>
     <div class="form-group">
       <div class="d-block">
         <label for="initiative-area" class="mt-4">Področje pobude*</label>
-        <span v-if="errorInitiativeArea" class="error-message">
+        <span v-if="showErrors" class="error-message">
           Izpolnite polje.
         </span>
       </div>
@@ -32,7 +35,7 @@
         id="initiative-area"
         v-model="area"
         class="form-control"
-        :class="{ 'error-input': errorInitiativeArea }"
+        :class="{ 'error-input': showErrors }"
         name="initiative-area"
         :options="initiativeAreaOptions"
       /> <!-- @change="checkInitiativeArea" -->
@@ -41,7 +44,7 @@
     <div class="form-group">
       <label for="initiative-description" class="mt-4">Opis*</label>
       <!--
-      <span v-if="errorInitiativeDescription" class="error-message">
+      <span v-if="showErrors" class="error-message">
         Izpolnite polje.
       </span>
       -->
@@ -58,22 +61,22 @@
     <div class="form-group">
       <div class="d-block">
         <label for="initiative-location" class="mt-4">Lokacija*</label>
-        <span v-if="errorInitiativeLocation" class="error-message">
+        <span v-if="showErrors" class="error-message">
           Izpolnite polje.
         </span>
       </div>
       <p class="form-note">
         Vpišite naslov ali povlecite žebljiček na lokacijo na zemljevidu.
       </p>
-      <div class="d-inline-flex w-75 initiative-location-input">
+      <div class="d-sm-inline-flex initiative-location-input">
         <input
           id="initiative-location"
           v-model="address"
           class="form-control"
-          :class="{ 'error-input': errorInitiativeLocation }"
+          :class="{ 'error-input': showErrors }"
           name="initiative-location"
           type="text"
-        > <!-- @keyup="checkInitiativeLocation" -->
+        >
         <b-button @click="findCoordinates">
           POTRDI
         </b-button>
@@ -111,14 +114,13 @@
         id="no-location-allowed"
         v-model="initiativeHasNoLocation"
         :aria-describedby="ariaDescribedby"
-        @change="initiativeLocationEmpty"
       >
         Predlog nima lokacije.
       </b-form-checkbox>
     </b-form-group>
     <div class="form-group">
       <label class="mt-4">Naslovna slika*</label>
-      <span v-if="errorCoverImage" class="error-message">
+      <span v-if="showErrors" class="error-message">
         Izpolnite polje.
       </span>
       <div :class="{ dropzone: true, 'drop-active': dropzone1Active }">
@@ -205,12 +207,6 @@
       </p>
     </div>
     -->
-    <!--
-    <p v-if="errorInitiative" class="message d-flex justify-content-center position-relative">
-      {{ errorUploadMessage }}
-      <span class="position-absolute" @click="errorUpload = false">Zapri</span>
-    </p>
-    -->
     <p v-if="errorMessage" class="message d-flex justify-content-center align-items-center position-relative">
       <IconDanger />{{ errorMessageText }}
       <span class="position-absolute" @click="closeErrorMessage">Zapri</span>
@@ -220,16 +216,16 @@
       <span class="position-absolute" @click="closeSuccessMessage">Zapri</span>
     </p>
     <div class="d-flex justify-content-between align-items-center">
-      <div>
-        <b-button class="save-button px-4" @click="createDraft">
+      <div class="d-flex">
+        <button class="save-button" @click="createDraft">
           Shrani
-        </b-button>
-        <b-button
-          class="cancel-button px-4 ml-2"
+        </button>
+        <button
+          class="cancel-button"
           @click="deleteInitiative"
         >
           Zavrzi
-        </b-button>
+        </button>
       </div>
       <b-button :disabled="!noErrors" type="submit" class="d-flex align-items-center pl-4 pr-3">
         <span class="mr-4">ODDAJ</span>
@@ -275,9 +271,7 @@ export default {
     return {
       id: -1,
       title: '',
-      errorInitiativeTitle: false,
       area: null,
-      errorInitiativeArea: false,
       initiativeAreaOptions: [{ value: null, text: 'Izberite področje' }],
       address: 'Maribor, Slovenija',
       mapMarkerPosition: {
@@ -285,19 +279,30 @@ export default {
         lng: 15.6455854
       },
       mapIcon: null,
-      errorInitiativeLocation: false,
       initiativeHasNoLocation: false,
       coverImageFile: null,
       coverImageDraft: null,
-      errorCoverImage: false,
       dropzone1Active: false,
       files: [],
-      dropzone2Active: false
+      dropzone2Active: false,
+      showErrors: false
     }
   },
   computed: {
+    errorInitiativeTitle () {
+      return !(this.title.length > 0 && this.title.length <= 50)
+    },
+    errorInitiativeArea () {
+      return this.area === null
+    },
+    errorInitiativeLocation () {
+      return !this.initiativeHasNoLocation && this.address.length === 0
+    },
+    errorCoverImage () {
+      return this.coverImageFile === null
+    },
     noErrors () {
-      return this.title && this.area && this.address && this.coverImageFile
+      return !this.errorInitiativeTitle && !this.errorInitiativeArea && !this.errorInitiativeLocation && !this.errorCoverImage
     }
   },
   watch: {
@@ -367,12 +372,6 @@ export default {
       }
     },
     // error checking
-    checkInitiativeTitle () {
-      this.errorInitiativeTitle = this.title.length === 0
-    },
-    checkInitiativeArea () {
-      this.errorInitiativeArea = this.area === null
-    },
     /*
     checkInitiativeDescription () {
       this.errorInitiativeDescription = this.form.initiativeDescription.length === 0
@@ -436,16 +435,6 @@ export default {
       const postcodeAndCity = `${address.postcode} ${city}, `
       return `${streetAndHouseNo}${postcodeAndCity}${address.country}`
     },
-    checkInitiativeLocation () {
-      if (!this.initiativeHasNoLocation) {
-        this.errorInitiativeLocation = this.address.length === 0
-      }
-    },
-    initiativeLocationEmpty () {
-      if (this.initiativeHasNoLocation) {
-        this.errorInitiativeLocation = false
-      }
-    },
     processCoverImage (event) {
       this.dropzone1Active = false
       const files = event.target.files || event.dataTransfer.files
@@ -453,7 +442,6 @@ export default {
         this.coverImageDraft = null
         this.coverImageFile = files[0]
       }
-      console.log(this.form)
     },
     removeCoverImage () {
       this.coverImageDraft = null
@@ -465,7 +453,6 @@ export default {
       for (let f = 0; f < files.length; f++) {
         this.files.push(files[f])
       }
-      console.log(this.form)
     },
     removeFile (filename) {
       for (let i = 0; i < this.files.length; i++) {
@@ -492,73 +479,14 @@ export default {
       }
     },
     async createDraft () {
-      const form = {}
-      form.title = this.title
-      form.area = this.area
-      if (this.initiativeHasNoLocation) {
-        form.location = null
-        form.address = null
-      } else {
-        form.location = {
-          type: 'Point',
-          coordinates: [this.mapMarkerPosition.lat, this.mapMarkerPosition.lng]
-        }
-        form.address = this.address
-      }
-      // upload and set cover image
-      if (this.coverImageFile) {
-        const imageID = await this.$store.dispatch('postCoverImage', {
-          image: this.coverImageFile
-        })
-        // if upload is unsuccessful, show error message and return
-        if (imageID < 0) {
-          this.errorUpload = true
-          return
-        }
-        form.cover_image = {
-          id: imageID
-        }
-      } else if (!this.coverImageDraft) { // it was reset to null
-        form.cover_image = null
-      }
-      if (this.files.length > 0) {
-        form.uploaded_files = []
-        // upload and set image files
-        for (let i = 0; i < this.files.length; i++) {
-          console.log({
-            file: this.files[i],
-            name: this.files[i].name
-          })
-          const filesID = await this.$store.dispatch('postFiles', {
-            file: this.files[i],
-            name: this.files[i].name
-          })
-          form.uploaded_files.push({
-            id: filesID
-          })
-        }
-      }
-
-      this.$emit('create-draft', form, this.id)
-    },
-    async createInitiative () {
-      // check if there are errors in input fields
-      this.checkInitiativeTitle()
-      this.checkInitiativeArea()
-      this.checkInitiativeLocation()
-      this.checkCoverImage()
-
-      // if everything is ok, start uploading
-      if (
-        !this.errorInitiativeTitle &&
-        !this.errorInitiativeArea &&
-        !this.errorInitiativeLocation &&
-        !this.errorCoverImage
-      ) {
+      try {
         const form = {}
         form.title = this.title
         form.area = this.area
-        if (!this.initiativeHasNoLocation) {
+        if (this.initiativeHasNoLocation) {
+          form.location = null
+          form.address = null
+        } else {
           form.location = {
             type: 'Point',
             coordinates: [this.mapMarkerPosition.lat, this.mapMarkerPosition.lng]
@@ -566,19 +494,16 @@ export default {
           form.address = this.address
         }
         // upload and set cover image
-        const imageID = await this.$store.dispatch('postCoverImage', {
-          image: this.coverImageFile
-        })
-        // if upload is unsuccessful, show error message and return
-        if (imageID < 0) {
-          this.errorUpload = true
-          return
+        if (this.coverImageFile) {
+          const imageID = await this.$store.dispatch('postCoverImage', {
+            image: this.coverImageFile
+          })
+          form.cover_image = {
+            id: imageID
+          }
+        } else if (!this.coverImageDraft) { // it was reset to null
+          form.cover_image = null
         }
-        form.cover_image = {
-          id: imageID
-        }
-        console.log('img', imageID)
-        // upload and set image files
         if (this.files.length > 0) {
           form.uploaded_files = []
           // upload and set image files
@@ -596,10 +521,64 @@ export default {
             })
           }
         }
-        console.log(form)
-        this.$emit('create-initiative', form, this.id)
+
+        this.$emit('create-draft', form, this.id)
+      } catch {
+        this.$emit('on-error')
+      }
+    },
+    async createInitiative () {
+      // if everything is ok, start uploading
+      if (this.noErrors) {
+        try {
+          const form = {}
+          form.title = this.title
+          form.area = this.area
+          if (!this.initiativeHasNoLocation) {
+            form.location = {
+              type: 'Point',
+              coordinates: [this.mapMarkerPosition.lat, this.mapMarkerPosition.lng]
+            }
+            form.address = this.address
+          }
+          // upload and set cover image
+          const imageID = await this.$store.dispatch('postCoverImage', {
+            image: this.coverImageFile
+          })
+          // if upload is unsuccessful, show error message and return
+          if (imageID < 0) {
+            this.errorUpload = true
+            return
+          }
+          form.cover_image = {
+            id: imageID
+          }
+          console.log('img', imageID)
+          // upload and set image files
+          if (this.files.length > 0) {
+            form.uploaded_files = []
+            // upload and set image files
+            for (let i = 0; i < this.files.length; i++) {
+              console.log({
+                file: this.files[i],
+                name: this.files[i].name
+              })
+              const filesID = await this.$store.dispatch('postFiles', {
+                file: this.files[i],
+                name: this.files[i].name
+              })
+              form.uploaded_files.push({
+                id: filesID
+              })
+            }
+          }
+          console.log(form)
+          this.$emit('create-initiative', form, this.id)
+        } catch {
+          this.$emit('on-error')
+        }
       } else {
-        this.errorForm = true
+        this.showErrors = true
       }
     }
   }
@@ -614,8 +593,22 @@ hr {
 }
 
 .initiative-location-input {
+  @media (min-width: 576px) {
+    width: 100%;
+  }
+  @media (min-width: 768px) {
+    width: 75%;
+  }
   button {
-    margin: 0 1rem;
+    width: 100%;
+    font-size: 0.8rem;
+
+    @media (min-width: 576px) {
+      width: unset;
+      margin: 0 1rem;
+      padding: 0.4rem 1rem;
+    }
+
   }
 }
 
@@ -631,16 +624,37 @@ hr {
 
 .save-button,
 .cancel-button {
-  font-size: 0.8rem;
-  font-style: normal;
-  font-weight: normal;
-  letter-spacing: normal;
+  border: none;
+  background-color: unset;
+  font-size: 1rem;
+  text-decoration: underline;
+  margin-right: 0.5rem;
+
+  @media (min-width: 576px) {
+    font-size: 0.8rem;
+    text-decoration: none;
+    border-radius: 1rem;
+    box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
+    padding: 0.4rem 1.5rem;
+  }
+}
+
+.save-button {
+  margin-right: 1rem;
+  @media (min-width: 576px) {
+    background-color: #ef7782;
+    &:hover {
+      background-color: #1A365D;
+    }
+  }
 }
 
 .cancel-button {
-  background-color: #d7d7d7;
-  &:hover {
-    background-color: #1A365D;
+  @media (min-width: 576px) {
+    background-color: #d7d7d7;
+    &:hover {
+      background-color: #1A365D;
+    }
   }
 }
 </style>

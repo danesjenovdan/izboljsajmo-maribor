@@ -205,7 +205,9 @@ export const actions = {
     // zones
     if (payload.zone && payload.zone.length > 0) {
       params.append('zone', payload.zone.join(','))
-    } else { return { initiatives: [] } }
+    } else {
+      params.append('no_zone', 'true')
+    }
     // statuses
     /*
     if (payload.status) {

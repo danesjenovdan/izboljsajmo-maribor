@@ -1,14 +1,14 @@
 <template>
   <b-container fluid>
-    <b-row class="footer d-flex justify-content-between align-items-center">
-      <NuxtLink to="/pogoji-uporabe" class="">
+    <b-row class="footer d-flex flex-column flex-md-row justify-content-between align-items-center">
+      <NuxtLink to="/pogoji-uporabe" class="mb-3 mb-md-0">
         Pogoji uporabe
       </NuxtLink>
-      <span class="footnote">
+      <p class="footnote mb-0">
         Če imate kakršne koli težave pri vnosu pobude, nam to, prosim, sporočite na elektronski naslov <a href="mailto:im@maribor.si">im@maribor.si</a>.
-        <br/>
+        <br>
         Vašo težavo bomo poskusili rešiti v najkrajšem času.
-      </span>
+      </p>
     </b-row>
     <b-row class="logos d-flex justify-content-center align-items-center">
       <img src="~/assets/img/LOGO_COLOUR_RESILIENT.jpg" alt="" class="py-2">
@@ -26,7 +26,7 @@ export default {
 <style scoped lang="scss">
 
 .footer {
-  padding: 1rem 2rem;
+  padding: 1.5rem 2rem;
   background-color: #1a365d;
   box-shadow: 3px 3px 7px #d4d9e1, -3px -3px 7px #ffffff;
   color: #f8f8f8;
@@ -41,12 +41,20 @@ export default {
     }
   }
 
+  @media (min-width: 768px) {
+    padding: 1rem 2rem;
+  }
+
   .footnote {
-    max-width: 50%;
-    text-align: right;
+    text-align: center;
 
     a {
       text-decoration: underline;
+    }
+
+    @media (min-width: 768px) {
+      max-width: 50%;
+      text-align: right;
     }
   }
 }

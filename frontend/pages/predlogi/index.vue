@@ -59,7 +59,7 @@
           </b-row>
           <b-row class="mb-4">
             <b-col cols="12" class="d-md-flex">
-              <div class="d-md-inline-flex flex-grow-1 mb-3 mb-md-0 mr-0 mr-md-2 align-items-center position-relative">
+              <div class="d-flex d-md-inline-flex flex-grow-1 mb-3 mb-md-0 mr-0 mr-md-2 align-items-center position-relative">
                 <input
                   v-model="search"
                   type="text"
@@ -71,138 +71,140 @@
                   <img src="~/assets/img/icons/search.svg">
                 </button>
               </div>
-              <button
-                class="filter d-inline-flex align-items-center ml-0"
-                :class="{ 'dropdown-open': showType }"
-                @click="switchType"
-              >
-                Tip
-                <img
-                  src="~/assets/img/icons/arrow-down.svg"
-                  alt="arrow down"
-                  class="ml-2"
+              <div class="d-flex d-md-inline-flex justify-content-end">
+                <button
+                  class="filter d-inline-flex align-items-center ml-0"
+                  :class="{ 'dropdown-open': showType }"
+                  @click="switchType"
                 >
-                <div
-                  v-if="showType"
-                  class="filter-dropdown position-absolute"
-                  @click.stop=""
-                >
-                  <div>
-                    <b-form-group>
-                      <b-form-checkbox
-                        id="filter-type-MM"
-                        v-model="filterTypes"
-                        value="MM"
-                        @change="fetchInitiatives"
-                      >
-                        MOTI ME!
-                      </b-form-checkbox>
-                      <b-form-checkbox
-                        id="filter-type-II"
-                        v-model="filterTypes"
-                        value="II"
-                        @change="fetchInitiatives"
-                      >
-                        IMAM IDEJO!
-                      </b-form-checkbox>
-                      <b-form-checkbox
-                        id="filter-type-ZM"
-                        v-model="filterTypes"
-                        value="ZM"
-                        @change="fetchInitiatives"
-                      >
-                        ZANIMA ME!
-                      </b-form-checkbox>
-                    </b-form-group>
+                  Tip
+                  <img
+                    src="~/assets/img/icons/arrow-down.svg"
+                    alt="arrow down"
+                    class="ml-2"
+                  >
+                  <div
+                    v-if="showType"
+                    class="filter-dropdown position-absolute"
+                    @click.stop=""
+                  >
+                    <div>
+                      <b-form-group>
+                        <b-form-checkbox
+                          id="filter-type-MM"
+                          v-model="filterTypes"
+                          value="MM"
+                          @change="fetchInitiatives"
+                        >
+                          MOTI ME!
+                        </b-form-checkbox>
+                        <b-form-checkbox
+                          id="filter-type-II"
+                          v-model="filterTypes"
+                          value="II"
+                          @change="fetchInitiatives"
+                        >
+                          IMAM IDEJO!
+                        </b-form-checkbox>
+                        <b-form-checkbox
+                          id="filter-type-ZM"
+                          v-model="filterTypes"
+                          value="ZM"
+                          @change="fetchInitiatives"
+                        >
+                          ZANIMA ME!
+                        </b-form-checkbox>
+                      </b-form-group>
+                    </div>
                   </div>
-                </div>
-              </button>
-              <button
-                class="filter d-inline-flex align-items-center"
-                :class="{ 'dropdown-open': showArea }"
-                @click="switchArea"
-              >
-                Področje
-                <img
-                  src="~/assets/img/icons/arrow-down.svg"
-                  alt="arrow down"
-                  class="ml-2"
+                </button>
+                <button
+                  class="filter d-inline-flex align-items-center"
+                  :class="{ 'dropdown-open': showArea }"
+                  @click="switchArea"
                 >
-                <div
-                  v-if="showArea"
-                  class="filter-dropdown position-absolute"
-                  @click.stop=""
-                >
-                  <div>
-                    <b-form-group>
-                      <b-form-checkbox
-                        v-for="area in areas"
-                        :id="String(area.id)"
-                        :key="area.id"
-                        v-model="filterAreas"
-                        :value="area.id"
-                        @change="fetchInitiatives"
-                      >
-                        <div>{{ area.name }}</div>
-                        <div>{{ area.note }}</div>
-                      </b-form-checkbox>
-                    </b-form-group>
+                  Področje
+                  <img
+                    src="~/assets/img/icons/arrow-down.svg"
+                    alt="arrow down"
+                    class="ml-2"
+                  >
+                  <div
+                    v-if="showArea"
+                    class="filter-dropdown position-absolute"
+                    @click.stop=""
+                  >
+                    <div>
+                      <b-form-group>
+                        <b-form-checkbox
+                          v-for="area in areas"
+                          :id="String(area.id)"
+                          :key="area.id"
+                          v-model="filterAreas"
+                          :value="area.id"
+                          @change="fetchInitiatives"
+                        >
+                          <div>{{ area.name }}</div>
+                          <div>{{ area.note }}</div>
+                        </b-form-checkbox>
+                      </b-form-group>
+                    </div>
                   </div>
-                </div>
-              </button>
-              <button
-                class="filter d-inline-flex align-items-center"
-                :class="{ 'dropdown-open': showZone }"
-                @click="switchZone"
-              >
-                Območje
-                <img
-                  src="~/assets/img/icons/arrow-down.svg"
-                  alt="arrow down"
-                  class="ml-2"
+                </button>
+                <button
+                  class="filter d-inline-flex align-items-center"
+                  :class="{ 'dropdown-open': showZone }"
+                  @click="switchZone"
                 >
-                <div
-                  v-if="showZone"
-                  class="filter-dropdown position-absolute"
-                  @click.stop=""
-                >
-                  <div>
-                    <b-form-group>
-                      <b-form-checkbox
-                        v-for="zone in zones"
-                        :id="String(zone.id)"
-                        :key="zone.id"
-                        v-model="filterZones"
-                        :value="zone.id"
-                        @change="fetchInitiatives"
-                      >
-                        {{ zone.name }}
-                      </b-form-checkbox>
-                    </b-form-group>
+                  Območje
+                  <img
+                    src="~/assets/img/icons/arrow-down.svg"
+                    alt="arrow down"
+                    class="ml-2"
+                  >
+                  <div
+                    v-if="showZone"
+                    class="filter-dropdown position-absolute"
+                    @click.stop=""
+                  >
+                    <div>
+                      <b-form-group>
+                        <b-form-checkbox
+                          v-for="zone in zones"
+                          :id="String(zone.id)"
+                          :key="zone.id"
+                          v-model="filterZones"
+                          :value="zone.id"
+                          @change="fetchInitiatives"
+                        >
+                          {{ zone.name }}
+                        </b-form-checkbox>
+                      </b-form-group>
+                    </div>
                   </div>
-                </div>
-              </button>
-              <button
-                class="filter d-inline-flex align-items-center"
-                :class="{ 'dropdown-open': showStatus }"
-                @click="switchStatus"
-              >
-                Status
-                <img
-                  src="~/assets/img/icons/arrow-down.svg"
-                  alt="arrow down"
-                  class="ml-2"
+                </button>
+                <button
+                  class="filter d-inline-flex align-items-center"
+                  :class="{ 'dropdown-open': showStatus }"
+                  @click="switchStatus"
                 >
-                <div
-                  v-if="showStatus"
-                  class="filter-dropdown position-absolute"
-                  @click.stop=""
-                >
-                  <div>
-                    TO DO: status
+                  Status
+                  <img
+                    src="~/assets/img/icons/arrow-down.svg"
+                    alt="arrow down"
+                    class="ml-2"
+                  >
+                  <div
+                    v-if="showStatus"
+                    class="filter-dropdown position-absolute"
+                    @click.stop=""
+                  >
+                    <div>
+                      TO DO: status
+                    </div>
                   </div>
-                </div>
-              </button>
+                </button>
+              </div>
             </b-col>
           </b-row>
           <b-row class="mb-3">
@@ -226,7 +228,7 @@
             <div
               v-for="initiative in sortedInitiatives"
               :key="initiative.id"
-              class="mb-4 masonry-item"
+              class="masonry-item"
             >
               <InitiativeCard
                 v-bind="initiative"
@@ -485,15 +487,14 @@ h4 {
 .search-button {
   border: none;
   background-color: transparent;
+  height: 100%;
   right: 0;
   top: 0;
-
-  @media (min-width: 768px) {
-    top: auto;
-  }
+  display: flex;
+  align-items: center;
 
   img {
-    height: 2rem;
+    height: 80%;
   }
 }
 
@@ -505,12 +506,17 @@ h4 {
   font-style: italic;
   font-size: 0.8rem;
   padding: 0.1rem 0.75rem;
-  margin-left: 0.5rem;
+  margin-left: 0.25rem;
   margin-top: 0.25rem;
+  flex-wrap: wrap;
 
   &:hover {
     background-color: white;
     border-color: white;
+  }
+
+  @media (min-width: 576px) {
+    margin-left: 0.5rem;
   }
 
   &.dropdown-open {
@@ -537,10 +543,12 @@ h4 {
     top: 6rem;
     left: 2rem;
     right: 2rem;
-    z-index: 10;
+    z-index: 15;
     padding: 1rem;
     text-align: left;
     cursor: default;
+    max-height: 24rem;
+    overflow-y: auto;
 
     @media (min-width: 768px) {
       top: 3rem;
