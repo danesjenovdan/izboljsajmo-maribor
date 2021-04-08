@@ -14,9 +14,10 @@ from initiatives.models import (
     # users
     SuperAdminUser, AreaAdminUser, AreaAppraiserUser, ContractorAppraiserUser, User, RestorePassword, ConfirmEmail,
     StatusInitiativeHear, StatusInitiativeEditing, StatusInitiativeProgress, StatusInitiativeFinished, StatusInitiativeDone,
-    StatusInitiativeRejected, InitiativeType, BasicUser
+    StatusInitiativeRejected, InitiativeType, BasicUser, Notification, Reviwers, NotificationType
 )
-from .utils import send_email, id_generator
+from initiatives.utils import send_email, id_generator
+from initiatives.tasks import send_email_task
 
 import logging
 logger = logging.getLogger(__name__)
@@ -99,7 +100,7 @@ def set_key(sender, instance, created, **kwargs):
             template = 'emails/confirm_email.html'
             url = f'{settings.FRONT_URL}potrdi-racun/{instance.key}/'
 
-        send_email(
+        send_email_task.delay(
             subject,
             instance.user.email,
             template,
@@ -115,8 +116,9 @@ def send_confirm_emil(sender, instance, created, **kwargs):
 
 def send_status_initiative_response(sender, instance, created, **kwargs):
     if instance.publication_status == Published.PUBLISHED and not instance.is_email_sent:
+        # send email to initiator
         initiative = instance.initiative
-        send_email(
+        send_email_task.delay(
             f'#{initiative.id} {initiative.title}',
             initiative.author.email,
             'emails/response_for_user.html',
@@ -126,7 +128,34 @@ def send_status_initiative_response(sender, instance, created, **kwargs):
         )
         instance.is_email_sent = True
         instance.save()
+        # create notification for admins
+        if initiative.reviewer == Reviwers.AREA_ADMIN:
+            Notification(
+                for_area=initiative.area,
+                initiative=initiative,
+                type=NotificationType.UPDATED
+            ).save()
+        elif initiative.reviewer in [Reviwers.AREA_APPRAISER, Reviwers.CONTRACTOR_APPRAISER]:
+            Notification(
+                for_user=initiative.reviewer_user,
+                initiative=initiative,
+                type=NotificationType.UPDATED
+            ).save()
 
+
+
+def notify_superadmin_for_new_status_initiative(sender, instance, created, **kwargs):
+    if created and instance.publication_status == Published.DRAFT:
+        users = User.objects.filter(role=Reviwers.SUPER_ADMIN)
+        for user in users:
+            Notification(
+                initiative=instance.initiative,
+                type=NotificationType.UPDATED,
+                for_user=user
+            ).save()
+
+
+# TODO move this ti view od serializer
 def send_email_after_initiative_created(sender, instance, created, **kwargs):
     if created:
         if instance.type == InitiativeType.BOTHERS_ME:
@@ -135,7 +164,7 @@ def send_email_after_initiative_created(sender, instance, created, **kwargs):
             template = 'emails/idea.html'
         elif instance.type == InitiativeType.INTERESTED_IN:
             template = 'emails/interested.html'
-        send_email(
+        send_email_task.delay(
             f'#{instance.id} {instance.title}',
             instance.author.email,
             template,
@@ -144,7 +173,7 @@ def send_email_after_initiative_created(sender, instance, created, **kwargs):
 
 def check_is_blocked(sender, instance, created, **kwargs):
     if instance.blocked and not instance.blocked_email_sent:
-        send_email(
+        send_email_task.delay(
             f'Blokada elektronskega naslova',
             instance.email,
             'emails/blocked.html',
@@ -153,6 +182,19 @@ def check_is_blocked(sender, instance, created, **kwargs):
         instance.blocked_email_sent = True
         instance.is_active = False
         instance.save()
+
+    logger.warning(f'{instance.note}{instance._old_note}')
+    if instance.note != instance._old_note:
+        logger.warning(f'SEND EMAIL')
+        send_email_task.delay(
+            f'{_("Opis uporabnika je bil spremenjen: ")} {instance.username}',
+            settings.EMAIL_FOR_NEW_NOTIFICATIONS,
+            'emails/user_note.html',
+            {
+                'username': instance.username,
+                'note': instance.note
+            }
+        )
 
 post_save.connect(set_contractor_appraiser_to_group, sender=ContractorAppraiserUser)
 post_save.connect(set_area_appraiser_to_group, sender=AreaAppraiserUser)
@@ -173,4 +215,11 @@ post_save.connect(send_status_initiative_response, sender=StatusInitiativeProgre
 post_save.connect(send_status_initiative_response, sender=StatusInitiativeFinished)
 post_save.connect(send_status_initiative_response, sender=StatusInitiativeDone)
 post_save.connect(send_status_initiative_response, sender=StatusInitiativeRejected)
+
+post_save.connect(notify_superadmin_for_new_status_initiative, sender=StatusInitiativeHear)
+post_save.connect(notify_superadmin_for_new_status_initiative, sender=StatusInitiativeEditing)
+post_save.connect(notify_superadmin_for_new_status_initiative, sender=StatusInitiativeProgress)
+post_save.connect(notify_superadmin_for_new_status_initiative, sender=StatusInitiativeFinished)
+post_save.connect(notify_superadmin_for_new_status_initiative, sender=StatusInitiativeDone)
+post_save.connect(notify_superadmin_for_new_status_initiative, sender=StatusInitiativeRejected)
 

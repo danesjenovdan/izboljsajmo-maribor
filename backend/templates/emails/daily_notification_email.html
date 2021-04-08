@@ -5,8 +5,8 @@
     <table>
         {% for i in initiatives %}
         <tr>
-            <td>i.name</td>
-            <td><a href="{{i.get_admin_change_url}}">{% translate "Open initiative" %}</a></td>
+            <td>{{ i.initiative.title }}</td>
+            <td><a href="{{ base_url }}{{i.url}}">{% translate "Open initiative" %}</a></td>
         </tr>
         {% endfor %}
     </table>

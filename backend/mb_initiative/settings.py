@@ -14,6 +14,8 @@ from pathlib import Path
 
 import os
 
+from celery.schedules import crontab
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -49,6 +51,7 @@ INSTALLED_APPS = [
     'drf_social_oauth2',
     'corsheaders',
     'admin_ordering',
+    'django_celery_beat',
     #'import_export',
 
     'initiatives',
@@ -230,3 +233,15 @@ LOG_EMAIL = 'tomaz@djnd.si'
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
+
+CELERY_BEAT_SCHEDULE = {
+    'send-daily-notifications': {
+        'task': 'initiatives.tasks.send_daily_notifications',
+        'schedule': crontab(minute="0,15,30,45"),
+        #'schedule': crontab(hour=1, minute=0, day_of_week='1,2,3,4,5'),
+    },
+}
+
+EMAIL_FOR_NEW_NOTIFICATIONS = ['tomaz@djnd.si']
+
+BASE_URL = os.environ.get('BACK_URL', 'http://localhost:8000')
