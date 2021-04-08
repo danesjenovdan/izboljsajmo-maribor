@@ -18,10 +18,10 @@ from initiatives.serializers import (
 )
 from initiatives.models import (
     Zone, Area, FAQ, DescriptionDefinition, InitiativeType, Initiative, Reviwers, Vote, RestorePassword,
-    ConfirmEmail, User
+    ConfirmEmail, User, NotificationType
 )
-
 from initiatives.permissions import IsOwnerOrReadOnly, IsVerified, IsBlocked
+from initiatives.tasks import send_email_task
 
 import logging
 logger = logging.getLogger(__name__)
@@ -129,6 +129,41 @@ class InitiativeViewSet(
             return InitiativeListSerializer
         return InitiativeDetailsSerializer
 
+    def send_emails(self, instance):
+        users = User.objects.filter(role=Reviwers.SUPER_ADMIN)
+        for user in users:
+            Notification(
+                initiative=instance,
+                type=NotificationType.NEW,
+                for_user=user
+            ).save()
+        if instance.area:
+            Notification(
+                initiative=instance,
+                type=NotificationType.NEW,
+                for_area=instance.area
+            ).save()
+        send_email_task.delay(
+            f'#{instance.id} {instance.title}',
+            settings.LOG_EMAIL,
+            'emails/new_initiative_log.html',
+            {
+                'name': instance.name,
+                'id': instance.id
+            }
+        )
+        if instance.type == InitiativeType.BOTHERS_ME:
+            template = 'emails/bothers.html'
+        elif instance.type == InitiativeType.HAVE_IDEA:
+            template = 'emails/idea.html'
+        elif instance.type == InitiativeType.INTERESTED_IN:
+            template = 'emails/interested.html'
+        send_email_task.delay(
+            f'#{instance.id} {instance.title}',
+            instance.author.email,
+            template,
+            {}
+        )
 
     def create(self, request, *args, **kwargs):
         area = request.data.get('area', None)
@@ -141,6 +176,9 @@ class InitiativeViewSet(
 
         serializer.save(author=request.user, area=area)
         headers = self.get_success_headers(serializer.data)
+        instance = serializer.instance
+        if not instance.is_draft:
+            self.send_emails(instance)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     def update(self, request, *args, **kwargs):
@@ -153,9 +191,13 @@ class InitiativeViewSet(
             data['descriptions'][i]['order'] = i + 1
 
         instance = self.get_object()
+        is_draft = instance.is_draft
         serializer = self.get_serializer(instance, data=data, partial=partial)
         serializer.is_valid(raise_exception=True)
         serializer.save(area=area)
+
+        if is_draft == False and serializer.instance.is_draft == True:
+            self.send_emails(serializer.instance)
 
         if getattr(instance, '_prefetched_objects_cache', None):
             # If 'prefetch_related' has been applied to a queryset, we need to

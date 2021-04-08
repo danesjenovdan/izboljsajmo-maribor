@@ -33,9 +33,14 @@ class Reviwers(models.TextChoices):
 
 
 class CommentStatus(models.TextChoices):
-    PUBLISHED = 'PU', 'PUBLISHED'
-    DELETED = 'D', 'DELETED'
-    PENDING = 'PE', 'PENDING'
+    PUBLISHED = 'PU', _('PUBLISHED')
+    DELETED = 'D', _('DELETED')
+    PENDING = 'PE', _('PENDING')
+
+
+class NotificationType(models.TextChoices):
+    NEW = 'nw', _('NEW')
+    UPDATED = 'up', _('UPDATED')
 
 
 class StatusInitiative(Timestamped, Published):
@@ -318,6 +323,12 @@ class User(AbstractUser, Timestamped):
     blocked = models.BooleanField(default=False)
     blocked_email_sent = models.BooleanField(default=False)
 
+    _old_note = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._old_note = self.note
+
     class Meta:
         verbose_name = _('Uporabnik')
         verbose_name_plural = _('Uporabniki')
@@ -582,3 +593,37 @@ class ConfirmEmail(Timestamped):
         verbose_name = _('Confirm email')
         verbose_name_plural = _('Confirm emails')
 
+
+class Notification(Timestamped):
+    for_user = models.ForeignKey(
+        'User',
+        verbose_name=_('User'),
+        related_name='notifications',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True)
+    for_area = models.ForeignKey(
+        'Area',
+        verbose_name=_('Area'),
+        related_name='notifications',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True)
+    type = models.CharField(
+        _('Notification type'),
+        max_length=2,
+        choices=NotificationType.choices,
+        default=NotificationType.NEW)
+    initiative = models.ForeignKey(
+        'initiatives.Initiative',
+        verbose_name=_('Initiative'),
+        related_name='notifications',
+        on_delete=models.CASCADE)
+    is_sent = models.BooleanField(
+        _("is sent"),
+        default=False)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['created', 'is_sent',]),
+        ]

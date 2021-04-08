@@ -68,6 +68,30 @@ spec:
         - name: izboljsajmo-maribor-backend-persistent-storage
           mountPath: /usr/share/nginx/html
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: izboljsajmo-maribor-celery
+  labels:
+    app: izboljsajmo-maribor-celery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: izboljsajmo-maribor-celery
+  template:
+    metadata:
+      labels:
+        app: izboljsajmo-maribor-celery
+    spec:
+      containers:
+      - name: izboljsajmo-maribor-backend
+        image: backend # kustomize thing
+        command: ['celery', '-A', 'mb_initiative', 'worker', '-l', 'DEBUG', '-B', '--scheduler', 'django_celery_beat.schedulers:DatabaseScheduler']
+        envFrom:
+          - secretRef:
+              name: izboljsajmo-maribor-credentials
+---
 apiVersion: v1
 kind: Service
 metadata:
