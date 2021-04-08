@@ -32,6 +32,10 @@ def send_email_task(subject, email, template, data, from_email=settings.FROM_EMA
         )
 
 @shared_task
+def test_task():
+    print('test')
+
+@shared_task
 def send_daily_notifications():
     subject = _('New initiatives which needs you attention')
 
