@@ -93,7 +93,7 @@ label {
   font-style: italic;
   font-size: 1rem;
   line-height: normal;
-  margin-bottom: 0;
+  margin-bottom: 0.25rem;
   margin-top: 1rem;
 }
 
@@ -123,7 +123,9 @@ textarea.form-control {
 }
 
 .custom-select {
-  //width: unset;
+  @media (min-width: 576px) {
+    max-width: 40%;
+  }
 }
 
 .form-note {
@@ -221,6 +223,7 @@ textarea.form-control {
   label.custom-control-label {
     font-weight: 500;
     font-size: 0.75rem;
+    display: block;
     cursor: pointer;
 
     &:before, &:after {
@@ -323,7 +326,6 @@ textarea.form-control {
 
   .masonry-item {
     display: block;
-    //margin-bottom: 1rem;
     padding-bottom: 1rem;
     -webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
     page-break-inside: avoid; /* Firefox */
