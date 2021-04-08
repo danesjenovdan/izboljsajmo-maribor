@@ -242,6 +242,6 @@ CELERY_BEAT_SCHEDULE = {
     },
 }
 
-EMAIL_FOR_NEW_NOTIFICATIONS = 'tomaz@djnd.si'
+EMAIL_FOR_NEW_NOTIFICATIONS = os.environ.get("LOGGING_EMAIL", "dummy@email.si")
 
 BASE_URL = os.environ.get('BACK_URL', 'http://localhost:8000')
