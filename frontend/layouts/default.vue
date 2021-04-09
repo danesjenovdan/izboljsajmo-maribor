@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div class="navigation">
+    <div class="navigation-bar">
       <Navigation />
     </div>
     <div class="content">
@@ -32,10 +32,10 @@ html, body {
   display: flex;
   flex-direction: column;
 
-  .navigation {
+  .navigation-bar {
     nav {
       position: fixed;
-      z-index: 500;
+      z-index: 1001;
     }
   }
 

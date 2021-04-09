@@ -21,6 +21,7 @@
               @create-initiative="createInitiative"
               @create-draft="createDraft"
               @delete-initiative="deleteInitiative"
+              @on-error="onError"
               @close-error-message="errorMessage = false"
               @close-success-message="successMessage = false"
             />
@@ -65,6 +66,10 @@ export default {
   computed: {
   },
   methods: {
+    onError () {
+      this.errorMessage = true
+      this.errorMessageText = 'Prišlo je do napake.'
+    },
     async createDraft (form, id) {
       this.errorMessage = false
       try {

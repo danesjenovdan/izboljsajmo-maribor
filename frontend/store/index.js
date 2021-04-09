@@ -197,15 +197,15 @@ export const actions = {
     // types
     if (payload.type && payload.type.length > 0) {
       params.append('type', payload.type.join(','))
-    } else { return { initiatives: [] } }
+    }
     // areas
     if (payload.area && payload.area.length > 0) {
       params.append('area', payload.area.join(','))
-    } else { return { initiatives: [] } }
+    }
     // zones
     if (payload.zone && payload.zone.length > 0) {
       params.append('zone', payload.zone.join(','))
-    } else { return { initiatives: [] } }
+    }
     // statuses
     /*
     if (payload.status) {

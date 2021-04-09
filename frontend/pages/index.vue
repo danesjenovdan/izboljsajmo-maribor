@@ -23,9 +23,9 @@
                 class="masonry"
               >
                 <div
-                  v-for="draft in drafts"
-                  :key="draft.title"
-                  class="mb-4 masonry-item"
+                  v-for="(draft, index) in drafts"
+                  :key="`draft-${index}`"
+                  class="masonry-item"
                 >
                   <NuxtLink :to="`/predlogi/oddaj/${editLink[draft.type]}?id=${draft.id}`">
                     <div class="initiative-card draft h-100">
@@ -137,8 +137,8 @@
                 <div class="masonry">
                   <div
                     v-for="initiative in published"
-                    :key="initiative.id"
-                    class="mb-4 masonry-item"
+                    :key="`published-${initiative.id}`"
+                    class="masonry-item"
                   >
                     <InitiativeCard
                       v-bind="initiative"
