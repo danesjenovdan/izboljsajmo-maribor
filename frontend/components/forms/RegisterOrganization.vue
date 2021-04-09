@@ -1,8 +1,5 @@
 <template>
   <b-form @submit.prevent="register">
-    <p v-if="errorRegister" class="error-message text-center mt-4">
-      Registracija ni uspela.
-    </p>
     <div class="form-group">
       <label for="username">Ime skupine ali organizacije (uporabniško ime)</label>
       <span v-if="errorUsername" class="error-message">Vpišite uporabniško ime.</span>
@@ -84,8 +81,13 @@
       ZAKLJUČI REGISTRACIJO
       <ArrowRightIcon class="position-absolute" />
     </b-button>
-    <p v-if="success" class="success-message text-center mt-4">
-      Registracija uspešna! Prosimo, potrdite račun s klikom na povezavo, ki ste jo prejeli na svoj e-naslov.
+    <p v-if="errorRegister" class="message d-flex justify-content-center align-items-center position-relative">
+      <IconDanger />Registracija ni uspela.
+      <span class="position-absolute" @click="errorRegister = false">Zapri</span>
+    </p>
+    <p v-if="success" class="message d-flex justify-content-center align-items-center position-relative">
+      <IconSuccess />Registracija uspešna! Prosimo, potrdite račun s klikom na povezavo, ki ste jo prejeli na svoj e-naslov.
+      <span class="position-absolute" @click="success = false">Zapri</span>
     </p>
     <div class="form-note text-center">
       Že imate račun? <NuxtLink to="/prijava">
@@ -97,9 +99,11 @@
 
 <script>
 import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
+import IconDanger from '~/assets/img/icons/danger.svg?inline'
+import IconSuccess from '~/assets/img/icons/success.svg?inline'
 
 export default {
-  components: { ArrowRightIcon },
+  components: { ArrowRightIcon, IconDanger, IconSuccess },
   data () {
     return {
       form: {

@@ -312,6 +312,10 @@ class User(AbstractUser, Timestamped):
         default=None,
         null=True,
         blank=True)
+    email = models.EmailField(
+        _('email address'),
+        blank=True,
+        unique=True)
     # a username field that allows a space
     username = models.CharField(_('username'), max_length=30, unique=True,
         help_text=_('Required. 30 characters or fewer. Letters, digits and '

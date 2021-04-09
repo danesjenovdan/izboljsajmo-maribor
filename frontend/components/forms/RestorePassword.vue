@@ -1,11 +1,5 @@
 <template>
   <b-form @submit.prevent="resetPassword">
-    <p v-if="error" class="error-message text-center mt-4">
-      Uporabnik s tem e-naslovom ne obstaja.
-    </p>
-    <p v-if="success" class="success-message text-center mt-4">
-      Preverite svoj e-poštni predal, kamor smo vam poslali navodila za obnovo gesla.
-    </p>
     <div class="form-group">
       <label for="email">Vpišite svoj e-naslov</label>
       <span v-if="errorEmail" class="error-message">Vnesite veljaven e-naslov.</span>
@@ -25,6 +19,14 @@
       Pošlji
       <ArrowRightIcon class="position-absolute" />
     </b-button>
+    <p v-if="error" class="message d-flex justify-content-center align-items-center position-relative">
+      <IconDanger />Prišlo je do napake.
+      <span class="position-absolute" @click="error = false">Zapri</span>
+    </p>
+    <p v-if="success" class="message d-flex justify-content-center align-items-center position-relative">
+      <IconSuccess />Preverite svoj e-poštni predal, kamor smo vam poslali navodila za obnovo gesla.
+      <span class="position-absolute" @click="success = false">Zapri</span>
+    </p>
     <div class="form-note text-center">
       <NuxtLink to="/prijava">
         Nazaj na prijavo
@@ -35,9 +37,11 @@
 
 <script>
 import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
+import IconDanger from '~/assets/img/icons/danger.svg?inline'
+import IconSuccess from '~/assets/img/icons/success.svg?inline'
 
 export default {
-  components: { ArrowRightIcon },
+  components: { ArrowRightIcon, IconDanger, IconSuccess },
   data () {
     return {
       errorEmail: false,

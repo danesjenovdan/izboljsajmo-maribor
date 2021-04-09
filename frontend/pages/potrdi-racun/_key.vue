@@ -1,20 +1,26 @@
 <template>
-  <div>
+  <div class="text-center">
     <h1>Potrdite e-naslov</h1>
-    <div v-if="success" class="text-center">
-      <p>Račun je uspešno ustvarjen.</p>
-      <NuxtLink to="/prijava">
-        Prijavite se
-      </NuxtLink>
-    </div>
-    <div v-if="error" class="text-center">
-      <p>Prišlo je do napake.</p>
-    </div>
+    <p v-if="error" class="message d-flex justify-content-center align-items-center position-relative">
+      <IconDanger />Prišlo je do napake.
+      <span class="position-absolute" @click="error = false">Zapri</span>
+    </p>
+    <p v-if="success" class="message d-flex justify-content-center align-items-center position-relative">
+      <IconSuccess />Račun je uspešno ustvarjen.
+      <span class="position-absolute" @click="success = false">Zapri</span>
+    </p>
+    <NuxtLink to="/prijava">
+      Nazaj na prijavo
+    </NuxtLink>
   </div>
 </template>
 
 <script>
+import IconDanger from '~/assets/img/icons/danger.svg?inline'
+import IconSuccess from '~/assets/img/icons/success.svg?inline'
+
 export default {
+  components: { IconDanger, IconSuccess },
   layout: 'login',
   data () {
     return {
