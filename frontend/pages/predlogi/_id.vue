@@ -45,6 +45,9 @@
               </client-only>
             </div>
           </div>
+          <div v-if="!data.location" class="font-italic">
+            Predlog nima lokacije.
+          </div>
           <hr>
           <b-row
             v-for="(status, index) in data.statuses"
@@ -248,8 +251,8 @@ export default {
     background-color: white;
     color: black;
     font-size: 0.75rem;
-    padding: 0.4rem 0.8rem;
-    margin-right: 0.75rem;
+    padding: 0.25rem 0.8rem;
+    margin-right: 0.5rem;
     border-radius: 1rem;
     position: relative;
     text-transform: lowercase;
