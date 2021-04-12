@@ -123,6 +123,18 @@ class InitiativeViewSet(
     filterset_class = InitiativeFilterSet
     search_fields = ['title', 'zone__name', 'area__name']
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        queryset = queryset.exclude(is_draft=True)
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
 
     def get_serializer_class(self):
         if self.action == 'list':
