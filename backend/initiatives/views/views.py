@@ -18,7 +18,7 @@ from initiatives.serializers import (
 )
 from initiatives.models import (
     Zone, Area, FAQ, DescriptionDefinition, InitiativeType, Initiative, Reviwers, Vote, RestorePassword,
-    ConfirmEmail, User, NotificationType
+    ConfirmEmail, User, NotificationType, Notification
 )
 from initiatives.permissions import IsOwnerOrReadOnly, IsVerified, IsBlocked
 from initiatives.tasks import send_email_task
