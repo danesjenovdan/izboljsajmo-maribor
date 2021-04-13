@@ -12,7 +12,7 @@ from drf_writable_nested.serializers import WritableNestedModelSerializer
 class InitiativeListSerializer(serializers.ModelSerializer):
     area = AreaSerializer()
     author = serializers.SerializerMethodField()
-    description = serializers.SerializerMethodField(required=False)
+    descriptions = DescriptionSerializers(many=True, required=False)
     cover_image = ImageSerializer(required=False)
     has_voted = serializers.SerializerMethodField()
     class Meta:
@@ -34,10 +34,6 @@ class InitiativeListSerializer(serializers.ModelSerializer):
 
     def get_author(self, obj):
         return obj.author.username
-
-    # TODO
-    def get_description(self, obj):
-        return 'Dummy text'
 
     def get_has_voted(self, obj):
         user = None
