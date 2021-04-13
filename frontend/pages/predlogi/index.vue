@@ -68,7 +68,7 @@
                   @keyup.enter="fetchInitiatives"
                 >
                 <button class="search-button position-absolute" @click="fetchInitiatives">
-                  <img src="~/assets/img/icons/search.svg">
+                  <SearchIcon />
                 </button>
               </div>
               <div class="d-flex d-md-inline-flex justify-content-end">
@@ -78,11 +78,7 @@
                   @click="switchType"
                 >
                   Tip
-                  <img
-                    src="~/assets/img/icons/arrow-down.svg"
-                    alt="arrow down"
-                    class="ml-2"
-                  >
+                  <ArrowDownIcon class="ml-2" />
                   <div
                     v-if="showType"
                     class="filter-dropdown position-absolute"
@@ -124,11 +120,7 @@
                   @click="switchArea"
                 >
                   Področje
-                  <img
-                    src="~/assets/img/icons/arrow-down.svg"
-                    alt="arrow down"
-                    class="ml-2"
-                  >
+                  <ArrowDownIcon class="ml-2" />
                   <div
                     v-if="showArea"
                     class="filter-dropdown position-absolute"
@@ -157,11 +149,7 @@
                   @click="switchZone"
                 >
                   Območje
-                  <img
-                    src="~/assets/img/icons/arrow-down.svg"
-                    alt="arrow down"
-                    class="ml-2"
-                  >
+                  <ArrowDownIcon class="ml-2" />
                   <div
                     v-if="showZone"
                     class="filter-dropdown position-absolute"
@@ -189,11 +177,7 @@
                   @click="switchStatus"
                 >
                   Status
-                  <img
-                    src="~/assets/img/icons/arrow-down.svg"
-                    alt="arrow down"
-                    class="ml-2"
-                  >
+                  <ArrowDownIcon class="ml-2" />
                   <div
                     v-if="showStatus"
                     class="filter-dropdown position-absolute"
@@ -280,10 +264,11 @@ import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
 import ArrowDownIcon from '~/assets/img/icons/arrow-down.svg?inline'
 import DownArrowIcon from '~/assets/img/icons/down-arrow.svg?inline'
 import FolderEmptyIcon from '~/assets/img/icons/folder-question-mark.svg?inline'
+import SearchIcon from '~/assets/img/icons/search.svg?inline'
 import InitiativeCard from '~/components/InitiativeCard'
 
 export default {
-  components: { ArrowRightIcon, ArrowDownIcon, DownArrowIcon, FolderEmptyIcon, InitiativeCard },
+  components: { ArrowRightIcon, ArrowDownIcon, DownArrowIcon, FolderEmptyIcon, SearchIcon, InitiativeCard },
   data () {
     return {
       search: '',
@@ -493,7 +478,7 @@ h4 {
   display: flex;
   align-items: center;
 
-  img {
+  svg {
     height: 80%;
   }
 }
@@ -526,14 +511,15 @@ h4 {
       border-color: #ef7782;
     }
 
-    & > img {
+    & > svg {
       transform: rotate(-180deg);
     }
   }
 
-  & > img {
+  & > svg {
     transition: transform 500ms;
     width: 0.5rem;
+    height: 0.5rem;
   }
 
   .filter-dropdown {

@@ -75,7 +75,6 @@ export default {
       try {
         // is draft
         form.is_draft = true
-        console.log('draft', form)
         if (id < 0) { // draft does not exist yet
           // add initiative type
           form.type = this.type
@@ -99,7 +98,6 @@ export default {
         form.is_draft = false
         // add initiative type
         form.type = this.type
-        console.log('publish', form)
         if (id < 0) { // draft does not exist yet
           await this.$store.dispatch('postInitiative', form)
         } else {
