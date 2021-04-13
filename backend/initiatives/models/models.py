@@ -221,6 +221,7 @@ class Description(Timestamped):
     class Meta:
         verbose_name = _('Opis')
         verbose_name_plural = _('Opisi')
+        ordering = ['order']
 
 
 class Zone(Timestamped):
