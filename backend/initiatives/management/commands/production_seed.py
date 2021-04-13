@@ -271,6 +271,56 @@ class Command(BaseCommand):
             status_obj.save()
             status['obj'] = status_obj
 
+        models.DescriptionDefinition(
+            order=1,
+            type=models.InitiativeType.HAVE_IDEA,
+            title='Na kratko opišite svojo pobudo oziroma predlog? Zakaj ta predlog? Katere izzive /probleme, pomankljivosti, slabosti v skupnosti/ mestu bi z uresničitvijo  vaše pobude rešili? ',
+            field='title1',
+            author_id=8,
+        ).save()
+        models.DescriptionDefinition(
+            order=2,
+            type=models.InitiativeType.HAVE_IDEA,
+            title='Kakšen je vaš idejni predlog rešitve, izzivov/problemov, uvedbe izboljšav, izkoriščanja priložnosti? Kaj konkretno predlagate?  Kakšne priložnosti naslavlja?  Kaj bi se z izvedbo vašega predloga izboljšalo? Ali predlog spodbuja povezovanje /sodelovanje ljudi? Krepi njihove sposobnosti za lažje samostojno reševanje izzivov v skupnosti/mestu?',
+            field='title2',
+            author_id=8,
+        ).save()
+        models.DescriptionDefinition(
+            order=3,
+            type=models.InitiativeType.HAVE_IDEA,
+            title='Kako in kje bi realizirali vašo pobudo-idejo? Katere aktivnosti (koraki /postopki, dela, opravila) so potrebni za izvedbo rešitve? Ali se lahko vaša pobuda realizira v nevladnem sektorju (v okviru društev, civilnih pobud ..), kot socialno podjetniški/zadružni/ podjetniški podjem, razvojni projekt v mestu ali kot gospodarski projekt/pobuda? Koga bi pritegnili k sodelovanju?',
+            field='title3',
+            author_id=8,
+        ).save()
+        models.DescriptionDefinition(
+            order=4,
+            type=models.InitiativeType.HAVE_IDEA,
+            title='Ali lahko ocenite vrednost realizacije projekta / ideje (v EUR)?',
+            field='title3',
+            author_id=8,
+        ).save()
+        models.DescriptionDefinition(
+            order=1,
+            type=models.InitiativeType.BOTHERS_ME,
+            title='Na kratko opišite, kaj vas moti. Zakaj? Če je mogoče, opišite svojo izkušnje, da nam pomagate bolje razumeti vašo pripombo.',
+            field='title1',
+            author_id=8,
+        ).save()
+        models.DescriptionDefinition(
+            order=2,
+            type=models.InitiativeType.BOTHERS_ME,
+            title='Kako bi lahko to, kar vas moti, popravili?',
+            field='title2',
+            author_id=8,
+        ).save()
+        models.DescriptionDefinition(
+            order=1,
+            type=models.InitiativeType.INTERESTED_IN,
+            title='Kaj vas zanima? Vaše vprašanje naj bo jasno in nedvoumno; če je potrebno in če je mogoče, na kratko opišite okoliščine, na katere se nanaša vaše vprašanje. Tako vam bomo lažje podali kvaliteten in konkreten odgovor.',
+            field='title1',
+            author_id=8,
+        ).save()
+
     def get_permissions(self, name, ct, options=basc_options):
         permissions = []
         for option in options:
