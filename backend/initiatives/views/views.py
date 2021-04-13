@@ -2,7 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError 
+from django.core.exceptions import ValidationError
+from django.conf import settings
 
 from rest_framework import viewsets, mixins, permissions, status, views, authentication, exceptions
 from rest_framework.decorators import action
@@ -160,7 +161,7 @@ class InitiativeViewSet(
             settings.LOG_EMAIL,
             'emails/new_initiative_log.html',
             {
-                'name': instance.name,
+                'name': instance.title,
                 'id': instance.id
             }
         )
