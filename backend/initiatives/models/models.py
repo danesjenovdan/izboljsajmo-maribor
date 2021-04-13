@@ -561,7 +561,7 @@ class DescriptionDefinition(Timestamped, Authored):
         max_length=50)
     title = models.CharField(
         _('Title'),
-        max_length=100)
+        max_length=1024)
 
     class Meta:
         verbose_name = _('Razdelek opisa')
