@@ -22,9 +22,7 @@
         <span class="tag">{{ area.name }}</span>
         <span class="tag">{{ date(created) }}</span>
       </div>
-      <p>
-        {{ description }}
-      </p>
+      <p>{{ description }}</p>
       <hr class="hr-upper">
       <hr class="hr-lower">
       <div class="d-flex justify-content-between">
@@ -188,6 +186,8 @@ export default {
 
     p {
       font-size: 0.9rem;
+      overflow-wrap: break-word;
+      white-space: pre-wrap;
     }
 
     .btn {

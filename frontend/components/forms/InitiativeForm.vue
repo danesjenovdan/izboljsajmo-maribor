@@ -41,17 +41,17 @@
 
     <div class="form-group">
       <label for="initiative-description" class="mt-4">Opis*</label>
-      <!--
-      <span v-if="showErrors" class="error-message">
-        Izpolnite polje.
+      <span v-if="showErrors && errorInitiativeDescriptions" class="error-message">
+        Izpolnite vsa polja.
       </span>
-      -->
       <textarea
-        v-for="(description, index) in descriptions"
-        :id="'initiative-description-' + index"
-        :key="index"
+        v-for="description in descriptions"
+        :id="description.field"
+        :key="description.field"
+        v-model="initiativeDescriptions[description.field]"
         class="form-control mb-3"
-        :placeholder="description"
+        :class="{ 'error-input': showErrors && !initiativeDescriptions[description.field] }"
+        :placeholder="description.title"
         rows="5"
       />
     </div>
@@ -282,6 +282,7 @@ export default {
       title: '',
       area: null,
       initiativeAreaOptions: [{ value: null, text: 'Izberite področje' }],
+      initiativeDescriptions: {},
       address: 'Maribor, Slovenija',
       mapMarkerPosition: {
         lat: 46.5576439,
@@ -304,6 +305,17 @@ export default {
     errorInitiativeArea () {
       return this.area === null
     },
+    errorInitiativeDescriptions () {
+      if (Object.keys(this.initiativeDescriptions).length === this.descriptions.length) {
+        for (const desc in this.initiativeDescriptions) {
+          if (this.initiativeDescriptions[desc] === '') {
+            return true
+          }
+        }
+        return false
+      }
+      return true
+    },
     errorInitiativeLocation () {
       return !this.initiativeHasNoLocation && this.address.length === 0
     },
@@ -311,7 +323,7 @@ export default {
       return this.coverImageFile === null
     },
     noErrors () {
-      return !this.errorInitiativeTitle && !this.errorInitiativeArea && !this.errorInitiativeLocation && !this.errorCoverImage
+      return !this.errorInitiativeTitle && !this.errorInitiativeArea && !this.errorInitiativeLocation && !this.errorCoverImage && !this.errorInitiativeDescriptions
     }
   },
   watch: {
@@ -340,12 +352,25 @@ export default {
         if (initiative.area) {
           this.area = initiative.area.id
         }
+        console.log(initiative.descriptions)
+        if (initiative.descriptions) {
+          for (const desc of initiative.descriptions) {
+            console.log(desc)
+            this.initiativeDescriptions[desc.field] = desc.content
+          }
+          console.log(this.initiativeDescriptions)
+        }
         if (initiative.address) {
           this.address = initiative.address
+        } else {
+          this.initiativeHasNoLocation = true
         }
         if (initiative.location) {
           this.mapMarkerPosition.lat = initiative.location.coordinates[0]
           this.mapMarkerPosition.lng = initiative.location.coordinates[1]
+        } else {
+          this.mapMarkerPosition.lat = 46.5576439
+          this.mapMarkerPosition.lng = 15.6455854
         }
         // to do: naloadi cover image in files
         if (initiative.cover_image) {
@@ -361,6 +386,7 @@ export default {
       // reset fields
       this.title = ''
       this.area = null
+      this.initiativeDescriptions = {}
       this.address = 'Maribor, Slovenija'
       this.mapMarkerPosition.lat = 46.5576439
       this.mapMarkerPosition.lng = 15.6455854
@@ -495,6 +521,16 @@ export default {
         const form = {}
         form.title = this.title
         form.area = this.area
+        form.descriptions = []
+        for (const desc of this.descriptions) {
+          if (this.initiativeDescriptions[desc.field]) {
+            form.descriptions.push({
+              title: desc.title,
+              field: desc.field,
+              content: this.initiativeDescriptions[desc.field]
+            })
+          }
+        }
         if (this.initiativeHasNoLocation) {
           form.location = null
           form.address = null
@@ -533,6 +569,7 @@ export default {
             })
           }
         }
+        // console.log(form)
         this.$emit('create-draft', form, this.id)
       } catch {
         this.$emit('on-error')
@@ -550,6 +587,14 @@ export default {
         const form = {}
         form.title = this.title
         form.area = this.area
+        form.descriptions = []
+        for (const desc of this.descriptions) {
+          form.descriptions.push({
+            title: desc.title,
+            field: desc.field,
+            content: this.initiativeDescriptions[desc.field]
+          })
+        }
         if (!this.initiativeHasNoLocation) {
           form.location = {
             type: 'Point',

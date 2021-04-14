@@ -50,20 +50,19 @@ export default {
     type: {
       type: String,
       default: 'MM'
-    },
-    descriptions: {
-      type: Array
     }
+  },
+  async created () {
+    this.descriptions = await this.$store.dispatch('getDescriptionDefinitions', { type: this.type })
   },
   data () {
     return {
       errorMessage: false,
       errorMessageText: 'Prišlo je do napake.',
       successMessage: false,
-      successMessageText: ''
+      successMessageText: '',
+      descriptions: []
     }
-  },
-  computed: {
   },
   methods: {
     onError () {
