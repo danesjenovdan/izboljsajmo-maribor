@@ -154,7 +154,7 @@ export const actions = {
       area: payload.area,
       address: payload.address,
       location: payload.location,
-      descriptions: [],
+      descriptions: payload.descriptions,
       cover_image: payload.cover_image,
       uploaded_files: payload.uploaded_files,
       is_draft: payload.is_draft
@@ -173,7 +173,8 @@ export const actions = {
   },
 
   async patchInitiative (context, payload) {
-    console.log(JSON.stringify(payload.form))
+    console.log(JSON.stringify('patchhh'))
+    console.log(JSON.stringify(payload))
     const response = await this.$axios.patch(`v1/initiatives/${payload.id}/`, payload.form)
     const responseData = await response.data
     console.log(response)
@@ -246,6 +247,16 @@ export const actions = {
 
   async getZones (context, payload) {
     const response = await this.$axios.get('v1/zones/')
+    if (response.status === 200) {
+      return await response.data
+    } else {
+      // console.log('ni ok', responseData)
+      // throw error
+    }
+  },
+
+  async getDescriptionDefinitions (context, payload) {
+    const response = await this.$axios.get(`v1/description-definitions/?type=${payload.type}`)
     if (response.status === 200) {
       return await response.data
     } else {
