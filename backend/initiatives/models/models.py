@@ -213,7 +213,7 @@ class Description(Timestamped):
         max_length=50)
     title =  models.CharField(
         _('Description title'),
-        max_length=100)
+        max_length=1024)
     order = models.IntegerField(default=0)
     content = models.TextField(
         _('Description content'))
