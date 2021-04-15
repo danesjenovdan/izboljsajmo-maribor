@@ -352,13 +352,10 @@ export default {
         if (initiative.area) {
           this.area = initiative.area.id
         }
-        console.log(initiative.descriptions)
         if (initiative.descriptions) {
           for (const desc of initiative.descriptions) {
-            console.log(desc)
             this.initiativeDescriptions[desc.field] = desc.content
           }
-          console.log(this.initiativeDescriptions)
         }
         if (initiative.address) {
           this.address = initiative.address
