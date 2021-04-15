@@ -110,9 +110,13 @@
             </b-row>
             <b-row class="justify-content-center my-2">
               <b-col cols="12" lg="8">
-                <p>
-                  Vedno več bo deževnih dni (npr. petek) zima prihaja, Maribor pa vedno bolj mrtev. Mladih kolesarjev tudi v takšnih dneh ne bo, bodo pa ostareli, družine z otroci, dnevni migranti zaradi služb... Koroško cesto spreminjajo v enosmerno cesto, ampak s kolesarskimi stezami v obe smeri. Cesti brišejo črte po sredini in avtomobili se lahko srečajo le tako, da vozita oba delno po kolesarski stezi (slika 2 in 3). Na delu, kjer ni dovolj prostora, so pa enostavno prekinili kolesarsko stezo in jo premaknili na cestišče. V križišču z Ribiško (slika 5), kjer je bil prej varen dostop in vključitev na Koroško zaradi dodatno urejenega odcepa in kjer je res velik promet zaradi velikih parkirišč, ki so ga nasilno uničili s koščkom zelenice, so sedaj vrisana 3 mesta za taxi, a jih tu nikoli ni (slika 6) Taksisti so na Mlinski. V samem križišču sta vrisani kolesi, za zavijanje v levo in v desno. Zdaj pa čisto resno vprašanje: a niso kolesarji vozila na cestišču? Kako lahko kolo zavija na tem nepreglednem delu v levo, ko pa vendar mora vsako vozilo peljat v desno do rondoja, tam obrnit in se teh par metrov vrnit po desni strani cestišča. Še bolj resno vprašanje: dva dni imamo že kaos v Mariboru zaradi dodatnih semaforjev ob Dravi, mesto dobesedno stoji, gre za ljudi, ki ne živijo v samem centru in se ne morejo vozit s kolesi, deževnih dni bo vedno več in tudi zima... in kolesarske steze bodo prazne, ljudje ujeti v kaosu.
-                </p>
+                <div
+                  v-for="description in data.descriptions"
+                  :key="description.order"
+                >
+                  <h6>{{ description.title }}</h6>
+                  <p>{{ description.content }}</p>
+                </div>
               </b-col>
             </b-row>
             <b-row v-if="data.uploaded_files.length > 0" class="justify-content-center my-5">

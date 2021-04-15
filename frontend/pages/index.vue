@@ -290,6 +290,8 @@ a {
 
     p {
       font-size: 0.9rem;
+      overflow-wrap: break-word;
+      white-space: pre-wrap;
     }
 
     .btn {
