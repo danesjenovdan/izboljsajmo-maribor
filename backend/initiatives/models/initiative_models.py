@@ -88,6 +88,9 @@ class Initiative(Timestamped, Authored):
     is_draft = models.BooleanField(
         _('In review'),
         default=False)
+    is_social_inovative_idea = models.BooleanField(
+        _('Is social inovative idea'),
+        default=False)
 
     class Meta:
         verbose_name = _("Pobuda")

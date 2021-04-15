@@ -27,6 +27,7 @@ class InitiativeListSerializer(serializers.ModelSerializer):
             'area',
             'comment_count',
             'vote_count',
+            'is_social_inovative_idea',
             'status',
             'author',
             'description',
@@ -81,6 +82,7 @@ class InitiativeDetailsSerializer(WritableNestedModelSerializer):
             'comments',
             'descriptions',
             'is_draft',
+            'is_social_inovative_idea',
             'has_voted')
         extra_kwargs = {
             'author': {'read_only': False},
