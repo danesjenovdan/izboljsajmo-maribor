@@ -11,6 +11,7 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from django_filters import rest_framework as filters
 from rest_framework import filters as s_filters
+from behaviors.behaviors import Published
 
 from initiatives.serializers import (
     UserSerializer, OrganizationSerializer, DescriptionDefinitionSerializer, ZoneSerializer,
@@ -127,6 +128,7 @@ class InitiativeViewSet(
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         queryset = queryset.exclude(is_draft=True).exclude(initiative_statuses__status__name='Zavrnjeno')
+        queryset = queryset.filter(initiative_statuses__publication_status=Published.PUBLISHED)
 
         page = self.paginate_queryset(queryset)
         if page is not None:
