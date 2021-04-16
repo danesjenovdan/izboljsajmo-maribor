@@ -296,7 +296,7 @@ class Command(BaseCommand):
             order=4,
             type=models.InitiativeType.HAVE_IDEA,
             title='Ali lahko ocenite vrednost realizacije projekta / ideje (v EUR)?',
-            field='title3',
+            field='title4',
             author_id=8,
         ).save()
         models.DescriptionDefinition(

@@ -126,7 +126,7 @@ class InitiativeViewSet(
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        queryset = queryset.exclude(is_draft=True)
+        queryset = queryset.exclude(is_draft=True).exclude(initiative_statuses__status__name='Zavrnjeno')
 
         page = self.paginate_queryset(queryset)
         if page is not None:
