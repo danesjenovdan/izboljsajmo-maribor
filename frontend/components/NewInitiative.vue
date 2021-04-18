@@ -18,6 +18,7 @@
               :error-message-text="errorMessageText"
               :success-message="successMessage"
               :success-message-text="successMessageText"
+              :has-social-innovative-idea-checkbox="hasSocialInnovativeIdeaCheckbox"
               @create-initiative="createInitiative"
               @create-draft="createDraft"
               @delete-initiative="deleteInitiative"
@@ -61,7 +62,8 @@ export default {
       errorMessageText: 'Prišlo je do napake.',
       successMessage: false,
       successMessageText: '',
-      descriptions: []
+      descriptions: [],
+      hasSocialInnovativeIdeaCheckbox: this.type === 'II'
     }
   },
   methods: {
@@ -104,7 +106,7 @@ export default {
         }
         this.errorMessage = false
         this.successMessage = true
-        this.successMessageText = 'Vaša pobuda je bila uspešno shranjena v vaš profil.'
+        this.successMessageText = 'Vaša pobuda je bila uspešno oddana.'
       } catch (err) {
         console.log(err)
         this.errorMessage = true

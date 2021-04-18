@@ -155,6 +155,7 @@ export const actions = {
       address: payload.address,
       location: payload.location,
       descriptions: payload.descriptions,
+      is_social_inovative_idea: payload.is_social_inovative_idea,
       cover_image: payload.cover_image,
       uploaded_files: payload.uploaded_files,
       is_draft: payload.is_draft

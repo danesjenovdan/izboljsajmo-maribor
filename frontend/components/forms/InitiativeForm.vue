@@ -56,6 +56,15 @@
       />
     </div>
 
+    <b-form-group v-if="hasSocialInnovativeIdeaCheckbox">
+      <b-form-checkbox
+        id="social-innovative-idea-checkbox"
+        v-model="socialInnovativeIdea"
+      >
+        Je projekt družbeno koristen?
+      </b-form-checkbox>
+    </b-form-group>
+
     <div class="form-group">
       <div class="d-block">
         <label for="initiative-location" class="mt-4">Lokacija*</label>
@@ -274,6 +283,10 @@ export default {
     successMessageText: {
       type: String,
       default: ''
+    },
+    hasSocialInnovativeIdeaCheckbox: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -283,6 +296,7 @@ export default {
       area: null,
       initiativeAreaOptions: [{ value: null, text: 'Izberite področje' }],
       initiativeDescriptions: {},
+      socialInnovativeIdea: false,
       address: 'Maribor, Slovenija',
       mapMarkerPosition: {
         lat: 46.5576439,
@@ -338,9 +352,9 @@ export default {
 
     if (this.$route.query.id) {
       this.id = this.$route.query.id
-      console.log('id', this.id)
+      // console.log('id', this.id)
       const response = await this.$axios.get(`v1/initiatives/${this.id}`)
-      console.log(response)
+      // console.log(response)
       if (response.status === 200) {
         const initiative = response.data
         if (!initiative.is_draft) {
@@ -356,6 +370,9 @@ export default {
           for (const desc of initiative.descriptions) {
             this.initiativeDescriptions[desc.field] = desc.content
           }
+        }
+        if (initiative.is_social_inovative_idea) {
+          this.socialInnovativeIdea = true
         }
         if (initiative.address) {
           this.address = initiative.address
@@ -384,6 +401,7 @@ export default {
       this.title = ''
       this.area = null
       this.initiativeDescriptions = {}
+      this.socialInnovativeIdea = false
       this.address = 'Maribor, Slovenija'
       this.mapMarkerPosition.lat = 46.5576439
       this.mapMarkerPosition.lng = 15.6455854
@@ -405,15 +423,6 @@ export default {
           text: areas[i].name
         })
       }
-    },
-    // error checking
-    /*
-    checkInitiativeDescription () {
-      this.errorInitiativeDescription = this.form.initiativeDescription.length === 0
-    },
-    */
-    checkCoverImage () {
-      this.errorCoverImage = this.coverImageFile === null
     },
     closeErrorMessage () {
       this.$emit('close-error-message')
@@ -446,7 +455,7 @@ export default {
       }
     },
     async findAddress () {
-      console.log(this.mapMarkerPosition)
+      // console.log(this.mapMarkerPosition)
       const response = await this.$axios.get(
         'https://nominatim.openstreetmap.org/reverse?',
         {
@@ -528,6 +537,9 @@ export default {
             })
           }
         }
+        if (this.hasSocialInnovativeIdeaCheckbox) {
+          form.is_social_inovative_idea = this.socialInnovativeIdea
+        }
         if (this.initiativeHasNoLocation) {
           form.location = null
           form.address = null
@@ -591,6 +603,9 @@ export default {
             field: desc.field,
             content: this.initiativeDescriptions[desc.field]
           })
+        }
+        if (this.hasSocialInnovativeIdeaCheckbox) {
+          form.is_social_inovative_idea = this.socialInnovativeIdea
         }
         if (!this.initiativeHasNoLocation) {
           form.location = {
