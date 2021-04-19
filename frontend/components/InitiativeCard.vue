@@ -25,7 +25,7 @@
       <p>{{ description }}</p>
       <hr class="hr-upper">
       <hr class="hr-lower">
-      <div class="d-flex justify-content-between">
+      <div v-if="isAuthenticated" class="d-flex justify-content-between">
         <div class="d-inline-flex align-items-center">
           <b-button
             v-if="!has_voted"
@@ -52,6 +52,46 @@
             <CommentIcon class="mr-1" />
             Komentiraj
           </NuxtLink>
+          <span class="ml-1 count">{{ comment_count }}</span>
+        </div>
+      </div>
+      <div v-if="!isAuthenticated" class="d-flex justify-content-between">
+        <div class="d-inline-flex align-items-center">
+          <b-button
+            class="align-items-center"
+            :class="{ 'd-none': flippedButtonVote, 'd-flex': !flippedButtonVote }"
+            @click.stop="flippedButtonVote = true"
+          >
+            <LikeIcon class="mr-1" />
+            <span>Podpri</span>
+          </b-button>
+          <b-button
+            class="align-items-center"
+            :class="{ 'd-none': !flippedButtonVote, 'd-flex': flippedButtonVote }"
+            style="text-decoration: underline"
+            @click.stop="goToSignIn"
+          >
+            <span>Prijavi se</span>
+          </b-button>
+          <span class="ml-1 count">{{ vote_count }}</span>
+        </div>
+        <div class="d-inline-flex align-items-center">
+          <b-button
+            class="align-items-center"
+            :class="{ 'd-none': flippedButtonComment, 'd-flex': !flippedButtonComment }"
+            @click.stop="flippedButtonComment = true"
+          >
+            <CommentIcon class="mr-1" />
+            <span>Komentiraj</span>
+          </b-button>
+          <b-button
+            class="align-items-center"
+            :class="{ 'd-none': !flippedButtonComment, 'd-flex': flippedButtonComment }"
+            style="text-decoration: underline"
+            @click.stop="goToSignIn"
+          >
+            <span>Prijavi se</span>
+          </b-button>
           <span class="ml-1 count">{{ comment_count }}</span>
         </div>
       </div>
@@ -111,7 +151,10 @@ export default {
   },
   data () {
     return {
-      hasVotedButtonText: 'Glas oddan!'
+      hasVotedButtonText: 'Glas oddan!',
+      isAuthenticated: this.$auth.loggedIn,
+      flippedButtonVote: false,
+      flippedButtonComment: false
     }
   },
   methods: {
@@ -127,6 +170,9 @@ export default {
     },
     openInitiative () {
       this.$router.push(`/predlogi/${this.id}`)
+    },
+    goToSignIn () {
+      this.$router.push('/prijava')
     }
   }
 }
