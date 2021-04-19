@@ -13,9 +13,7 @@
       alt=""
     >
     <div class="initiative-card-body">
-      <h4>
-        {{ title }}
-      </h4>
+      <h4>{{ title }}</h4>
       <span class="author">{{ author }}</span>
       <div class="my-1">
         <span class="tag">{{ status }}</span>
@@ -214,6 +212,8 @@ export default {
       color: black;
       line-height: 1;
       font-weight: 700;
+      overflow-wrap: break-word;
+      white-space: pre-wrap;
     }
 
     .author {

@@ -334,7 +334,7 @@ export default {
       return !this.initiativeHasNoLocation && this.address.length === 0
     },
     errorCoverImage () {
-      return this.coverImageFile === null
+      return this.coverImageFile === null && this.coverImageDraft === null
     },
     noErrors () {
       return !this.errorInitiativeTitle && !this.errorInitiativeArea && !this.errorInitiativeLocation && !this.errorCoverImage && !this.errorInitiativeDescriptions
@@ -558,7 +558,7 @@ export default {
           form.cover_image = {
             id: imageID
           }
-        } else if (!this.coverImageDraft) { // it was reset to null
+        } else if (!this.coverImageDraft) { // it was reset to null or never set
           form.cover_image = null
         }
         if (this.files.length > 0) {
@@ -615,16 +615,13 @@ export default {
           form.address = this.address
         }
         // upload and set cover image
-        const imageID = await this.$store.dispatch('postCoverImage', {
-          image: this.coverImageFile
-        })
-        // if upload is unsuccessful, show error message and return
-        if (imageID < 0) {
-          this.errorUpload = true
-          return
-        }
-        form.cover_image = {
-          id: imageID
+        if (this.coverImageFile) {
+          const imageID = await this.$store.dispatch('postCoverImage', {
+            image: this.coverImageFile
+          })
+          form.cover_image = {
+            id: imageID
+          }
         }
         // upload and set image files
         if (this.files.length > 0) {

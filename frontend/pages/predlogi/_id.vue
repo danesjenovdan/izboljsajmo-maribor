@@ -257,6 +257,7 @@ export default {
     font-size: 0.75rem;
     padding: 0.25rem 0.8rem;
     margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
     border-radius: 1rem;
     position: relative;
     text-transform: lowercase;
