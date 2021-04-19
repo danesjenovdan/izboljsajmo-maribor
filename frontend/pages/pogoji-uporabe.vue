@@ -27,8 +27,8 @@
           Sistem zahteva prijavo uporabnika v primeru, če želi ta oddati pobudo ali vprašanje, ali glasovati. Vsaka pobuda ali vprašanje uporabnikov se pred objavo pregleda s strani administratorja. Če je neprimerna se zavrže in se ne objavi.
         </p>
         <p>
-          Za prikaz določenih funkcionalnosti se uporabljajo neodvisne zunanje storitve in aplikacije. Za uporabo teh storitev veljajo pogoji uporabe zunanje storitve, ki jih določa lastnik storitve ali aplikacije. Za prikaz lokacije se uporablja storitve Google Maps (Google Zemljevidi), katerih pogoji uporabe so uporabniku na voljo na spletnem naslovu:
-          <a href="https://www.google.com/intl/en_si/help/terms_maps.html">https://www.google.com/intl/en_si/help/terms_maps.html</a>
+          Za prikaz določenih funkcionalnosti se uporabljajo neodvisne zunanje storitve in aplikacije. Za uporabo teh storitev veljajo pogoji uporabe zunanje storitve, ki jih določa lastnik storitve ali aplikacije.
+          Za prikaz lokacije uporabljamo odprtokodno storitev Leaflet: <a href="https://leafletjs.com">https://leafletjs.com/.</a>
         </p>
         <h2>
           III. Varstvo podatkov
