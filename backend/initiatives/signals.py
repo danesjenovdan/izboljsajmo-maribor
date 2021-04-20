@@ -102,11 +102,11 @@ def set_key(sender, instance, created, **kwargs):
         instance.save()
 
         if sender == RestorePassword:
-            subject = _('Restore password Izboljšajmo Maribor')
+            subject = _('Ponastavitev gesla za dostop do platforme Izboljšajmo Maribor')
             template = 'emails/restore_password.html'
             url = f'{settings.FRONT_URL}pozabljeno-geslo/{instance.key}/'
         elif sender == ConfirmEmail:
-            subject = _('Confirm email Izboljšajmo Maribor')
+            subject = _('Potrditev registracije na platformi Izboljšajmo Maribor')
             template = 'emails/confirm_email.html'
             url = f'{settings.FRONT_URL}potrdi-racun/{instance.key}/'
 
