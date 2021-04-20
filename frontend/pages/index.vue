@@ -66,74 +66,74 @@
               Nimate oddanih pobud.
             </p>
             <b-row>
-              <b-col
-                v-if="published.length === 0"
-                cols="12"
-                lg="6"
-                xl="4"
-                class="mb-4"
-              >
-                <div class="initiative-card py-5 px-3 empty h-100 text-center">
-                  <h4>Oddajte predlog izboljšave, popravek ali postavite vprašanje</h4>
-                  <div>
-                    <button
-                      class="new-initiative-dropdown-btn d-inline-flex align-items-center position-relative ml-0 mt-3"
-                      :class="{ 'dropdown-open': newInitiativeDropdown }"
-                      @click="openNewInitiativeDropdown"
-                    >
-                      Kakšno pobudo želite oddati?
-                      <ArrowDownIcon class="ml-2" />
-                      <div
-                        v-if="newInitiativeDropdown"
-                        class="new-initiative-dropdown position-absolute"
-                        @click.stop=""
-                      >
-                        <div class="form-note">Izberite tip pobude.</div>
-                        <hr class="hr-upper mt-0">
-                        <hr class="hr-lower mb-0">
-                        <div>
-                          <b-form-group>
-                            <b-form-radio v-model="newInitiativeType" value="MM" class="p-0 pl-4">
-                              <h5 class="font-weight-bold">
-                                MOTI ME!
-                              </h5>
-                              <p class="form-note">
-                                Naznani okvare, poškodbe, slabosti (pomanjkljivosti), ki jih zaznavaš v svojem okolju.
-                              </p>
-                            </b-form-radio>
-                            <b-form-radio v-model="newInitiativeType" value="II" class="p-0 pl-4">
-                              <h5 class="font-weight-bold">
-                                IMAM IDEJO!
-                              </h5>
-                              <p class="form-note">
-                                Predlagaj novosti,  predloge za izboljšave, družbene inovacije, ki izboljšujejo kakovost življenja v MO Maribor.
-                              </p>
-                            </b-form-radio>
-                            <b-form-radio v-model="newInitiativeType" value="ZM" class="p-0 pl-4">
-                              <h5 class="font-weight-bold">
-                                ZANIMA ME!
-                              </h5>
-                              <p class="form-note">
-                                Zastavi splošna vprašanja ali izreči pohvale.
-                              </p>
-                            </b-form-radio>
-                          </b-form-group>
-                          <div class="p-0 my-3 w-100 d-flex justify-content-center">
-                            <NuxtLink
-                              :to="`/predlogi/oddaj/${editLink[newInitiativeType]}`"
-                              class="new-initiative-button btn d-inline-flex justify-content-center align-items-center text-uppercase"
-                            >
-                              Predlagaj
-                              <ArrowRightIcon class="ml-2" />
-                            </NuxtLink>
+              <b-col v-if="published.length === 0">
+                <div class="masonry">
+                  <div class="masonry-item">
+                    <div class="initiative-card py-5 px-3 empty h-100 text-center">
+                      <h4>Oddajte predlog izboljšave, popravek ali postavite vprašanje</h4>
+                      <div>
+                        <button
+                          class="new-initiative-dropdown-btn d-inline-flex align-items-center position-relative ml-0 mt-3"
+                          :class="{ 'dropdown-open': newInitiativeDropdown }"
+                          @click="openNewInitiativeDropdown"
+                        >
+                          Kakšno pobudo želite oddati?
+                          <ArrowDownIcon class="ml-2" />
+                          <div
+                            v-if="newInitiativeDropdown"
+                            class="new-initiative-dropdown position-absolute"
+                            @click.stop=""
+                          >
+                            <div class="form-note">
+                              Izberite tip pobude.
+                            </div>
+                            <hr class="hr-upper mt-0">
+                            <hr class="hr-lower mb-0">
+                            <div>
+                              <b-form-group>
+                                <b-form-radio v-model="newInitiativeType" value="MM" class="p-0 pl-4">
+                                  <h5 class="font-weight-bold">
+                                    MOTI ME!
+                                  </h5>
+                                  <p class="form-note">
+                                    Naznani okvare, poškodbe, slabosti (pomanjkljivosti), ki jih zaznavaš v svojem okolju.
+                                  </p>
+                                </b-form-radio>
+                                <b-form-radio v-model="newInitiativeType" value="II" class="p-0 pl-4">
+                                  <h5 class="font-weight-bold">
+                                    IMAM IDEJO!
+                                  </h5>
+                                  <p class="form-note">
+                                    Predlagaj novosti,  predloge za izboljšave, družbene inovacije, ki izboljšujejo kakovost življenja v MO Maribor.
+                                  </p>
+                                </b-form-radio>
+                                <b-form-radio v-model="newInitiativeType" value="ZM" class="p-0 pl-4">
+                                  <h5 class="font-weight-bold">
+                                    ZANIMA ME!
+                                  </h5>
+                                  <p class="form-note">
+                                    Zastavi splošna vprašanja ali izreči pohvale.
+                                  </p>
+                                </b-form-radio>
+                              </b-form-group>
+                              <div class="p-0 my-3 w-100 d-flex justify-content-center">
+                                <NuxtLink
+                                  :to="`/predlogi/oddaj/${editLink[newInitiativeType]}`"
+                                  class="new-initiative-button btn d-inline-flex justify-content-center align-items-center text-uppercase"
+                                >
+                                  Predlagaj
+                                  <ArrowRightIcon class="ml-2" />
+                                </NuxtLink>
+                              </div>
+                            </div>
                           </div>
-                        </div>
+                        </button>
                       </div>
-                    </button>
+                    </div>
                   </div>
                 </div>
               </b-col>
-              <b-col>
+              <b-col v-if="published.length > 0">
                 <div class="masonry">
                   <div
                     v-for="initiative in published"

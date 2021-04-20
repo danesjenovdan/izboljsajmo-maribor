@@ -181,10 +181,22 @@
                   <div
                     v-if="showStatus"
                     class="filter-dropdown position-absolute"
+                    style="right: 0.5rem;"
                     @click.stop=""
                   >
                     <div>
-                      TO DO: status
+                      <b-form-group>
+                        <b-form-checkbox
+                          v-for="status in Object.keys($store.getters.initiativeStatuses)"
+                          :id="status"
+                          :key="status"
+                          v-model="filterStatuses"
+                          :value="status"
+                          @change="fetchInitiatives"
+                        >
+                          {{ status }}
+                        </b-form-checkbox>
+                      </b-form-group>
                     </div>
                   </div>
                 </button>
