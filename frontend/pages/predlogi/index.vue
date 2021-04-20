@@ -250,6 +250,7 @@
                 :lat-lng="[initiative.location.coordinates[0], initiative.location.coordinates[1]]"
                 :icon="mapIcon"
                 @ready="setIconStyles"
+                @click="markerClick(initiative.id)"
               />
             </l-map>
           </client-only>
@@ -333,6 +334,17 @@ export default {
         iconUrl: require('@/assets/img/icons/pin.svg'),
         iconSize: [32, 32]
       })
+    },
+    markerClick (id) {
+      const offset = 66 // sticky nav height
+      const el = document.getElementById(`initiative-card-${id}`) // element you are scrolling to
+      window.scroll({ top: (el.offsetTop - offset), left: 0, behavior: 'smooth' })
+      // document.getElementById(`initiative-card-${id}`).scrollIntoView({ behavior: 'smooth' })
+      document.getElementById(`initiative-card-${id}`).style.backgroundColor = 'white'
+      setTimeout(function () {
+        document.getElementById(`initiative-card-${id}`).style.transition = 'background-color 0.5s ease-out'
+        document.getElementById(`initiative-card-${id}`).style.backgroundColor = '#f8f8f8'
+      }, 1000)
     },
     async fetchInitiatives () {
       const fetched = await this.$store.dispatch('getInitiatives', {

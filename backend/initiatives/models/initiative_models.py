@@ -104,7 +104,7 @@ class Initiative(Timestamped, Authored):
 
     def status(self):
         try:
-            return self.initiative_statuses.latest('created').status.name
+            return self.initiative_statuses.filter(publication_status=Published.PUBLISHED).latest('created').status.name
         except:
             return None
 

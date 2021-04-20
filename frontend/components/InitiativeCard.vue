@@ -1,5 +1,5 @@
 <template>
-  <div class="initiative-card h-100" @click="openInitiative">
+  <div :id="`initiative-card-${id}`" class="initiative-card h-100" @click="openInitiative">
     <span
       class="id-tag"
       :class="{ 'position-absolute': cover_image }"
@@ -180,6 +180,10 @@ export default {
 
 .initiative-card {
   box-shadow: 4px 4px 6px #d3d7df, -4px -4px 6px #ffffff;
+  -webkit-transition: background-color 0.5s ease-out;
+  -moz-transition: background-color 0.5s ease-out;
+  -o-transition: background-color 0.5s ease-out;
+  transition: background-color 0.5s ease-out;
 
   &:hover {
     background-color: white;

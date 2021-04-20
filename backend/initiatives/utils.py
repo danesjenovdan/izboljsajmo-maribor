@@ -28,6 +28,6 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
 
 def validate_file_extension(value):
     ext = os.path.splitext(value.name)[1]
-    valid_extensions = ['.pdf','.doc','.docx']
+    valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png', '.gif']
     if not ext in valid_extensions:
         raise ValidationError(_('File not supported!'))

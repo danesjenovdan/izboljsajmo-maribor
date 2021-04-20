@@ -104,11 +104,15 @@ class InitiativeFilterSet(filters.FilterSet):
     zone = CharInFilter(field_name='zone', lookup_expr='in')
     area = CharInFilter(field_name='area', lookup_expr='in')
     no_zone = filters.BooleanFilter(field_name='zone', lookup_expr='isnull')
+    statuses = filters.CharFilter(method='filter_statuses')
+
+    def filter_statuses(self, queryset, name, value):
+        return queryset.filter(initiative_statuses__status__name=value)
 
 
     class Meta:
         model = Initiative
-        fields = ['zone', 'area', 'type', 'no_zone']
+        fields = ['zone', 'area', 'type', 'no_zone', 'statuses']
 
 
 class InitiativeViewSet(
@@ -297,6 +301,13 @@ class RestorePasswordApiView(views.APIView):
         user.set_password(password)
         user.save()
         restore_password.delete()
+        send_email_task.delay(
+            _('Sprememba gesla za dostop do platforme Izboljšajmo Maribor'),
+            user.email,
+            'emails/restore_password_done.html',
+            {
+            }
+        )
         return Response({'status': _('Password has been set.')})
 
 
