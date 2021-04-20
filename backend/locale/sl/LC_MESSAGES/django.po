@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-20 09:27+0000\n"
+"POT-Creation-Date: 2021-04-20 09:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -724,20 +724,14 @@ msgid "Confirm emails"
 msgstr "Potrdi email naslov"
 
 #: initiatives/models/models.py:618
-#, fuzzy
-#| msgid "Initiative type"
 msgid "Notification type"
-msgstr "Tip pobude"
+msgstr "Tip obvestila"
 
 #: initiatives/models/models.py:628
-#, fuzzy
-#| msgid "Is email sent"
 msgid "is sent"
 msgstr "Je email poslan?"
 
 #: initiatives/signals.py:105
-#, fuzzy
-#| msgid "Restore password Izboljšajmo Maribor"
 msgid "Ponastavitev gesla za dostop do platforme Izboljšajmo Maribor"
 msgstr "Ponastavitev gesla za dostop do platforme Izboljšajmo Maribor"
 
@@ -805,11 +799,15 @@ msgstr "Najprej glasujte"
 msgid "Email will be send."
 msgstr "Email bo poslan"
 
-#: initiatives/views/views.py:304
+#: initiatives/views/views.py:305
+msgid "Sprememba gesla za dostop do platforme Izboljšajmo Maribor"
+msgstr "Sprememba gesla za dostop do platforme Izboljšajmo Maribor"
+
+#: initiatives/views/views.py:311
 msgid "Password has been set."
 msgstr "Geslo je bilo nastavljeno"
 
-#: initiatives/views/views.py:316
+#: initiatives/views/views.py:323
 msgid "Email confirmed."
 msgstr "Račun je potrjen"
 

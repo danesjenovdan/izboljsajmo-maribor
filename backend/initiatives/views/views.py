@@ -301,6 +301,13 @@ class RestorePasswordApiView(views.APIView):
         user.set_password(password)
         user.save()
         restore_password.delete()
+        send_email_task.delay(
+            _('Sprememba gesla za dostop do platforme Izboljšajmo Maribor'),
+            user.email,
+            'emails/restore_password_done.html',
+            {
+            }
+        )
         return Response({'status': _('Password has been set.')})
 
 
