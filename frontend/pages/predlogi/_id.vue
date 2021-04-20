@@ -203,7 +203,7 @@ export default {
     },
     date (date) {
       const d = new Date(date)
-      return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}` // months go 0-11
+      return `${d.getDate()}. ${d.getMonth() + 1}. ${d.getFullYear()}` // months go 0-11
     },
     statusImage (s) {
       try {
@@ -257,6 +257,7 @@ export default {
     font-size: 0.75rem;
     padding: 0.25rem 0.8rem;
     margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
     border-radius: 1rem;
     position: relative;
     text-transform: lowercase;
