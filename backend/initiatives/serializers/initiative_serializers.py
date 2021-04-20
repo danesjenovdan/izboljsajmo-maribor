@@ -36,9 +36,8 @@ class InitiativeListSerializer(serializers.ModelSerializer):
     def get_author(self, obj):
         return obj.author.username
 
-    # TODO
     def get_description(self, obj):
-        return '\n'.join(obj.descriptions.order_by('order').values_list('content', flat=True))[:100]
+        return ' '.join(' '.join(obj.descriptions.order_by('order').values_list('content', flat=True))[:100].split(' ')[:-1])+'...'
 
     def get_has_voted(self, obj):
         user = None
