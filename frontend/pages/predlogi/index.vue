@@ -615,9 +615,9 @@ h4 {
 }
 
 #map-wrap {
-  max-height: calc(100vh - 66px);
+  max-height: calc(100vh - 47px);
   position: sticky;
-  top: 66px;
+  top: 47px;
   z-index: 0;
 }
 
