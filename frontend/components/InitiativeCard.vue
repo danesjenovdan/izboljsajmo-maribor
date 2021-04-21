@@ -16,9 +16,9 @@
       <h4>{{ title }}</h4>
       <span class="author">{{ author }}</span>
       <div class="my-1">
-        <span class="tag">{{ status }}</span>
-        <span class="tag">{{ area.name }}</span>
-        <span class="tag">{{ date(created) }}</span>
+        <span v-if="status" class="tag">{{ status }}</span>
+        <span v-if="area" class="tag">{{ area.name }}</span>
+        <span v-if="created" class="tag">{{ date(created) }}</span>
       </div>
       <p>{{ description }}</p>
       <hr class="hr-upper">
@@ -180,10 +180,7 @@ export default {
 
 .initiative-card {
   box-shadow: 4px 4px 6px #d3d7df, -4px -4px 6px #ffffff;
-  -webkit-transition: background-color 0.5s ease-out;
-  -moz-transition: background-color 0.5s ease-out;
-  -o-transition: background-color 0.5s ease-out;
-  transition: background-color 0.5s ease-out;
+  border: 1px solid #f8f8f8;
 
   &:hover {
     background-color: white;

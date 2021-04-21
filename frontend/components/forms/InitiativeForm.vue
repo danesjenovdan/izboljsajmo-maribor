@@ -172,7 +172,13 @@
         Svoji pripombi lahko, če je to potrebno in primerno, dodate tudi fotografije oziroma druge datoteke, ki nam bodo v pomoč pri razumevanju pripombe.
       </p>
       <div :class="{ dropzone: true, 'drop-active': dropzone2Active }">
-        <div v-if="files.length > 0">
+        <div v-if="files.length > 0 || filesDraft.length > 0">
+          <!-- draft files -->
+          <div v-for="file in filesDraft" :key="file.name" class="filenames">
+            <a :href="file.file" target="_blank"><span class="mr-1">{{ file.name }}</span></a>
+            <TrashcanIcon class="trashcan" @click="removeFileDraft(file.name)" />
+          </div>
+          <!-- uploaded files -->
           <div v-for="file in files" :key="file.name" class="filenames">
             <span class="mr-1">{{ file.name }}</span>
             <TrashcanIcon class="trashcan" @click="removeFile(file.name)" />
@@ -194,7 +200,7 @@
             type="file"
             class="d-none"
             multiple
-            accept="image/*"
+            accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             @change="processFiles($event)"
           >
           <div class="d-flex align-items-center">
@@ -208,13 +214,6 @@
     </div>
     <hr class="hr-upper">
     <hr class="hr-lower">
-    <!--
-    <div v-if="errorForm" class="text-center">
-      <p class="error-message">
-        {{ errorFormMessage }}
-      </p>
-    </div>
-    -->
     <p v-if="errorMessage" class="message d-flex justify-content-center align-items-center position-relative">
       <IconDanger />{{ errorMessageText }}
       <span class="position-absolute" @click="closeErrorMessage">Zapri</span>
@@ -308,6 +307,7 @@ export default {
       coverImageDraft: null,
       dropzone1Active: false,
       files: [],
+      filesDraft: [],
       dropzone2Active: false,
       showErrors: false
     }
@@ -386,9 +386,13 @@ export default {
           this.mapMarkerPosition.lat = 46.5576439
           this.mapMarkerPosition.lng = 15.6455854
         }
-        // to do: naloadi cover image in files
         if (initiative.cover_image) {
           this.coverImageDraft = initiative.cover_image
+        }
+        if (initiative.uploaded_files) {
+          for (const file of initiative.uploaded_files) {
+            this.filesDraft.push(file)
+          }
         }
       }
     }
@@ -408,6 +412,7 @@ export default {
       this.initiativeHasNoLocation = false
       this.removeCoverImage()
       this.files = []
+      this.filesDraft = []
     },
     setIconStyles () {
       this.mapIcon = this.$L.icon({
@@ -505,6 +510,13 @@ export default {
         }
       }
     },
+    removeFileDraft (filename) {
+      for (let i = 0; i < this.filesDraft.length; i++) {
+        if (this.filesDraft[i].name === filename) {
+          this.filesDraft.splice(i, 1)
+        }
+      }
+    },
     dragOverHandler1 () {
       this.dropzone1Active = true
     },
@@ -561,14 +573,17 @@ export default {
         } else if (!this.coverImageDraft) { // it was reset to null or never set
           form.cover_image = null
         }
-        if (this.files.length > 0) {
-          form.uploaded_files = []
-          // upload and set image files
-          for (let i = 0; i < this.files.length; i++) {
-            console.log({
-              file: this.files[i],
-              name: this.files[i].name
+        // upload and set files
+        form.uploaded_files = []
+        if (this.filesDraft.length > 0) {
+          for (const file of this.filesDraft) {
+            form.uploaded_files.push({
+              id: file.id
             })
+          }
+        }
+        if (this.files.length > 0) {
+          for (let i = 0; i < this.files.length; i++) {
             const filesID = await this.$store.dispatch('postFiles', {
               file: this.files[i],
               name: this.files[i].name
@@ -623,15 +638,17 @@ export default {
             id: imageID
           }
         }
-        // upload and set image files
-        if (this.files.length > 0) {
-          form.uploaded_files = []
-          // upload and set image files
-          for (let i = 0; i < this.files.length; i++) {
-            console.log({
-              file: this.files[i],
-              name: this.files[i].name
+        // upload and set files
+        form.uploaded_files = []
+        if (this.filesDraft.length > 0) {
+          for (const file of this.filesDraft) {
+            form.uploaded_files.push({
+              id: file.id
             })
+          }
+        }
+        if (this.files.length > 0) {
+          for (let i = 0; i < this.files.length; i++) {
             const filesID = await this.$store.dispatch('postFiles', {
               file: this.files[i],
               name: this.files[i].name
@@ -641,7 +658,7 @@ export default {
             })
           }
         }
-        console.log(form)
+        // console.log(form)
         this.$emit('create-initiative', form, this.id)
       } catch {
         this.$emit('on-error')

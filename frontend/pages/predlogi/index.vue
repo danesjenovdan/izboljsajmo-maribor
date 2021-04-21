@@ -181,10 +181,22 @@
                   <div
                     v-if="showStatus"
                     class="filter-dropdown position-absolute"
+                    style="right: 0.5rem;"
                     @click.stop=""
                   >
                     <div>
-                      TO DO: status
+                      <b-form-group>
+                        <b-form-checkbox
+                          v-for="status in Object.keys($store.getters.initiativeStatuses)"
+                          :id="status"
+                          :key="status"
+                          v-model="filterStatuses"
+                          :value="status"
+                          @change="fetchInitiatives"
+                        >
+                          {{ status }}
+                        </b-form-checkbox>
+                      </b-form-group>
                     </div>
                   </div>
                 </button>
@@ -339,11 +351,10 @@ export default {
       const offset = 66 // sticky nav height
       const el = document.getElementById(`initiative-card-${id}`) // element you are scrolling to
       window.scroll({ top: (el.offsetTop - offset), left: 0, behavior: 'smooth' })
-      // document.getElementById(`initiative-card-${id}`).scrollIntoView({ behavior: 'smooth' })
-      document.getElementById(`initiative-card-${id}`).style.backgroundColor = 'white'
+      document.getElementById(`initiative-card-${id}`).style.borderColor = '#1a365d'
       setTimeout(function () {
-        document.getElementById(`initiative-card-${id}`).style.transition = 'background-color 0.5s ease-out'
-        document.getElementById(`initiative-card-${id}`).style.backgroundColor = '#f8f8f8'
+        document.getElementById(`initiative-card-${id}`).style.transition = 'border-color 0.5s ease-out'
+        document.getElementById(`initiative-card-${id}`).style.borderColor = '#f8f8f8'
       }, 1000)
     },
     async fetchInitiatives () {

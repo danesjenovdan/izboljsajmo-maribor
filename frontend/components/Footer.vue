@@ -11,7 +11,6 @@
       </p>
     </b-row>
     <b-row class="logos d-flex justify-content-center align-items-center">
-      <img src="~/assets/img/LOGO_COLOUR_RESILIENT.jpg" alt="" class="py-2">
       <img src="~/assets/img/Grb_novi_pisani.png" alt="" class="">
       <img src="~/assets/img/PRIZMA-SI-BEL.jpg" alt="" class="py-3">
     </b-row>

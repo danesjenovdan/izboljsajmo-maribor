@@ -123,12 +123,20 @@
               <b-col cols="12" lg="9">
                 <div class="files">
                   <h6>Datoteke</h6>
-                  <span v-for="file in data.uploaded_files" :key="file.id" class="mr-2">
-                    {{ file.name }}
-                  </span>
+                  <a
+                    v-for="file in data.uploaded_files"
+                    :key="file.id"
+                    :href="file.file"
+                    target="_blank"
+                    download
+                  >
+                    <span class="mr-2">
+                      {{ file.name }}
+                    </span>
+                  </a>
                   <div class="img-preview mt-4">
                     <a
-                      v-for="file in data.uploaded_files"
+                      v-for="file in uploaded_images"
                       :key="file.id"
                       :href="file.file"
                       target="_blank"
@@ -193,7 +201,11 @@ export default {
       errorVoted: false // za bodoci error message
     }
   },
-  computed: {},
+  computed: {
+    uploaded_images () {
+      return this.data.uploaded_files.filter(file => file.file.split('.').pop().toLowerCase() === 'jpg' || file.file.split('.').pop().toLowerCase() === 'jpeg' || file.file.split('.').pop().toLowerCase() === 'png')
+    }
+  },
   methods: {
     setIconStyles () {
       this.mapIcon = this.$L.icon({
@@ -397,6 +409,11 @@ export default {
     border: 1px dashed #8cade2;
     border-radius: 15px;
     padding: 1rem;
+
+    a {
+      text-decoration: none;
+      color: black;
+    }
 
     h6 {
       font-weight: 600;
