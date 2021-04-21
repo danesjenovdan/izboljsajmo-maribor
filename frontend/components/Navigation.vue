@@ -1,63 +1,58 @@
 <template>
-  <b-container fluid>
-    <b-row>
-      <b-navbar toggleable="md" class="navigation align-items-center">
-        <NuxtLink to="/predlogi">
-          <img src="~/assets/img/izboljsajmo_maribor_logo.png" alt="Izboljšajmo Maribor LOGO">
-        </NuxtLink>
-        <b-navbar-toggle target="nav_collapse">
-          <MoreIcon />
-        </b-navbar-toggle>
-        <b-collapse id="nav_collapse" is-nav class="py-4 py-md-0">
-          <b-navbar-nav class="ml-auto">
-            <NuxtLink class="nav-link" to="/predlogi">
-              Vsi predlogi
-            </NuxtLink>
-            <NuxtLink class="nav-link" to="/o-izboljsajmo-maribor">
-              O Izboljšajmo Maribor
-            </NuxtLink>
-            <NuxtLink v-if="!isAuthenticated" class="login nav-link" to="/prijava">
-              Prijava
-            </NuxtLink>
-            <NuxtLink
-              v-if="isAuthenticated"
-              id="profile-button"
-              class="profile"
-              to="/"
-              event=""
-              @click.native="toggleDropdown"
-            >
-              <!-- event="" is to disable the link -->
-              Moj profil
-            </NuxtLink>
-            <div v-if="showProfileDropdown" v-click-outside="closeProfileDropdown" class="profileDropdown">
-              <h3 class="pt-4 text-center font-weight-bold">
-                {{ this.$auth.user.username }}
-              </h3>
-              <hr class="hr-upper">
-              <hr class="hr-lower">
-              <div class="text-center">
-                <b-button
-                  class="nav-link my-initiatives-button w-75 position-relative d-inline-flex justify-content-center align-items-center"
-                  @click="myInitiatives"
-                >
-                  MOJI PREDLOGI
-                  <ArrowRightIcon class="position-absolute" />
-                </b-button>
-                <b-button
-                  class="logout-button w-75 position-relative d-inline-flex justify-content-center align-items-center"
-                  @click="logout"
-                >
-                  ODJAVA
-                  <ExitRightIcon class="position-absolute" />
-                </b-button>
-              </div>
+  <b-row>
+    <b-navbar toggleable="md" class="navigation align-items-center justify-content-end">
+      <b-navbar-toggle target="nav_collapse" class="d-flex align-items-center d-md-none">
+        <MoreIcon />
+      </b-navbar-toggle>
+      <b-collapse id="nav_collapse" is-nav class="py-4 py-md-0">
+        <b-navbar-nav class="ml-auto">
+          <NuxtLink class="nav-link" to="/predlogi">
+            Vsi predlogi
+          </NuxtLink>
+          <NuxtLink class="nav-link" to="/o-izboljsajmo-maribor">
+            O Izboljšajmo Maribor
+          </NuxtLink>
+          <NuxtLink v-if="!isAuthenticated" class="login nav-link" to="/prijava">
+            Prijava
+          </NuxtLink>
+          <NuxtLink
+            v-if="isAuthenticated"
+            id="profile-button"
+            class="profile"
+            to="/"
+            event=""
+            @click.native="toggleDropdown"
+          >
+            <!-- event="" is to disable the link -->
+            Moj profil
+          </NuxtLink>
+          <div v-if="showProfileDropdown" v-click-outside="closeProfileDropdown" class="profileDropdown">
+            <h3 class="pt-4 text-center font-weight-bold">
+              {{ this.$auth.user.username }}
+            </h3>
+            <hr class="hr-upper">
+            <hr class="hr-lower">
+            <div class="text-center">
+              <b-button
+                class="nav-link my-initiatives-button w-75 position-relative d-inline-flex justify-content-center align-items-center"
+                @click="myInitiatives"
+              >
+                MOJI PREDLOGI
+                <ArrowRightIcon class="position-absolute" />
+              </b-button>
+              <b-button
+                class="logout-button w-75 position-relative d-inline-flex justify-content-center align-items-center"
+                @click="logout"
+              >
+                ODJAVA
+                <ExitRightIcon class="position-absolute" />
+              </b-button>
             </div>
-          </b-navbar-nav>
-        </b-collapse>
-      </b-navbar>
-    </b-row>
-  </b-container>
+          </div>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
+  </b-row>
 </template>
 
 <script>
@@ -103,77 +98,81 @@ export default {
 .navigation {
   padding: 0.5rem 2rem;
   box-shadow: 3px 3px 7px #d4d9e1, -3px -3px 7px #ffffff;
-  background-color: #f8f8f8;
+  background-color: #1a365d;
   width: 100%;
-
-  img {
-    height: 50px;
-  }
 
   .navbar-nav .nav-link, .profile {
     text-align: center;
-    color: #606060;
-    font-size: 0.8rem;
+    color: white;
+    font-size: 0.9rem;
     border-radius: 1.5rem;
-    border: 2px solid #f8f8f8;
+    border: 1px solid #1a365d;
     margin-bottom: 0.25rem;
+    padding: 0.25rem 0.75rem;
 
     @media (min-width: 768px) {
       text-align: left;
       margin-left: 1rem;
-      padding: 0.25rem 0.75rem;
+      // padding: 0.25rem 0.75rem;
+      margin-bottom: 0;
     }
 
-    &.login {
-      background-color: rgba(239, 119, 130, 0.3);
+    &.login, &.profile {
+      background-color: #ef7782;
+      border-color: #ef7782;
       border-radius: 1.5rem;
+      color: black;
     }
 
     &:hover {
       text-decoration: none;
-      color: #a92332;
-    }
-  }
-
-  .navbar-nav .nav-link.nuxt-link-exact-active {
-    border: 2px solid #a92332;
-  }
-
-  .profile {
-    background-color: #ef7782;
-    border-color: #ef7782;
-    box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
-    color: black;
-    padding: 0.25rem 0.75rem;
-
-    &:hover {
-      text-decoration: none;
-      background-color: #1A365D;
-      border-color: #1A365D;
-      color: white;
+      color: #1a365d;
+      background-color: white;
+      border-color: white;
       transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
+  }
 
-    &.nuxt-link-exact-active {
+  .navbar-nav .nuxt-link-exact-active {
+    border: 1px solid white;
+
+    &.profile {
       font-weight: 600;
+      border-color: #ef7782;
+
+      &:hover {
+        border-color: white;
+      }
     }
   }
 
   .navbar-toggler {
+    border-color: white;
+    // background-color: #ef7782;
+    // border-color: #ef7782;
+    border-radius: 1rem;
+    padding: 0.3rem 0.6rem;
+
     svg {
       max-height: 1rem;
       max-width: 1rem;
+      fill: white;
     }
   }
 
   .profileDropdown {
     position: absolute;
     right: 2rem;
-    top: calc(3rem + 40px);
+    top: 170px;
     background-color: #f8f8f8;
-    box-shadow: 0 0 20px #d4d9e1;
+    box-shadow: 0 0 5px #d4d9e1;
     border-radius: 0.5rem;
     z-index: 1000;
+
+    @media (min-width: 576px) {
+      box-shadow: 0 0 20px #d4d9e1;
+      top: 50px;
+    }
 
     .logout-button {
       background-color: #d7d7d7;
