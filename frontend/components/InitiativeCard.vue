@@ -17,8 +17,8 @@
       <span class="author">{{ author }}</span>
       <div class="my-1">
         <span v-if="status" class="tag">{{ status }}</span>
-        <span v-if="area" class="tag">{{ area.name }}</span>
         <span v-if="created" class="tag">{{ date(created) }}</span>
+        <span v-if="area" class="tag">{{ area.name }}</span>
       </div>
       <p>{{ description }}</p>
       <hr class="hr-upper">
@@ -227,8 +227,10 @@ export default {
       border-radius: 1rem;
       padding: 0.25rem 0.5rem;
       margin-right: 0.25rem;
+      margin-bottom: 0.25rem;
       font-size: 0.75rem;
       font-weight: 500;
+      display: inline-block;
     }
 
     p {

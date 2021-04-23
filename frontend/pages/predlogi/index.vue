@@ -59,20 +59,23 @@
           </b-row>
           <b-row class="mb-4">
             <b-col cols="12" class="d-md-flex">
-              <div class="d-flex d-md-inline-flex flex-grow-1 mb-3 mb-md-0 mr-0 mr-md-2 align-items-center position-relative">
-                <input
-                  v-model="search"
-                  type="text"
-                  class="form-control"
-                  placeholder="Iščite po naslovu ali vsebini pobud"
-                  @keyup.enter="fetchInitiatives"
-                >
-                <button class="search-button position-absolute" @click="fetchInitiatives">
-                  <SearchIcon />
-                </button>
+              <div class="d-flex d-md-inline-flex flex-grow-1 mb-3 mb-md-0 mr-0 mr-md-2 align-items-center">
+                <div class="w-100 position-relative">
+                  <input
+                    v-model="search"
+                    type="text"
+                    class="form-control"
+                    placeholder="Iščite po naslovu ali vsebini pobud"
+                    @keyup.enter="fetchInitiatives"
+                  >
+                  <button class="search-button position-absolute" @click="fetchInitiatives">
+                    <SearchIcon />
+                  </button>
+                </div>
               </div>
               <div class="d-flex d-md-inline-flex justify-content-end">
                 <button
+                  id="type-filter-button"
                   class="filter d-inline-flex align-items-center ml-0"
                   :class="{ 'dropdown-open': showType }"
                   @click="switchType"
@@ -81,6 +84,7 @@
                   <ArrowDownIcon class="ml-2" />
                   <div
                     v-if="showType"
+                    v-click-outside="closeTypeDropdown"
                     class="filter-dropdown position-absolute"
                     @click.stop=""
                   >
@@ -115,6 +119,7 @@
                   </div>
                 </button>
                 <button
+                  id="area-filter-button"
                   class="filter d-inline-flex align-items-center"
                   :class="{ 'dropdown-open': showArea }"
                   @click="switchArea"
@@ -123,6 +128,7 @@
                   <ArrowDownIcon class="ml-2" />
                   <div
                     v-if="showArea"
+                    v-click-outside="closeAreaDropdown"
                     class="filter-dropdown position-absolute"
                     @click.stop=""
                   >
@@ -144,6 +150,7 @@
                   </div>
                 </button>
                 <button
+                  id="zone-filter-button"
                   class="filter d-inline-flex align-items-center"
                   :class="{ 'dropdown-open': showZone }"
                   @click="switchZone"
@@ -152,6 +159,7 @@
                   <ArrowDownIcon class="ml-2" />
                   <div
                     v-if="showZone"
+                    v-click-outside="closeZoneDropdown"
                     class="filter-dropdown position-absolute"
                     @click.stop=""
                   >
@@ -172,6 +180,7 @@
                   </div>
                 </button>
                 <button
+                  id="status-filter-button"
                   class="filter d-inline-flex align-items-center"
                   :class="{ 'dropdown-open': showStatus }"
                   @click="switchStatus"
@@ -180,6 +189,7 @@
                   <ArrowDownIcon class="ml-2" />
                   <div
                     v-if="showStatus"
+                    v-click-outside="closeStatusDropdown"
                     class="filter-dropdown position-absolute"
                     style="right: 0.5rem;"
                     @click.stop=""
@@ -235,7 +245,7 @@
           </div>
           <b-row v-if="sortedInitiatives.length === 0">
             <b-col cols="12" class="d-inline-flex justify-content-center mb-5">
-              <div class="d-flex justify-content-center align-items-center my-4 no-initiatives">
+              <div class="d-flex justify-content-center align-items-center mt-4 no-initiatives">
                 <FolderEmptyIcon />
                 <span class="ml-2">Za izbrane filtre ni oddane nobene pobude.</span>
               </div>
@@ -348,7 +358,7 @@ export default {
       })
     },
     markerClick (id) {
-      const offset = 66 // sticky nav height
+      const offset = 47 // sticky nav height
       const el = document.getElementById(`initiative-card-${id}`) // element you are scrolling to
       window.scroll({ top: (el.offsetTop - offset), left: 0, behavior: 'smooth' })
       document.getElementById(`initiative-card-${id}`).style.borderColor = '#1a365d'
@@ -381,11 +391,21 @@ export default {
       this.showZone = false
       this.showStatus = false
     },
+    closeTypeDropdown (e) {
+      if (e.target.id !== 'type-filter-button') {
+        this.showType = false
+      }
+    },
     switchArea () {
       this.showType = false
       this.showArea = !this.showArea
       this.showZone = false
       this.showStatus = false
+    },
+    closeAreaDropdown (e) {
+      if (e.target.id !== 'area-filter-button') {
+        this.showArea = false
+      }
     },
     switchZone () {
       this.showType = false
@@ -393,11 +413,21 @@ export default {
       this.showZone = !this.showZone
       this.showStatus = false
     },
+    closeZoneDropdown (e) {
+      if (e.target.id !== 'zone-filter-button') {
+        this.showZone = false
+      }
+    },
     switchStatus () {
       this.showType = false
       this.showArea = false
       this.showZone = false
       this.showStatus = !this.showStatus
+    },
+    closeStatusDropdown (e) {
+      if (e.target.id !== 'status-filter-button') {
+        this.showStatus = false
+      }
     },
     async vote (id) {
       const success = await this.$store.dispatch('postVote', {
@@ -495,8 +525,9 @@ h4 {
 .search-button {
   border: none;
   background-color: transparent;
-  height: 100%;
-  right: 0;
+  height: 2.5rem;
+  width: 2.5rem;
+  right: 0.1rem;
   top: 0;
   display: flex;
   align-items: center;
@@ -607,6 +638,7 @@ h4 {
   background-color: #e8ebef;
   border-radius: 0.75rem;
   padding: 1.5rem;
+  margin-bottom: 12rem;
 
   svg {
     max-width: 2rem;
