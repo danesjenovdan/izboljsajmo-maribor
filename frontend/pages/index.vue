@@ -165,7 +165,13 @@ import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
 
 export default {
   components: { InitiativeCard, ExitRightIcon, EditIcon, ArrowDownIcon, ArrowRightIcon },
-  middleware: 'auth',
+  // middleware: 'auth',
+  middleware ({ store, redirect }) {
+    // If the user is not authenticated
+    if (!store.state.auth.loggedIn) {
+      return redirect('/predlogi')
+    }
+  },
   asyncData ({ store }) {
     return store.dispatch('getMyInitiatives')
   },
