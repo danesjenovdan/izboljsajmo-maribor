@@ -75,7 +75,7 @@
       <b-col cols="12" lg="8">
         <b-row>
           <b-col>
-            <NuxtLink to="/predlogi" class="my-2 ml-lg-5 back">
+            <NuxtLink to="/" class="my-2 ml-lg-5 back">
               &lt;&lt; Nazaj na vse predloge
             </NuxtLink>
           </b-col>

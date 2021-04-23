@@ -6,7 +6,7 @@
       </b-navbar-toggle>
       <b-collapse id="nav_collapse" is-nav class="py-4 py-md-0">
         <b-navbar-nav class="ml-auto">
-          <NuxtLink class="nav-link" to="/predlogi">
+          <NuxtLink class="nav-link" to="/">
             Vsi predlogi
           </NuxtLink>
           <NuxtLink class="nav-link" to="/o-izboljsajmo-maribor">
@@ -75,7 +75,7 @@ export default {
   methods: {
     myInitiatives () {
       this.showProfileDropdown = !this.showProfileDropdown
-      this.$router.push('/')
+      this.$router.push('/profil')
     },
     async logout () {
       this.showProfileDropdown = !this.showProfileDropdown
