@@ -327,3 +327,19 @@ textarea.form-control {
   }
 
 }
+
+.item {
+  width: 100%;
+
+  @media (min-width: 576px) {
+    width: 50%;
+  }
+
+  @media (min-width: 1200px) {
+    width: 33%;
+  }
+
+  @media (min-width: 1800px) {
+    width: 25%;
+  }
+}

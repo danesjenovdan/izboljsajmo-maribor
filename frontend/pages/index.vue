@@ -220,29 +220,35 @@
               </div>
               <div
                 class="sort-initiatives d-flex align-items-center"
-                @click="sortInitiativesByDateAscending = !sortInitiativesByDateAscending"
+                @click="sortInitiativesByDateAscending = !sortInitiativesByDateAscending; sortInitiatives()"
               >
                 <span class="mr-1">Sortiraj po datumu objave</span>
                 <DownArrowIcon class="ml-1" :class="{ 'sort-ascending': sortInitiativesByDateAscending }" />
               </div>
             </b-col>
           </b-row>
-          <div
-            v-if="sortedInitiatives.length > 0"
-            class="p-4 p-md-0 masonry"
-          >
+          <no-ssr>
             <div
-              v-for="initiative in sortedInitiatives"
-              :key="initiative.id"
-              class="masonry-item"
+              v-if="sortedInitiatives.length > 0"
+              class="p-4 p-md-0"
             >
-              <InitiativeCard
-                v-bind="initiative"
-                @vote="vote(initiative.id)"
-                @removeVote="removeVote(initiative.id)"
-              />
+              <div id="masonry" v-masonry="'masonry'" item-selector=".item" class="masonry-container">
+                <div
+                  v-for="initiative in sortedInitiatives"
+                  :key="initiative.id"
+                  v-masonry-tile
+                  horizontal-order="true"
+                  class="item px-2 pb-3"
+                >
+                  <InitiativeCard
+                    v-bind="initiative"
+                    @vote="vote(initiative.id)"
+                    @removeVote="removeVote(initiative.id)"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
+          </no-ssr>
           <b-row v-if="sortedInitiatives.length === 0">
             <b-col cols="12" class="d-inline-flex justify-content-center mb-5">
               <div class="d-flex justify-content-center align-items-center mt-4 no-initiatives">
@@ -307,6 +313,7 @@ export default {
       filterStatuses: [],
       sortInitiativesByDateAscending: false,
       initiatives: [],
+      sortedInitiatives: [],
       map: null,
       mapIcon: null,
       columns: 1
@@ -319,36 +326,12 @@ export default {
     },
     initiativeMarkers () {
       return this.initiatives.filter(initiative => initiative.location)
-    },
-    sortedInitiatives () {
-      const sortedByTime = this.initiatives.slice(0).sort((a, b) => a.created.localeCompare(b.created))
-      if (!this.sortInitiativesByDateAscending) {
-        sortedByTime.reverse()
-      }
-      const sortedByTimeWithIndices = sortedByTime.map((v, i) => {
-        return { v, i }
-      })
-      const sortedByColumnsWithIndices = sortedByTimeWithIndices.sort((a, b) => {
-        return (a.i % this.columns - b.i % this.columns)
-      })
-      return sortedByColumnsWithIndices.map(x => x.v)
     }
   },
   async created () {
     await this.fetchAreas()
     await this.fetchZones()
     await this.fetchInitiatives()
-  },
-  mounted () {
-    if (window.matchMedia('(min-width: 1800px)').matches) {
-      this.columns = 4
-    } else if (window.matchMedia('(min-width: 1200px)').matches) {
-      this.columns = 3
-    } else if (window.matchMedia('(min-width: 576px)').matches) {
-      this.columns = 2
-    } else {
-      this.columns = 1
-    }
   },
   methods: {
     setIconStyles () {
@@ -359,12 +342,12 @@ export default {
     },
     markerClick (id) {
       const offset = 47 // sticky nav height
-      const el = document.getElementById(`initiative-card-${id}`) // element you are scrolling to
-      window.scroll({ top: (el.offsetTop - offset), left: 0, behavior: 'smooth' })
-      document.getElementById(`initiative-card-${id}`).style.borderColor = '#1a365d'
+      const container = document.getElementById('masonry')
+      const el = document.getElementById(`initiative-card-${id}`).parentElement // element you are scrolling to
+      window.scroll({ top: (el.offsetTop + container.offsetTop - offset), left: 0, behavior: 'smooth' })
+      document.getElementById(`initiative-card-${id}`).style.outlineColor = '#1a365d'
       setTimeout(function () {
-        document.getElementById(`initiative-card-${id}`).style.transition = 'border-color 0.5s ease-out'
-        document.getElementById(`initiative-card-${id}`).style.borderColor = '#f8f8f8'
+        document.getElementById(`initiative-card-${id}`).style.outlineColor = 'transparent'
       }, 1000)
     },
     async fetchInitiatives () {
@@ -376,6 +359,15 @@ export default {
         status: this.filterStatuses
       })
       this.initiatives = fetched.initiatives
+      this.sortInitiatives()
+    },
+    sortInitiatives () {
+      const sortedByTime = this.initiatives.slice(0).sort((a, b) => a.created.localeCompare(b.created))
+      if (!this.sortInitiativesByDateAscending) {
+        sortedByTime.reverse()
+      }
+      this.sortedInitiatives = sortedByTime
+      this.$nextTick(() => this.$redrawVueMasonry('masonry'))
     },
     async fetchAreas () {
       this.areas = await this.$store.dispatch('getAreas')
