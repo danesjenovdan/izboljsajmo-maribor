@@ -79,6 +79,7 @@
                       <h4>Oddajte predlog izboljšave, popravek ali postavite vprašanje</h4>
                       <div>
                         <button
+                          id="new-initiative-btn"
                           class="new-initiative-dropdown-btn d-inline-flex align-items-center position-relative ml-0 mt-3"
                           :class="{ 'dropdown-open': newInitiativeDropdown }"
                           @click="openNewInitiativeDropdown"
@@ -87,6 +88,7 @@
                           <ArrowDownIcon class="ml-2" />
                           <div
                             v-if="newInitiativeDropdown"
+                            v-click-outside="closeNewInitiativeDropdown"
                             class="new-initiative-dropdown position-absolute"
                             @click.stop=""
                           >
@@ -122,7 +124,7 @@
                                   </p>
                                 </b-form-radio>
                               </b-form-group>
-                              <div class="p-0 my-3 w-100 d-flex justify-content-center">
+                              <div class="p-0 my-2 w-100 d-flex justify-content-center">
                                 <NuxtLink
                                   :to="`/predlogi/oddaj/${editLink[newInitiativeType]}`"
                                   class="new-initiative-button btn d-inline-flex justify-content-center align-items-center text-uppercase"
@@ -244,6 +246,11 @@ export default {
     },
     openNewInitiativeDropdown () {
       this.newInitiativeDropdown = !this.newInitiativeDropdown
+    },
+    closeNewInitiativeDropdown (e) {
+      if (e.target.id !== 'new-initiative-btn') {
+        this.newInitiativeDropdown = false
+      }
     }
   }
 }
@@ -418,10 +425,14 @@ a {
     background-color: #f8f8f8;
     box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
     border-radius: 0.5rem;
-    top: 6rem;
+    top: 4rem;
+    left: -4rem;
+    right: -4rem;
     z-index: 10;
     text-align: left;
     cursor: default;
+    max-height: 15rem;
+    overflow-y: auto;
 
     h5 {
       letter-spacing: 2px;
@@ -440,6 +451,10 @@ a {
     div {
       padding-left: 1.5rem;
       padding-right: 1rem;
+    }
+
+    @media (min-width: 576px) {
+      min-width: 20rem;
     }
 
     @media (min-width: 768px) {
