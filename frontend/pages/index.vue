@@ -1,208 +1,425 @@
 <template>
-  <b-container fluid>
-    <b-row class="p-4">
-      <b-col cols="12" lg="3" class="text-center text-lg-left mb-4">
-        <h1>Pozdravljeni, {{ this.$auth.user.username }}!</h1>
-        <b-button
-          class="logout-button w-75 position-relative d-inline-flex justify-content-center align-items-center"
-          @click="logout"
-        >
-          ODJAVA
-          <ExitRightIcon class="position-absolute" />
-        </b-button>
-      </b-col>
-      <b-col cols="12" lg="9">
-        <b-row v-if="drafts.length > 0" class="card-outline p-4 mb-4">
-          <b-col cols="12" md="4" lg="2" class="mb-4">
-            <h4>Neoddane pobude</h4>
-          </b-col>
-          <b-col cols="12" md="8" lg="10">
-            <b-row>
-              <b-col
-                cols="12"
-                class="masonry"
-              >
-                <div
-                  v-for="(draft, index) in drafts"
-                  :key="`draft-${index}`"
-                  class="masonry-item"
-                >
-                  <NuxtLink :to="`/predlogi/oddaj/${editLink[draft.type]}?id=${draft.id}`">
-                    <div class="initiative-card draft h-100">
-                      <img
-                        v-if="draft.cover_image"
-                        class="cover-image"
-                        :src="draft.cover_image.image"
-                        alt="Initiative draft cover image"
-                      >
-                      <div class="initiative-card-body">
-                        <h4>{{ draft.title }}</h4>
-                        <p>{{ draft.description }}</p>
-                        <div class="d-flex justify-content-center">
-                          <div class="d-inline-flex align-items-center">
-                            <NuxtLink
-                              :to="`/predlogi/oddaj/${editLink[draft.type]}?id=${draft.id}`"
-                              class="btn d-flex align-items-center position-relative"
-                            >
-                              <span class="text-uppercase pr-2">Uredi</span>
-                              <EditIcon class="position-absolute" />
-                            </NuxtLink>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </NuxtLink>
-                </div>
-              </b-col>
-            </b-row>
-          </b-col>
-        </b-row>
-        <b-row class="card-outline p-4 mb-4">
-          <b-col cols="12" md="4" lg="2" class="mb-4">
-            <h4>Oddane pobude</h4>
-          </b-col>
-          <b-col cols="12" md="8" lg="10">
-            <p v-if="published.length === 0" class="font-italic">
-              Nimate oddanih pobud.
+  <b-container fluid class="h-100">
+    <b-row class="h-100">
+      <b-col lg="7" class="h-100 overflow-auto">
+        <b-row class="my-4 justify-content-center">
+          <b-col cols="12" lg="9" class="text-center">
+            <h4>
+              Dobrodošli na platformi Izboljšajmo Maribor, ki je namenjena podajanju pobud in zastavljanju vprašanj o vseh področjih delovanja Mestne občine Maribor.
+            </h4>
+            <p class="mb-1">
+              Vsak, ki živi ali dela v tem mestu, lahko prispeva, da bo Maribor boljši. Radi bi slišali vaše mnenje, kaj vas zanima, kaj vas moti in kaj predlagate v Mestni občini Maribor.
             </p>
-            <b-row>
-              <b-col v-if="published.length === 0">
-                <div class="masonry">
-                  <div class="masonry-item">
-                    <div class="initiative-card py-5 px-3 empty h-100 text-center">
-                      <h4>Oddajte predlog izboljšave, popravek ali postavite vprašanje</h4>
-                      <div>
-                        <button
-                          class="new-initiative-dropdown-btn d-inline-flex align-items-center position-relative ml-0 mt-3"
-                          :class="{ 'dropdown-open': newInitiativeDropdown }"
-                          @click="openNewInitiativeDropdown"
-                        >
-                          Kakšno pobudo želite oddati?
-                          <ArrowDownIcon class="ml-2" />
-                          <div
-                            v-if="newInitiativeDropdown"
-                            class="new-initiative-dropdown position-absolute"
-                            @click.stop=""
-                          >
-                            <div class="form-note">
-                              Izberite tip pobude.
-                            </div>
-                            <hr class="hr-upper mt-0">
-                            <hr class="hr-lower mb-0">
-                            <div>
-                              <b-form-group>
-                                <b-form-radio v-model="newInitiativeType" value="MM" class="p-0 pl-4">
-                                  <h5 class="font-weight-bold">
-                                    MOTI ME!
-                                  </h5>
-                                  <p class="form-note">
-                                    Naznani okvare, poškodbe, slabosti (pomanjkljivosti), ki jih zaznavaš v svojem okolju.
-                                  </p>
-                                </b-form-radio>
-                                <b-form-radio v-model="newInitiativeType" value="II" class="p-0 pl-4">
-                                  <h5 class="font-weight-bold">
-                                    IMAM IDEJO!
-                                  </h5>
-                                  <p class="form-note">
-                                    Predlagaj novosti,  predloge za izboljšave, družbene inovacije, ki izboljšujejo kakovost življenja v MO Maribor.
-                                  </p>
-                                </b-form-radio>
-                                <b-form-radio v-model="newInitiativeType" value="ZM" class="p-0 pl-4">
-                                  <h5 class="font-weight-bold">
-                                    ZANIMA ME!
-                                  </h5>
-                                  <p class="form-note">
-                                    Zastavi splošna vprašanja ali izreči pohvale.
-                                  </p>
-                                </b-form-radio>
-                              </b-form-group>
-                              <div class="p-0 my-3 w-100 d-flex justify-content-center">
-                                <NuxtLink
-                                  :to="`/predlogi/oddaj/${editLink[newInitiativeType]}`"
-                                  class="new-initiative-button btn d-inline-flex justify-content-center align-items-center text-uppercase"
-                                >
-                                  Predlagaj
-                                  <ArrowRightIcon class="ml-2" />
-                                </NuxtLink>
-                              </div>
-                            </div>
-                          </div>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </b-col>
-              <b-col v-if="published.length > 0">
-                <div class="masonry">
-                  <div
-                    v-for="initiative in published"
-                    :key="`published-${initiative.id}`"
-                    class="masonry-item"
-                  >
-                    <InitiativeCard
-                      v-bind="initiative"
-                      @vote="vote(initiative.id)"
-                      @removeVote="removeVote(initiative.id)"
-                    />
-                  </div>
-                </div>
-              </b-col>
-            </b-row>
+            <p class="mb-1">
+              Kliknite na enega od gumbov in nam posredujte svojo pobudo. Vsaka oddana pobuda bo obravnavana v pristojni strokovni službi v mestni upravi.
+            </p>
           </b-col>
         </b-row>
+        <b-row class="action-cards">
+          <b-col cols="12" md="4" class="mb-3">
+            <div class="action-card-top" />
+            <NuxtLink to="/predlogi/oddaj/zanima-me" class="action-card d-block h-100">
+              <h6 class="d-flex align-items-center">
+                ZANIMA ME!
+                <ArrowRightIcon />
+              </h6>
+              <p>Splošna vprašanja / pohvale</p>
+            </NuxtLink>
+          </b-col>
+          <b-col cols="12" md="4" class="mb-3">
+            <div class="action-card-top" />
+            <NuxtLink to="/predlogi/oddaj/moti-me" class="action-card d-block h-100">
+              <h6 class="d-flex align-items-center">
+                MOTI ME!
+                <ArrowRightIcon />
+              </h6>
+              <p>Zaznane okvare, poškodbe, slabosti, pomanjkljivosti, nepravilnosti ...</p>
+            </NuxtLink>
+          </b-col>
+          <b-col cols="12" md="4" class="mb-3">
+            <div class="action-card-top" />
+            <NuxtLink to="/predlogi/oddaj/imam-idejo" class="action-card d-block h-100">
+              <h6 class="d-flex align-items-center">
+                IMAM IDEJO!
+                <ArrowRightIcon />
+              </h6>
+              <p>Projektni predlogi, novosti, predlogi za izboljšave, družbene inovacije ...</p>
+            </NuxtLink>
+          </b-col>
+        </b-row>
+        <hr class="hr-upper">
+        <hr class="hr-lower">
+        <div>
+          <b-row>
+            <b-col cols="12">
+              <h4 class="mb-4 text-center">
+                Iščite ali brskajte po že oddanih pobudah
+              </h4>
+            </b-col>
+          </b-row>
+          <b-row class="mb-4">
+            <b-col cols="12" class="d-md-flex">
+              <div class="d-flex d-md-inline-flex flex-grow-1 mb-3 mb-md-0 mr-0 mr-md-2 align-items-center">
+                <div class="w-100 position-relative">
+                  <input
+                    v-model="search"
+                    type="text"
+                    class="form-control"
+                    placeholder="Iščite po naslovu ali vsebini pobud"
+                    @keyup.enter="fetchInitiatives"
+                  >
+                  <button class="search-button position-absolute" @click="fetchInitiatives">
+                    <SearchIcon />
+                  </button>
+                </div>
+              </div>
+              <div class="d-flex d-md-inline-flex justify-content-end">
+                <button
+                  id="type-filter-button"
+                  class="filter d-inline-flex align-items-center ml-0"
+                  :class="{ 'dropdown-open': showType }"
+                  @click="switchType"
+                >
+                  Tip
+                  <ArrowDownIcon class="ml-2" />
+                  <div
+                    v-if="showType"
+                    v-click-outside="closeTypeDropdown"
+                    class="filter-dropdown position-absolute"
+                    @click.stop=""
+                  >
+                    <div>
+                      <b-form-group>
+                        <b-form-checkbox
+                          id="filter-type-MM"
+                          v-model="filterTypes"
+                          value="MM"
+                          @change="fetchInitiatives"
+                        >
+                          MOTI ME!
+                        </b-form-checkbox>
+                        <b-form-checkbox
+                          id="filter-type-II"
+                          v-model="filterTypes"
+                          value="II"
+                          @change="fetchInitiatives"
+                        >
+                          IMAM IDEJO!
+                        </b-form-checkbox>
+                        <b-form-checkbox
+                          id="filter-type-ZM"
+                          v-model="filterTypes"
+                          value="ZM"
+                          @change="fetchInitiatives"
+                        >
+                          ZANIMA ME!
+                        </b-form-checkbox>
+                      </b-form-group>
+                    </div>
+                  </div>
+                </button>
+                <button
+                  id="area-filter-button"
+                  class="filter d-inline-flex align-items-center"
+                  :class="{ 'dropdown-open': showArea }"
+                  @click="switchArea"
+                >
+                  Področje
+                  <ArrowDownIcon class="ml-2" />
+                  <div
+                    v-if="showArea"
+                    v-click-outside="closeAreaDropdown"
+                    class="filter-dropdown position-absolute"
+                    @click.stop=""
+                  >
+                    <div>
+                      <b-form-group>
+                        <b-form-checkbox
+                          v-for="area in areas"
+                          :id="String(area.id)"
+                          :key="area.id"
+                          v-model="filterAreas"
+                          :value="area.id"
+                          @change="fetchInitiatives"
+                        >
+                          <div>{{ area.name }}</div>
+                          <div>{{ area.note }}</div>
+                        </b-form-checkbox>
+                      </b-form-group>
+                    </div>
+                  </div>
+                </button>
+                <button
+                  id="zone-filter-button"
+                  class="filter d-inline-flex align-items-center"
+                  :class="{ 'dropdown-open': showZone }"
+                  @click="switchZone"
+                >
+                  Območje
+                  <ArrowDownIcon class="ml-2" />
+                  <div
+                    v-if="showZone"
+                    v-click-outside="closeZoneDropdown"
+                    class="filter-dropdown position-absolute"
+                    @click.stop=""
+                  >
+                    <div>
+                      <b-form-group>
+                        <b-form-checkbox
+                          v-for="zone in zones"
+                          :id="String(zone.id)"
+                          :key="zone.id"
+                          v-model="filterZones"
+                          :value="zone.id"
+                          @change="fetchInitiatives"
+                        >
+                          {{ zone.name }}
+                        </b-form-checkbox>
+                      </b-form-group>
+                    </div>
+                  </div>
+                </button>
+                <button
+                  id="status-filter-button"
+                  class="filter d-inline-flex align-items-center"
+                  :class="{ 'dropdown-open': showStatus }"
+                  @click="switchStatus"
+                >
+                  Status
+                  <ArrowDownIcon class="ml-2" />
+                  <div
+                    v-if="showStatus"
+                    v-click-outside="closeStatusDropdown"
+                    class="filter-dropdown position-absolute"
+                    style="right: 0.5rem;"
+                    @click.stop=""
+                  >
+                    <div>
+                      <b-form-group>
+                        <b-form-checkbox
+                          v-for="status in Object.keys($store.getters.initiativeStatuses)"
+                          :id="status"
+                          :key="status"
+                          v-model="filterStatuses"
+                          :value="status"
+                          @change="fetchInitiatives"
+                        >
+                          {{ status }}
+                        </b-form-checkbox>
+                      </b-form-group>
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </b-col>
+          </b-row>
+          <b-row class="mb-3">
+            <b-col class="d-flex justify-content-between">
+              <div class="initiatives-no pl-1 d-flex align-items-center">
+                {{ initiativesNumber }}
+              </div>
+              <div
+                class="sort-initiatives d-flex align-items-center"
+                @click="sortInitiativesByDateAscending = !sortInitiativesByDateAscending; sortInitiatives()"
+              >
+                <span class="mr-1">Sortiraj po datumu objave</span>
+                <DownArrowIcon class="ml-1" :class="{ 'sort-ascending': sortInitiativesByDateAscending }" />
+              </div>
+            </b-col>
+          </b-row>
+          <no-ssr>
+            <div
+              v-if="sortedInitiatives.length > 0"
+              class="p-4 p-md-0"
+            >
+              <div id="masonry" v-masonry="'masonry'" item-selector=".item" class="masonry-container">
+                <div
+                  v-for="initiative in sortedInitiatives"
+                  :key="initiative.id"
+                  v-masonry-tile
+                  horizontal-order="true"
+                  class="item px-2 pb-3"
+                >
+                  <InitiativeCard
+                    v-bind="initiative"
+                    @vote="vote(initiative.id)"
+                    @removeVote="removeVote(initiative.id)"
+                  />
+                </div>
+              </div>
+            </div>
+          </no-ssr>
+          <b-row v-if="sortedInitiatives.length === 0">
+            <b-col cols="12" class="d-inline-flex justify-content-center mb-5">
+              <div class="d-flex justify-content-center align-items-center mt-4 no-initiatives">
+                <FolderEmptyIcon />
+                <span class="ml-2">Za izbrane filtre ni oddane nobene pobude.</span>
+              </div>
+            </b-col>
+          </b-row>
+        </div>
+      </b-col>
+      <b-col lg="5" class="px-0">
+        <div id="map-wrap" class="h-100">
+          <client-only>
+            <l-map
+              :zoom="14"
+              :min-zoom="11"
+              :center="[46.554650, 15.645881]"
+              :max-bounds="[
+                [46.46188844675249, 15.51583465730236],
+                [46.62102957408261, 15.783283325506178]
+              ]"
+            >
+              <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
+              <l-marker
+                v-for="initiative in initiativeMarkers"
+                :key="initiative.id"
+                :lat-lng="[initiative.location.coordinates[0], initiative.location.coordinates[1]]"
+                :icon="mapIcon"
+                @ready="setIconStyles"
+                @click="markerClick(initiative.id)"
+              />
+            </l-map>
+          </client-only>
+        </div>
       </b-col>
     </b-row>
   </b-container>
 </template>
 
 <script>
-import InitiativeCard from '~/components/InitiativeCard'
-import ExitRightIcon from '~/assets/img/icons/exit-right.svg?inline'
-import EditIcon from '~/assets/img/icons/edit.svg?inline'
-import ArrowDownIcon from '~/assets/img/icons/arrow-down.svg?inline'
 import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
+import ArrowDownIcon from '~/assets/img/icons/arrow-down.svg?inline'
+import DownArrowIcon from '~/assets/img/icons/down-arrow.svg?inline'
+import FolderEmptyIcon from '~/assets/img/icons/folder-question-mark.svg?inline'
+import SearchIcon from '~/assets/img/icons/search.svg?inline'
+import InitiativeCard from '~/components/InitiativeCard'
 
 export default {
-  components: { InitiativeCard, ExitRightIcon, EditIcon, ArrowDownIcon, ArrowRightIcon },
-  // middleware: 'auth',
-  middleware ({ store, redirect }) {
-    // If the user is not authenticated
-    if (!store.state.auth.loggedIn) {
-      return redirect('/predlogi')
-    }
-  },
-  asyncData ({ store }) {
-    return store.dispatch('getMyInitiatives')
-  },
+  components: { ArrowRightIcon, ArrowDownIcon, DownArrowIcon, FolderEmptyIcon, SearchIcon, InitiativeCard },
   data () {
     return {
-      drafts: [],
-      published: [],
-      editLink: {
-        MM: 'moti-me',
-        ZM: 'zanima-me',
-        II: 'imam-idejo'
-      },
-      newInitiativeDropdown: false,
-      newInitiativeType: '',
+      search: '',
+      showType: false,
+      filterTypes: [],
+      areas: [],
+      showArea: false,
+      filterAreas: [],
+      zones: [],
+      showZone: false,
+      filterZones: [],
+      showStatus: false,
+      filterStatuses: [],
+      sortInitiativesByDateAscending: false,
+      initiatives: [],
+      sortedInitiatives: [],
+      map: null,
+      mapIcon: null,
       columns: 1
     }
   },
-  mounted () {
-    if (window.matchMedia('(min-width: 1800px)').matches) {
-      this.columns = 4
-    } else if (window.matchMedia('(min-width: 1200px)').matches) {
-      this.columns = 3
-    } else if (window.matchMedia('(min-width: 576px)').matches) {
-      this.columns = 2
-    } else {
-      this.columns = 1
+  computed: {
+    initiativesNumber () {
+      const n = this.initiatives.length
+      if (n === 1) { return '1 predlog' } else if (n === 2) { return '2 predloga' } else if (n === 3 || n === 4) { return `${n} predlogi` } else { return `${n} predlogov` }
+    },
+    initiativeMarkers () {
+      return this.initiatives.filter(initiative => initiative.location)
     }
   },
+  async created () {
+    await this.fetchAreas()
+    await this.fetchZones()
+    await this.fetchInitiatives()
+  },
   methods: {
-    async logout () {
-      await this.$store.dispatch('logout')
+    setIconStyles () {
+      this.mapIcon = this.$L.icon({
+        iconUrl: require('@/assets/img/icons/pin.svg'),
+        iconSize: [32, 32]
+      })
+    },
+    markerClick (id) {
+      const offset = 47 // sticky nav height
+      const container = document.getElementById('masonry')
+      const el = document.getElementById(`initiative-card-${id}`).parentElement // element you are scrolling to
+      window.scroll({ top: (el.offsetTop + container.offsetTop - offset), left: 0, behavior: 'smooth' })
+      document.getElementById(`initiative-card-${id}`).style.outlineColor = '#1a365d'
+      setTimeout(function () {
+        document.getElementById(`initiative-card-${id}`).style.outlineColor = 'transparent'
+      }, 1000)
+    },
+    async fetchInitiatives () {
+      const fetched = await this.$store.dispatch('getInitiatives', {
+        search: this.search,
+        type: this.filterTypes,
+        area: this.filterAreas,
+        zone: this.filterZones,
+        status: this.filterStatuses
+      })
+      this.initiatives = fetched.initiatives
+      this.sortInitiatives()
+    },
+    sortInitiatives () {
+      const sortedByTime = this.initiatives.slice(0).sort((a, b) => a.created.localeCompare(b.created))
+      if (!this.sortInitiativesByDateAscending) {
+        sortedByTime.reverse()
+      }
+      this.sortedInitiatives = sortedByTime
+      this.$nextTick(() => this.$redrawVueMasonry('masonry'))
+    },
+    async fetchAreas () {
+      this.areas = await this.$store.dispatch('getAreas')
+      // this.filterAreas = this.areas.map(a => a.id)
+    },
+    async fetchZones () {
+      this.zones = await this.$store.dispatch('getZones')
+      // this.filterZones = this.zones.map(z => z.id)
+    },
+    switchType () {
+      this.showType = !this.showType
+      this.showArea = false
+      this.showZone = false
+      this.showStatus = false
+    },
+    closeTypeDropdown (e) {
+      if (e.target.id !== 'type-filter-button') {
+        this.showType = false
+      }
+    },
+    switchArea () {
+      this.showType = false
+      this.showArea = !this.showArea
+      this.showZone = false
+      this.showStatus = false
+    },
+    closeAreaDropdown (e) {
+      if (e.target.id !== 'area-filter-button') {
+        this.showArea = false
+      }
+    },
+    switchZone () {
+      this.showType = false
+      this.showArea = false
+      this.showZone = !this.showZone
+      this.showStatus = false
+    },
+    closeZoneDropdown (e) {
+      if (e.target.id !== 'zone-filter-button') {
+        this.showZone = false
+      }
+    },
+    switchStatus () {
+      this.showType = false
+      this.showArea = false
+      this.showZone = false
+      this.showStatus = !this.showStatus
+    },
+    closeStatusDropdown (e) {
+      if (e.target.id !== 'status-filter-button') {
+        this.showStatus = false
+      }
     },
     async vote (id) {
       const success = await this.$store.dispatch('postVote', {
@@ -225,20 +442,13 @@ export default {
       }
     },
     updateVotes (id, hasVoted) {
-      for (const initiative of this.published) {
+      for (const initiative of this.initiatives) {
         if (initiative.id === id) {
           initiative.has_voted = hasVoted
           initiative.vote_count += hasVoted ? 1 : -1
           break
         }
       }
-    },
-    date (date) {
-      const d = new Date(date)
-      return `${d.getDate()}. ${d.getMonth() + 1}. ${d.getFullYear()}`
-    },
-    openNewInitiativeDropdown () {
-      this.newInitiativeDropdown = !this.newInitiativeDropdown
     }
   }
 }
@@ -246,153 +456,98 @@ export default {
 
 <style scoped lang="scss">
 
-h1, h4 {
-  font-weight: 700;
-}
-
-.logout-button {
-  background-color: #d7d7d7;
-
-  &:hover {
-    background-color: #1A365D;
-  }
-}
-
-.card-outline {
-  box-shadow: 4px 4px 11px #d4d9e1, -5px -5px 11px #ffffff;
+.action-card {
+  box-shadow: 3px 3px 7px #d4d9e1, -3px -3px 7px #ffffff;
   border-radius: 0.5rem;
-}
-
-a {
-  color: unset;
+  padding: 1rem 1rem 1rem 1.5rem;
+  cursor: pointer;
+  color: black;
+  text-decoration: none;
 
   &:hover {
-    text-decoration: none;
+    background-color: white;
+  }
+
+  h6 {
+    font-weight: 700;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    line-height: 1;
+
+    svg {
+      height: 1.2rem;
+      width: 1.2rem;
+      margin-left: 0.5rem;
+    }
+  }
+
+  p {
+    font-size: 0.8rem;
+    font-style: italic;
+    line-height: 1.4;
+    margin-bottom: 0;
   }
 }
 
-.initiative-card {
-  box-shadow: 4px 4px 6px #d3d7df, -4px -4px 6px #ffffff;
-
-  .cover-image {
-    width: 100%;
-    height: 8rem;
-    object-fit: cover;
+.action-cards {
+  div:nth-child(2) .action-card-top {
+    background-color: #8cade2;
   }
-
-  .initiative-card-body {
-    padding: 0.75rem;
-
-    h4 a {
-      color: black;
-      line-height: 1;
-      font-weight: 700;
-    }
-
-    .author {
-      font-size: 0.9rem;
-      font-style: italic;
-    }
-
-    p {
-      font-size: 0.9rem;
-      overflow-wrap: break-word;
-      white-space: pre-wrap;
-    }
-
-    .btn {
-      margin: 0;
-      padding: 0.25rem 0.5rem;
-      font-style: normal;
-      font-size: 0.75rem;
-      font-weight: 400;
-      letter-spacing: normal;
-
-      img {
-        height: 0.8rem;
-      }
-    }
-
-    hr {
-      &.hr-upper {
-        margin-top: 1rem
-      }
-      &.hr-lower {
-        margin-bottom: 1rem;
-      }
-    }
+  div:nth-child(3) .action-card-top {
+    background-color: #70b6a3;
   }
-
-  &.draft {
-    &:hover {
-      background-color: white;
-    }
-
-    .btn {
-      padding: 0.75rem 3rem;
-      font-size: 1rem;
-      font-style: italic;
-      font-weight: 700;
-      letter-spacing: 2px;
-
-      svg {
-        height: 1.5rem;
-        width: 1.5rem;
-        right: 1rem;
-      }
-    }
-  }
-
-  &.published {
-    .btn {
-      margin: 0;
-      padding: 0.25rem 0.5rem;
-      font-style: normal;
-      font-size: 0.75rem;
-      font-weight: 400;
-      letter-spacing: normal;
-
-      img {
-        height: 0.8rem;
-      }
-    }
-  }
-
-  &.empty {
-    h4 {
-      font-weight: 600;
-    }
-
-    .new-initiative-button {
-      padding: 0.5rem 1rem;
-      font-size: 1.25rem;
-      letter-spacing: 2px;
-
-      &:hover {
-        background-color: #1A365D;
-        color: white;
-      }
-
-      svg {
-        right: 0.5rem;
-        height: 1.5rem;
-        width: 1.5rem;
-      }
-    }
+  div:nth-child(1) .action-card-top {
+    background-color: #d9ab27;
   }
 }
 
-.new-initiative-dropdown-btn {
+.action-card-top {
+  height: 100%;
+  width: 0.5rem;
+  position: absolute;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+
+h4 {
+  font-weight: 600;
+}
+
+.search-button {
+  border: none;
+  background-color: transparent;
+  height: 2.5rem;
+  width: 2.5rem;
+  right: 0.1rem;
+  top: 0;
+  display: flex;
+  align-items: center;
+
+  svg {
+    height: 80%;
+  }
+}
+
+.filter {
   box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
   border-radius: 1.5rem;
   border: 2px solid #f8f8f8;
   background-color: #f8f8f8;
   font-style: italic;
-  padding: 0.25rem 1rem;
+  font-size: 0.8rem;
+  padding: 0.1rem 0.75rem;
+  margin-left: 0.25rem;
+  margin-top: 0.25rem;
+  flex-wrap: wrap;
 
   &:hover {
     background-color: white;
     border-color: white;
+  }
+
+  @media (min-width: 576px) {
+    margin-left: 0.5rem;
   }
 
   &.dropdown-open {
@@ -401,40 +556,31 @@ a {
     &:hover {
       border-color: #ef7782;
     }
+
+    & > svg {
+      transform: rotate(-180deg);
+    }
   }
 
   & > svg {
-    max-width: 0.5rem;
-    max-height: 0.5rem;
+    transition: transform 500ms;
+    width: 0.5rem;
+    height: 0.5rem;
   }
 
-  .new-initiative-dropdown {
+  .filter-dropdown {
     background-color: #f8f8f8;
     box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
     border-radius: 0.5rem;
     top: 6rem;
-    z-index: 10;
+    left: 2rem;
+    right: 2rem;
+    z-index: 15;
+    padding: 1rem;
     text-align: left;
     cursor: default;
-
-    h5 {
-      letter-spacing: 2px;
-    }
-
-    div.form-note {
-      padding: 1rem 2rem;
-    }
-
-    .form-note {
-      font-size: 0.8rem;
-      font-weight: 400;
-      margin-bottom: 0;
-    }
-
-    div {
-      padding-left: 1.5rem;
-      padding-right: 1rem;
-    }
+    max-height: 24rem;
+    overflow-y: auto;
 
     @media (min-width: 768px) {
       top: 3rem;
@@ -445,6 +591,58 @@ a {
       right: auto;
     }
   }
+}
+
+.initiatives-no {
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
+.sort-initiatives {
+  font-size: 0.8rem;
+  box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
+  background-color: #e8ebef;
+  border-radius: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #1A365D;
+    color: white;
+
+    svg {
+      fill: white;
+    }
+  }
+
+  svg {
+    max-height: 0.7rem;
+    max-width: 0.7rem;
+    transition: transform 500ms;
+
+    &.sort-ascending {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.no-initiatives {
+  background-color: #e8ebef;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 12rem;
+
+  svg {
+    max-width: 2rem;
+    max-height: 2rem;
+  }
+}
+
+#map-wrap {
+  max-height: calc(100vh - 47px);
+  position: sticky;
+  top: 47px;
+  z-index: 0;
 }
 
 </style>

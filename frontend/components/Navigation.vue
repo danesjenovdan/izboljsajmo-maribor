@@ -6,7 +6,7 @@
       </b-navbar-toggle>
       <b-collapse id="nav_collapse" is-nav class="py-4 py-md-0">
         <b-navbar-nav class="ml-auto">
-          <NuxtLink class="nav-link" to="/predlogi">
+          <NuxtLink class="nav-link" to="/">
             Vsi predlogi
           </NuxtLink>
           <NuxtLink class="nav-link" to="/o-izboljsajmo-maribor">
@@ -19,7 +19,7 @@
             v-if="isAuthenticated"
             id="profile-button"
             class="profile"
-            to="/"
+            to="/profil"
             event=""
             @click.native="toggleDropdown"
           >
@@ -75,7 +75,7 @@ export default {
   methods: {
     myInitiatives () {
       this.showProfileDropdown = !this.showProfileDropdown
-      this.$router.push('/')
+      this.$router.push('/profil')
     },
     async logout () {
       this.showProfileDropdown = !this.showProfileDropdown
@@ -171,7 +171,7 @@ export default {
 
     @media (min-width: 576px) {
       box-shadow: 0 0 20px #d4d9e1;
-      top: 50px;
+      top: 60px;
     }
 
     .logout-button {

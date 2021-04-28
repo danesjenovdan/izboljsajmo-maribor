@@ -180,7 +180,8 @@ export default {
 
 .initiative-card {
   box-shadow: 4px 4px 6px #d3d7df, -4px -4px 6px #ffffff;
-  border: 1px solid #f8f8f8;
+  outline: solid 1px transparent;
+  transition: outline-color 0.5s linear;
 
   &:hover {
     background-color: white;

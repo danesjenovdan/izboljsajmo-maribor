@@ -2,7 +2,7 @@
   <div class="wrapper">
     <b-container fluid>
       <b-row class="logos d-flex justify-content-center justify-content-md-between align-items-center">
-        <NuxtLink to="/predlogi">
+        <NuxtLink to="/">
           <img src="~/assets/img/izboljsajmo_maribor_logo.png" alt="Izboljšajmo Maribor LOGO" class="izboljsajmo-maribor-logo">
         </NuxtLink>
         <div class="eu-logo">

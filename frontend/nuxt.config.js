@@ -23,7 +23,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '~/plugins/directives.js' }
+    { src: '~/plugins/directives.js' },
+    { src: '~/plugins/vue-masonry', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -84,8 +85,8 @@ export default {
     },
     redirect: {
       login: '/prijava',
-      logout: '/predlogi',
-      home: '/predlogi'
+      logout: '/',
+      home: '/'
     }
   },
   server: {
