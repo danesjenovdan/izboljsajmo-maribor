@@ -20,44 +20,38 @@
             <b-row>
               <b-col
                 cols="12"
+                class="masonry"
               >
                 <div
-                  v-masonry
-                  item-selector=".item"
-                  class="masonry-container"
+                  v-for="(draft, index) in drafts"
+                  :key="`draft-${index}`"
+                  class="masonry-item"
                 >
-                  <div
-                    v-for="(draft, index) in drafts"
-                    :key="`draft-${index}`"
-                    v-masonry-tile
-                    class="item px-2 pb-3"
-                  >
-                    <NuxtLink :to="`/predlogi/oddaj/${editLink[draft.type]}?id=${draft.id}`">
-                      <div class="initiative-card draft h-100">
-                        <img
-                          v-if="draft.cover_image"
-                          class="cover-image"
-                          :src="draft.cover_image.image"
-                          alt="Initiative draft cover image"
-                        >
-                        <div class="initiative-card-body">
-                          <h4>{{ draft.title }}</h4>
-                          <p>{{ draft.description }}</p>
-                          <div class="d-flex justify-content-center">
-                            <div class="d-inline-flex align-items-center">
-                              <NuxtLink
-                                :to="`/predlogi/oddaj/${editLink[draft.type]}?id=${draft.id}`"
-                                class="btn d-flex align-items-center position-relative"
-                              >
-                                <span class="text-uppercase pr-2">Uredi</span>
-                                <EditIcon class="position-absolute" />
-                              </NuxtLink>
-                            </div>
+                  <NuxtLink :to="`/predlogi/oddaj/${editLink[draft.type]}?id=${draft.id}`">
+                    <div class="initiative-card draft h-100">
+                      <img
+                        v-if="draft.cover_image"
+                        class="cover-image"
+                        :src="draft.cover_image.image"
+                        alt="Initiative draft cover image"
+                      >
+                      <div class="initiative-card-body">
+                        <h4>{{ draft.title }}</h4>
+                        <p>{{ draft.description }}</p>
+                        <div class="d-flex justify-content-center">
+                          <div class="d-inline-flex align-items-center">
+                            <NuxtLink
+                              :to="`/predlogi/oddaj/${editLink[draft.type]}?id=${draft.id}`"
+                              class="btn d-flex align-items-center position-relative"
+                            >
+                              <span class="text-uppercase pr-2">Uredi</span>
+                              <EditIcon class="position-absolute" />
+                            </NuxtLink>
                           </div>
                         </div>
                       </div>
-                    </NuxtLink>
-                  </div>
+                    </div>
+                  </NuxtLink>
                 </div>
               </b-col>
             </b-row>
@@ -73,8 +67,8 @@
             </p>
             <b-row>
               <b-col v-if="published.length === 0">
-                <div class="">
-                  <div class="item px-2 pb-3">
+                <div class="masonry">
+                  <div class="masonry-item">
                     <div class="initiative-card py-5 px-3 empty h-100 text-center">
                       <h4>Oddajte predlog izboljšave, popravek ali postavite vprašanje</h4>
                       <div>
@@ -142,22 +136,19 @@
                 </div>
               </b-col>
               <b-col v-if="published.length > 0">
-                <no-ssr>
-                  <div v-masonry item-selector=".item" class="masonry-container">
-                    <div
-                      v-for="initiative in published"
-                      :key="`published-${initiative.id}`"
-                      v-masonry-tile
-                      class="item px-2 pb-3"
-                    >
-                      <InitiativeCard
-                        v-bind="initiative"
-                        @vote="vote(initiative.id)"
-                        @removeVote="removeVote(initiative.id)"
-                      />
-                    </div>
+                <div class="masonry">
+                  <div
+                    v-for="initiative in published"
+                    :key="`published-${initiative.id}`"
+                    class="masonry-item"
+                  >
+                    <InitiativeCard
+                      v-bind="initiative"
+                      @vote="vote(initiative.id)"
+                      @removeVote="removeVote(initiative.id)"
+                    />
                   </div>
-                </no-ssr>
+                </div>
               </b-col>
             </b-row>
           </b-col>
@@ -177,14 +168,6 @@ import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
 export default {
   components: { InitiativeCard, ExitRightIcon, EditIcon, ArrowDownIcon, ArrowRightIcon },
   middleware: 'auth',
-  /*
-  middleware ({ store, redirect }) {
-    // If the user is not authenticated
-    if (!store.state.auth.loggedIn) {
-      return redirect('/predlogi')
-    }
-  },
-  */
   asyncData ({ store }) {
     return store.dispatch('getMyInitiatives')
   },
@@ -203,8 +186,14 @@ export default {
     }
   },
   mounted () {
-    if (typeof this.$redrawVueMasonry === 'function') {
-      this.$redrawVueMasonry()
+    if (window.matchMedia('(min-width: 1800px)').matches) {
+      this.columns = 4
+    } else if (window.matchMedia('(min-width: 1200px)').matches) {
+      this.columns = 3
+    } else if (window.matchMedia('(min-width: 576px)').matches) {
+      this.columns = 2
+    } else {
+      this.columns = 1
     }
   },
   methods: {
