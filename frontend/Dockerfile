@@ -1,6 +1,6 @@
 # start with the nodejs image, calling it 'build'
 FROM node:alpine as build
-RUN apk add python make g++
+RUN apk add --update --no-cache python3 make g++
 
 # install node modules
 # COPY package.json yarn.lock /
