@@ -1,5 +1,5 @@
 # start with the nodejs image, calling it 'build'
-FROM node:alpine as build
+FROM node:14-alpine as build
 RUN apk add --update --no-cache python3 make g++
 
 # install node modules
