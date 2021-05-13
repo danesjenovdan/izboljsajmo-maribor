@@ -17,10 +17,12 @@ from django.contrib import admin
 from django.urls import path, re_path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from initiatives.views import TokenView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    re_path(r'^auth/token', TokenView.as_view()),  # The customized TokenView
     re_path(r'^auth/', include('drf_social_oauth2.urls', namespace='drf')),
     re_path(r'^v1/', include('initiatives.urls', namespace='initiatives')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

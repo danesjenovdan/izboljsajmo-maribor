@@ -4,11 +4,14 @@ from django.utils.translation import gettext as _
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.db.models import Q
 
 from rest_framework import viewsets, mixins, permissions, status, views, authentication, exceptions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
+from drf_social_oauth2.views import TokenView
 from django_filters import rest_framework as filters
 from rest_framework import filters as s_filters
 from behaviors.behaviors import Published
@@ -26,7 +29,21 @@ from initiatives.permissions import IsOwnerOrReadOnly, IsVerified, IsBlocked
 from initiatives.tasks import send_email_task
 
 import logging
+import json
 logger = logging.getLogger(__name__)
+
+class TokenView(TokenView):
+    def create_token_response(self, request):
+        """
+        workaround for login with email or username
+        """
+        username = request.POST.pop('username', None)
+        if username:
+            username = get_user_model().objects.filter(Q(email=username[0])|Q(username=username[0])).values_list('username', flat=True).last()
+            body = json.loads(request._body)
+            body['username'] = username
+            request._body = bytes(json.dumps(body), 'utf-8')
+        return super(TokenView, self).create_token_response(request)
 
 class UserViewSet(
     viewsets.GenericViewSet,
