@@ -209,11 +209,10 @@ export const actions = {
       params.append('zone', payload.zone.join(','))
     }
     // statuses
-    /*
-    if (payload.status) {
-      params.append('status', payload.status.join(','))
-    } else { return { initiatives: [] } }
-    */
+    if (payload.status && payload.status.length > 0) {
+      // params.append('status', payload.status.join(','))
+      params.append('statuses', payload.status[payload.status.length - 1])
+    }
     const response = await this.$axios.get('v1/initiatives/?', { params })
     if (response.status === 200) {
       return { initiatives: response.data }
