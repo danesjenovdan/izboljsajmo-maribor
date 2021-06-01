@@ -114,7 +114,7 @@ class StatusInitiativeSerializer(serializers.ModelSerializer):
             'competent_service'
         )
     def get_status(self, obj):
-        return obj.status.name
+        return obj.status.id
 
     def get_competent_service(self, obj):
         return obj.competent_service.name if obj.competent_service else None

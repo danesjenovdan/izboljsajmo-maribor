@@ -116,7 +116,7 @@ class CommentInline(admin.TabularInline):
 class StatusInitiativeInline(admin.TabularInline):
     readonly_fields = []
     classes = ['collapse']
-    fields = ['status', 'note', 'email_content', 'reason_for_rejection', 'competent_service']
+    fields = ['status', 'note', 'email_content', 'note', 'reason_for_rejection', 'competent_service']
     model = StatusInitiative
     extra = 0
 
@@ -124,7 +124,7 @@ class StatusInitiativeInline(admin.TabularInline):
 class StatusInitiativeHearInline(admin.TabularInline):
     form = HearStatusInlineForm
     readonly_fields = ['status', 'created']
-    fields = ['status', 'created', 'email_content']
+    fields = ['status', 'created', 'email_content', 'note']
     classes = ['collapse']
     model = StatusInitiativeHear
     extra = 0
@@ -135,14 +135,14 @@ class StatusInitiativeHearInline(admin.TabularInline):
 
 
 class StatusInitiativeHearAdminInline(StatusInitiativeHearInline):
-    fields = ['status', 'created', 'email_content', 'publication_status']
+    fields = ['status', 'created', 'email_content', 'note', 'publication_status']
 
 
 class StatusInitiativeEditingInline(admin.TabularInline):
     form = EditingStatusInlineForm
     readonly_fields = ['created']
     autocomplete_fields = ['competent_service']
-    fields = ['created', 'email_content', 'competent_service']
+    fields = ['created', 'email_content', 'note', 'competent_service']
     classes = ['collapse']
     model = StatusInitiativeEditing
     extra = 0
@@ -153,13 +153,13 @@ class StatusInitiativeEditingInline(admin.TabularInline):
 
 
 class StatusInitiativeEditingAdminInline(StatusInitiativeEditingInline):
-    fields = ['created', 'email_content', 'competent_service', 'publication_status']
+    fields = ['created', 'email_content', 'note', 'competent_service', 'publication_status']
 
 
 class StatusInitiativeProgressInline(admin.TabularInline):
     form = ProgressStatusInlineForm
     readonly_fields = ['created']
-    fields = ['created', 'email_content']
+    fields = ['created', 'email_content', 'note']
     classes = ['collapse']
     model = StatusInitiativeProgress
     extra = 0
@@ -170,13 +170,13 @@ class StatusInitiativeProgressInline(admin.TabularInline):
 
 
 class StatusInitiativeProgressAdminInline(StatusInitiativeProgressInline):
-    fields = ['created', 'email_content', 'publication_status']
+    fields = ['created', 'email_content', 'note', 'publication_status']
 
 
 class StatusInitiativeFinishedInline(admin.TabularInline):
     form = FinishedStatusInlineForm
     readonly_fields = ['created']
-    fields = ['created', 'email_content']
+    fields = ['created', 'email_content', 'note']
     classes = ['collapse']
     model = StatusInitiativeFinished
     extra = 0
@@ -187,13 +187,13 @@ class StatusInitiativeFinishedInline(admin.TabularInline):
 
 
 class StatusInitiativeFinishedAdminInline(StatusInitiativeFinishedInline):
-    fields = ['created', 'email_content', 'publication_status']
+    fields = ['created', 'email_content', 'note', 'publication_status']
 
 
 class StatusInitiativeDoneInline(admin.TabularInline):
     form = DoneStatusInlineForm
     readonly_fields = ['created']
-    fields = ['created', 'email_content']
+    fields = ['created', 'email_content', 'note']
     classes = ['collapse']
     model = StatusInitiativeDone
     extra = 0
@@ -204,13 +204,13 @@ class StatusInitiativeDoneInline(admin.TabularInline):
 
 
 class StatusInitiativeDoneAdminInline(StatusInitiativeDoneInline):
-    fields = ['created', 'email_content', 'publication_status']
+    fields = ['created', 'email_content', 'note', 'publication_status']
 
 
 class StatusInitiativeRejectedInline(admin.TabularInline):
     form = RejectedStatusInlineForm
     readonly_fields = ['created']
-    fields = ['created', 'email_content', 'reason_for_rejection']
+    fields = ['created', 'email_content', 'note', 'reason_for_rejection']
     autocomplete_fields = ['reason_for_rejection',]
     classes = ['collapse']
     model = StatusInitiativeRejected
@@ -227,7 +227,7 @@ class StatusInitiativeRejectedInline(admin.TabularInline):
 
 
 class StatusInitiativeRejectedAdminInline(StatusInitiativeRejectedInline):
-    fields = ['created', 'email_content', 'reason_for_rejection', 'publication_status']
+    fields = ['created', 'email_content', 'note', 'reason_for_rejection', 'publication_status']
 
 class DescriptionInline(admin.TabularInline):
     search_fields = ['title']

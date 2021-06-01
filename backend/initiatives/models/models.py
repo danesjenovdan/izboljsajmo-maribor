@@ -83,6 +83,9 @@ class StatusInitiative(Timestamped, Published):
         draft_style = 'style="background-color: coral;"' if self.draft else 'style="background-color: lightgreen;"'
         return f'<tr><th>{self.status.name}</th><th>{self.note[:50] if self.note else ""}</th><th {draft_style}>{_("published") if self.published else _("draft")}</th><th>{self.created.date().isoformat() if self.created else 0}</th></tr>'
 
+    def __str__(self):
+        return f'{self.status.name}: {self.created}'
+
     class Meta:
         verbose_name = _('Status pobude')
         verbose_name_plural = _('Statusi pobude')
