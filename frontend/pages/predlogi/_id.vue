@@ -56,7 +56,7 @@
           >
             <b-col cols="2" class="d-flex flex-column align-items-center">
               <div class="icon-circle d-flex justify-content-center align-items-center">
-                <img :src="statusImage(status.responses[0].status)" alt="status img">
+                <img v-if="status.responses" :src="statusImage(status.responses[0].status)" alt="status img">
               </div>
               <div class="line" />
             </b-col>
