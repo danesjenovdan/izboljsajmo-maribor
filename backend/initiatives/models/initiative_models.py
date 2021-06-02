@@ -49,7 +49,8 @@ class Initiative(Timestamped, Authored):
         blank=True)
     location = geo_models.PointField(
         null=True,
-        blank=True)
+        blank=True,
+        srid=3857)
     address = models.CharField(
         _("Address of initiative"),
         max_length=100,
