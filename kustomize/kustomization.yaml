@@ -9,7 +9,7 @@ resources:
 images:
 - name: frontend
   newName: rg.fr-par.scw.cloud/djnd/izboljsajmo-maribor-frontend
-  newTag: '16b9c64059e11f1dc86a5e7331c4599669905862'
+  newTag: '7789b2a29b0d5ffa9d87c96cc20145f033efb5bd'
 - name: backend
   newName: rg.fr-par.scw.cloud/djnd/izboljsajmo-maribor-backend
-  newTag: '16b9c64059e11f1dc86a5e7331c4599669905862'
+  newTag: '7789b2a29b0d5ffa9d87c96cc20145f033efb5bd'
