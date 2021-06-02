@@ -27,8 +27,8 @@ class BasicUserAdmin(UserAdmin):
         'created',
     ]
     fieldsets = (
-        (None, {'fields': ('username', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
+        (None, {'fields': ('username', 'email', 'password')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name')}),
         (_('Permissions'), {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions', 'email_confirmed', 'blocked'),
         }),
@@ -39,7 +39,7 @@ class BasicUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'password1', 'password2'),
+            'fields': ('username', 'email', 'password1', 'password2'),
         }),
     )
 
@@ -52,8 +52,8 @@ class MBUserAdmin(UserAdmin):
         'created',
     ]
     fieldsets = (
-        (None, {'fields': ('username', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
+        (None, {'fields': ('username', 'email', 'password')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name')}),
         (_('Permissions'), {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions', 'email_confirmed'),
         }),
@@ -63,7 +63,7 @@ class MBUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'password1', 'password2'),
+            'fields': ('username', 'email', 'password1', 'password2'),
         }),
     )
 
@@ -106,7 +106,7 @@ class UserCompetentServiceInline(admin.TabularInline):
 
 
 class CommentInline(admin.TabularInline):
-    readonly_fields = ['author', 'created']
+    readonly_fields = ['author', 'created', 'content']
     classes = ['collapse']
     fields = ['author', 'content', 'created', 'status']
     model = Comment
@@ -284,6 +284,7 @@ class AreaAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     list_display = ['id', 'initiative_obj', "content", "author", "status", 'created']
     list_editable = ["status"]
+    readonly_fields = ["content"]
 
     list_filter = ['status']
 

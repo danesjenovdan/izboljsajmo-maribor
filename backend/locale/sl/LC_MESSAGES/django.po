@@ -489,7 +489,7 @@ msgstr "Meje območja"
 
 #: initiatives/models/models.py:235
 msgid "Območje"
-msgstr ""
+msgstr "Mestna četrt/Krajevna skupnost"
 
 #: initiatives/models/models.py:236
 msgid "Območja"
@@ -765,7 +765,7 @@ msgstr "Status komentarja"
 
 #: initiatives/views/admin_views.py:48
 msgid "Zone"
-msgstr "Območje"
+msgstr "Mestna četrt/Krajevna skupnost"
 
 #: initiatives/views/admin_views.py:48
 msgid "Address"

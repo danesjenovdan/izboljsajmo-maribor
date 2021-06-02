@@ -259,7 +259,7 @@ class Comment(Timestamped, Authored):
         _('Comment status'),
         max_length=2,
         choices=CommentStatus.choices,
-        default=CommentStatus.PENDING)
+        default=CommentStatus.PUBLISHED)
 
     class Meta:
         verbose_name = _('Komentar')
@@ -318,7 +318,7 @@ class User(AbstractUser, Timestamped):
         blank=True)
     email = models.EmailField(
         _('email address'),
-        blank=True,
+        blank=False,
         unique=True)
     # a username field that allows a space
     username = models.CharField(_('username'), max_length=30, unique=True,
