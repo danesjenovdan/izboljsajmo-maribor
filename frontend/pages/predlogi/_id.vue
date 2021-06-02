@@ -1,8 +1,8 @@
 <template>
-  <b-container fluid class="mt-5">
+  <b-container fluid class="my-5">
     <b-row>
-      <b-col cols="12" lg="4" class="position-relative">
-        <div class="predlog-info mb-4 mb-lg-0">
+      <b-col cols="12" lg="4">
+        <div class="predlog-info position-relative mb-4 mb-lg-0">
           <div class="tags mb-2">
             <span class="pl-4">
               <span
@@ -50,13 +50,13 @@
           </div>
           <hr>
           <b-row
-            v-for="(status, index) in data.statuses"
-            :key="index"
+            v-for="status in data.statuses"
+            :key="status.status"
             class="status"
           >
             <b-col cols="2" class="d-flex flex-column align-items-center">
               <div class="icon-circle d-flex justify-content-center align-items-center">
-                <img :src="statusImage(status.status)" alt="status img">
+                <img :src="statusImage(status.responses[0].status)" alt="status img">
               </div>
               <div class="line" />
             </b-col>
@@ -65,8 +65,10 @@
                 <h6 class="text-uppercase">
                   {{ status.status }}
                 </h6>
-                <span>{{ date(status.created) }}</span>
-                <p>{{ status.note }}</p>
+                <div v-for="response in status.responses" :key="response.created">
+                  <span>{{ date(response.created) }}</span>
+                  <p>{{ response.note }}</p>
+                </div>
               </div>
             </b-col>
           </b-row>
@@ -184,12 +186,10 @@ export default {
     const id = params.id
     return $axios.get(`v1/initiatives/${id}`)
       .then((res) => {
-        console.log(res.data)
         return { data: res.data, id }
       })
       .catch((e) => {
-        return redirect('/404')
-        // console.log(params)
+        // return redirect('/predlogi')
       })
   },
   data () {
@@ -219,8 +219,7 @@ export default {
     },
     statusImage (s) {
       try {
-        const icon = this.$store.getters.initiativeStatuses[s]
-        return require(`~/assets/img/icons/${icon}.svg`)
+        return require(`~/assets/img/icons/statuses/${s}.svg`)
       } catch (e) {
         return ''
       }
@@ -254,13 +253,22 @@ export default {
 .predlog-info {
   background-color: #ab2131;
   color: white;
-  padding: 2rem;
+  padding: 1rem;
   z-index: 1;
 
   @media (min-width: 992px) {
-    position: absolute;
-    left: 2rem;
-    right: -2rem;
+    padding: 2rem 0 2rem 2rem;
+
+    &:after {
+      content: "";
+      background-color: #ab2131;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: -2rem;
+      z-index: -1;
+    }
   }
 
   .tags span {

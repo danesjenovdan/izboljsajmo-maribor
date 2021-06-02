@@ -1,16 +1,20 @@
 <template>
   <b-form @submit.prevent="resetPassword">
-    <div class="form-group">
+    <div class="form-group position-relative">
       <label for="email">Vpišite novo geslo</label>
       <span v-if="errorPassword" class="error-message">Vnesite geslo.</span>
       <b-form-input
         id="password"
         v-model="password"
         :class="{ 'error-input': errorPassword }"
-        type="password"
+        :type="passwordVisibility ? 'text' : 'password'"
         required
         @keyup="checkPassword"
       />
+      <span class="position-absolute password-button" @click="passwordVisibility = !passwordVisibility">
+        <EyeHideIcon v-if="passwordVisibility" />
+        <EyeShowIcon v-if="!passwordVisibility" />
+      </span>
     </div>
     <b-button type="submit" class="w-100 d-flex justify-content-center align-items-center position-relative text-uppercase">
       Pošlji
@@ -25,7 +29,7 @@
       <span class="position-absolute" @click="success = false">Zapri</span>
     </p>
     <div class="form-note text-center">
-      <NuxtLink to="/prijava">
+      <NuxtLink class="back-button" to="/prijava">
         Nazaj na prijavo
       </NuxtLink>
     </div>
@@ -36,16 +40,19 @@
 import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
 import IconDanger from '~/assets/img/icons/danger.svg?inline'
 import IconSuccess from '~/assets/img/icons/success.svg?inline'
+import EyeShowIcon from '~/assets/img/icons/eye-show.svg?inline'
+import EyeHideIcon from '~/assets/img/icons/eye-hide.svg?inline'
 
 export default {
-  components: { ArrowRightIcon, IconDanger, IconSuccess },
+  components: { ArrowRightIcon, IconDanger, IconSuccess, EyeShowIcon, EyeHideIcon },
   layout: 'login',
   data () {
     return {
       errorPassword: false,
       error: false,
       success: false,
-      password: ''
+      password: '',
+      passwordVisibility: false
     }
   },
   methods: {

@@ -9,6 +9,8 @@ from initiatives.models import CommentStatus
 
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 
+from itertools import groupby
+
 class InitiativeListSerializer(serializers.ModelSerializer):
     area = AreaSerializer()
     author = serializers.SerializerMethodField()
@@ -53,7 +55,7 @@ class InitiativeListSerializer(serializers.ModelSerializer):
 
 
 class InitiativeDetailsSerializer(WritableNestedModelSerializer):
-    statuses = StatusInitiativeSerializer(source='initiative_statuses', many=True, required=False)
+    statuses = serializers.SerializerMethodField()
     uploaded_files = FileDetailsSerializer(source='files', many=True, required=False)
     author = serializers.SerializerMethodField()
     area = serializers.SerializerMethodField()
@@ -90,6 +92,18 @@ class InitiativeDetailsSerializer(WritableNestedModelSerializer):
             'created': {'read_only': True},
             'comments': {'read_only': True},
         }
+
+    def get_statuses(self, obj):
+        output = []
+        statuses = obj.initiative_statuses.all().order_by('status')
+        for status, items in groupby(statuses,key=lambda x:x.status.name):
+            responses = sorted([StatusInitiativeSerializer(item).data for item in items], key = lambda i: i['created'])
+            output.append({
+                'status': status,
+                'created': responses[0]['created'],
+                'responses': responses
+            })
+        return output
 
     def get_area(self, obj):
         return AreaSerializer(obj.area).data

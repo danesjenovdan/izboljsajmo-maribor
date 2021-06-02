@@ -12,7 +12,7 @@
         </b-button>
       </b-col>
       <b-col cols="12" lg="9">
-        <b-row v-if="drafts.length > 0" class="card-outline p-4 mb-4">
+        <b-row class="card-outline p-4 mb-4">
           <b-col cols="12" md="4" lg="2" class="mb-4">
             <h4>Neoddane pobude</h4>
           </b-col>
@@ -26,6 +26,71 @@
                   item-selector=".item"
                   class="masonry-container"
                 >
+                  <div class="item px-2 pb-3" v-masonry-tile>
+                    <div class="initiative-card py-5 px-3 empty h-100 text-center">
+                      <h4>Oddajte predlog izboljšave, popravek ali postavite vprašanje</h4>
+                      <div>
+                        <button
+                          id="new-initiative-btn"
+                          class="new-initiative-dropdown-btn d-inline-flex align-items-center position-relative ml-0 mt-3"
+                          :class="{ 'dropdown-open': newInitiativeDropdown }"
+                          @click="openNewInitiativeDropdown"
+                        >
+                          Kakšno pobudo želite oddati?
+                          <ArrowDownIcon class="ml-2" />
+                          <div
+                            v-if="newInitiativeDropdown"
+                            v-click-outside="closeNewInitiativeDropdown"
+                            class="new-initiative-dropdown position-absolute"
+                            @click.stop=""
+                          >
+                            <div class="form-note">
+                              Izberite tip pobude.
+                            </div>
+                            <hr class="hr-upper mt-0">
+                            <hr class="hr-lower mb-0">
+                            <div>
+                              <b-form-group>
+                                <b-form-radio v-model="newInitiativeType" value="MM" class="p-0 pl-4">
+                                  <h5 class="font-weight-bold">
+                                    MOTI ME
+                                  </h5>
+                                  <p class="form-note">
+                                    Naznani okvare, poškodbe, slabosti (pomanjkljivosti), ki jih zaznavaš v svojem okolju.
+                                  </p>
+                                </b-form-radio>
+                                <b-form-radio v-model="newInitiativeType" value="II" class="p-0 pl-4">
+                                  <h5 class="font-weight-bold">
+                                    IMAM IDEJO
+                                  </h5>
+                                  <p class="form-note">
+                                    Predlagaj novosti,  predloge za izboljšave, družbene inovacije, ki izboljšujejo kakovost življenja v MO Maribor.
+                                  </p>
+                                </b-form-radio>
+                                <b-form-radio v-model="newInitiativeType" value="ZM" class="p-0 pl-4">
+                                  <h5 class="font-weight-bold">
+                                    ZANIMA ME
+                                  </h5>
+                                  <p class="form-note">
+                                    Zastavi splošna vprašanja ali izreči pohvale.
+                                  </p>
+                                </b-form-radio>
+                              </b-form-group>
+                              <div class="p-0 my-2 w-100 d-flex justify-content-center">
+                                <NuxtLink
+                                  :to="`/predlogi/oddaj/${editLink[newInitiativeType]}`"
+                                  class="new-initiative-button btn d-inline-flex justify-content-center align-items-center text-uppercase"
+                                >
+                                  Predlagaj
+                                  <ArrowRightIcon class="ml-2" />
+                                </NuxtLink>
+                              </div>
+                            </div>
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                   <div
                     v-for="(draft, index) in drafts"
                     :key="`draft-${index}`"
@@ -72,77 +137,8 @@
               Nimate oddanih pobud.
             </p>
             <b-row>
-              <b-col v-if="published.length === 0">
-                <div class="">
-                  <div class="item px-2 pb-3">
-                    <div class="initiative-card py-5 px-3 empty h-100 text-center">
-                      <h4>Oddajte predlog izboljšave, popravek ali postavite vprašanje</h4>
-                      <div>
-                        <button
-                          id="new-initiative-btn"
-                          class="new-initiative-dropdown-btn d-inline-flex align-items-center position-relative ml-0 mt-3"
-                          :class="{ 'dropdown-open': newInitiativeDropdown }"
-                          @click="openNewInitiativeDropdown"
-                        >
-                          Kakšno pobudo želite oddati?
-                          <ArrowDownIcon class="ml-2" />
-                          <div
-                            v-if="newInitiativeDropdown"
-                            v-click-outside="closeNewInitiativeDropdown"
-                            class="new-initiative-dropdown position-absolute"
-                            @click.stop=""
-                          >
-                            <div class="form-note">
-                              Izberite tip pobude.
-                            </div>
-                            <hr class="hr-upper mt-0">
-                            <hr class="hr-lower mb-0">
-                            <div>
-                              <b-form-group>
-                                <b-form-radio v-model="newInitiativeType" value="MM" class="p-0 pl-4">
-                                  <h5 class="font-weight-bold">
-                                    MOTI ME!
-                                  </h5>
-                                  <p class="form-note">
-                                    Naznani okvare, poškodbe, slabosti (pomanjkljivosti), ki jih zaznavaš v svojem okolju.
-                                  </p>
-                                </b-form-radio>
-                                <b-form-radio v-model="newInitiativeType" value="II" class="p-0 pl-4">
-                                  <h5 class="font-weight-bold">
-                                    IMAM IDEJO!
-                                  </h5>
-                                  <p class="form-note">
-                                    Predlagaj novosti,  predloge za izboljšave, družbene inovacije, ki izboljšujejo kakovost življenja v MO Maribor.
-                                  </p>
-                                </b-form-radio>
-                                <b-form-radio v-model="newInitiativeType" value="ZM" class="p-0 pl-4">
-                                  <h5 class="font-weight-bold">
-                                    ZANIMA ME!
-                                  </h5>
-                                  <p class="form-note">
-                                    Zastavi splošna vprašanja ali izreči pohvale.
-                                  </p>
-                                </b-form-radio>
-                              </b-form-group>
-                              <div class="p-0 my-2 w-100 d-flex justify-content-center">
-                                <NuxtLink
-                                  :to="`/predlogi/oddaj/${editLink[newInitiativeType]}`"
-                                  class="new-initiative-button btn d-inline-flex justify-content-center align-items-center text-uppercase"
-                                >
-                                  Predlagaj
-                                  <ArrowRightIcon class="ml-2" />
-                                </NuxtLink>
-                              </div>
-                            </div>
-                          </div>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </b-col>
               <b-col v-if="published.length > 0">
-                <no-ssr>
+                <client-only>
                   <div v-masonry item-selector=".item" class="masonry-container">
                     <div
                       v-for="initiative in published"
@@ -157,7 +153,7 @@
                       />
                     </div>
                   </div>
-                </no-ssr>
+                </client-only>
               </b-col>
             </b-row>
           </b-col>
@@ -177,14 +173,6 @@ import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
 export default {
   components: { InitiativeCard, ExitRightIcon, EditIcon, ArrowDownIcon, ArrowRightIcon },
   middleware: 'auth',
-  /*
-  middleware ({ store, redirect }) {
-    // If the user is not authenticated
-    if (!store.state.auth.loggedIn) {
-      return redirect('/predlogi')
-    }
-  },
-  */
   asyncData ({ store }) {
     return store.dispatch('getMyInitiatives')
   },
@@ -218,7 +206,7 @@ export default {
       if (success) { // voted successfully
         this.updateVotes(id, true)
       } else { // error
-        console.log('error')
+        // console.log('error')
       }
     },
     async removeVote (id) {
@@ -228,7 +216,7 @@ export default {
       if (success) { // unvoted successfully
         this.updateVotes(id, false)
       } else { // error
-        console.log('error')
+        // console.log('error')
       }
     },
     updateVotes (id, hasVoted) {
@@ -285,6 +273,7 @@ a {
 
 .initiative-card {
   box-shadow: 4px 4px 6px #d3d7df, -4px -4px 6px #ffffff;
+  overflow-wrap: break-word;
 
   .cover-image {
     width: 100%;

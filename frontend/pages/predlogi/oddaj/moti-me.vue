@@ -21,14 +21,4 @@ export default {
   }
 }
 
-/*
-descriptions: [
-        'Na kratko opišite, kaj vas moti. Zakaj? Če je mogoče, opišite svojo izkušnje, da nam pomagate bolje razumeti vašo pripombo.',
-        'Kako bi lahko to, kar vas moti, popravili?'
-      ]
-*/
 </script>
-
-<style scoped lang="scss">
-
-</style>

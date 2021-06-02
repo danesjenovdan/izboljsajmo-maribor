@@ -1,8 +1,5 @@
 <template>
   <b-form @submit.prevent="login">
-    <p v-if="errorLogin" class="error-message text-center mt-4">
-      Prijava ni uspela.
-    </p>
     <div class="form-group">
       <label for="username">E-naslov ali uporabniško ime</label>
       <span v-if="errorUsername" class="error-message">Vpišite uporabniško ime.</span>
@@ -16,7 +13,7 @@
         @keyup="checkUsername"
       />
     </div>
-    <div class="form-group">
+    <div class="form-group position-relative">
       <label for="password">Geslo</label>
       <span v-if="errorPassword" class="error-message">Vpišite geslo.</span>
       <b-form-input
@@ -24,13 +21,17 @@
         v-model.trim="form.password"
         :class="{ 'error-input': errorPassword }"
         name="password"
-        type="password"
+        :type="passwordVisibility ? 'text' : 'password'"
         required
         @keyup="checkPassword"
       />
+      <span class="position-absolute password-button" @click="passwordVisibility = !passwordVisibility">
+        <EyeHideIcon v-if="passwordVisibility" />
+        <EyeShowIcon v-if="!passwordVisibility" />
+      </span>
     </div>
     <div class="text-right mt-2">
-      <a href="/pozabljeno-geslo">Pozabljeno geslo?</a>
+      <a class="back-button" href="/pozabljeno-geslo">Pozabljeno geslo?</a>
     </div>
     <b-form-group id="remember-me-input-group" v-slot="{ ariaDescribedby }">
       <b-form-checkbox
@@ -41,12 +42,16 @@
         Zapomni si me.
       </b-form-checkbox>
     </b-form-group>
+    <p v-if="errorLogin" class="message error d-flex justify-content-center align-items-center position-relative">
+      <IconDanger />Prijava ni uspela.
+      <span class="position-absolute" @click="closeErrorMessage">Zapri</span>
+    </p>
     <b-button type="submit" class="w-100 d-flex justify-content-center align-items-center position-relative">
       VSTOPI
       <ArrowRightIcon class="position-absolute" />
     </b-button>
     <div class="form-note text-center">
-      Nimate računa? <NuxtLink to="/registracija">
+      Nimate računa? <NuxtLink class="back-button" to="/registracija">
         Registrirajte se
       </NuxtLink>
     </div>
@@ -55,9 +60,12 @@
 
 <script>
 import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
+import IconDanger from '~/assets/img/icons/danger.svg?inline'
+import EyeShowIcon from '~/assets/img/icons/eye-show.svg?inline'
+import EyeHideIcon from '~/assets/img/icons/eye-hide.svg?inline'
 
 export default {
-  components: { ArrowRightIcon },
+  components: { ArrowRightIcon, IconDanger, EyeShowIcon, EyeHideIcon },
   data () {
     return {
       rememberMe: false,
@@ -65,12 +73,11 @@ export default {
         username: '',
         password: ''
       },
+      passwordVisibility: false,
       errorUsername: false,
       errorPassword: false,
       errorLogin: false
     }
-  },
-  computed: {
   },
   methods: {
     checkUsername () {
@@ -80,13 +87,14 @@ export default {
       this.errorPassword = this.form.password.length === 0
     },
     async login (event) {
-      // console.log(JSON.stringify(this.form))
       try {
         await this.$store.dispatch('login', { form: this.form })
       } catch (err) {
         this.errorLogin = true
-        console.log(err)
       }
+    },
+    closeErrorMessage () {
+      this.errorLogin = false
     }
   }
 }

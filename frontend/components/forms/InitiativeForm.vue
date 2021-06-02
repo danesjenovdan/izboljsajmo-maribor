@@ -9,7 +9,7 @@
         Izpolnite polje.
       </span>
       <p class="form-note">
-        Maksimalna dolžina je 50 znakov.
+        Dovoljenih je največ 50 znakov.
       </p>
       <input
         id="initiative-title"
@@ -36,7 +36,7 @@
         :class="{ 'error-input': showErrors && errorInitiativeArea }"
         name="initiative-area"
         :options="initiativeAreaOptions"
-      /> <!-- @change="checkInitiativeArea" -->
+      />
     </div>
 
     <div class="form-group">
@@ -61,7 +61,7 @@
         id="social-innovative-idea-checkbox"
         v-model="socialInnovativeIdea"
       >
-        Je projekt družbeno koristen?
+        Ali menite, da je vaša ideja (družbeno) inovativna?
       </b-form-checkbox>
     </b-form-group>
 
@@ -84,13 +84,24 @@
           name="initiative-location"
           type="text"
           maxlength="100"
+          :disabled="initiativeHasNoLocation"
+          @keyup="locationButtonDisabled = false"
         >
-        <b-button @click="findCoordinates">
+        <b-button :class="{ 'location-button-disabled': locationButtonDisabled || initiativeHasNoLocation }" @click="findCoordinates">
           POTRDI
         </b-button>
       </div>
     </div>
-    <div id="map-wrap" class="mt-4">
+    <b-form-group v-slot="{ ariaDescribedby }">
+      <b-form-checkbox
+        id="no-location-allowed"
+        v-model="initiativeHasNoLocation"
+        :aria-describedby="ariaDescribedby"
+      >
+        Predlog nima lokacije.
+      </b-form-checkbox>
+    </b-form-group>
+    <div id="map-wrap" :class="{ 'map-disabled': initiativeHasNoLocation }">
       <client-only>
         <l-map
           :zoom="13"
@@ -117,20 +128,8 @@
         </l-map>
       </client-only>
     </div>
-    <b-form-group v-slot="{ ariaDescribedby }">
-      <b-form-checkbox
-        id="no-location-allowed"
-        v-model="initiativeHasNoLocation"
-        :aria-describedby="ariaDescribedby"
-      >
-        Predlog nima lokacije.
-      </b-form-checkbox>
-    </b-form-group>
     <div class="form-group">
-      <label class="mt-4">Naslovna slika*</label>
-      <span v-if="showErrors && errorCoverImage" class="error-message">
-        Izpolnite polje.
-      </span>
+      <label class="mt-4">Naslovna slika</label>
       <div :class="{ dropzone: true, 'drop-active': dropzone1Active }">
         <div v-if="coverImageFile || coverImageDraft">
           <div class="filenames">
@@ -214,12 +213,14 @@
     </div>
     <hr class="hr-upper">
     <hr class="hr-lower">
-    <p v-if="errorMessage" class="message d-flex justify-content-center align-items-center position-relative">
+    <p v-if="errorMessage" class="message error d-flex justify-content-center align-items-center position-relative">
       <IconDanger />{{ errorMessageText }}
       <span class="position-absolute" @click="closeErrorMessage">Zapri</span>
     </p>
-    <p v-if="successMessage" class="message d-flex justify-content-center align-items-center position-relative">
-      <IconSuccess />{{ successMessageText }}
+    <p v-if="successMessage" class="message success d-flex justify-content-center align-items-center position-relative">
+      <IconSuccess />{{ successMessageText }} Oglejte si jo v svojem <NuxtLink to="/profil">
+        profilu
+      </NuxtLink>.
       <span class="position-absolute" @click="closeSuccessMessage">Zapri</span>
     </p>
     <div class="d-flex justify-content-between align-items-center">
@@ -296,13 +297,14 @@ export default {
       initiativeAreaOptions: [{ value: null, text: 'Izberite področje' }],
       initiativeDescriptions: {},
       socialInnovativeIdea: false,
-      address: 'Maribor, Slovenija',
+      address: '',
       mapMarkerPosition: {
         lat: 46.5576439,
         lng: 15.6455854
       },
       mapIcon: null,
       initiativeHasNoLocation: false,
+      locationButtonDisabled: false,
       coverImageFile: null,
       coverImageDraft: null,
       dropzone1Active: false,
@@ -333,11 +335,8 @@ export default {
     errorInitiativeLocation () {
       return !this.initiativeHasNoLocation && this.address.length === 0
     },
-    errorCoverImage () {
-      return this.coverImageFile === null && this.coverImageDraft === null
-    },
     noErrors () {
-      return !this.errorInitiativeTitle && !this.errorInitiativeArea && !this.errorInitiativeLocation && !this.errorCoverImage && !this.errorInitiativeDescriptions
+      return !this.errorInitiativeTitle && !this.errorInitiativeArea && !this.errorInitiativeLocation && !this.errorInitiativeDescriptions
     }
   },
   watch: {
@@ -352,9 +351,7 @@ export default {
 
     if (this.$route.query.id) {
       this.id = this.$route.query.id
-      // console.log('id', this.id)
       const response = await this.$axios.get(`v1/initiatives/${this.id}`)
-      // console.log(response)
       if (response.status === 200) {
         const initiative = response.data
         if (!initiative.is_draft) {
@@ -363,7 +360,7 @@ export default {
         if (initiative.title) {
           this.title = initiative.title
         }
-        if (initiative.area) {
+        if (initiative.area && initiative.area.id) {
           this.area = initiative.area.id
         }
         if (initiative.descriptions) {
@@ -406,7 +403,7 @@ export default {
       this.area = null
       this.initiativeDescriptions = {}
       this.socialInnovativeIdea = false
-      this.address = 'Maribor, Slovenija'
+      this.address = ''
       this.mapMarkerPosition.lat = 46.5576439
       this.mapMarkerPosition.lng = 15.6455854
       this.initiativeHasNoLocation = false
@@ -475,6 +472,7 @@ export default {
       )
       if (response.status === 200) {
         this.address = this.formatAddress(response.data.address)
+        this.locationButtonDisabled = true
       }
     },
     formatAddress (address) {
@@ -697,6 +695,19 @@ hr {
 
 #map-wrap {
   height: 20rem;
+  position: relative;
+
+  &.map-disabled:after {
+    position: absolute;
+    z-index:1000;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    content: "";
+    display: block;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
 }
 
 .trashcan {
@@ -747,6 +758,12 @@ hr {
 
 .submit-button-disabled {
   background-color: grey;
+}
+
+.location-button-disabled {
+  background-color: grey;
+  pointer-events: none;
+  cursor: default;
 }
 
 </style>

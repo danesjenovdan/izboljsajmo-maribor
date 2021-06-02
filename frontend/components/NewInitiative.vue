@@ -87,7 +87,6 @@ export default {
         this.successMessage = true
         this.successMessageText = 'Vaša pobuda je bila uspešno shranjena v vaš profil.'
       } catch (err) {
-        console.log(err)
         this.errorMessage = true
         this.successMessage = false
       }
@@ -108,7 +107,6 @@ export default {
         this.successMessage = true
         this.successMessageText = 'Vaša pobuda je bila uspešno oddana.'
       } catch (err) {
-        console.log(err)
         this.errorMessage = true
         this.successMessage = false
       }
@@ -121,11 +119,8 @@ export default {
             id
           })
         }
-        this.errorMessage = false
-        this.successMessage = true
-        this.successMessageText = 'Vaša pobuda je bila izbrisana.'
+        await this.$router.push('/profil')
       } catch (err) {
-        console.log(err)
         this.errorMessage = true
         this.successMessage = false
       }

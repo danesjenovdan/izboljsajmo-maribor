@@ -65,32 +65,36 @@
         @keyup="checkPhone"
       />
     </div>
-    <div class="form-group">
+    <div class="form-group position-relative">
       <label for="password">Geslo</label>
       <span v-if="errorPassword" class="error-message">Vpišite geslo.</span>
       <b-form-input
         id="password"
         v-model="form.password"
         :class="{ 'error-input': errorPassword }"
-        type="password"
+        :type="passwordVisibility ? 'text' : 'password'"
         required
         @keyup="checkPassword"
       />
+      <span class="position-absolute password-button" @click="passwordVisibility = !passwordVisibility">
+        <EyeHideIcon v-if="passwordVisibility" />
+        <EyeShowIcon v-if="!passwordVisibility" />
+      </span>
     </div>
+    <p v-if="errorRegister" class="message error d-flex justify-content-center align-items-center position-relative">
+      <IconDanger />Registracija ni uspela.
+      <span class="position-absolute" @click="errorRegister = false">Zapri</span>
+    </p>
+    <p v-if="success" class="message success d-flex justify-content-center align-items-center position-relative">
+      <IconSuccess />Registracija uspešna! Prosimo, potrdite račun s klikom na povezavo, ki ste jo prejeli na svoj e-naslov.
+      <span class="position-absolute" @click="success = false">Zapri</span>
+    </p>
     <b-button type="submit" class="w-100 d-flex justify-content-center align-items-center position-relative">
       ZAKLJUČI REGISTRACIJO
       <ArrowRightIcon class="position-absolute" />
     </b-button>
-    <p v-if="errorRegister" class="message d-flex justify-content-center align-items-center position-relative">
-      <IconDanger />Registracija ni uspela.
-      <span class="position-absolute" @click="errorRegister = false">Zapri</span>
-    </p>
-    <p v-if="success" class="message d-flex justify-content-center align-items-center position-relative">
-      <IconSuccess />Registracija uspešna! Prosimo, potrdite račun s klikom na povezavo, ki ste jo prejeli na svoj e-naslov.
-      <span class="position-absolute" @click="success = false">Zapri</span>
-    </p>
     <div class="form-note text-center">
-      Že imate račun? <NuxtLink to="/prijava">
+      Že imate račun? <NuxtLink class="back-button" to="/prijava">
         Prijavite se.
       </NuxtLink>
     </div>
@@ -101,9 +105,11 @@
 import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
 import IconDanger from '~/assets/img/icons/danger.svg?inline'
 import IconSuccess from '~/assets/img/icons/success.svg?inline'
+import EyeShowIcon from '~/assets/img/icons/eye-show.svg?inline'
+import EyeHideIcon from '~/assets/img/icons/eye-hide.svg?inline'
 
 export default {
-  components: { ArrowRightIcon, IconDanger, IconSuccess },
+  components: { ArrowRightIcon, IconDanger, IconSuccess, EyeShowIcon, EyeHideIcon },
   data () {
     return {
       form: {
@@ -114,6 +120,7 @@ export default {
         phone: '',
         password: ''
       },
+      passwordVisibility: false,
       errorUsername: false,
       errorName: false,
       errorMembers: false,
@@ -156,7 +163,6 @@ export default {
         // await this.$router.push('/login')
       } catch (err) {
         this.errorRegister = true
-        console.log(err)
       }
     }
   }

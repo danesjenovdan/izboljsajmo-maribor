@@ -50,7 +50,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'https://api.izboljsajmo-maribor.k8s.djnd.si' // TODO
+    baseURL: 'https://api.izboljsajmo-maribor.k8s.djnd.si'
     // baseURL: 'http://localhost:8000/'
   },
 
@@ -68,7 +68,13 @@ export default {
           property: 'access_token',
           required: true,
           name: 'Authorization',
-          type: 'Bearer'
+          type: 'Bearer',
+          maxAge: {
+            property: 'expires_in'
+          }
+        },
+        refreshToken: {
+          property: 'refresh_token'
         },
         user: {
           property: false,

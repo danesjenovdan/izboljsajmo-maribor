@@ -15,20 +15,20 @@
         @keyup="checkEmail"
       />
     </div>
+    <p v-if="error" class="message error d-flex justify-content-center align-items-center position-relative">
+      <IconDanger />Prišlo je do napake.
+      <span class="position-absolute" @click="error = false">Zapri</span>
+    </p>
+    <p v-if="success" class="message success d-flex justify-content-center align-items-center position-relative">
+      <IconSuccess />Preverite svoj e-poštni predal, kamor smo vam poslali navodila za obnovo gesla.
+      <span class="position-absolute" @click="success = false">Zapri</span>
+    </p>
     <b-button type="submit" class="w-100 d-flex justify-content-center align-items-center position-relative text-uppercase">
       Pošlji
       <ArrowRightIcon class="position-absolute" />
     </b-button>
-    <p v-if="error" class="message d-flex justify-content-center align-items-center position-relative">
-      <IconDanger />Prišlo je do napake.
-      <span class="position-absolute" @click="error = false">Zapri</span>
-    </p>
-    <p v-if="success" class="message d-flex justify-content-center align-items-center position-relative">
-      <IconSuccess />Preverite svoj e-poštni predal, kamor smo vam poslali navodila za obnovo gesla.
-      <span class="position-absolute" @click="success = false">Zapri</span>
-    </p>
     <div class="form-note text-center">
-      <NuxtLink to="/prijava">
+      <NuxtLink class="back-button" to="/prijava">
         Nazaj na prijavo
       </NuxtLink>
     </div>
