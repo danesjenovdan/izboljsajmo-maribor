@@ -2,16 +2,9 @@ export const state = () => ({
   client_secret: '54pWmrpj1y9FiwkUDofjeP4B5tbLQ4wW6F2wqsMT3JuQN4ApIqcveKlzOC1laQIJp8JpVi99EheHCkumEJ0o81J9f2uHK3eXjUdxprzDnWlsTuZM6cgv1Eo35KSr7Mfg',
   user: null,
   initiativeTypes: {
-    MM: 'MOTI ME!',
-    II: 'IMAM IDEJO!',
-    ZM: 'ZANIMA ME!'
-  },
-  initiativeStatuses: {
-    Slišimo: 'slisimo',
-    Urejamo: 'urejamo',
-    'V izvajanju': 'v-izvajanju',
-    Zaključeno: 'zakljuceno',
-    Izvedeno: 'izvedeno'
+    MM: 'MOTI ME',
+    II: 'IMAM IDEJO',
+    ZM: 'ZANIMA ME'
   }
 })
 
@@ -54,7 +47,6 @@ export const actions = {
       password: payload.form.password,
       phone_number: payload.form.phone
     }
-    console.log(registerData)
     await this.$axios.post('v1/users/', registerData)
   },
 
@@ -67,7 +59,6 @@ export const actions = {
       phone_number: payload.form.phone,
       number_of_members: payload.form.membersNumber
     }
-    console.log(registerData)
     await this.$axios.post('v1/organizations/', registerData)
   },
 
@@ -117,12 +108,10 @@ export const actions = {
       }
     })
     const responseData = await response.data
-    console.log(response)
 
     if (response.status === 201) { // Created
       return responseData.id
     } else {
-      console.log('error!', responseData)
       return -1
     }
   },
@@ -137,12 +126,10 @@ export const actions = {
       }
     })
     const responseData = await response.data
-    console.log(response)
 
     if (response.status === 201) { // Created
       return responseData.id
     } else {
-      console.log('error!', responseData)
       return -1
     }
   },
@@ -160,25 +147,19 @@ export const actions = {
       uploaded_files: payload.uploaded_files,
       is_draft: payload.is_draft
     }
-    console.log(JSON.stringify(form))
     const response = await this.$axios.post('v1/initiatives/', form)
     const responseData = await response.data
 
     if (response.status === 201) {
-      console.log(responseData)
       return responseData.id
     } else {
-      console.log('ni ok', responseData)
       // throw error
     }
   },
 
   async patchInitiative (context, payload) {
-    console.log(JSON.stringify('patchhh'))
-    console.log(JSON.stringify(payload))
     const response = await this.$axios.patch(`v1/initiatives/${payload.id}/`, payload.form)
     const responseData = await response.data
-    console.log(response)
     if (response.statusText === 'OK') {
       return responseData.id
     } else {

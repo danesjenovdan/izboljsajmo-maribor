@@ -1,7 +1,7 @@
 <template>
   <b-container fluid class="login-container d-flex flex-column">
     <div class="logo">
-      <NuxtLink to="/predlogi">
+      <NuxtLink to="/">
         <img
           src="~/assets/img/izboljsajmo_maribor_logo.png"
           class="p-3"
@@ -54,7 +54,7 @@
       text-align: center;
     }
 
-    a {
+    .back-button {
       font-size: 0.75rem;
       font-style: italic;
       font-weight: 500;
@@ -71,10 +71,16 @@
       margin-right: -2rem;
     }
   }
+}
 
-  .success-message {
-    font-size: 1rem;
-    color: green;
+.password-button {
+  cursor: pointer;
+  right: 0.75rem;
+  bottom: 0;
+
+  svg {
+    height: calc(1.5em + 0.75rem + 2px);
+    width: 1.25rem;
   }
 }
 

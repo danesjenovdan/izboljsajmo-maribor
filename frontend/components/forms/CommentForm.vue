@@ -2,9 +2,6 @@
   <b-form @submit.prevent="postComment">
     <h5>Oddaj komentar</h5>
     <p>Komentarji so zaradi zagotavljanja višjih standardov razprave skladno s pravili pred objavo moderirani.</p>
-    <p v-if="errorComment" class="error-message">
-      Komentar ne more biti prazen.
-    </p>
     <b-form-textarea
       id="comment"
       v-model="content"
@@ -12,13 +9,17 @@
       rows="5"
       max-rows="10"
       @change="checkComment"
-    ></b-form-textarea>
-    <p v-if="errorMessage" class="message d-flex justify-content-center position-relative">
-      {{ errorMessageText }}
+    />
+    <p v-if="errorComment" class="message error d-flex justify-content-center position-relative">
+      <IconDanger />Komentar ne more biti prazen.
+      <span class="position-absolute" @click="errorComment = false">Zapri</span>
+    </p>
+    <p v-if="errorMessage" class="message error d-flex justify-content-center position-relative">
+      <IconDanger />{{ errorMessageText }}
       <span class="position-absolute" @click="errorMessage = false">Zapri</span>
     </p>
-    <p v-if="successMessage" class="message d-flex justify-content-center position-relative">
-      Vaš komentar je bil uspešno oddan.
+    <p v-if="successMessage" class="message success d-flex justify-content-center position-relative">
+      <IconSuccess />Vaš komentar je bil uspešno oddan.
       <span class="position-absolute" @click="successMessage = false">Zapri</span>
     </p>
     <div class="d-flex justify-content-end">
@@ -32,9 +33,11 @@
 
 <script>
 import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
+import IconDanger from '~/assets/img/icons/danger.svg?inline'
+import IconSuccess from '~/assets/img/icons/success.svg?inline'
 
 export default {
-  components: { ArrowRightIcon },
+  components: { ArrowRightIcon, IconDanger, IconSuccess },
   props: {
     id: String
   },
@@ -61,7 +64,6 @@ export default {
           } catch (err) {
             this.errorMessage = true
             this.errorMessageText = 'Prišlo je do napake.'
-            console.log(err)
           }
         } else {
           this.errorMessage = true

@@ -21,13 +21,4 @@ export default {
   }
 }
 
-/*
-descriptions: [
-        'Kaj vas zanima? Vaše vprašanje naj bo jasno in nedvoumno; če je potrebno in če je mogoče, na kratko opišite okoliščine, na katere se nanaša vaše vprašanje. Tako vam bomo lažje podali kvaliteten in konkreten odgovor.'
-      ]
-*/
 </script>
-
-<style scoped lang="scss">
-
-</style>

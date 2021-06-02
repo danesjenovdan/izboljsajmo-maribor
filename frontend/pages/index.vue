@@ -20,7 +20,7 @@
             <div class="action-card-top" />
             <NuxtLink to="/predlogi/oddaj/zanima-me" class="action-card d-block h-100">
               <h6 class="d-flex align-items-center">
-                ZANIMA ME!
+                ZANIMA ME
                 <ArrowRightIcon />
               </h6>
               <p>Splošna vprašanja / pohvale</p>
@@ -30,7 +30,7 @@
             <div class="action-card-top" />
             <NuxtLink to="/predlogi/oddaj/moti-me" class="action-card d-block h-100">
               <h6 class="d-flex align-items-center">
-                MOTI ME!
+                MOTI ME
                 <ArrowRightIcon />
               </h6>
               <p>Zaznane okvare, poškodbe, slabosti, pomanjkljivosti, nepravilnosti ...</p>
@@ -40,7 +40,7 @@
             <div class="action-card-top" />
             <NuxtLink to="/predlogi/oddaj/imam-idejo" class="action-card d-block h-100">
               <h6 class="d-flex align-items-center">
-                IMAM IDEJO!
+                IMAM IDEJO
                 <ArrowRightIcon />
               </h6>
               <p>Projektni predlogi, novosti, predlogi za izboljšave, družbene inovacije ...</p>
@@ -227,7 +227,7 @@
               </div>
             </b-col>
           </b-row>
-          <no-ssr>
+          <client-only>
             <div
               v-if="sortedInitiatives.length > 0"
               class="p-4 p-md-0"
@@ -248,7 +248,7 @@
                 </div>
               </div>
             </div>
-          </no-ssr>
+          </client-only>
           <b-row v-if="sortedInitiatives.length === 0">
             <b-col cols="12" class="d-inline-flex justify-content-center mb-5">
               <div class="d-flex justify-content-center align-items-center mt-4 no-initiatives">
@@ -428,7 +428,7 @@ export default {
       if (success) { // voted successfully
         this.updateVotes(id, true)
       } else { // error
-        console.log('error')
+        // console.log('error')
       }
     },
     async removeVote (id) {
@@ -438,7 +438,7 @@ export default {
       if (success) { // unvoted successfully
         this.updateVotes(id, false)
       } else { // error
-        console.log('error')
+        // console.log('error')
       }
     },
     updateVotes (id, hasVoted) {

@@ -18,7 +18,7 @@ hr {
   }
 }
 
-.btn {
+.btn, .btn:focus, .btn:active {
   background-color: #ef7782;
   box-shadow: 2px 2px 5px #d3d7df, -2px -2px 5px #ffffff;
   border-radius: 1.5rem;
@@ -144,7 +144,6 @@ textarea.form-control {
 }
 
 .message {
-  background-color: #fad6da;
   border-radius: 1rem;
   margin: 1.5rem 0;
   padding: 0.5rem 4rem 0.5rem 0.5rem;
@@ -162,6 +161,20 @@ textarea.form-control {
     max-height: 1.25rem;
     max-width: 1.25rem;
     margin: 0 0.5rem;
+  }
+
+  a {
+    color: black;
+    text-decoration: underline;
+    padding-left: 4px;
+  }
+
+  &.success {
+    background-color: #eff3fb;
+  }
+
+  &.error {
+    background-color: #fad6da;
   }
 }
 

@@ -1,15 +1,17 @@
 <template>
   <div class="text-center">
-    <h1>Potrdite e-naslov</h1>
-    <p v-if="error" class="message d-flex justify-content-center align-items-center position-relative">
-      <IconDanger />Prišlo je do napake.
+    <h1>
+      Zaključek registracije
+    </h1>
+    <p v-if="error" class="message error d-flex justify-content-center align-items-center position-relative">
+      <IconDanger />Prišlo je do napake. Za pomoč nam pišite na <a href="mailto:im@maribor.si">im@maribor.si</a>.
       <span class="position-absolute" @click="error = false">Zapri</span>
     </p>
-    <p v-if="success" class="message d-flex justify-content-center align-items-center position-relative">
-      <IconSuccess />Račun je uspešno ustvarjen.
+    <p v-if="success" class="message success d-flex justify-content-center align-items-center position-relative">
+      <IconSuccess />Čestitke! Račun je uspešno ustvarjen.
       <span class="position-absolute" @click="success = false">Zapri</span>
     </p>
-    <NuxtLink to="/prijava">
+    <NuxtLink class="back-button" to="/prijava">
       Nazaj na prijavo
     </NuxtLink>
   </div>
@@ -33,10 +35,8 @@ export default {
   },
   methods: {
     async confirmEmail () {
-      console.log(this.$route.params.key)
       try {
-        const res = await this.$axios.get(`v1/confirm-email/${this.$route.params.key}`)
-        console.log(res)
+        await this.$axios.get(`v1/confirm-email/${this.$route.params.key}`)
         this.success = true
       } catch (e) {
         this.error = true
@@ -45,3 +45,11 @@ export default {
   }
 }
 </script>
+
+<style>
+.message a {
+  color: black;
+  font-weight: 500;
+  padding-left: 4px;
+}
+</style>
