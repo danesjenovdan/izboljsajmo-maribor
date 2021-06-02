@@ -1,8 +1,10 @@
 {% load i18n %}
+{% load static %}
 <html>
 <body>
     <div>
         {% block header %}
+        <img src="{% static 'img/logo.png' %}" width="100" alt="logo">
         {% endblock %}
     </div>
     <div>

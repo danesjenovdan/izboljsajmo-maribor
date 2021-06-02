@@ -212,7 +212,7 @@ post_save.connect(set_super_admin_to_group, sender=SuperAdminUser)
 post_save.connect(set_area_admin_to_group, sender=AreaAdminUser)
 
 pre_save.connect(set_zone_from_location, sender=Initiative)
-post_save.connect(send_email_after_initiative_created, sender=Initiative)
+#post_save.connect(send_email_after_initiative_created, sender=Initiative)
 
 post_save.connect(set_key, sender=RestorePassword)
 post_save.connect(set_key, sender=ConfirmEmail)
