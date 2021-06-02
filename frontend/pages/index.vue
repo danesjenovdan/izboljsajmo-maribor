@@ -275,7 +275,7 @@
               <l-marker
                 v-for="initiative in initiativeMarkers"
                 :key="initiative.id"
-                :lat-lng="[initiative.location.coordinates[0], initiative.location.coordinates[1]]"
+                :lat-lng="[initiative.location.coordinates[1], initiative.location.coordinates[0]]"
                 :icon="mapIcon"
                 @ready="setIconStyles"
                 @click="markerClick(initiative.id)"

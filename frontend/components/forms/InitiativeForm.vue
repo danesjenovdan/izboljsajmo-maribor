@@ -377,8 +377,8 @@ export default {
           this.initiativeHasNoLocation = true
         }
         if (initiative.location) {
-          this.mapMarkerPosition.lat = initiative.location.coordinates[0]
-          this.mapMarkerPosition.lng = initiative.location.coordinates[1]
+          this.mapMarkerPosition.lat = initiative.location.coordinates[1]
+          this.mapMarkerPosition.lng = initiative.location.coordinates[0]
         } else {
           this.mapMarkerPosition.lat = 46.5576439
           this.mapMarkerPosition.lng = 15.6455854
@@ -556,7 +556,7 @@ export default {
         } else {
           form.location = {
             type: 'Point',
-            coordinates: [this.mapMarkerPosition.lat, this.mapMarkerPosition.lng]
+            coordinates: [this.mapMarkerPosition.lng, this.mapMarkerPosition.lat]
           }
           form.address = this.address
         }
@@ -623,7 +623,7 @@ export default {
         if (!this.initiativeHasNoLocation) {
           form.location = {
             type: 'Point',
-            coordinates: [this.mapMarkerPosition.lat, this.mapMarkerPosition.lng]
+            coordinates: [this.mapMarkerPosition.lng, this.mapMarkerPosition.lat]
           }
           form.address = this.address
         }

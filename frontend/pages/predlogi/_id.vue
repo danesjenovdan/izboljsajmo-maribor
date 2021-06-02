@@ -37,7 +37,7 @@
                 >
                   <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
                   <l-marker
-                    :lat-lng="[data.location.coordinates[0], data.location.coordinates[1]]"
+                    :lat-lng="[data.location.coordinates[1], data.location.coordinates[0]]"
                     :icon="mapIcon"
                     @ready="setIconStyles"
                   />
