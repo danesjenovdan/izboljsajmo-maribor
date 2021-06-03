@@ -148,8 +148,12 @@ class InitiativeViewSet(
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        queryset = queryset.exclude(is_draft=True).exclude(initiative_statuses__status__name='Zavrnjeno')
-        queryset = queryset.filter(initiative_statuses__publication_status=Published.PUBLISHED)
+        queryset = queryset.exclude(
+            is_draft=True,
+            initiative_statuses__status__name='Zavrnjeno'
+        ).filter(
+            initiative_statuses__publication_status=Published.PUBLISHED
+        ).distinct('id').order_by('id')
 
         page = self.paginate_queryset(queryset)
         if page is not None:
