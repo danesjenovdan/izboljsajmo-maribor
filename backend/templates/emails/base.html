@@ -4,8 +4,6 @@
 <body>
     <div>
         {% block header %}
-        <img src="{% static 'img/logo.png' %}" width="100" alt="logo">
-        </br></br>
         {% endblock %}
     </div>
     <div>
@@ -14,6 +12,8 @@
     </div>
     <div>
         {% block footer %}
+        </br></br>
+        <img src="{% static 'img/logo.png' %}" width="100" alt="logo">
         {% endblock %}
     </div>
 </body>
