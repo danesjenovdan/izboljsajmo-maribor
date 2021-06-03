@@ -156,7 +156,7 @@ class InitiativeViewSet(
             statuses__name='Zavrnjeno'
         ).filter(
             initiative_statuses__publication_status=Published.PUBLISHED
-        ).distinct('id').order_by('created')
+        ).distinct('id').order_by('id', 'created')
 
         page = self.paginate_queryset(queryset)
         if page is not None:
