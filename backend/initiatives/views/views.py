@@ -28,6 +28,8 @@ from initiatives.models import (
 from initiatives.permissions import IsOwnerOrReadOnly, IsVerified, IsBlocked
 from initiatives.tasks import send_email_task
 
+from datetime import datetime
+
 import logging
 import json
 logger = logging.getLogger(__name__)
@@ -154,7 +156,7 @@ class InitiativeViewSet(
             statuses__name='Zavrnjeno'
         ).filter(
             initiative_statuses__publication_status=Published.PUBLISHED
-        ).distinct('id').order_by('id')
+        ).distinct('id').order_by('created')
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -233,11 +235,16 @@ class InitiativeViewSet(
 
         instance = self.get_object()
         is_draft = instance.is_draft
+
+        if is_draft == True and data['is_draft'] == False:
+            instance.created=datetime.now()
+
+
         serializer = self.get_serializer(instance, data=data, partial=partial)
         serializer.is_valid(raise_exception=True)
         serializer.save(area=area)
 
-        if is_draft == False and serializer.instance.is_draft == True:
+        if is_draft == True and data['is_draft'] == False:
             self.send_emails(serializer.instance)
 
         if getattr(instance, '_prefetched_objects_cache', None):

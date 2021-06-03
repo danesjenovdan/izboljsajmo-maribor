@@ -378,6 +378,7 @@ class BothersInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         DescriptionInline,
         FileInline,
         StatusInitiativeHearAdminInline,
+        StatusInitiativeEditingInline,
         StatusInitiativeFinishedAdminInline,
         StatusInitiativeRejectedAdminInline,
         CommentInline)
@@ -423,6 +424,7 @@ class BothersInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         DescriptionInline,
         FileInline,
         StatusInitiativeHearInline,
+        StatusInitiativeEditingInline,
         StatusInitiativeFinishedInline,
         StatusInitiativeRejectedInline,
         CommentInline)
@@ -459,6 +461,7 @@ class BothersInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     inlines = (
         DescriptionInline,
         FileInline,
+        StatusInitiativeEditingInline,
         StatusInitiativeFinishedInline,
         CommentInline)
 

@@ -245,3 +245,5 @@ CELERY_BEAT_SCHEDULE = {
 EMAIL_FOR_NEW_NOTIFICATIONS = os.environ.get("LOGGING_EMAIL", "dummy@email.si")
 
 BASE_URL = os.environ.get('BACK_URL', 'http://localhost:8000')
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880
