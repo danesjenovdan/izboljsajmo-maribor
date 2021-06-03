@@ -68,7 +68,13 @@ class MBUserAdmin(UserAdmin):
     )
 
 class EmptyUserAdmin(UserAdmin):
-    fieldsets = []
+    fieldsets = ((None, {'fields': ('username', 'email', 'password')}),)
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'email', 'password1', 'password2'),
+        }),
+    )
 
 
 class SuperAdminUserAdmin(MBUserAdmin):
