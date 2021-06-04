@@ -64,6 +64,7 @@ export default {
   auth: {
     strategies: {
       local: {
+        scheme: 'refresh',
         token: {
           property: 'access_token',
           required: true,
@@ -74,7 +75,9 @@ export default {
           }
         },
         refreshToken: {
-          property: 'refresh_token'
+          property: 'refresh_token',
+          data: 'refresh_token',
+          grantType: 'refresh_token'
         },
         user: {
           property: false,
@@ -83,7 +86,8 @@ export default {
         endpoints: {
           login: { url: '/auth/token', method: 'post' },
           user: { url: 'v1/users/me/', method: 'get' },
-          logout: false
+          logout: false,
+          refresh: { url: '/auth/token', method: 'post' }
         },
         clientId: 'kIZWxeodL29mfaKSIGQWPUuuck8CXv3m58XuJ8Y7',
         grantType: 'password'

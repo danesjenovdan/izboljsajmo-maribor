@@ -85,7 +85,7 @@ export default {
         }
         this.errorMessage = false
         this.successMessage = true
-        this.successMessageText = 'Vaša pobuda je bila uspešno shranjena v vaš profil.'
+        this.successMessageText = 'Vaša pobuda je bila uspešno shranjena.'
       } catch (err) {
         this.errorMessage = true
         this.successMessage = false
