@@ -38,7 +38,6 @@ export default {
   asyncData ({ $axios, redirect }) {
     return $axios.get('v1/about')
       .then((res) => {
-        console.log(res.data)
         return { data: res.data }
       })
       .catch((e) => {
