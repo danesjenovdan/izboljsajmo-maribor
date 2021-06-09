@@ -132,7 +132,7 @@
                     target="_blank"
                     download
                   >
-                    <span class="mr-2">
+                    <span class="mr-2 mb-1 d-inline-block">
                       {{ file.name }}
                     </span>
                   </a>

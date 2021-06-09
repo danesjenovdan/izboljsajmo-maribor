@@ -130,6 +130,9 @@
     </div>
     <div class="form-group">
       <label class="mt-4">Naslovna slika</label>
+      <span v-if="errorCoverImage" class="error-message">
+        Datoteka je prevelika.
+      </span>
       <div :class="{ dropzone: true, 'drop-active': dropzone1Active }">
         <div v-if="coverImageFile || coverImageDraft">
           <div class="filenames">
@@ -167,6 +170,9 @@
     </div>
     <div class="form-group">
       <label class="mt-4">Datoteke</label>
+      <span v-if="errorDraftImage" class="error-message">
+        Nekatere datoteke so prevelike: {{ errorDraftImageList.toString() }}
+      </span>
       <p class="form-note">
         Svoji pripombi lahko, če je to potrebno in primerno, dodate tudi fotografije oziroma druge datoteke, ki nam bodo v pomoč pri razumevanju pripombe.
       </p>
@@ -307,9 +313,12 @@ export default {
       locationButtonDisabled: false,
       coverImageFile: null,
       coverImageDraft: null,
+      errorCoverImage: false,
       dropzone1Active: false,
       files: [],
       filesDraft: [],
+      errorDraftImage: false,
+      errorDraftImageList: [],
       dropzone2Active: false,
       showErrors: false
     }
@@ -408,8 +417,7 @@ export default {
       this.mapMarkerPosition.lng = 15.6455854
       this.initiativeHasNoLocation = false
       this.removeCoverImage()
-      this.files = []
-      this.filesDraft = []
+      this.removeFiles()
     },
     setIconStyles () {
       this.mapIcon = this.$L.icon({
@@ -483,22 +491,37 @@ export default {
       return `${streetAndHouseNo}${postcodeAndCity}${address.country}`
     },
     processCoverImage (event) {
+      this.removeCoverImage()
       this.dropzone1Active = false
       const files = event.target.files || event.dataTransfer.files
       if (files) {
-        this.coverImageDraft = null
-        this.coverImageFile = files[0]
+        for (const file of files) {
+          if (file.size > 5242880) {
+            this.errorCoverImage = true
+          }
+        }
+        if (!this.errorCoverImage) {
+          this.coverImageDraft = null
+          this.coverImageFile = files[0]
+        }
       }
     },
     removeCoverImage () {
       this.coverImageDraft = null
       this.coverImageFile = null
+      this.errorCoverImage = false
     },
     processFiles (event) {
+      this.removeFiles()
       this.dropzone2Active = false
       const files = event.target.files || event.dataTransfer.files
       for (let f = 0; f < files.length; f++) {
-        this.files.push(files[f])
+        if (files[f].size > 5242880) {
+          this.errorDraftImage = true
+          this.errorDraftImageList.push(files[f].name)
+        } else {
+          this.files.push(files[f])
+        }
       }
     },
     removeFile (filename) {
@@ -514,6 +537,12 @@ export default {
           this.filesDraft.splice(i, 1)
         }
       }
+    },
+    removeFiles () {
+      this.files = []
+      this.filesDraft = []
+      this.errorDraftImage = false
+      this.errorDraftImageList = []
     },
     dragOverHandler1 () {
       this.dropzone1Active = true
