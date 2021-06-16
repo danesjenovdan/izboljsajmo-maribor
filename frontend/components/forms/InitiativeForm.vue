@@ -111,6 +111,7 @@
             [46.46188844675249, 15.51583465730236],
             [46.62102957408261, 15.783283325506178]
           ]"
+          @click="placeMarker"
         >
           <l-tile-layer
             url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
@@ -439,6 +440,10 @@ export default {
     },
     closeSuccessMessage () {
       this.$emit('close-success-message')
+    },
+    placeMarker (e) {
+      this.mapMarkerPosition = e.latlng
+      this.findAddress()
     },
     async findCoordinates () {
       const response = await this.$axios.get(
