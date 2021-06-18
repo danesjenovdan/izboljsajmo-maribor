@@ -94,6 +94,12 @@ class RejectionSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'note')
 
 
+class AddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rejection
+        fields = ('name',)
+
+
 class StatusInitiativeSerializerPublishedList(serializers.ListSerializer):
     def to_representation(self, data):
         data = data.filter(publication_status=Published.PUBLISHED).order_by('created')

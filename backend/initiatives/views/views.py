@@ -7,7 +7,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 
-from rest_framework import viewsets, mixins, permissions, status, views, authentication, exceptions
+from rest_framework import viewsets, mixins, permissions, status, views, authentication, exceptions, pagination
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -19,11 +19,11 @@ from behaviors.behaviors import Published
 from initiatives.serializers import (
     UserSerializer, OrganizationSerializer, DescriptionDefinitionSerializer, ZoneSerializer,
     CommentSerializer, AreaSerializer, FAQSerializer, FileSerializer, ImageSerializer,
-    InitiativeDetailsSerializer, InitiativeListSerializer
+    InitiativeDetailsSerializer, InitiativeListSerializer, AddressSerializer
 )
 from initiatives.models import (
     Zone, Area, FAQ, DescriptionDefinition, InitiativeType, Initiative, Reviwers, Vote, RestorePassword,
-    ConfirmEmail, User, NotificationType, Notification
+    ConfirmEmail, User, NotificationType, Notification, Address
 )
 from initiatives.permissions import IsOwnerOrReadOnly, IsVerified, IsBlocked
 from initiatives.tasks import send_email_task
@@ -66,6 +66,21 @@ class UserViewSet(
 class OrganizationViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
     permission_classes = [permissions.AllowAny, ]
     serializer_class = OrganizationSerializer
+
+
+class AddressPagination(pagination.PageNumberPagination):
+    page_size = 20
+    page_size_query_param = 'per_page'
+    max_page_size = 20
+
+
+class AddressViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
+    permission_classes = [permissions.AllowAny, ]
+    serializer_class = AddressSerializer
+    filter_backends = (s_filters.SearchFilter,)
+    search_fields = ['name']
+    queryset = Address.objects.all().order_by('name')
+    pagination_class = AddressPagination
 
 
 class AreaViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):

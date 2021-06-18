@@ -8,7 +8,7 @@ from django.urls import reverse
 from initiatives.models import (
     User, BasicUser, SuperAdminUser, AreaAdminUser, AreaAppraiserUser, ContractorAppraiserUser, Organization, Zone, CompetentService,
     Area, Status, StatusInitiative, File, Comment, Comment, FAQ, StatusInitiativeHear, Rejection, Image,
-    StatusInitiativeHear, StatusInitiativeEditing, StatusInitiativeProgress,
+    StatusInitiativeHear, StatusInitiativeEditing, StatusInitiativeProgress, Address,
     StatusInitiativeFinished, StatusInitiativeDone, StatusInitiativeRejected, Description, Notification
 )
 from initiatives.forms import (
@@ -322,6 +322,7 @@ admin.site.register(Status)
 admin.site.register(StatusInitiative)
 admin.site.register(File)
 admin.site.register(Image)
+admin.site.register(Address)
 admin.site.register(Notification)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(FAQ, FAQAdmin)

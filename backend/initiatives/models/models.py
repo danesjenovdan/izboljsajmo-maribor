@@ -635,3 +635,7 @@ class Notification(Timestamped):
         indexes = [
             models.Index(fields=['created', 'is_sent',]),
         ]
+
+
+class Address(Timestamped):
+    name = models.CharField(max_length=128)
