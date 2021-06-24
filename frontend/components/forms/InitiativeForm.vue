@@ -727,6 +727,13 @@ hr {
 }
 
 .initiative-location-input {
+  @media (min-width: 576px) {
+    width: 100%;
+  }
+  @media (min-width: 768px) {
+    width: 75%;
+  }
+
   button {
     width: 100%;
     font-size: 0.8rem;
@@ -736,7 +743,6 @@ hr {
       margin: 0 1rem;
       padding: 0.4rem 1rem;
     }
-
   }
 }
 
