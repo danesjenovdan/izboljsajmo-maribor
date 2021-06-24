@@ -75,18 +75,18 @@
       <p class="form-note">
         Vpišite naslov ali povlecite žebljiček na lokacijo na zemljevidu.
       </p>
-      <div class="d-sm-inline-flex initiative-location-input">
-        <input
-          id="initiative-location"
+      <div class="d-sm-flex initiative-location-input">
+        <v-autocomplete
           v-model="address"
-          class="form-control"
-          :class="{ 'error-input': showErrors && errorInitiativeLocation }"
-          name="initiative-location"
-          type="text"
-          maxlength="100"
+          class="flex-grow-1"
+          :class="{ 'error-input-child': showErrors && errorInitiativeLocation }"
+          :input-class="'form-control'"
+          :items="addressSuggestions"
           :disabled="initiativeHasNoLocation"
-          @keyup="locationButtonDisabled = false"
-        >
+          :auto-select-one-item="false"
+          @change="updateAddress"
+          @item-clicked="addressSelected"
+        />
         <b-button :class="{ 'location-button-disabled': locationButtonDisabled || initiativeHasNoLocation }" @click="findCoordinates">
           POTRDI
         </b-button>
@@ -305,6 +305,7 @@ export default {
       initiativeDescriptions: {},
       socialInnovativeIdea: false,
       address: '',
+      addressSuggestions: [],
       mapMarkerPosition: {
         lat: 46.5576439,
         lng: 15.6455854
@@ -405,6 +406,25 @@ export default {
     }
   },
   methods: {
+    async updateAddress (value) {
+      this.address = value
+      this.locationButtonDisabled = false
+      const response = await this.$axios.get(
+        'v1/addresses/',
+        {
+          params: {
+            search: this.address
+          }
+        }
+      )
+      if (response.status === 200) {
+        this.addressSuggestions = response.data.results.map(item => item.name)
+      }
+    },
+    addressSelected (value) {
+      this.address = value
+      this.findCoordinates()
+    },
     resetForm () {
       // hide error messages
       this.showErrors = false
@@ -461,7 +481,6 @@ export default {
       if (response.status === 200) {
         if (response.data.length > 0) {
           const location = response.data[0]
-          this.address = this.formatAddress(location.address)
           this.mapMarkerPosition = {
             lat: location.lat,
             lng: location.lon
@@ -708,12 +727,6 @@ hr {
 }
 
 .initiative-location-input {
-  @media (min-width: 576px) {
-    width: 100%;
-  }
-  @media (min-width: 768px) {
-    width: 75%;
-  }
   button {
     width: 100%;
     font-size: 0.8rem;
