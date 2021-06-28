@@ -1,5 +1,6 @@
 export const state = () => ({
   client_secret: '54pWmrpj1y9FiwkUDofjeP4B5tbLQ4wW6F2wqsMT3JuQN4ApIqcveKlzOC1laQIJp8JpVi99EheHCkumEJ0o81J9f2uHK3eXjUdxprzDnWlsTuZM6cgv1Eo35KSr7Mfg',
+  client_id: 'kIZWxeodL29mfaKSIGQWPUuuck8CXv3m58XuJ8Y7',
   user: null,
   initiativeTypes: {
     MM: 'MOTI ME',
@@ -14,6 +15,9 @@ export const getters = {
   },
   client_secret (state) {
     return state.client_secret
+  },
+  client_id (state) {
+    return state.client_id
   },
   initiativeTypes (state) {
     return state.initiativeTypes
@@ -31,7 +35,8 @@ export const actions = {
     const loginData = {
       username: payload.form.username,
       password: payload.form.password,
-      client_secret: context.getters.client_secret
+      client_secret: context.getters.client_secret,
+      client_id: context.getters.client_id
     }
     await this.$auth.loginWith('local', { data: loginData })
   },
