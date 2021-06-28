@@ -3,15 +3,12 @@
     <b-row class="h-100">
       <b-col lg="7" class="h-100 overflow-auto">
         <b-row class="my-4 justify-content-center">
-          <b-col cols="12" lg="9" class="text-center">
-            <h4>
-              Dobrodošli na platformi Izboljšajmo Maribor, ki je namenjena podajanju pobud in zastavljanju vprašanj o vseh področjih delovanja Mestne občine Maribor.
+          <b-col cols="12" lg="9" class="text-center landing-title">
+            <h4 class="mb-0">
+              Dobrodošli na platformi Izboljšajmo Maribor!
             </h4>
-            <p class="mb-1">
-              Vsak, ki živi ali dela v tem mestu, lahko prispeva, da bo Maribor boljši. Radi bi slišali vaše mnenje, kaj vas zanima, kaj vas moti in kaj predlagate v Mestni občini Maribor.
-            </p>
-            <p class="mb-1">
-              Kliknite na enega od gumbov in nam posredujte svojo pobudo. Vsaka oddana pobuda bo obravnavana v pristojni strokovni službi v mestni upravi.
+            <p>
+              Kliknite na enega od spodnjih gumbov in nam posredujte svojo pobudo.
             </p>
           </b-col>
         </b-row>
@@ -455,6 +452,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+.landing-title {
+  p {
+    font-size: 1.1rem;
+    margin-bottom: 0.625rem;
+  }
+}
 
 .action-card {
   box-shadow: 3px 3px 7px #d4d9e1, -3px -3px 7px #ffffff;
