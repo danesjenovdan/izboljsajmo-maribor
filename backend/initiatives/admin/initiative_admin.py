@@ -194,6 +194,11 @@ class InterestedInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin
 
     actions = ['printer']
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        areas = request.user.area.all()
+        return qs.filter(area__in=areas)
+
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
 
@@ -311,6 +316,11 @@ class IdeaInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
 
     actions = ['printer']
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        areas = request.user.area.all()
+        return qs.filter(area__in=areas)
+
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
 
@@ -345,6 +355,10 @@ class IdeaInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
 
     actions = ['printer']
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.filter(reviewer_user=request.user)
+
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
 
@@ -378,7 +392,7 @@ class BothersInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         DescriptionInline,
         FileInline,
         StatusInitiativeHearAdminInline,
-        StatusInitiativeEditingInline,
+        StatusInitiativeEditingAdminInline,
         StatusInitiativeFinishedAdminInline,
         StatusInitiativeRejectedAdminInline,
         CommentInline)
@@ -467,6 +481,11 @@ class BothersInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
 
     actions = ['printer']
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        areas = request.user.area.all()
+        return qs.filter(area__in=areas)
+
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
 
@@ -500,6 +519,10 @@ class BothersInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         CommentInline)
 
     actions = ['printer']
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.filter(reviewer_user=request.user)
 
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
