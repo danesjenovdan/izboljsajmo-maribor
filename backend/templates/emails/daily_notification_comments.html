@@ -1,0 +1,14 @@
+{% extends 'emails/base.html' %}
+{% load i18n %}
+{% block body %}
+    <h2>{% translate 'New comments' %}</h2>
+    <table>
+        {% for comment in comments %}
+        <tr>
+            <td>{{ comment.initiative.title }}</td>
+            <td>{{ comment.content }}</td>
+            <td><a href="{% url 'admin:initiatives_comment_change' comment.id %}">Poglej kommentar</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock body %}
