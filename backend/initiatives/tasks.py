@@ -8,7 +8,7 @@ from initiatives.models import (
     BothersInitiativeArea, BothersInitiativeAppraiser, BothersInitiativeContractor,
     IdeaInitiativeArea, IdeaInitiativeAppraiser, IdeaInitiativeContractor,
     InterestedInitiativeArea, InterestedInitiativeAppraiser, Initiative, StatusInitiative,
-    User, Reviwers, Notification
+    User, Reviwers, Notification, Comment
 )
 from initiatives.utils import send_email
 
@@ -45,10 +45,28 @@ def send_daily_notifications():
 
     for_superadmin = notifications.filter(
         for_user__role=Reviwers.SUPER_ADMIN
-    )
+    ).distinct('initiative')
     for_non_superadmin = notifications.exclude(
         initiative__initiative_statuses__publication_status=Published.DRAFT
     )
+
+    comments = Comment.objects.filter(
+        created__gte=datetime.now()-timedelta(days=1)
+    ).prefetch_related('initiative').order_by('created')
+
+    super_admins = User.objects.filter(role=Reviwers.SUPER_ADMIN)
+
+    for super_admin in super_admins:
+        send_email(
+            'New comments',
+            super_admin.email,
+            'emails/daily_notification_comments.html',
+            {
+                'comments': comments,
+                'base_url': settings.BASE_URL
+            }
+        )
+
 
     for notification in for_superadmin:
         initiative = notification.initiative
@@ -78,6 +96,7 @@ def send_daily_notifications():
                     'role': user.role,
                     'url': initiative.get_admin_url(user.role),
                 })
+    
 
     for email, initiatives in email_initiatives.items():
         send_email(
