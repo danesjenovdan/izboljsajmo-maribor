@@ -237,8 +237,8 @@ CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 CELERY_BEAT_SCHEDULE = {
     'send-daily-notifications': {
         'task': 'initiatives.tasks.send_daily_notifications',
-        'schedule': crontab(minute="0,15,30,45"),
-        #'schedule': crontab(hour=1, minute=0, day_of_week='1,2,3,4,5'),
+        #'schedule': crontab(minute="0,15,30,45"),
+        'schedule': crontab(hour=5, minute=0, day_of_week='1,2,3,4,5'),
     },
 }
 
