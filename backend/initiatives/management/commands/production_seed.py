@@ -8,6 +8,7 @@ from oauth2_provider.models import Application
 from datetime import datetime
 
 from initiatives import models
+from about import models as about_models
 from about.models import About, AboutType
 
 
@@ -83,6 +84,25 @@ class Command(BaseCommand):
         admin_group.permissions.add(*permissions)
         ct = ContentType.objects.get_for_model(models.StatusInitiativeRejected)
         permissions = self.get_permissions('statusinitiativerejected', ct, self.options)
+        admin_group.permissions.add(*permissions)
+
+        ct = ContentType.objects.get_for_model(about_models.AboutTitle2)
+        permissions = self.get_permissions('abouttitle2', ct, self.options)
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(about_models.AboutImage)
+        permissions = self.get_permissions('aboutimage', ct, self.options)
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(about_models.AboutContent)
+        permissions = self.get_permissions('aboutcontent', ct, self.options)
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(about_models.AboutYoutubeEmbed)
+        permissions = self.get_permissions('aboutyoutubeembed', ct, self.options)
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(about_models.AboutTitle)
+        permissions = self.get_permissions('abouttitle', ct, self.options)
+        admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(about_models.About)
+        permissions = self.get_permissions('about', ct, self.options)
         admin_group.permissions.add(*permissions)
 
         # Area admin
