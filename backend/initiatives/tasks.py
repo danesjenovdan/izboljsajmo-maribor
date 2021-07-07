@@ -54,18 +54,18 @@ def send_daily_notifications():
         created__gte=datetime.now()-timedelta(days=1)
     ).prefetch_related('initiative').order_by('created')
 
-    super_admins = User.objects.filter(role=Reviwers.SUPER_ADMIN)
-
-    for super_admin in super_admins:
-        send_email(
-            'New comments',
-            super_admin.email,
-            'emails/daily_notification_comments.html',
-            {
-                'comments': comments,
-                'base_url': settings.BASE_URL
-            }
-        )
+    if comments:
+        super_admins = User.objects.filter(role=Reviwers.SUPER_ADMIN)
+        for super_admin in super_admins:
+            send_email(
+                'New comments',
+                super_admin.email,
+                'emails/daily_notification_comments.html',
+                {
+                    'comments': comments,
+                    'base_url': settings.BASE_URL
+                }
+            )
 
 
     for notification in for_superadmin:
