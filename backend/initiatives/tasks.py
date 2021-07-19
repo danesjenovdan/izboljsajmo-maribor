@@ -14,7 +14,7 @@ from initiatives.utils import send_email
 
 from datetime import datetime, timedelta
 from collections import defaultdict
-from behaviors.behaviors import Published
+from behaviors.models import Published
 
 from celery import shared_task
 

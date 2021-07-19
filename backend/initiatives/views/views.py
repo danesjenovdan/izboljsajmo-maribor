@@ -14,7 +14,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from drf_social_oauth2.views import TokenView
 from django_filters import rest_framework as filters
 from rest_framework import filters as s_filters
-from behaviors.behaviors import Published
+from behaviors.models import Published
 
 from initiatives.serializers import (
     UserSerializer, OrganizationSerializer, DescriptionDefinitionSerializer, ZoneSerializer,

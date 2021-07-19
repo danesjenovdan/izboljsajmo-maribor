@@ -8,7 +8,9 @@ from django.core import validators
 from django.contrib.gis.db import models as geo_models
 from django.contrib.auth.models import Group
 
-from behaviors.behaviors import Timestamped, Authored, Published
+from behaviors.models import Timestamped, Authored, Published
+
+from simple_history.models import HistoricalRecords
 
 from initiatives.utils import validate_file_extension
 
@@ -35,7 +37,7 @@ class Reviwers(models.TextChoices):
 class CommentStatus(models.TextChoices):
     PUBLISHED = 'PU', _('PUBLISHED')
     DELETED = 'D', _('DELETED')
-    PENDING = 'PE', _('PENDING')
+    #PENDING = 'PE', _('PENDING')
 
 
 class NotificationType(models.TextChoices):
@@ -78,6 +80,8 @@ class StatusInitiative(Timestamped, Published):
     is_email_sent = models.BooleanField(
         _("Is email sent"),
         default=False)
+
+    history = HistoricalRecords()
 
     def to_table_row(self):
         draft_style = 'style="background-color: coral;"' if self.draft else 'style="background-color: lightgreen;"'
@@ -197,6 +201,8 @@ class Status(Timestamped):
     note = models.TextField(_('Default note of status'))
     default_email = models.TextField(_('Default email response'))
 
+    history = HistoricalRecords()
+
     def __str__(self):
         return self.name
 
@@ -221,6 +227,8 @@ class Description(Timestamped):
     content = models.TextField(
         _('Description content'))
 
+    history = HistoricalRecords()
+
     class Meta:
         verbose_name = _('Opis')
         verbose_name_plural = _('Opisi')
@@ -230,6 +238,8 @@ class Description(Timestamped):
 class Zone(Timestamped):
     name = models.CharField(_('Name of zone'), max_length=50)
     polygon = geo_models.PolygonField(_('Polygon of zone'))
+
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.name
@@ -242,6 +252,8 @@ class Zone(Timestamped):
 class CompetentService(Timestamped):
     name = models.CharField(_('Name of zone'), max_length=50)
     description = models.TextField(_('Description of service'))
+
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.name
@@ -261,6 +273,8 @@ class Comment(Timestamped, Authored):
         choices=CommentStatus.choices,
         default=CommentStatus.PUBLISHED)
 
+    history = HistoricalRecords()
+
     class Meta:
         verbose_name = _('Komentar')
         verbose_name_plural = _('Komentarji')
@@ -272,6 +286,8 @@ class Vote(Timestamped, Authored):
         verbose_name=_('Initiative'),
         related_name='votes',
         on_delete=models.CASCADE)
+
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = _('Glas')
@@ -332,6 +348,8 @@ class User(AbstractUser, Timestamped):
     blocked_email_sent = models.BooleanField(default=False)
 
     _old_note = None
+
+    history = HistoricalRecords()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -463,6 +481,8 @@ class Area(Timestamped):
         null=True,
         blank=True)
 
+    history = HistoricalRecords()
+
     def __str__(self):
         return self.name
 
@@ -478,6 +498,8 @@ class Rejection(Timestamped):
     note = models.TextField(
         _('Note for rejection'))
 
+    history = HistoricalRecords()
+
     def __str__(self):
         return self.name
 
@@ -490,6 +512,8 @@ class FAQ(Timestamped):
     question = models.TextField(_('question'))
     answer = models.TextField(_('answer'))
     order = models.IntegerField(_("Order"), default=1)
+
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.question[:50]
@@ -566,6 +590,8 @@ class DescriptionDefinition(Timestamped, Authored):
     title = models.CharField(
         _('Title'),
         max_length=1024)
+
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = _('Razdelek opisa')

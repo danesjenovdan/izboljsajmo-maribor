@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    'behaviors.apps.BehaviorsConfig',
     'rest_framework',
     'django_filters',
     'rest_framework_gis',
@@ -53,6 +52,7 @@ INSTALLED_APPS = [
     'admin_ordering',
     'django_celery_beat',
     #'import_export',
+    'simple_history',
 
     'initiatives',
     'about',
@@ -68,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'mb_initiative.urls'

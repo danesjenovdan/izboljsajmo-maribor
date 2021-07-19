@@ -6,7 +6,9 @@ from django.contrib.gis.db import models as geo_models
 from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
 
-from behaviors.behaviors import Timestamped, Authored, Published
+from simple_history.models import HistoricalRecords
+
+from behaviors.models import Timestamped, Authored, Published
 
 from initiatives.models import CommentStatus, InitiativeType, Reviwers, Zone
 
@@ -91,6 +93,8 @@ class Initiative(Timestamped, Authored):
     is_social_inovative_idea = models.BooleanField(
         _('Is social inovative idea'),
         default=False)
+
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = _("Pobuda")

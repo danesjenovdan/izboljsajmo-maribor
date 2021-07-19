@@ -7,7 +7,7 @@ from django.utils.translation import gettext as _
 from django.contrib.gis.geos import GEOSGeometry
 from django.utils.html import mark_safe
 
-from behaviors.behaviors import Published
+from behaviors.models import Published
 
 from initiatives.models import (
     Initiative, Zone,

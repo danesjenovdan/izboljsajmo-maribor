@@ -5,7 +5,7 @@ from django.contrib.admin import SimpleListFilter
 from django.contrib.gis import admin as gis_admin
 from django.db.models import Q
 from django.utils.translation import gettext as _
-from behaviors.behaviors import Published
+from behaviors.models import Published
 
 from initiatives.models import (
     Initiative, BothersInitiativeSuper, BothersInitiativeArea, BothersInitiativeAppraiser, BothersInitiativeContractor,
