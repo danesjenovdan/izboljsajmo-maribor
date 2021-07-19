@@ -4,7 +4,7 @@ from django.utils.translation import gettext as _
 
 from urllib.parse import urlparse, parse_qs
 
-from behaviors.behaviors import Timestamped
+from behaviors.models import Timestamped
 
 class AboutType(models.TextChoices):
     TITLE = 'H2', _('Title')

@@ -1,6 +1,6 @@
 from import_export import resources
 from .models import Initiative
-from behaviors.behaviors import Published
+from behaviors.models import Published
 
 class InitiativeResource(resources.ModelResource):
 

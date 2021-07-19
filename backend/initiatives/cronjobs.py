@@ -10,7 +10,7 @@ from initiatives.utils import send_email
 from datetime import datetime, timedelta
 from django.utils import timezone
 from collections import defaultdict
-from behaviors.behaviors import Published
+from behaviors.models import Published
 
 import logging
 logger = logging.getLogger(__name__)

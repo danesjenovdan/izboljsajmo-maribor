@@ -5,7 +5,7 @@ from initiatives.models import (
     CommentStatus, Description, Area, FAQ, Image, DescriptionDefinition,
     Zone, Rejection
 )
-from behaviors.behaviors import Published
+from behaviors.models import Published
 import logging
 
 logger = logging.getLogger(__name__)
