@@ -194,6 +194,12 @@ class Initiative(Timestamped, Authored):
     is_published = property(_is_published)
     needs_published = property(_needs_publish)
 
+    _is_published.short_description = _("Objavleno")
+    _needs_publish.short_description = _("Potrebuje pregled")
+    comment_count.short_description = _("Št. komentarjev")
+    status_history.short_description = _("Zgodovina statusov")
+    images_preview.short_description = _("Predogled slik")
+
 
 class ArchivedManager(models.Manager):
     def get_queryset(self):
