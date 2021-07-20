@@ -22,10 +22,10 @@ spec:
         resources:
           requests:
             memory: 1Gi
-            cpu: 1000m
+            cpu: 700m
           limits:
             memory: 1Gi
-            cpu: 1000m
+            cpu: 700m
         # env:
         #   - name: APP_ENV
         #     value: production
