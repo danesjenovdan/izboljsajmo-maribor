@@ -43,3 +43,4 @@ celery==5.0.5
 redis==3.5.3
 django-celery-beat==2.2.0
 django-simple-history==3.0.0
+gunicorn

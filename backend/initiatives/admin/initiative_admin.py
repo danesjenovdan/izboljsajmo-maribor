@@ -79,7 +79,7 @@ class InitiativeAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
 
-    printer.short_description = "Print initiatives"
+    printer.short_description = _("Print initiatives")
 
 
 # ---- ZANIMA ME -> interested in
@@ -231,6 +231,7 @@ class IdeaInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         DescriptionInline,
         FileInline,
         StatusInitiativeHearAdminInline,
+        StatusInitiativeEditingAdminInline,
         StatusInitiativeFinishedAdminInline,
         StatusInitiativeRejectedAdminInline,
         CommentInline)
@@ -275,6 +276,7 @@ class IdeaInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         DescriptionInline,
         FileInline,
         StatusInitiativeHearInline,
+        StatusInitiativeEditingAdminInline,
         StatusInitiativeFinishedInline,
         StatusInitiativeRejectedInline,
         CommentInline)
@@ -284,7 +286,7 @@ class IdeaInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
 
-    printer.short_description = "Print initiatives"
+    printer.short_description = _("Print initiatives")
 
 
 class IdeaInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
@@ -311,6 +313,7 @@ class IdeaInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     inlines = (
         DescriptionInline,
         FileInline,
+        StatusInitiativeEditingAdminInline,
         StatusInitiativeFinishedInline,
         CommentInline)
 
