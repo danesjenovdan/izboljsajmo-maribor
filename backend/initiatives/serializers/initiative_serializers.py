@@ -11,6 +11,8 @@ from drf_writable_nested.serializers import WritableNestedModelSerializer
 
 from itertools import groupby
 
+from behaviors.models import Published
+
 class InitiativeListSerializer(serializers.ModelSerializer):
     area = AreaSerializer()
     author = serializers.SerializerMethodField()
@@ -95,7 +97,7 @@ class InitiativeDetailsSerializer(WritableNestedModelSerializer):
 
     def get_statuses(self, obj):
         output = []
-        statuses = obj.initiative_statuses.all().order_by('status')
+        statuses = obj.initiative_statuses.filter(publication_status=Published.PUBLISHED).order_by('status')
         for status, items in groupby(statuses,key=lambda x:x.status.name):
             responses = sorted([StatusInitiativeSerializer(item).data for item in items], key = lambda i: i['created'])
             output.append({
