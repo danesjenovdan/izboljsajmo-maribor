@@ -30,7 +30,7 @@ class BasicUserAdmin(UserAdmin):
         (None, {'fields': ('username', 'email', 'password')}),
         (_('Personal info'), {'fields': ('first_name', 'last_name')}),
         (_('Permissions'), {
-            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions', 'email_confirmed', 'blocked'),
+            'fields': ('is_active', 'is_staff', 'groups', 'email_confirmed', 'blocked'),
         }),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
         (_('MB datas'), {'fields': ('role', 'zones', 'organizations', 'competent_services', 'area', 'phone_number')}),
