@@ -90,6 +90,7 @@ class InterestedInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
     readonly_fields = ['status_history', 'created', 'images_preview']
+    exclude = ['is_draft']
     list_display = [
         'title',
         'author',
@@ -212,6 +213,7 @@ class IdeaInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
     readonly_fields = ['status_history', 'created', 'images_preview']
+    exclude = ['is_draft']
     list_display = [
         'title',
         'author',
@@ -376,6 +378,7 @@ class BothersInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
     readonly_fields = ['status_history', 'created', 'images_preview']
+    exclude = ['is_draft']
     list_display = [
         'title',
         'author',
