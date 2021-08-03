@@ -122,7 +122,7 @@ class CommentInline(admin.TabularInline):
 class StatusInitiativeInline(admin.TabularInline):
     readonly_fields = []
     classes = ['collapse']
-    fields = ['status', 'note', 'email_content', 'note', 'reason_for_rejection', 'competent_service']
+    fields = ['status', 'note', 'email_content', 'note', 'reason_for_rejection']
     model = StatusInitiative
     extra = 0
 
@@ -147,8 +147,8 @@ class StatusInitiativeHearAdminInline(StatusInitiativeHearInline):
 class StatusInitiativeEditingInline(admin.TabularInline):
     form = EditingStatusInlineForm
     readonly_fields = ['created']
-    autocomplete_fields = ['competent_service']
-    fields = ['created', 'email_content', 'note', 'competent_service']
+    #autocomplete_fields = ['competent_service']
+    fields = ['created', 'email_content', 'note']
     classes = ['collapse']
     model = StatusInitiativeEditing
     extra = 0
@@ -159,7 +159,7 @@ class StatusInitiativeEditingInline(admin.TabularInline):
 
 
 class StatusInitiativeEditingAdminInline(StatusInitiativeEditingInline):
-    fields = ['created', 'email_content', 'note', 'competent_service', 'publication_status']
+    fields = ['created', 'email_content', 'note', 'publication_status']
 
 
 class StatusInitiativeProgressInline(admin.TabularInline):
