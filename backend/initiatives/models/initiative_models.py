@@ -15,6 +15,13 @@ from initiatives.models import CommentStatus, InitiativeType, Reviwers, Zone
 import logging
 logger = logging.getLogger(__name__)
 
+PERMISSIONS = {
+    None: [Reviwers.AREA_ADMIN, Reviwers.AREA_APPRAISER, Reviwers.CONTRACTOR_APPRAISER],
+    Reviwers.AREA_ADMIN: [Reviwers.AREA_ADMIN, Reviwers.AREA_APPRAISER, Reviwers.CONTRACTOR_APPRAISER],
+    Reviwers.AREA_APPRAISER: [Reviwers.AREA_APPRAISER, Reviwers.CONTRACTOR_APPRAISER],
+    Reviwers.CONTRACTOR_APPRAISER: [Reviwers.CONTRACTOR_APPRAISER],
+}
+
 class Initiative(Timestamped, Authored):
     type = models.CharField(
         _('Initiative type'),
@@ -101,16 +108,25 @@ class Initiative(Timestamped, Authored):
         verbose_name_plural = _('Pobude')
 
     def __str__(self):
-        return self.title if self.title else 'unnamed'
+        return f'#{self.id} {self.title}' if self.title else f'#{self.id} unnamed'
 
     def comment_count(self):
         return self.initiative_comments.filter(status=CommentStatus.PUBLISHED).count()
+
+    def tilte(self):
+        return f'#{self.id} {self.title}' if self.title else f'#{self.id} unnamed'
 
     def status(self):
         try:
             return self.initiative_statuses.filter(publication_status=Published.PUBLISHED).latest('created').status.name
         except:
             return None
+
+    def telephone(self):
+        self.author.phone_number
+
+    def email(self):
+        self.author.email
 
     def status_history(self):
         statuses = self.initiative_statuses.all()
@@ -220,7 +236,7 @@ class BothersManager(models.Manager):
         super().__init__()
     def get_queryset(self):
         if self.reviewer:
-            return super().get_queryset().filter(type=InitiativeType.BOTHERS_ME, archived=None, reviewer=self.reviewer, is_draft=False)
+            return super().get_queryset().filter(type=InitiativeType.BOTHERS_ME, archived=None, reviewer__in=PERMISSIONS[self.reviewer], is_draft=False)
         else:
             return super().get_queryset().filter(type=InitiativeType.BOTHERS_ME, archived=None, is_draft=False)
 
@@ -276,7 +292,7 @@ class IdeaManager(models.Manager):
         super().__init__()
     def get_queryset(self):
         if self.reviewer:
-            return super().get_queryset().filter(type=InitiativeType.HAVE_IDEA, archived=None, reviewer=self.reviewer, is_draft=False)
+            return super().get_queryset().filter(type=InitiativeType.HAVE_IDEA, archived=None, reviewer__in=PERMISSIONS[self.reviewer], is_draft=False)
         else:
             return super().get_queryset().filter(type=InitiativeType.HAVE_IDEA, archived=None, is_draft=False)
 
@@ -332,7 +348,7 @@ class InterestedManager(models.Manager): # zanima me
         super().__init__()
     def get_queryset(self):
         if self.reviewer:
-            return super().get_queryset().filter(type=InitiativeType.INTERESTED_IN, archived=None, reviewer=self.reviewer, is_draft=False)
+            return super().get_queryset().filter(type=InitiativeType.INTERESTED_IN, archived=None, reviewer__in=PERMISSIONS[self.reviewer], is_draft=False)
         else:
             return super().get_queryset().filter(type=InitiativeType.INTERESTED_IN, archived=None, is_draft=False)
 

@@ -48,6 +48,7 @@ class InitiativeAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     date_hierarchy = 'created'
     readonly_fields = ['status_history', 'created', 'images_preview']
     list_display = [
+        'id',
         'title',
         'reviewer',
         'author',
@@ -79,6 +80,12 @@ class InitiativeAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
 
+    def phone_number(self, obj):
+        return obj.author.phone_number
+
+    def email(self, obj):
+        return obj.author.email
+
     printer.short_description = _("Print initiatives")
 
 
@@ -89,12 +96,12 @@ class InterestedInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
-    readonly_fields = ['status_history', 'created', 'images_preview']
+    readonly_fields = ['status_history', 'created', 'images_preview', 'phone_number', 'email']
     exclude = ['is_draft']
     list_display = [
+        'id',
         'title',
         'author',
-        'type',
         'publisher',
         'status',
         'area',
@@ -119,7 +126,14 @@ class InterestedInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
 
+    def phone_number(self, obj):
+        return obj.author.phone_number
+
+    def email(self, obj):
+        return obj.author.email
+
     printer.short_description = "Print initiatives"
+
 
 
 class InterestedAdminForm(forms.ModelForm):
@@ -137,19 +151,20 @@ class InterestedInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     autocomplete_fields = ['area', 'zone']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email']
     modifiable = False
     list_display = [
+        'id',
         'title',
         'author',
-        'type',
         'publisher',
         'status',
         'area',
         'zone',
         'created',
         'comment_count',
-        'vote_count'
+        'vote_count',
+        'reviewer',
     ]
     inlines = (
         DescriptionInline,
@@ -164,11 +179,17 @@ class InterestedInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
 
+    def phone_number(self, obj):
+        return obj.author.phone_number
+
+    def email(self, obj):
+        return obj.author.email
+
     printer.short_description = "Print initiatives"
 
 
 class InterestedInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer', 'phone_number', 'email']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -176,9 +197,9 @@ class InterestedInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     modifiable = False
     list_display = [
+        'id',
         'title',
         'author',
-        'type',
         'publisher',
         'status',
         'area',
@@ -203,6 +224,12 @@ class InterestedInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
 
+    def phone_number(self, obj):
+        return obj.author.phone_number
+
+    def email(self, obj):
+        return obj.author.email
+
     printer.short_description = "Print initiatives"
 
 # ---- IDEJA Idea
@@ -212,12 +239,12 @@ class IdeaInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
-    readonly_fields = ['status_history', 'created', 'images_preview']
+    readonly_fields = ['status_history', 'created', 'images_preview', 'phone_number', 'email']
     exclude = ['is_draft']
     list_display = [
+        'id',
         'title',
         'author',
-        'type',
         'publisher',
         'status',
         'area',
@@ -242,6 +269,12 @@ class IdeaInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
 
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
+
+    def phone_number(self, obj):
+        return obj.author.phone_number
+
+    def email(self, obj):
+        return obj.author.email
 
     printer.short_description = "Print initiatives"
 
@@ -260,19 +293,20 @@ class IdeaInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     autocomplete_fields = ['area', 'zone']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email']
     modifiable = False
     list_display = [
+        'id',
         'title',
         'author',
-        'type',
         'publisher',
         'status',
         'area',
         'zone',
         'created',
         'comment_count',
-        'vote_count'
+        'vote_count',
+        'reviewer',
     ]
     inlines = (
         DescriptionInline,
@@ -288,12 +322,18 @@ class IdeaInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
 
+    def phone_number(self, obj):
+        return obj.author.phone_number
+
+    def email(self, obj):
+        return obj.author.email
+
     printer.short_description = _("Print initiatives")
 
 
 class IdeaInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     form = IteaAdminForm
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -301,16 +341,17 @@ class IdeaInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     modifiable = False
     list_display = [
+        'id',
         'title',
         'author',
-        'type',
         'publisher',
         'status',
         'area',
         'zone',
         'created',
         'comment_count',
-        'vote_count'
+        'vote_count',
+        'reviewer',
     ]
     inlines = (
         DescriptionInline,
@@ -329,11 +370,17 @@ class IdeaInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
 
+    def phone_number(self, obj):
+        return obj.author.phone_number
+
+    def email(self, obj):
+        return obj.author.email
+
     printer.short_description = "Print initiatives"
 
 
 class IdeaInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer', 'phone_number', 'email']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -341,16 +388,17 @@ class IdeaInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     modifiable = False
     list_display = [
+        'id',
         'title',
         'author',
-        'type',
         'publisher',
         'status',
         'area',
         'zone',
         'created',
         'comment_count',
-        'vote_count'
+        'vote_count',
+        'reviewer',
     ]
     inlines = (
         DescriptionInline,
@@ -367,6 +415,12 @@ class IdeaInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
 
+    def phone_number(self, obj):
+        return obj.author.phone_number
+
+    def email(self, obj):
+        return obj.author.email
+
     printer.short_description = "Print initiatives"
 
 
@@ -377,12 +431,12 @@ class BothersInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
-    readonly_fields = ['status_history', 'created', 'images_preview']
+    readonly_fields = ['status_history', 'created', 'images_preview', 'phone_number', 'email']
     exclude = ['is_draft']
     list_display = [
+        'id',
         'title',
         'author',
-        'type',
         'publisher',
         'status',
         'area',
@@ -407,6 +461,12 @@ class BothersInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
 
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
+
+    def phone_number(self, obj):
+        return obj.author.phone_number
+
+    def email(self, obj):
+        return obj.author.email
 
     printer.short_description = "Print initiatives"
 
@@ -426,19 +486,20 @@ class BothersInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     autocomplete_fields = ['area', 'zone']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email']
     modifiable = False
     list_display = [
+        'id',
         'title',
         'author',
-        'type',
         'publisher',
         'status',
         'area',
         'zone',
         'created',
         'comment_count',
-        'vote_count'
+        'vote_count',
+        'reviewer',
     ]
     inlines = (
         DescriptionInline,
@@ -454,12 +515,18 @@ class BothersInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
 
+    def phone_number(self, obj):
+        return obj.author.phone_number
+
+    def email(self, obj):
+        return obj.author.email
+
     printer.short_description = "Print initiatives"
 
 
 class BothersInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     form = BothersInitiativeForm
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -467,16 +534,17 @@ class BothersInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     modifiable = False
     list_display = [
+        'id',
         'title',
         'author',
-        'type',
         'publisher',
         'status',
         'area',
         'zone',
         'created',
         'comment_count',
-        'vote_count'
+        'vote_count',
+        'reviewer',
     ]
     inlines = (
         DescriptionInline,
@@ -495,11 +563,17 @@ class BothersInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
 
+    def phone_number(self, obj):
+        return obj.author.phone_number
+
+    def email(self, obj):
+        return obj.author.email
+
     printer.short_description = "Print initiatives"
 
 
 class BothersInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer', 'phone_number', 'email']
     modifiable = False
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
@@ -507,16 +581,17 @@ class BothersInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     date_hierarchy = 'created'
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     list_display = [
+        'id',
         'title',
         'author',
-        'type',
         'publisher',
         'status',
         'area',
         'zone',
         'created',
         'comment_count',
-        'vote_count'
+        'vote_count',
+        'reviewer',
     ]
     inlines = (
         DescriptionInline,
@@ -532,6 +607,12 @@ class BothersInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
 
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
+
+    def phone_number(self, obj):
+        return obj.author.phone_number
+
+    def email(self, obj):
+        return obj.author.email
 
     printer.short_description = "Print initiatives"
 
