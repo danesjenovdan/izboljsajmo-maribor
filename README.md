@@ -19,6 +19,6 @@
 
 ## Deploy
 
-There is a `kustomize` folder, have a look. Flux CD watches this repo, there is a 
+There is a `kustomize` folder, have a look. Flux CD watches this repo, there is a
 GitHub Actions yaml in `.github/workflows` that builds and uploads the image on
 every **push** event.
