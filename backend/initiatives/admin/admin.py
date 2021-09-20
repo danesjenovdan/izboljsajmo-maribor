@@ -9,7 +9,7 @@ from initiatives.models import (
     User, BasicUser, SuperAdminUser, AreaAdminUser, AreaAppraiserUser, ContractorAppraiserUser, Organization, Zone, CompetentService,
     Area, Status, StatusInitiative, File, Comment, Comment, FAQ, StatusInitiativeHear, Rejection, Image,
     StatusInitiativeHear, StatusInitiativeEditing, StatusInitiativeProgress, Address,
-    StatusInitiativeFinished, StatusInitiativeDone, StatusInitiativeRejected, Description, Notification
+    StatusInitiativeFinished, StatusInitiativeDone, StatusInitiativeRejected, Description, Notification, AllAdminUser
 )
 from initiatives.forms import (
     HearStatusInlineForm, EditingStatusInlineForm, ProgressStatusInlineForm, DoneStatusInlineForm,
@@ -75,6 +75,21 @@ class EmptyUserAdmin(UserAdmin):
             'fields': ('username', 'email', 'password1', 'password2'),
         }),
     )
+
+
+class AllAdminUserAdmin(UserAdmin):
+    fieldsets = ((None, {'fields': ('username', 'email', 'password')}),)
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'email', 'password1', 'password2'),
+        }),
+    )
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        """
+        return {}
 
 
 class SuperAdminUserAdmin(MBUserAdmin):
@@ -309,6 +324,7 @@ class FAQAdmin(OrderableAdmin, admin.ModelAdmin):
 
 
 admin.site.register(User, EmptyUserAdmin)
+admin.site.register(AllAdminUser, AllAdminUserAdmin)
 admin.site.register(BasicUser, BasicUserAdmin)
 admin.site.register(SuperAdminUser, SuperAdminUserAdmin)
 admin.site.register(AreaAdminUser, AreaAdminUserAdmin)

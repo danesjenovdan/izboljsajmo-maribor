@@ -66,6 +66,9 @@ class Command(BaseCommand):
         ct = ContentType.objects.get_for_model(models.Rejection)
         permissions = self.get_permissions('rejection', ct, self.options)
         admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.AllAdminUser)
+        permissions = self.get_permissions('alladminuser', ct, self.basc_options)
+        admin_group.permissions.add(*permissions)
 
         ct = ContentType.objects.get_for_model(models.StatusInitiativeHear)
         permissions = self.get_permissions('statusinitiativehear', ct, self.options)

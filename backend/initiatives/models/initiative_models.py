@@ -34,7 +34,7 @@ class Initiative(Timestamped, Authored):
         choices=Reviwers.choices,
         default=Reviwers.AREA_ADMIN,)
     reviewer_user = models.ForeignKey(
-        'initiatives.User',
+        'initiatives.AllAdminUser',
         verbose_name=_('Reviewer'),
         related_name='reviewed',
         on_delete=models.SET_NULL,

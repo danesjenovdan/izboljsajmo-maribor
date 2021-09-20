@@ -365,6 +365,24 @@ class SuperAdminManager(BaseUserManager):
         return super().get_queryset().filter(role=Reviwers.SUPER_ADMIN)
 
 
+class AllAdminManager(BaseUserManager):
+    def get_queryset(self):
+        return super().get_queryset().filter(role__in=[
+            Reviwers.SUPER_ADMIN,
+            Reviwers.AREA_ADMIN,
+            Reviwers.AREA_APPRAISER,
+            Reviwers.CONTRACTOR_APPRAISER
+        ])
+
+
+class AllAdminUser(User):
+    objects = AllAdminManager()
+    class Meta:
+        proxy=True
+        verbose_name = _('All admin')
+        verbose_name_plural = _('All admins')
+
+
 class SuperAdminUser(User):
     objects = SuperAdminManager()
     class Meta:

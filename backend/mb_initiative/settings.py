@@ -51,9 +51,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'admin_ordering',
     'django_celery_beat',
-    #'import_export',
     'simple_history',
-
     'initiatives',
     'about',
 ]
@@ -248,3 +246,7 @@ EMAIL_FOR_NEW_NOTIFICATIONS = os.environ.get("LOGGING_EMAIL", "dummy@email.si")
 BASE_URL = os.environ.get('BACK_URL', 'http://localhost:8000')
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880
+
+ACCESS_TOKEN_EXPIRE_SECONDS = 504000
+
+REFRESH_TOKEN_EXPIRE_SECONDS = 504000
