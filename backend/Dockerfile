@@ -2,11 +2,11 @@
 FROM osgeo/gdal
 
 RUN apt-get update && apt-get install --yes python3-pip \
-                        python3-gdal 
+                        python3-gdal \
+                        gettext
 
                         # gdal-bin \
                         # libgdal-dev \
-                        # gettext \
                         # python3-gdal
 
 
