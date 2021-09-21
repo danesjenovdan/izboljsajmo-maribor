@@ -1,17 +1,8 @@
-#FROM python:3.8
-FROM osgeo/gdal
+FROM osgeo/gdal:ubuntu-small-3.3.2
 
 RUN apt-get update && apt-get install --yes python3-pip \
                         python3-gdal \
                         gettext
-
-                        # gdal-bin \
-                        # libgdal-dev \
-                        # python3-gdal
-
-
-# RUN export CPLUS_INCLUDE_PATH=/usr/include/gdal
-# RUN export C_INCLUDE_PATH=/usr/include/gdal
 
 RUN mkdir /app
 WORKDIR /app
