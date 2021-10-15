@@ -18,6 +18,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.basc_options = [('change_', 'Can change '), ('view_', 'Can view ')]
         self.options = [('add_', 'Can add '), ('change_', 'Can change '), ('view_', 'Can view ')]
+        self.read = [('view_', 'Can view ')]
 
 
         # Super admin
@@ -154,6 +155,10 @@ class Command(BaseCommand):
         area_admin_group.permissions.add(*permissions)
         ct = ContentType.objects.get_for_model(models.StatusInitiativeRejected)
         permissions = self.get_permissions('statusinitiativerejected', ct, self.options)
+        area_admin_group.permissions.add(*permissions)
+
+        ct = ContentType.objects.get_for_model(models.Area)
+        permissions = self.get_permissions('area', ct, self.read)
         area_admin_group.permissions.add(*permissions)
 
         # Appraiser group
