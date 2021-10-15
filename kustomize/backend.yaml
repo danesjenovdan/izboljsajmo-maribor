@@ -67,7 +67,7 @@ spec:
           limits:
             memory: 1Gi
             cpu: 200m
-      - name: migrate
+      - name: compilemessages
         image: backend
         command:
           - python
