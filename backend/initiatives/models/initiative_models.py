@@ -15,6 +15,7 @@ from initiatives.models import CommentStatus, InitiativeType, Reviwers, Zone
 import logging
 logger = logging.getLogger(__name__)
 
+# This is used for showing admin all initialives which is asigned admins with lower permissions
 PERMISSIONS = {
     None: [Reviwers.AREA_ADMIN, Reviwers.AREA_APPRAISER, Reviwers.CONTRACTOR_APPRAISER],
     Reviwers.AREA_ADMIN: [Reviwers.AREA_ADMIN, Reviwers.AREA_APPRAISER, Reviwers.CONTRACTOR_APPRAISER],
@@ -150,6 +151,14 @@ class Initiative(Timestamped, Authored):
             '''
             )
 
+    def description(self):
+        output = ''
+        descriptions = self.descriptions.all()
+        for description in descriptions:
+            output += f'<h3>{description.title}</h3><br>{description.content}'
+
+        return mark_safe(output)
+
     def images_preview(self):
         images = ""
         if self.cover_image:
@@ -249,7 +258,7 @@ class BothersInitiativeSuper(Initiative):
         verbose_name_plural = _('Pobude moti me (superadmin)')
 
     def get_admin_change_url(self):
-        return reverse('admin:initiatives_bothersinitiativesuper_change',  args=[self.id] )
+        return reverse('admin:initiatives_bothersinitiativesuper_change',  args=[self.id])
 
 
 class BothersInitiativeArea(Initiative):

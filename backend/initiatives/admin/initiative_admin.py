@@ -46,7 +46,7 @@ class InitiativeAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
-    readonly_fields = ['status_history', 'created', 'images_preview']
+    readonly_fields = ['status_history', 'created', 'images_preview', 'description']
     list_display = [
         'id',
         'title',
@@ -96,7 +96,7 @@ class InterestedInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
-    readonly_fields = ['status_history', 'created', 'images_preview', 'phone_number', 'email']
+    readonly_fields = ['status_history', 'created', 'images_preview', 'phone_number', 'email', 'description']
     exclude = ['is_draft']
     list_display = [
         'id',
@@ -148,10 +148,10 @@ class InterestedAdminForm(forms.ModelForm):
 class InterestedInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     form = InterestedAdminForm
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['area', 'zone']
+    autocomplete_fields = ['area', 'zone', 'area']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email', 'description']
     modifiable = False
     list_display = [
         'id',
@@ -176,6 +176,11 @@ class InterestedInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
 
     actions = ['printer']
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        areas = request.user.area.all()
+        return qs.filter(area__in=areas)
+
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
 
@@ -189,7 +194,7 @@ class InterestedInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
 
 
 class InterestedInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer', 'phone_number', 'email']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer', 'phone_number', 'email', 'description']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -239,7 +244,7 @@ class IdeaInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
-    readonly_fields = ['status_history', 'created', 'images_preview', 'phone_number', 'email']
+    readonly_fields = ['status_history', 'created', 'images_preview', 'phone_number', 'email', 'description']
     exclude = ['is_draft']
     list_display = [
         'id',
@@ -290,10 +295,10 @@ class IteaAdminForm(forms.ModelForm):
 class IdeaInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     form = IteaAdminForm
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['area', 'zone']
+    autocomplete_fields = ['area', 'zone', 'area']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email', 'description']
     modifiable = False
     list_display = [
         'id',
@@ -319,6 +324,11 @@ class IdeaInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
 
     actions = ['printer']
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        areas = request.user.area.all()
+        return qs.filter(area__in=areas)
+
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
 
@@ -333,7 +343,7 @@ class IdeaInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
 
 class IdeaInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     form = IteaAdminForm
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email', 'description']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -380,7 +390,7 @@ class IdeaInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
 
 
 class IdeaInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer', 'phone_number', 'email']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer', 'phone_number', 'email', 'description']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -431,7 +441,7 @@ class BothersInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
-    readonly_fields = ['status_history', 'created', 'images_preview', 'phone_number', 'email']
+    readonly_fields = ['status_history', 'created', 'images_preview', 'phone_number', 'email', 'description']
     exclude = ['is_draft']
     list_display = [
         'id',
@@ -476,17 +486,17 @@ class BothersInitiativeForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         idx = Reviwers.get_order().index(self.instance.reviewer)
         self.fields['reviewer_user'].queryset = User.objects.filter(
-            role=Reviwers.get_order()[idx+1],
+            role__in=Reviwers.get_order()[idx+1:],
             area=self.instance.area)
 
 
 class BothersInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     form = BothersInitiativeForm
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['area', 'zone']
+    autocomplete_fields = ['zone', 'area']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email', 'description', 'description']
     modifiable = False
     list_display = [
         'id',
@@ -512,6 +522,11 @@ class BothersInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
 
     actions = ['printer']
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        areas = request.user.area.all()
+        return qs.filter(area__in=areas)
+
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
 
@@ -526,7 +541,7 @@ class BothersInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
 
 class BothersInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
     form = BothersInitiativeForm
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email', 'description']
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone']
@@ -573,7 +588,7 @@ class BothersInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
 
 
 class BothersInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
-    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer', 'phone_number', 'email']
+    readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'cover_image', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer', 'phone_number', 'email', 'description']
     modifiable = False
     exclude = ['publisher', ]
     search_fields = ['author__username', 'address', 'descriptions__content']

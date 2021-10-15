@@ -33,6 +33,24 @@ class Reviwers(models.TextChoices):
     def get_order():
         return ['SA', 'AA', 'AP', 'CA']
 
+    def get_role_url_key(key):
+        return {
+            'SA': 'super',
+            'AA': 'area',
+            'AP': 'appraiser',
+            'CA': 'contractor'
+            }[key]
+
+    def role_to_str(role):
+        if role == None:
+            return ''
+        return {
+            'SA': _('Nivo 1'),
+            'AA': _('Nivo 2'),
+            'AP': _('Nivo 3'),
+            'CA': _('Nivo 4')
+            }[role]
+
 
 class CommentStatus(models.TextChoices):
     PUBLISHED = 'PU', _('PUBLISHED')
@@ -354,6 +372,9 @@ class User(AbstractUser, Timestamped):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._old_note = self.note
+
+    def __str__(self):
+        return f'{self.username}: {Reviwers.role_to_str(self.role)}'
 
     class Meta:
         verbose_name = _('Uporabnik')

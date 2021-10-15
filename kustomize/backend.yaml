@@ -32,6 +32,57 @@ spec:
       - name: izboljsajmo-maribor-backend-persistent-storage
         persistentVolumeClaim:
           claimName: izboljsajmo-maribor-backend-pv-claim
+
+      initContainers:
+      - name: collectstatic
+        image: backend
+        command:
+          - python
+          - manage.py
+          - collectstatic
+          - --no-input
+        envFrom:
+          - secretRef:
+              name: izboljsajmo-maribor-credentials
+        resources:
+          requests:
+            memory: 1Gi
+            cpu: 200m
+          limits:
+            memory: 1Gi
+            cpu: 200m
+      - name: migrate
+        image: backend
+        command:
+          - python
+          - manage.py
+          - migrate
+        envFrom:
+          - secretRef:
+              name: izboljsajmo-maribor-credentials
+        resources:
+          requests:
+            memory: 1Gi
+            cpu: 200m
+          limits:
+            memory: 1Gi
+            cpu: 200m
+      - name: migrate
+        image: backend
+        command:
+          - python
+          - manage.py
+          - compilemessages
+        envFrom:
+          - secretRef:
+              name: izboljsajmo-maribor-credentials
+        resources:
+          requests:
+            memory: 1Gi
+            cpu: 200m
+          limits:
+            memory: 1Gi
+            cpu: 200m
       containers:
       - name: izboljsajmo-maribor-backend
         image: backend # kustomize thing
