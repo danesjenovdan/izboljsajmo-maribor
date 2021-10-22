@@ -36,6 +36,9 @@ spec:
       initContainers:
       - name: collectstatic
         image: backend
+        volumeMounts:
+        - name: izboljsajmo-maribor-backend-persistent-storage
+          mountPath: /files
         command:
           - python
           - manage.py
@@ -69,6 +72,9 @@ spec:
             cpu: 200m
       - name: compilemessages
         image: backend
+        volumeMounts:
+        - name: izboljsajmo-maribor-backend-persistent-storage
+          mountPath: /files
         command:
           - python
           - manage.py
