@@ -3,7 +3,6 @@ from django.conf import settings
 from django.utils.html import mark_safe
 from django.utils.translation import gettext as _
 from django.contrib.gis.db import models as geo_models
-from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
 
 from simple_history.models import HistoricalRecords

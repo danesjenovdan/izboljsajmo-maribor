@@ -14,7 +14,8 @@ from initiatives.models import (
     # users
     SuperAdminUser, AreaAdminUser, AreaAppraiserUser, ContractorAppraiserUser, User, RestorePassword, ConfirmEmail,
     StatusInitiativeHear, StatusInitiativeEditing, StatusInitiativeProgress, StatusInitiativeFinished, StatusInitiativeDone,
-    StatusInitiativeRejected, InitiativeType, BasicUser, Notification, Reviwers, NotificationType
+    StatusInitiativeRejected, InitiativeType, BasicUser, Notification, Reviwers, NotificationType, BothersInitiativeSuper,
+    BothersInitiativeArea, IdeaInitiativeSuper, IdeaInitiativeArea, InterestedInitiativeSuper, InterestedInitiativeArea,
 )
 from initiatives.utils import send_email, id_generator
 from initiatives.tasks import send_email_task
@@ -68,6 +69,26 @@ def set_contractor_appraiser_to_group(sender, instance, created, **kwargs):
             instance.save()
 
 
+def check_if_area_is_changed(sender, instance, **kwargs):
+    old_instance = sender.objects.filter(id=instance.id)
+    if old_instance:
+        old_instance = old_instance[0]
+    else:
+        return
+    logger.warning(f'{old_instance.area} {instance.area}')
+    if old_instance.area != instance.area:
+        logger.warning(f'area was changed')
+        Notification(
+            for_area=instance.area,
+            initiative=instance,
+            type=NotificationType.UPDATED
+        ).save()
+        Notification.objects.filter(
+            for_area=old_instance.area,
+            initiative=instance
+        ).delete()
+
+
 # initiatives signals
 def set_zone_from_location(sender, instance, **kwargs):
     old_instance = sender.objects.filter(id=instance.id)
@@ -76,6 +97,7 @@ def set_zone_from_location(sender, instance, **kwargs):
     else:
         old_location = None
 
+    # set zone from location
     if instance.id is None and instance.location:
         zones = Zone.objects.filter(polygon__intersects=instance.location)
         if zones:
@@ -213,6 +235,13 @@ post_save.connect(set_area_admin_to_group, sender=AreaAdminUser)
 
 pre_save.connect(set_zone_from_location, sender=Initiative)
 #post_save.connect(send_email_after_initiative_created, sender=Initiative)
+
+pre_save.connect(check_if_area_is_changed, sender=BothersInitiativeSuper)
+pre_save.connect(check_if_area_is_changed, sender=BothersInitiativeArea)
+pre_save.connect(check_if_area_is_changed, sender=IdeaInitiativeSuper)
+pre_save.connect(check_if_area_is_changed, sender=IdeaInitiativeArea)
+pre_save.connect(check_if_area_is_changed, sender=InterestedInitiativeSuper)
+pre_save.connect(check_if_area_is_changed, sender=InterestedInitiativeArea)
 
 post_save.connect(set_key, sender=RestorePassword)
 post_save.connect(set_key, sender=ConfirmEmail)
