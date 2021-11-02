@@ -53,9 +53,6 @@ export default {
       default: 'MM'
     }
   },
-  async created () {
-    this.descriptions = await this.$store.dispatch('getDescriptionDefinitions', { type: this.type })
-  },
   data () {
     return {
       errorMessage: false,
@@ -65,6 +62,9 @@ export default {
       descriptions: [],
       hasSocialInnovativeIdeaCheckbox: this.type === 'II'
     }
+  },
+  async created () {
+    this.descriptions = await this.$store.dispatch('getDescriptionDefinitions', { type: this.type })
   },
   methods: {
     onError () {
@@ -115,7 +115,7 @@ export default {
       this.errorMessage = false
       try {
         if (id >= 0) { // delete initiative from db
-          const res = await this.$store.dispatch('deleteInitiative', {
+          await this.$store.dispatch('deleteInitiative', {
             id
           })
         }

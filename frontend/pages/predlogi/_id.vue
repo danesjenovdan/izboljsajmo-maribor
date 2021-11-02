@@ -82,17 +82,22 @@
             </NuxtLink>
           </b-col>
         </b-row>
-        <b-row>
-          <b-col class="predlog-description mr-lg-5 p-lg-0">
-            <b-row class="position-relative mb-5">
-              <b-col>
-                <div class="d-flex">
+        <b-row class="pr-lg-4">
+          <b-col class="predlog-description">
+            <b-row class="position-relative" :class="{ 'mb-5': data.cover_image || data.cover_image_after }">
+              <b-col class="p-lg-0" :class="{ 'd-flex justify-content-end': !(data.cover_image || data.cover_image_after) }">
+                <div class="d-flex position-relative">
+                  <span v-if="data.cover_image" class="image-label image-label-before">Prej</span>
                   <img
                     v-if="data.cover_image"
                     :src="data.cover_image.image"
                     class="cover-image"
+                    :class="{
+                      'stretch-image': !data.cover_image_after
+                    }"
                     alt="Initiative cover image - before"
                   >
+                  <span v-if="data.cover_image_after" class="image-label image-label-after">Potem</span>
                   <img
                     v-if="data.cover_image_after"
                     :src="data.cover_image_after.image"
@@ -100,7 +105,14 @@
                     alt="Initiative cover image - after"
                   >
                 </div>
-                <b-button v-if="!data.has_voted" class="support-button" @click="vote">
+                <b-button
+                  v-if="!data.has_voted"
+                  class="support-button"
+                  :class="{
+                    'button-reposition': !(data.cover_image || data.cover_image_after)
+                  }"
+                  @click="vote"
+                >
                   <LikeIcon />
                   <span>PODPRI</span>
                 </b-button>
@@ -396,8 +408,48 @@ export default {
 
   .cover-image {
     object-fit: cover;
-    width: 100%;
+    // width: 100%;
     max-height: 25rem;
+    min-width: 50%;
+
+    &.stretch-image {
+      min-width: 100%;
+    }
+  }
+
+  .image-label {
+    position: absolute;
+    top: 1rem;
+    padding: 0.125rem 0.75rem;
+    border: 1px solid #ffffff;
+    border-radius: 18px;
+    background-color: #e8ebef;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 0.75rem;
+
+    &.image-label-before {
+      left: 1rem;
+    }
+
+    &.image-label-after {
+      left: calc(50% + 1rem);
+    }
+
+    @media (min-width: 992px) {
+      top: unset;
+      bottom: 1rem;
+      padding: 0.25rem 1rem;
+      // font-size: 1rem;
+
+      &.image-label-before {
+        left: 2rem;
+      }
+
+      &.image-label-after {
+        left: calc(50% + 2rem);
+      }
+    }
   }
 
   .support-button {
@@ -407,6 +459,19 @@ export default {
     right: 20%;
     bottom: -1.5rem;
     box-shadow: 2px 2px 5px #d3d7df;
+
+    &.button-reposition {
+      position: relative;
+      right: unset;
+      bottom: unset;
+    }
+    @media (min-width: 992px) {
+      &.button-reposition {
+        position: absolute;
+        right: calc(12.5% + 15px);
+        bottom: -1.5rem;
+      }
+    }
 
     img {
       margin-right: 0.5rem;
