@@ -86,7 +86,7 @@
           <b-col class="predlog-description">
             <b-row class="position-relative" :class="{ 'mb-5': data.cover_image || data.cover_image_after }">
               <b-col class="p-lg-0" :class="{ 'd-flex justify-content-end': !(data.cover_image || data.cover_image_after) }">
-                <div class="d-flex position-relative">
+                <div class="d-flex flex-column flex-md-row position-relative">
                   <span v-if="data.cover_image" class="image-label image-label-before">Prej</span>
                   <img
                     v-if="data.cover_image"
@@ -409,8 +409,13 @@ export default {
   .cover-image {
     object-fit: cover;
     // width: 100%;
-    max-height: 25rem;
+    height: 14rem;
     min-width: 50%;
+
+    @media (min-width: 576px) {
+      max-height: 25rem;
+      height: unset;
+    }
 
     &.stretch-image {
       min-width: 100%;
@@ -433,7 +438,15 @@ export default {
     }
 
     &.image-label-after {
-      left: calc(50% + 1rem);
+      top: calc(50% + 1rem);
+      left: 1rem;
+    }
+
+    @media (min-width: 576px) {
+      &.image-label-after {
+        top: 1rem;
+        left: calc(50% + 1rem);
+      }
     }
 
     @media (min-width: 992px) {
@@ -447,7 +460,8 @@ export default {
       }
 
       &.image-label-after {
-        left: calc(50% + 2rem);
+        top: unset;
+        left: calc(50% + 1rem);
       }
     }
   }
@@ -464,12 +478,13 @@ export default {
       position: relative;
       right: unset;
       bottom: unset;
+      margin-bottom: 1rem;
     }
     @media (min-width: 992px) {
       &.button-reposition {
-        position: absolute;
         right: calc(12.5% + 15px);
-        bottom: -1.5rem;
+        bottom: 2rem;
+        margin-bottom: 0;
       }
     }
 
