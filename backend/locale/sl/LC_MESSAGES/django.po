@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-03 05:47+0000\n"
+"POT-Creation-Date: 2021-10-15 09:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,8 +19,8 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
 "%100==4 ? 2 : 3);\n"
 
-#: about/models.py:10 initiatives/models/initiative_models.py:44
-#: initiatives/models/models.py:591 initiatives/views/admin_views.py:48
+#: about/models.py:10 initiatives/models/initiative_models.py:45
+#: initiatives/models/models.py:630 initiatives/views/admin_views.py:48
 msgid "Title"
 msgstr "Naslov"
 
@@ -32,7 +32,7 @@ msgstr "Naslov 2"
 msgid "Text"
 msgstr "Besedilo"
 
-#: about/models.py:13 about/models.py:27 initiatives/models/models.py:559
+#: about/models.py:13 about/models.py:27 initiatives/models/models.py:598
 msgid "Image"
 msgstr "Slika"
 
@@ -44,7 +44,7 @@ msgstr "Youtube Embed"
 msgid "Link"
 msgstr "Povezava"
 
-#: about/models.py:19 initiatives/models/models.py:514
+#: about/models.py:19 initiatives/models/models.py:553
 msgid "Order"
 msgstr "Vstni red"
 
@@ -92,11 +92,11 @@ msgstr "Naslov 2"
 msgid "Naslovi 2"
 msgstr "Naslovi 2"
 
-#: about/models.py:124 initiatives/models/models.py:576
+#: about/models.py:124 initiatives/models/models.py:615
 msgid "Slika"
 msgstr "Slika"
 
-#: about/models.py:125 initiatives/models/models.py:577
+#: about/models.py:125 initiatives/models/models.py:616
 msgid "Slike"
 msgstr "Slike"
 
@@ -144,15 +144,15 @@ msgstr "Pomembni podatki"
 msgid "MB datas"
 msgstr "MB podatki"
 
-#: initiatives/admin/admin.py:37 initiatives/models/models.py:475
+#: initiatives/admin/admin.py:37 initiatives/models/models.py:514
 msgid "Notes"
 msgstr "Opisi"
 
-#: initiatives/admin/admin.py:302
+#: initiatives/admin/admin.py:317
 msgid "Initiatives"
 msgstr "Pobude"
 
-#: initiatives/admin/admin.py:331
+#: initiatives/admin/admin.py:347
 msgid "Izboljšajmo Maribor"
 msgstr "Izboljšajmo Maribor"
 
@@ -161,7 +161,7 @@ msgid "is publuc"
 msgstr "je objavleno"
 
 #: initiatives/admin/initiative_admin.py:33
-#: initiatives/models/initiative_models.py:213
+#: initiatives/models/initiative_models.py:222
 msgid "Objavleno"
 msgstr "Objavleno"
 
@@ -170,7 +170,7 @@ msgid "Nepregledano"
 msgstr "Nepregledano"
 
 #: initiatives/admin/initiative_admin.py:89
-#: initiatives/admin/initiative_admin.py:331
+#: initiatives/admin/initiative_admin.py:341
 #, fuzzy
 #| msgid "Export initiatives"
 msgid "Print initiatives"
@@ -183,174 +183,174 @@ msgstr "Nove pobude, ki potrebujejo tvojo pozornost"
 
 #: initiatives/management/commands/set_permissions.py:20
 msgid "Area admin"
-msgstr "Admin področni"
+msgstr "Vodja področja"
 
-#: initiatives/models/initiative_models.py:27 initiatives/models/models.py:582
+#: initiatives/models/initiative_models.py:28 initiatives/models/models.py:621
 msgid "Initiative type"
 msgstr "Tip pobude"
 
-#: initiatives/models/initiative_models.py:32
+#: initiatives/models/initiative_models.py:33
 msgid "Reviewer role"
 msgstr "Reviewer role"
 
-#: initiatives/models/initiative_models.py:38
+#: initiatives/models/initiative_models.py:39
 msgid "Reviewer"
 msgstr "Reviewer"
 
-#: initiatives/models/initiative_models.py:50 initiatives/models/models.py:56
+#: initiatives/models/initiative_models.py:51 initiatives/models/models.py:74
 msgid "Status of initiative"
 msgstr "Status pobude"
 
-#: initiatives/models/initiative_models.py:54 initiatives/models/models.py:327
-#: initiatives/models/models.py:641 initiatives/views/admin_views.py:48
+#: initiatives/models/initiative_models.py:55 initiatives/models/models.py:345
+#: initiatives/models/models.py:680 initiatives/views/admin_views.py:48
 msgid "Area"
 msgstr "Področje"
 
-#: initiatives/models/initiative_models.py:63
+#: initiatives/models/initiative_models.py:64
 msgid "Address of initiative"
 msgstr "Naslov pobude"
 
-#: initiatives/models/initiative_models.py:69
+#: initiatives/models/initiative_models.py:70
 msgid "GEO Zone of initiative"
 msgstr "Območje pobude"
 
-#: initiatives/models/initiative_models.py:82
+#: initiatives/models/initiative_models.py:83
 msgid "Cover image before"
 msgstr "Naslovna slika prej"
 
-#: initiatives/models/initiative_models.py:89
+#: initiatives/models/initiative_models.py:90
 msgid "Cover image after"
 msgstr "Naslovna slika potem"
 
-#: initiatives/models/initiative_models.py:98
+#: initiatives/models/initiative_models.py:99
 msgid "In review"
 msgstr "V pregledu"
 
-#: initiatives/models/initiative_models.py:101
+#: initiatives/models/initiative_models.py:102
 msgid "Is social inovative idea"
 msgstr "Družbeno inovativna ideja"
 
-#: initiatives/models/initiative_models.py:107
+#: initiatives/models/initiative_models.py:108
 msgid "Pobuda"
 msgstr "Pobuda"
 
-#: initiatives/models/initiative_models.py:108
+#: initiatives/models/initiative_models.py:109
 msgid "Pobude"
 msgstr "Pobude"
 
-#: initiatives/models/initiative_models.py:182
+#: initiatives/models/initiative_models.py:191
 msgid "Object must be created before it can be archived"
 msgstr "Objekt mora biti shranjen preden ga lahko arhivirate"
 
-#: initiatives/models/initiative_models.py:214
+#: initiatives/models/initiative_models.py:223
 msgid "Potrebuje pregled"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:215
+#: initiatives/models/initiative_models.py:224
 msgid "Št. komentarjev"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:216
+#: initiatives/models/initiative_models.py:225
 msgid "Zgodovina statusov"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:217
+#: initiatives/models/initiative_models.py:226
 msgid "Predogled slik"
 msgstr ""
 
-#: initiatives/models/initiative_models.py:229
+#: initiatives/models/initiative_models.py:238
 msgid "Arhivirana pobuda"
 msgstr "Arhivirana pobuda"
 
-#: initiatives/models/initiative_models.py:230
+#: initiatives/models/initiative_models.py:239
 msgid "Arhivirane pobude"
 msgstr "Arhivirane pobude"
 
-#: initiatives/models/initiative_models.py:248
+#: initiatives/models/initiative_models.py:257
 msgid "Pobuda moti me (superadmin)"
 msgstr "Pobuda moti me (Nivo1 superadmin)"
 
-#: initiatives/models/initiative_models.py:249
+#: initiatives/models/initiative_models.py:258
 msgid "Pobude moti me (superadmin)"
 msgstr "Pobude moti me (Nivo1 superadmin)"
 
-#: initiatives/models/initiative_models.py:259
+#: initiatives/models/initiative_models.py:268
 msgid "Pobuda moti me (admin področni)"
-msgstr "Pobuda moti me (Nivo2 admin področni)"
+msgstr "Pobuda moti me (Nivo2 Skrbnik področja)"
 
-#: initiatives/models/initiative_models.py:260
+#: initiatives/models/initiative_models.py:269
 msgid "Pobude moti me (admin področni)"
-msgstr "Pobude moti me (Nivo2 admin področni)"
+msgstr "Pobude moti me (Nivo2 Skrbnik področja)"
 
-#: initiatives/models/initiative_models.py:270
+#: initiatives/models/initiative_models.py:279
 msgid "Pobuda moti me (cenilec področni)"
 msgstr "Pobuda moti me (Nivo3 skrbnik področni)"
 
-#: initiatives/models/initiative_models.py:271
+#: initiatives/models/initiative_models.py:280
 msgid "Pobude moti me (cenilci področni)"
 msgstr "Pobude moti me (Nivo3 skrbnik področni)"
 
-#: initiatives/models/initiative_models.py:281
+#: initiatives/models/initiative_models.py:290
 msgid "Pobuda moti me (cenilec izvajalec)"
 msgstr "Pobuda moti me (Nivo4 skrbnik - izvajalec)"
 
-#: initiatives/models/initiative_models.py:282
+#: initiatives/models/initiative_models.py:291
 msgid "Pobude moti me (cenilci izvajalci)"
 msgstr "Pobude moti me (Novo4 cenilci izvajalci)"
 
-#: initiatives/models/initiative_models.py:304
+#: initiatives/models/initiative_models.py:313
 msgid "Pobuda imam idejo (superadmin)"
 msgstr "Pobuda imam idejo (Nivo1 superadmin)"
 
-#: initiatives/models/initiative_models.py:305
+#: initiatives/models/initiative_models.py:314
 msgid "Pobude imam idejo (superadmin)"
 msgstr "Pobude imam idejo (Nivo1 superadmin)"
 
-#: initiatives/models/initiative_models.py:315
+#: initiatives/models/initiative_models.py:324
 msgid "Pobuda imam idejo (admin področni)"
-msgstr "Pobuda imam idejo (Nivo2 admin področni)"
+msgstr "Pobuda imam idejo (Nivo2 Skrbnik področja)"
 
-#: initiatives/models/initiative_models.py:316
+#: initiatives/models/initiative_models.py:325
 msgid "Pobude imam idejo (admin področni)"
-msgstr "Pobude imam idejo (Nivo2 admin področni)"
+msgstr "Pobude imam idejo (Nivo2 Skrbnik področja)"
 
-#: initiatives/models/initiative_models.py:326
+#: initiatives/models/initiative_models.py:335
 msgid "Pobuda imam idejo (cenilec področni)"
 msgstr "Pobuda imam idejo (Nivo3 skrbnik področni)"
 
-#: initiatives/models/initiative_models.py:327
+#: initiatives/models/initiative_models.py:336
 msgid "Pobude imam idejo (cenilec področni)"
 msgstr "Pobude imam idejo (Nivo3 skrbnik področni)"
 
-#: initiatives/models/initiative_models.py:337
+#: initiatives/models/initiative_models.py:346
 msgid "Pobuda imam idejo (cenilec izvajalec)"
 msgstr "Pobuda imam idejo (Nivo4 skrbnik - izvajalec)"
 
-#: initiatives/models/initiative_models.py:338
+#: initiatives/models/initiative_models.py:347
 msgid "Pobude imam idejo (cenilec izvajalec)"
 msgstr "Pobude imam idejo (Nivo4 skrbnik - izvajalec)"
 
-#: initiatives/models/initiative_models.py:360
-msgid "Pobuda zanima me (Nivo1 superadmin)"
-msgstr ""
+#: initiatives/models/initiative_models.py:369
+msgid "Pobuda zanima me (superadmin)"
+msgstr "Pobude zanima me (Nivo1 superadmin)"
 
-#: initiatives/models/initiative_models.py:361
+#: initiatives/models/initiative_models.py:370
 msgid "Pobude zanima me (superadmin)"
 msgstr "Pobude zanima me (Nivo1 superadmin)"
 
-#: initiatives/models/initiative_models.py:371
+#: initiatives/models/initiative_models.py:380
 msgid "Pobuda zanima me (admin področni)"
-msgstr "Pobuda zanima me (Nivo2 admin področni)"
+msgstr "Pobuda zanima me (Nivo2 Skrbnik področja)"
 
-#: initiatives/models/initiative_models.py:372
+#: initiatives/models/initiative_models.py:381
 msgid "Pobude zanima me (admin področni)"
-msgstr "Pobude zanima me (Nivo2 admin področni)"
+msgstr "Pobude zanima me (Nivo2 Skrbniki področij)"
 
-#: initiatives/models/initiative_models.py:382
+#: initiatives/models/initiative_models.py:391
 msgid "Pobuda zanima me (cenilec področni)"
 msgstr "Pobuda zanima me (Nivo3 skrbnik področni)"
 
-#: initiatives/models/initiative_models.py:383
+#: initiatives/models/initiative_models.py:392
 msgid "Pobude zanima me (cenilec področni)"
 msgstr "Pobude zanima me (Nivo3 skrbnik področni)"
 
@@ -382,388 +382,412 @@ msgstr "OCENJEVALEC PODROČNI"
 msgid "CONTRACTOR APPRAISER"
 msgstr "IZVAJALEC PODROČNI"
 
-#: initiatives/models/models.py:38
+#: initiatives/models/models.py:48
+msgid "Nivo 1"
+msgstr ""
+
+#: initiatives/models/models.py:49
+msgid "Nivo 2"
+msgstr ""
+
+#: initiatives/models/models.py:50
+msgid "Nivo 3"
+msgstr ""
+
+#: initiatives/models/models.py:51
+msgid "Nivo 4"
+msgstr ""
+
+#: initiatives/models/models.py:56
 msgid "PUBLISHED"
 msgstr "OBJAVLENO"
 
-#: initiatives/models/models.py:39
+#: initiatives/models/models.py:57
 msgid "DELETED"
 msgstr "IZBRISANO"
 
-#: initiatives/models/models.py:44
+#: initiatives/models/models.py:62
 msgid "NEW"
 msgstr "NOVO"
 
-#: initiatives/models/models.py:45
+#: initiatives/models/models.py:63
 msgid "UPDATED"
 msgstr "OSEVŽENO"
 
-#: initiatives/models/models.py:51 initiatives/models/models.py:217
-#: initiatives/models/models.py:265 initiatives/models/models.py:286
-#: initiatives/models/models.py:529 initiatives/models/models.py:653
+#: initiatives/models/models.py:69 initiatives/models/models.py:235
+#: initiatives/models/models.py:283 initiatives/models/models.py:304
+#: initiatives/models/models.py:568 initiatives/models/models.py:692
 msgid "Initiative"
 msgstr "Pobuda"
 
-#: initiatives/models/models.py:60
+#: initiatives/models/models.py:78
 msgid "Note of status"
 msgstr "Opis statusa"
 
-#: initiatives/models/models.py:64
+#: initiatives/models/models.py:82
 msgid "Email response"
 msgstr "Vsebina email odgovora"
 
-#: initiatives/models/models.py:71
+#: initiatives/models/models.py:89
 msgid "Rejection"
 msgstr "Zavrnitev"
 
-#: initiatives/models/models.py:77
+#: initiatives/models/models.py:95
 msgid "CompetentService"
 msgstr "Pristojna služba"
 
-#: initiatives/models/models.py:81
+#: initiatives/models/models.py:99
 msgid "Is email sent"
 msgstr "Je email poslan?"
 
-#: initiatives/models/models.py:94
+#: initiatives/models/models.py:112
 msgid "Status pobude"
 msgstr "Status pobude"
 
-#: initiatives/models/models.py:95
+#: initiatives/models/models.py:113
 msgid "Statusi pobude"
 msgstr "Statusi pobud"
 
-#: initiatives/models/models.py:131
+#: initiatives/models/models.py:149
 msgid "Status pobude slišimo"
 msgstr ""
 
-#: initiatives/models/models.py:132
+#: initiatives/models/models.py:150
 msgid "Statusi pobude slišimo"
 msgstr ""
 
-#: initiatives/models/models.py:143
+#: initiatives/models/models.py:161
 msgid "Status pobude urejamo"
 msgstr ""
 
-#: initiatives/models/models.py:144
+#: initiatives/models/models.py:162
 msgid "Statusi pobude urejamo"
 msgstr ""
 
-#: initiatives/models/models.py:155
+#: initiatives/models/models.py:173
 msgid "Status pobude v izvajanju"
 msgstr ""
 
-#: initiatives/models/models.py:156
+#: initiatives/models/models.py:174
 msgid "Statusi pobude v izvajanju"
 msgstr ""
 
-#: initiatives/models/models.py:167
+#: initiatives/models/models.py:185
 msgid "Status pobude zaključeno"
 msgstr ""
 
-#: initiatives/models/models.py:168
+#: initiatives/models/models.py:186
 msgid "Statusi pobude zaključeno"
 msgstr ""
 
-#: initiatives/models/models.py:179
+#: initiatives/models/models.py:197
 msgid "Status pobude izvedeno"
 msgstr ""
 
-#: initiatives/models/models.py:180
+#: initiatives/models/models.py:198
 msgid "Statusi pobude izvedeno"
 msgstr ""
 
-#: initiatives/models/models.py:191
+#: initiatives/models/models.py:209
 msgid "Status pobude zavrnjeno"
 msgstr ""
 
-#: initiatives/models/models.py:192
+#: initiatives/models/models.py:210
 msgid "Statusi pobude zavrnjeno"
 msgstr ""
 
-#: initiatives/models/models.py:200 initiatives/models/models.py:210
+#: initiatives/models/models.py:218 initiatives/models/models.py:228
 #: initiatives/views/admin_views.py:48
 msgid "Status"
 msgstr "Status"
 
-#: initiatives/models/models.py:201
+#: initiatives/models/models.py:219
 msgid "Default note of status"
 msgstr "Privzet opis statusa"
 
-#: initiatives/models/models.py:202
+#: initiatives/models/models.py:220
 msgid "Default email response"
 msgstr "Privzet email odgovor"
 
-#: initiatives/models/models.py:211
+#: initiatives/models/models.py:229
 msgid "Statusi"
 msgstr "Statusi"
 
-#: initiatives/models/models.py:221
+#: initiatives/models/models.py:239
 msgid "Description type"
 msgstr "Tip opisa"
 
-#: initiatives/models/models.py:224
+#: initiatives/models/models.py:242
 msgid "Description title"
 msgstr "Naslov opisa"
 
-#: initiatives/models/models.py:228
+#: initiatives/models/models.py:246
 msgid "Description content"
 msgstr "Vsebina opisa"
 
-#: initiatives/models/models.py:233
+#: initiatives/models/models.py:251
 msgid "Opis"
 msgstr ""
 
-#: initiatives/models/models.py:234
+#: initiatives/models/models.py:252
 msgid "Opisi"
 msgstr ""
 
-#: initiatives/models/models.py:239 initiatives/models/models.py:253
+#: initiatives/models/models.py:257 initiatives/models/models.py:271
 msgid "Name of zone"
 msgstr "Ime območja"
 
-#: initiatives/models/models.py:240
+#: initiatives/models/models.py:258
 msgid "Polygon of zone"
 msgstr "Meje območja"
 
-#: initiatives/models/models.py:248
+#: initiatives/models/models.py:266
 msgid "Območje"
 msgstr "Mestna četrt/Krajevna skupnost"
 
-#: initiatives/models/models.py:249
+#: initiatives/models/models.py:267
 msgid "Območja"
 msgstr ""
 
-#: initiatives/models/models.py:254
+#: initiatives/models/models.py:272
 msgid "Description of service"
 msgstr "Opis storitve"
 
-#: initiatives/models/models.py:269
+#: initiatives/models/models.py:287
 msgid "Comment"
 msgstr "Komentar"
 
-#: initiatives/models/models.py:271
+#: initiatives/models/models.py:289
 msgid "Comment status"
 msgstr "Status komentarja"
 
-#: initiatives/models/models.py:279
+#: initiatives/models/models.py:297
 msgid "Komentar"
 msgstr "Komentar"
 
-#: initiatives/models/models.py:280
+#: initiatives/models/models.py:298
 msgid "Komentarji"
 msgstr ""
 
-#: initiatives/models/models.py:293
+#: initiatives/models/models.py:311
 msgid "Glas"
 msgstr ""
 
-#: initiatives/models/models.py:294
+#: initiatives/models/models.py:312
 msgid "Glasovi"
 msgstr ""
 
-#: initiatives/models/models.py:299
+#: initiatives/models/models.py:317
 msgid "Note"
 msgstr "Opis"
 
-#: initiatives/models/models.py:304
+#: initiatives/models/models.py:322
 msgid "Phone number"
 msgstr "Telefonska številka"
 
-#: initiatives/models/models.py:312
+#: initiatives/models/models.py:330
 msgid "Organization"
 msgstr "Organizacija"
 
-#: initiatives/models/models.py:317
+#: initiatives/models/models.py:335
 msgid "MČ/KS"
 msgstr "MČ/KS"
 
-#: initiatives/models/models.py:322 initiatives/models/models.py:478
+#: initiatives/models/models.py:340 initiatives/models/models.py:517
 msgid "Competent service"
 msgstr "Pristojna služba"
 
-#: initiatives/models/models.py:329
+#: initiatives/models/models.py:347
 msgid "Role"
 msgstr "Vloga"
 
-#: initiatives/models/models.py:336
+#: initiatives/models/models.py:354
 msgid "email address"
 msgstr "Email naslov"
 
-#: initiatives/models/models.py:340
+#: initiatives/models/models.py:358
 msgid "username"
 msgstr "uporabniško ime"
 
-#: initiatives/models/models.py:341
+#: initiatives/models/models.py:359
 msgid "Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."
 msgstr ""
 "Zahtevan podatek, manj kot 30 zanekov, črke, številke in samo @/./+/-/_."
 
-#: initiatives/models/models.py:344
+#: initiatives/models/models.py:362
 msgid "Enter a valid username."
 msgstr "Vnesite ustrezno uporabniško ime."
 
-#: initiatives/models/models.py:359
+#: initiatives/models/models.py:380
 msgid "Uporabnik"
 msgstr ""
 
-#: initiatives/models/models.py:360
+#: initiatives/models/models.py:381
 msgid "Uporabniki"
 msgstr ""
 
-#: initiatives/models/models.py:372 initiatives/models/models.py:373
+#: initiatives/models/models.py:403
+msgid "All admin"
+msgstr "Vsi admini"
+
+#: initiatives/models/models.py:404
+msgid "All admins"
+msgstr "Vsi admini"
+
+#: initiatives/models/models.py:411 initiatives/models/models.py:412
 msgid "Super admin"
 msgstr "Nivo1 Superadmin"
 
-#: initiatives/models/models.py:395
+#: initiatives/models/models.py:434
 msgid "Basic user"
 msgstr "Naveden uporabnik"
 
-#: initiatives/models/models.py:396
+#: initiatives/models/models.py:435
 msgid "Basic users"
 msgstr "Navadni uporabniki"
 
-#: initiatives/models/models.py:408
+#: initiatives/models/models.py:447
 msgid "Admin področni"
-msgstr "Nivo2 admini področni"
+msgstr "Nivo2 Vodja področja"
 
-#: initiatives/models/models.py:409
+#: initiatives/models/models.py:448
 msgid "Admini področni"
-msgstr "Nivo2 admini področni"
+msgstr "Nivo2 Vodje področij"
 
-#: initiatives/models/models.py:426
+#: initiatives/models/models.py:465
 msgid "Cenilec področni"
 msgstr "Nivo3 skrbnik področni"
 
-#: initiatives/models/models.py:427
+#: initiatives/models/models.py:466
 msgid "Cenilci področni"
 msgstr "Nivo3 skrbniki področni"
 
-#: initiatives/models/models.py:444
+#: initiatives/models/models.py:483
 msgid "Cenilec izvajalec"
-msgstr "Nivo4 skrbnik - izvajalec"
+msgstr "Nivo4 Izvajalec"
 
-#: initiatives/models/models.py:445
+#: initiatives/models/models.py:484
 msgid "Cenilci izvajalec"
-msgstr "Nivo4 skrbniki - izvajaleci"
+msgstr "Nivo4 Izvajaleci"
 
-#: initiatives/models/models.py:457
+#: initiatives/models/models.py:496
 msgid "name"
 msgstr "ime"
 
-#: initiatives/models/models.py:460
+#: initiatives/models/models.py:499
 msgid "Number of members"
 msgstr "Število članov"
 
-#: initiatives/models/models.py:466
+#: initiatives/models/models.py:505
 msgid "Organizacija"
 msgstr "Organizacija"
 
-#: initiatives/models/models.py:467
+#: initiatives/models/models.py:506
 msgid "Organizacije"
 msgstr "Organizacija"
 
-#: initiatives/models/models.py:472
+#: initiatives/models/models.py:511
 msgid "Area name"
 msgstr "Ime območja"
 
-#: initiatives/models/models.py:490
+#: initiatives/models/models.py:529
 msgid "Področje"
 msgstr ""
 
-#: initiatives/models/models.py:491
+#: initiatives/models/models.py:530
 msgid "Področja"
 msgstr ""
 
-#: initiatives/models/models.py:496
+#: initiatives/models/models.py:535
 msgid "Name of rejection"
 msgstr "Ime zavrnitve"
 
-#: initiatives/models/models.py:499
+#: initiatives/models/models.py:538
 msgid "Note for rejection"
 msgstr "Opis zavrnitve"
 
-#: initiatives/models/models.py:507
+#: initiatives/models/models.py:546
 msgid "Zavrnitev"
 msgstr ""
 
-#: initiatives/models/models.py:508
+#: initiatives/models/models.py:547
 msgid "Zavrnitve"
 msgstr ""
 
-#: initiatives/models/models.py:512
+#: initiatives/models/models.py:551
 msgid "question"
 msgstr "vprašanje"
 
-#: initiatives/models/models.py:513
+#: initiatives/models/models.py:552
 msgid "answer"
 msgstr "odgovor"
 
-#: initiatives/models/models.py:522 initiatives/models/models.py:523
+#: initiatives/models/models.py:561 initiatives/models/models.py:562
 msgid "FAQ"
 msgstr ""
 
-#: initiatives/models/models.py:536
+#: initiatives/models/models.py:575
 msgid "Status Initiative"
 msgstr "Status pobude"
 
-#: initiatives/models/models.py:542 initiatives/models/models.py:564
+#: initiatives/models/models.py:581 initiatives/models/models.py:603
 msgid "Display name"
 msgstr "Prikazno ime"
 
-#: initiatives/models/models.py:545
+#: initiatives/models/models.py:584
 msgid "File"
 msgstr "Datoteka"
 
-#: initiatives/models/models.py:553
+#: initiatives/models/models.py:592
 msgid "Datoteka"
 msgstr ""
 
-#: initiatives/models/models.py:554
+#: initiatives/models/models.py:593
 msgid "Datoteke"
 msgstr ""
 
-#: initiatives/models/models.py:588
+#: initiatives/models/models.py:627
 msgid "Field name"
 msgstr "Ime polja"
 
-#: initiatives/models/models.py:597
+#: initiatives/models/models.py:636
 msgid "Razdelek opisa"
 msgstr ""
 
-#: initiatives/models/models.py:598
+#: initiatives/models/models.py:637
 msgid "Razdeleki opisa"
 msgstr ""
 
-#: initiatives/models/models.py:604 initiatives/models/models.py:619
-#: initiatives/models/models.py:634
+#: initiatives/models/models.py:643 initiatives/models/models.py:658
+#: initiatives/models/models.py:673
 msgid "User"
 msgstr "Uporabnik"
 
-#: initiatives/models/models.py:608 initiatives/models/models.py:623
+#: initiatives/models/models.py:647 initiatives/models/models.py:662
 msgid "key"
 msgstr "ključ"
 
-#: initiatives/models/models.py:612
+#: initiatives/models/models.py:651
 msgid "Restore password"
 msgstr "Ponastavitev gesla za dostop do platforme Izboljšajmo Maribor"
 
-#: initiatives/models/models.py:613
+#: initiatives/models/models.py:652
 msgid "Restore passwords"
 msgstr "Ponastavi geslo"
 
-#: initiatives/models/models.py:627
+#: initiatives/models/models.py:666
 msgid "Confirm email"
 msgstr "Potrditev registracije na platformi Izboljšajmo Maribor"
 
-#: initiatives/models/models.py:628
+#: initiatives/models/models.py:667
 msgid "Confirm emails"
 msgstr "Potrdi email naslov"
 
-#: initiatives/models/models.py:647
+#: initiatives/models/models.py:686
 msgid "Notification type"
 msgstr "Tip obvestila"
 
-#: initiatives/models/models.py:657
+#: initiatives/models/models.py:696
 msgid "is sent"
 msgstr "Je email poslan?"
 
@@ -775,7 +799,7 @@ msgstr "Ponastavitev gesla za dostop do platforme Izboljšajmo Maribor"
 msgid "Potrditev registracije na platformi Izboljšajmo Maribor"
 msgstr "Potrditev registracije na platformi Izboljšajmo Maribor"
 
-#: initiatives/utils.py:33
+#: initiatives/utils.py:34
 msgid "File not supported!"
 msgstr "Datoteka ni podprta"
 
@@ -920,18 +944,27 @@ msgstr "Izvozi pobude v csv"
 
 #: templates/emails/daily_admin_notification_email.html:4
 #: templates/emails/daily_notification_email.html:4
-msgid "Initiatives to resolve:"
-msgstr "Pobude ki jih je potrebno rpegledati"
+msgid "Pobude, ki jih morate preveriti:"
+msgstr ""
 
 #: templates/emails/daily_admin_notification_email.html:9
 #: templates/emails/daily_admin_notification_email.html:19
+msgid "Odpri pobudo"
+msgstr ""
+
+#: templates/emails/daily_notification_comments.html:4
+msgid "Novi komentarjiu"
+msgstr ""
+
 #: templates/emails/daily_notification_email.html:9
 msgid "Open initiative"
 msgstr "Odpri pobude"
 
-#: templates/emails/daily_notification_comments.html:4
-msgid "New comments"
-msgstr "Novi komentar"
+#~ msgid "Initiatives to resolve:"
+#~ msgstr "Pobude ki jih je potrebno rpegledati"
+
+#~ msgid "New comments"
+#~ msgstr "Novi komentar"
 
 #~ msgid "PENDING"
 #~ msgstr "V PREGLEDU"

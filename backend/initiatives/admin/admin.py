@@ -98,6 +98,11 @@ class SuperAdminUserAdmin(MBUserAdmin):
 
 class AreaAdminUserAdmin(MBUserAdmin):
     readonly_fields = ['role']
+    list_display = [
+        'username',
+        'area',
+        'created',
+    ]
 
 
 class AreaAppraiserUserAdmin(MBUserAdmin):
