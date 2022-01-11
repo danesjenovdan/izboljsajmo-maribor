@@ -105,7 +105,7 @@ class AreaAdminUserAdmin(MBUserAdmin):
     ]
 
     def areas(self, obj):
-        return ' '.join(obj.areas.all())
+        return ' '.join(obj.area.all().values_list('name'))
 
 
 class AreaAppraiserUserAdmin(MBUserAdmin):
