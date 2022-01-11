@@ -100,9 +100,12 @@ class AreaAdminUserAdmin(MBUserAdmin):
     readonly_fields = ['role']
     list_display = [
         'username',
-        'area',
+        'areas',
         'created',
     ]
+
+    def areas(self, obj):
+        return ' '.join(obj.areas.all())
 
 
 class AreaAppraiserUserAdmin(MBUserAdmin):
