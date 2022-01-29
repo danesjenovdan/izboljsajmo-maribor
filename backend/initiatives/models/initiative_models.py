@@ -15,11 +15,20 @@ import logging
 logger = logging.getLogger(__name__)
 
 # This is used for showing admin all initialives which is asigned admins with lower permissions
+# PERMISSIONS = {
+#     None: [Reviwers.AREA_ADMIN, Reviwers.AREA_APPRAISER, Reviwers.CONTRACTOR_APPRAISER],
+#     Reviwers.AREA_ADMIN: [Reviwers.SUPER_ADMIN, Reviwers.AREA_ADMIN, Reviwers.AREA_APPRAISER, Reviwers.CONTRACTOR_APPRAISER],
+#     Reviwers.AREA_APPRAISER: [Reviwers.AREA_APPRAISER, Reviwers.CONTRACTOR_APPRAISER],
+#     Reviwers.CONTRACTOR_APPRAISER: [Reviwers.CONTRACTOR_APPRAISER],
+# }
+"""
+Work around. That all admins will see the initiative when it is assigned to any role of admin.
+"""
 PERMISSIONS = {
-    None: [Reviwers.AREA_ADMIN, Reviwers.AREA_APPRAISER, Reviwers.CONTRACTOR_APPRAISER],
-    Reviwers.AREA_ADMIN: [Reviwers.AREA_ADMIN, Reviwers.AREA_APPRAISER, Reviwers.CONTRACTOR_APPRAISER],
-    Reviwers.AREA_APPRAISER: [Reviwers.AREA_APPRAISER, Reviwers.CONTRACTOR_APPRAISER],
-    Reviwers.CONTRACTOR_APPRAISER: [Reviwers.CONTRACTOR_APPRAISER],
+    None: [Reviwers.SUPER_ADMIN, Reviwers.AREA_ADMIN, Reviwers.AREA_APPRAISER, Reviwers.CONTRACTOR_APPRAISER],
+    Reviwers.AREA_ADMIN: [Reviwers.SUPER_ADMIN, Reviwers.AREA_ADMIN, Reviwers.AREA_APPRAISER, Reviwers.CONTRACTOR_APPRAISER],
+    Reviwers.AREA_APPRAISER: [Reviwers.SUPER_ADMIN, Reviwers.AREA_ADMIN, Reviwers.AREA_APPRAISER, Reviwers.CONTRACTOR_APPRAISER],
+    Reviwers.CONTRACTOR_APPRAISER: [Reviwers.SUPER_ADMIN, Reviwers.AREA_ADMIN, Reviwers.AREA_APPRAISER, Reviwers.CONTRACTOR_APPRAISER],
 }
 
 class Initiative(Timestamped, Authored):
@@ -38,6 +47,12 @@ class Initiative(Timestamped, Authored):
         verbose_name=_('Reviewer'),
         related_name='reviewed',
         on_delete=models.SET_NULL,
+        null=True,
+        blank=True)
+    reviewer_user_history = models.ManyToManyField(
+        'initiatives.AllAdminUser',
+        verbose_name=_('Reviewer history'),
+        through='initiatives.ReviewerHistory',
         null=True,
         blank=True)
     title = models.CharField(

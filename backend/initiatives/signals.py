@@ -16,6 +16,8 @@ from initiatives.models import (
     StatusInitiativeHear, StatusInitiativeEditing, StatusInitiativeProgress, StatusInitiativeFinished, StatusInitiativeDone,
     StatusInitiativeRejected, InitiativeType, BasicUser, Notification, Reviwers, NotificationType, BothersInitiativeSuper,
     BothersInitiativeArea, IdeaInitiativeSuper, IdeaInitiativeArea, InterestedInitiativeSuper, InterestedInitiativeArea,
+    InterestedInitiativeAppraiser, BothersInitiativeAppraiser, BothersInitiativeContractor, IdeaInitiativeAppraiser, IdeaInitiativeContractor,
+    ReviewerHistory
 )
 from initiatives.utils import send_email, id_generator
 from initiatives.tasks import send_email_task
@@ -88,6 +90,16 @@ def check_if_area_is_changed(sender, instance, **kwargs):
             initiative=instance
         ).delete()
 
+
+def check_if_revewer_is_changed(sender, instance, **kwargs):
+    old_instance = sender.objects.filter(id=instance.id)
+    if old_instance:
+        old_instance = old_instance[0]
+    else:
+        return
+    if instance.reviewer_user and old_instance.reviewer_user != instance.reviewer_user:
+        logger.warning(f'Reviewer is changed')
+        ReviewerHistory(user=instance.reviewer_user, initiative=instance).save()
 
 # initiatives signals
 def set_zone_from_location(sender, instance, **kwargs):
@@ -262,3 +274,14 @@ post_save.connect(notify_superadmin_for_new_status_initiative, sender=StatusInit
 post_save.connect(notify_superadmin_for_new_status_initiative, sender=StatusInitiativeDone)
 post_save.connect(notify_superadmin_for_new_status_initiative, sender=StatusInitiativeRejected)
 
+pre_save.connect(check_if_revewer_is_changed, sender=BothersInitiativeSuper)
+pre_save.connect(check_if_revewer_is_changed, sender=BothersInitiativeArea)
+pre_save.connect(check_if_revewer_is_changed, sender=IdeaInitiativeSuper)
+pre_save.connect(check_if_revewer_is_changed, sender=IdeaInitiativeArea)
+pre_save.connect(check_if_revewer_is_changed, sender=InterestedInitiativeSuper)
+pre_save.connect(check_if_revewer_is_changed, sender=InterestedInitiativeArea)
+pre_save.connect(check_if_revewer_is_changed, sender=InterestedInitiativeAppraiser)
+pre_save.connect(check_if_revewer_is_changed, sender=BothersInitiativeAppraiser)
+pre_save.connect(check_if_revewer_is_changed, sender=BothersInitiativeContractor)
+pre_save.connect(check_if_revewer_is_changed, sender=IdeaInitiativeAppraiser)
+pre_save.connect(check_if_revewer_is_changed, sender=IdeaInitiativeContractor)

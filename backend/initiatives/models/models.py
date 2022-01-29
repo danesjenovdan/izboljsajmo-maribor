@@ -112,6 +112,19 @@ class StatusInitiative(Timestamped, Published):
         verbose_name = _('Status pobude')
         verbose_name_plural = _('Statusi pobude')
 
+class ReviewerHistory(Timestamped):
+    initiative = models.ForeignKey(
+        'initiatives.Initiative',
+        verbose_name=_('Initiative'),
+        related_name='reviewer_history',
+        on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        'AllAdminUser',
+        verbose_name=_('Reviewer'),
+        related_name='reviewer_history',
+        on_delete=models.CASCADE)
+
+
 class HearManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(status__name='Slišimo')

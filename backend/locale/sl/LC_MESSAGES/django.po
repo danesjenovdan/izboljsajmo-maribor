@@ -183,7 +183,7 @@ msgstr "Nove pobude, ki potrebujejo tvojo pozornost"
 
 #: initiatives/management/commands/set_permissions.py:20
 msgid "Area admin"
-msgstr "Vodja področja"
+msgstr "Vodja področja - nivo 2"
 
 #: initiatives/models/initiative_models.py:28 initiatives/models/models.py:621
 msgid "Initiative type"
@@ -268,91 +268,91 @@ msgstr "Arhivirane pobude"
 
 #: initiatives/models/initiative_models.py:257
 msgid "Pobuda moti me (superadmin)"
-msgstr "Pobuda moti me (Nivo1 superadmin)"
+msgstr "Pobuda moti me (Superadmin - nivo 1)"
 
 #: initiatives/models/initiative_models.py:258
 msgid "Pobude moti me (superadmin)"
-msgstr "Pobude moti me (Nivo1 superadmin)"
+msgstr "Pobude moti me (Superadmin - nivo 1)"
 
 #: initiatives/models/initiative_models.py:268
 msgid "Pobuda moti me (admin področni)"
-msgstr "Pobuda moti me (Nivo2 Skrbnik področja)"
+msgstr "Pobuda moti me (Vodja področja - nivo 2)"
 
 #: initiatives/models/initiative_models.py:269
 msgid "Pobude moti me (admin področni)"
-msgstr "Pobude moti me (Nivo2 Skrbnik področja)"
+msgstr "Pobude moti me (Vodja področja - nivo 2)"
 
 #: initiatives/models/initiative_models.py:279
 msgid "Pobuda moti me (cenilec področni)"
-msgstr "Pobuda moti me (Nivo3 skrbnik področni)"
+msgstr "Pobuda moti me (Skrbnik področja - nivo 3)"
 
 #: initiatives/models/initiative_models.py:280
 msgid "Pobude moti me (cenilci področni)"
-msgstr "Pobude moti me (Nivo3 skrbnik področni)"
+msgstr "Pobude moti me (Skrbnik področja - nivo 3)"
 
 #: initiatives/models/initiative_models.py:290
 msgid "Pobuda moti me (cenilec izvajalec)"
-msgstr "Pobuda moti me (Nivo4 skrbnik - izvajalec)"
+msgstr "Pobuda moti me (Izvajalec - nivo 4)"
 
 #: initiatives/models/initiative_models.py:291
 msgid "Pobude moti me (cenilci izvajalci)"
-msgstr "Pobude moti me (Novo4 cenilci izvajalci)"
+msgstr "Pobude moti me (Izvajalci - nivo 4)"
 
 #: initiatives/models/initiative_models.py:313
 msgid "Pobuda imam idejo (superadmin)"
-msgstr "Pobuda imam idejo (Nivo1 superadmin)"
+msgstr "Pobuda imam idejo (Superadmin - nivo 1)"
 
 #: initiatives/models/initiative_models.py:314
 msgid "Pobude imam idejo (superadmin)"
-msgstr "Pobude imam idejo (Nivo1 superadmin)"
+msgstr "Pobude imam idejo (Superadmin - nivo 1)"
 
 #: initiatives/models/initiative_models.py:324
 msgid "Pobuda imam idejo (admin področni)"
-msgstr "Pobuda imam idejo (Nivo2 Skrbnik področja)"
+msgstr "Pobuda imam idejo (Vodja področja - nivo 2)"
 
 #: initiatives/models/initiative_models.py:325
 msgid "Pobude imam idejo (admin področni)"
-msgstr "Pobude imam idejo (Nivo2 Skrbnik področja)"
+msgstr "Pobude imam idejo (Vodja področja - nivo 2)"
 
 #: initiatives/models/initiative_models.py:335
 msgid "Pobuda imam idejo (cenilec področni)"
-msgstr "Pobuda imam idejo (Nivo3 skrbnik področni)"
+msgstr "Pobuda imam idejo (Skrbnik področja - nivo 3)"
 
 #: initiatives/models/initiative_models.py:336
 msgid "Pobude imam idejo (cenilec področni)"
-msgstr "Pobude imam idejo (Nivo3 skrbnik področni)"
+msgstr "Pobude imam idejo (Skrbnik področja - nivo 3)"
 
 #: initiatives/models/initiative_models.py:346
 msgid "Pobuda imam idejo (cenilec izvajalec)"
-msgstr "Pobuda imam idejo (Nivo4 skrbnik - izvajalec)"
+msgstr "Pobuda imam idejo (Izvajalec - nivo 4)"
 
 #: initiatives/models/initiative_models.py:347
 msgid "Pobude imam idejo (cenilec izvajalec)"
-msgstr "Pobude imam idejo (Nivo4 skrbnik - izvajalec)"
+msgstr "Pobude imam idejo (Izvajalec - nivo 4)"
 
 #: initiatives/models/initiative_models.py:369
 msgid "Pobuda zanima me (superadmin)"
-msgstr "Pobude zanima me (Nivo1 superadmin)"
+msgstr "Pobude zanima me (Superadmin - nivo 1)"
 
 #: initiatives/models/initiative_models.py:370
 msgid "Pobude zanima me (superadmin)"
-msgstr "Pobude zanima me (Nivo1 superadmin)"
+msgstr "Pobude zanima me (Superadmin - nivo 1)"
 
 #: initiatives/models/initiative_models.py:380
 msgid "Pobuda zanima me (admin področni)"
-msgstr "Pobuda zanima me (Nivo2 Skrbnik področja)"
+msgstr "Pobuda zanima me (Vodja področja - nivo 2)"
 
 #: initiatives/models/initiative_models.py:381
 msgid "Pobude zanima me (admin področni)"
-msgstr "Pobude zanima me (Nivo2 Skrbniki področij)"
+msgstr "Pobude zanima me (Vodja področja - nivo 2)"
 
 #: initiatives/models/initiative_models.py:391
 msgid "Pobuda zanima me (cenilec področni)"
-msgstr "Pobuda zanima me (Nivo3 skrbnik področni)"
+msgstr "Pobuda zanima me (Skrbnik področja - nivo 3)"
 
 #: initiatives/models/initiative_models.py:392
 msgid "Pobude zanima me (cenilec področni)"
-msgstr "Pobude zanima me (Nivo3 skrbnik področni)"
+msgstr "Pobude zanima me (Skrbnik področja - nivo 3)"
 
 #: initiatives/models/models.py:22
 msgid "MOTI ME!"
@@ -648,27 +648,27 @@ msgstr "Navadni uporabniki"
 
 #: initiatives/models/models.py:447
 msgid "Admin področni"
-msgstr "Nivo2 Vodja področja"
+msgstr "Vodja področja - nivo 2"
 
 #: initiatives/models/models.py:448
 msgid "Admini področni"
-msgstr "Nivo2 Vodje področij"
+msgstr "Vodje področij - nivo 2"
 
 #: initiatives/models/models.py:465
 msgid "Cenilec področni"
-msgstr "Nivo3 skrbnik področni"
+msgstr "Skrbnik področja - nivo 3"
 
 #: initiatives/models/models.py:466
 msgid "Cenilci področni"
-msgstr "Nivo3 skrbniki področni"
+msgstr "Skrbniki področij - nivo 3"
 
 #: initiatives/models/models.py:483
 msgid "Cenilec izvajalec"
-msgstr "Nivo4 Izvajalec"
+msgstr "Izvajalec - nivo 4"
 
 #: initiatives/models/models.py:484
 msgid "Cenilci izvajalec"
-msgstr "Nivo4 Izvajaleci"
+msgstr "Izvajaleci - nivo 4"
 
 #: initiatives/models/models.py:496
 msgid "name"
@@ -883,12 +883,12 @@ msgstr "Natisni"
 #: templates/admin/initiatives/interestedinitiativeappraiser/change_form.html:9
 #: templates/admin/initiatives/interetedinitiativearea/change_form.html:9
 msgid "Pošlji super adminu v pregled"
-msgstr "Pošlji super adminu v pregled"
+msgstr "Pošlji super adminu v pregled  - nivo 1"
 
 #: templates/admin/initiatives/bothersinitiativeappraiser/change_form.html:12
 #: templates/admin/initiatives/ideainitiativeappraiser/change_form.html:12
 msgid "Pošlji cenilcu izvajalcu"
-msgstr "Pošlji cenilcu izvajalcu"
+msgstr "Pošlji izvajalcu -  - nivo 4"
 
 #: templates/admin/initiatives/bothersinitiativeappraiser/change_form.html:15
 #: templates/admin/initiatives/bothersinitiativearea/change_form.html:15
@@ -920,7 +920,7 @@ msgstr "Poglej na strani"
 
 #: templates/admin/initiatives/bothersinitiativearea/change_form.html:9
 msgid "Pošlji super adminu  v pregled"
-msgstr "Pošlji super adminu  v pregled"
+msgstr "Pošlji super adminu  v pregled  - nivo 1"
 
 #: templates/admin/initiatives/bothersinitiativearea/change_form.html:12
 #: templates/admin/initiatives/bothersinitiativecontractor/change_form.html:9
@@ -928,7 +928,7 @@ msgstr "Pošlji super adminu  v pregled"
 #: templates/admin/initiatives/ideainitiativecontractor/change_form.html:9
 #: templates/admin/initiatives/interetedinitiativearea/change_form.html:12
 msgid "Pošlji cenilcu področnemu"
-msgstr "Pošlji cenilcu področnemu"
+msgstr "Pošlji skrbniku pdoročja  - nivo 3"
 
 #: templates/admin/initiatives/bothersinitiativesuper/change_form.html:9
 #: templates/admin/initiatives/ideainitiativesuper/change_form.html:9
