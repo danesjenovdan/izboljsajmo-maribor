@@ -1,0 +1,49 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: izboljsajmo-maribor-backend
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+    nginx.ingress.kubernetes.io/proxy-body-size: "6m"
+    nginx.org/client-max-body-size: "6m"
+spec:
+  tls:
+  - hosts:
+    - api.izboljsajmo-maribor.k8s.djnd.si
+    secretName: izboljsajmo-maribor-backend-tls
+  rules:
+  - host: api.izboljsajmo-maribor.k8s.djnd.si
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: izboljsajmo-maribor-backend
+            port:
+              number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: izboljsajmo-maribor-nginx
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+spec:
+  tls:
+  - hosts:
+    - files.izboljsajmo-maribor.k8s.djnd.si
+    secretName: izboljsajmo-maribor-nginx-tls
+  rules:
+  - host: files.izboljsajmo-maribor.k8s.djnd.si
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: izboljsajmo-maribor-nginx
+            port:
+              number: 80

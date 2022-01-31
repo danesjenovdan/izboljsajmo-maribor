@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: izboljsajmo-maribor-backend
+spec:
+  selector:
+    app: izboljsajmo-maribor-backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: izboljsajmo-maribor-nginx
+spec:
+  selector:
+    app: izboljsajmo-maribor-backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

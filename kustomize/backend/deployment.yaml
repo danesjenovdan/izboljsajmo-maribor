@@ -1,0 +1,139 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: izboljsajmo-maribor-backend
+  labels:
+    app: izboljsajmo-maribor-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: izboljsajmo-maribor-backend
+  template:
+    metadata:
+      labels:
+        app: izboljsajmo-maribor-backend
+    spec:
+      initContainers:
+      - name: collectstatic
+        image: backend
+        command:
+          - python
+          - manage.py
+          - collectstatic
+          - --no-input
+        envFrom:
+          - secretRef:
+              name: izboljsajmo-maribor-credentials
+        resources:
+          requests:
+            memory: 200Mi
+            cpu: 200m
+          limits:
+            memory: 200Mi
+            cpu: 200m
+      - name: migrate
+        image: backend
+        command:
+          - python
+          - manage.py
+          - migrate
+        envFrom:
+          - secretRef:
+              name: izboljsajmo-maribor-credentials
+        resources:
+          requests:
+            memory: 200Mi
+            cpu: 200m
+          limits:
+            memory: 200Mi
+            cpu: 200m
+      - name: compilemessages
+        image: backend
+        command:
+          - python
+          - manage.py
+          - compilemessages
+        envFrom:
+          - secretRef:
+              name: izboljsajmo-maribor-credentials
+        resources:
+          requests:
+            memory: 200Mi
+            cpu: 200m
+          limits:
+            memory: 200Mi
+            cpu: 200m
+      containers:
+      - name: izboljsajmo-maribor-backend
+        image: backend # kustomize thing
+        command:
+          - gunicorn
+          - mb_initiative.wsgi:application
+          - -b
+          - 0.0.0.0:8000
+          - --log-level
+          - DEBUG
+          - --workers
+          - "1"
+          - --threads
+          - "3"
+          - --timeout
+          - "30"
+        ports:
+        - name: http
+          containerPort: 8000
+          protocol: TCP
+        livenessProbe:
+          tcpSocket:
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /v1/
+            port: http
+          initialDelaySeconds: 15
+          periodSeconds: 30
+          timeoutSeconds: 5
+        envFrom:
+          - secretRef:
+              name: izboljsajmo-maribor-credentials
+        resources:
+          requests:
+            memory: 500Mi
+            cpu: 200m
+          limits:
+            memory: 500Mi
+            cpu: 200m
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: izboljsajmo-maribor-celery
+  labels:
+    app: izboljsajmo-maribor-celery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: izboljsajmo-maribor-celery
+  template:
+    metadata:
+      labels:
+        app: izboljsajmo-maribor-celery
+    spec:
+      containers:
+      - name: izboljsajmo-maribor-backend
+        image: backend # kustomize thing
+        command: ['celery', '-A', 'mb_initiative', 'worker', '-l', 'DEBUG', '-B', '--scheduler', 'django_celery_beat.schedulers:DatabaseScheduler']
+        envFrom:
+          - secretRef:
+              name: izboljsajmo-maribor-credentials
+        resources:
+          requests:
+            memory: 400Mi
+            cpu: 200m
+          limits:
+            memory: 400Mi
+            cpu: 200m
