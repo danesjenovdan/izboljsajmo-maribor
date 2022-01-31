@@ -331,6 +331,28 @@ class FAQAdmin(OrderableAdmin, admin.ModelAdmin):
     list_editable = ["order"]
 
 
+class FileAdmin(OrderableAdmin, admin.ModelAdmin):
+    readonly_fields = ["initiative", "status_initiative"]
+
+
+class ImageAdmin(OrderableAdmin, admin.ModelAdmin):
+    fileds = ('image', 'name', 'initiative')
+    list_display = ('image', 'name', 'initiative')
+
+    def initiative(self, obj):
+        initiative = obj.initiative_before.first()
+        if initiative:
+            name = initiative.title
+        else:
+            initiative = obj.initiative_after.first()
+            if initiative:
+                name = initiative.title
+            else:
+                name = ''
+        return name
+
+
+
 admin.site.register(User, EmptyUserAdmin)
 admin.site.register(AllAdminUser, AllAdminUserAdmin)
 admin.site.register(BasicUser, BasicUserAdmin)
@@ -344,8 +366,8 @@ admin.site.register(Area, AreaAdmin)
 admin.site.register(CompetentService, CompetentServiceAdmin)
 admin.site.register(Status)
 admin.site.register(StatusInitiative)
-admin.site.register(File)
-admin.site.register(Image)
+admin.site.register(File, FileAdmin)
+admin.site.register(Image, ImageAdmin)
 admin.site.register(Address)
 admin.site.register(Notification)
 admin.site.register(Comment, CommentAdmin)
