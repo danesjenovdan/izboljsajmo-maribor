@@ -9,5 +9,5 @@ WORKDIR /app
 COPY ./requirements.txt /app/requirements.txt
 RUN pip install -r requirements.txt
 COPY . /app
-
+RUN python3 manage.py compilemessages
 EXPOSE 8000
