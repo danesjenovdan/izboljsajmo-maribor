@@ -64,6 +64,7 @@ class InitiativeAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         '_is_published',
         '_needs_publish'
     ]
+    # WARNING if you add ore remove some inline, you need to edit JS for insert rejection email content. /static_files/js/rejection_email_content_filler.js
     inlines = (
         DescriptionInline,
         FileInline,
@@ -167,6 +168,7 @@ class InterestedInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         'vote_count',
         'reviewer',
     ]
+    # WARNING if you add ore remove some inline, you need to edit JS for insert rejection email content. /static_files/js/rejection_email_content_filler.js
     inlines = (
         DescriptionInline,
         FileInline,
@@ -317,6 +319,7 @@ class IdeaInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         'vote_count',
         'reviewer',
     ]
+    # WARNING if you add ore remove some inline, you need to edit JS for insert rejection email content. /static_files/js/rejection_email_content_filler.js
     inlines = (
         DescriptionInline,
         FileInline,
@@ -520,6 +523,7 @@ class BothersInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         'vote_count',
         'reviewer',
     ]
+    # WARNING if you add ore remove some inline, you need to edit JS for insert rejection email content. /static_files/js/rejection_email_content_filler.js
     inlines = (
         DescriptionInline,
         FileInline,
