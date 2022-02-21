@@ -241,7 +241,7 @@ class StatusInitiativeRejectedInline(admin.TabularInline):
     readonly_fields = ['created']
     fields = ['created', 'email_content', 'note', 'reason_for_rejection']
     autocomplete_fields = ['reason_for_rejection',]
-    classes = ['collapse']
+    classes = ['collapse', 'reject']
     model = StatusInitiativeRejected
     extra = 0
 
