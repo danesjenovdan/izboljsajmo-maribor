@@ -196,7 +196,7 @@ export const actions = {
     }
     // statuses
     if (payload.status && payload.status.length > 0) {
-      params.append('status', payload.status.join(','))
+      params.append('statuses', payload.status.join(','))
       // params.append('statuses', payload.status[payload.status.length - 1])
     }
     const response = await this.$axios.get('v1/initiatives/?', { params })
