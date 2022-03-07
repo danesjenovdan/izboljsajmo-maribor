@@ -140,7 +140,7 @@
                           @change="fetchInitiatives"
                         >
                           <div>{{ area.name }}</div>
-                          <div>{{ area.note }}</div>
+                          <!-- <div>{{ area.note }}</div> -->
                         </b-form-checkbox>
                       </b-form-group>
                     </div>
@@ -194,14 +194,14 @@
                     <div>
                       <b-form-group>
                         <b-form-checkbox
-                          v-for="status in Object.keys($store.getters.initiativeStatuses)"
-                          :id="status"
-                          :key="status"
+                          v-for="status in statuses"
+                          :id="String(status.id)"
+                          :key="status.id"
                           v-model="filterStatuses"
-                          :value="status"
+                          :value="status.id"
                           @change="fetchInitiatives"
                         >
-                          {{ status }}
+                          {{ status.name }}
                         </b-form-checkbox>
                       </b-form-group>
                     </div>
@@ -306,6 +306,7 @@ export default {
       zones: [],
       showZone: false,
       filterZones: [],
+      statuses: [],
       showStatus: false,
       filterStatuses: [],
       sortInitiativesByDateAscending: false,
@@ -328,6 +329,7 @@ export default {
   async created () {
     await this.fetchAreas()
     await this.fetchZones()
+    await this.fetchStatuses()
     await this.fetchInitiatives()
   },
   methods: {
@@ -373,6 +375,15 @@ export default {
     async fetchZones () {
       this.zones = await this.$store.dispatch('getZones')
       // this.filterZones = this.zones.map(z => z.id)
+    },
+    async fetchStatuses () {
+      const statuses = await this.$store.dispatch('getStatuses')
+      if (statuses) {
+        this.statuses = statuses.filter(st => {
+          return st.name !== "Zavrnjeno"
+        })
+        this.statuses.sort((a, b) => a.id > b.id)
+      }
     },
     switchType () {
       this.showType = !this.showType
