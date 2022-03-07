@@ -26,7 +26,7 @@
                   item-selector=".item"
                   class="masonry-container"
                 >
-                  <div class="item px-2 pb-3" v-masonry-tile>
+                  <div v-masonry-tile class="item px-2 pb-3">
                     <div class="initiative-card py-5 px-3 empty h-100 text-center">
                       <h4>Oddajte predlog izboljšave, popravek ali postavite vprašanje</h4>
                       <div>

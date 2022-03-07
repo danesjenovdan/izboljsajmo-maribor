@@ -326,7 +326,7 @@ export default {
       return this.initiatives.filter(initiative => initiative.location)
     }
   },
-  async created () {
+  async mounted () {
     await this.fetchAreas()
     await this.fetchZones()
     await this.fetchStatuses()
