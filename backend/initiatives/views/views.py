@@ -147,7 +147,8 @@ class InitiativeFilterSet(filters.FilterSet):
     statuses = filters.CharFilter(method='filter_statuses')
 
     def filter_statuses(self, queryset, name, value):
-        return queryset.filter(initiative_statuses__status__id=value)
+        # TODO fix this filter
+        return queryset.filter(initiative_statuses__status__id=value.split(','))
 
 
     class Meta:
