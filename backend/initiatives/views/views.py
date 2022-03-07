@@ -150,9 +150,9 @@ class InitiativeFilterSet(filters.FilterSet):
         last_status_initiatives = StatusInitiative.objects.filter(
             publication_status=Published.PUBLISHED).order_by('initiative', '-created').distinct('initiative')
 
-        last_status_initiatives = last_status_initiatives.filter(status__id__in=value.split(','))
+        last_filtered_status_initiatives = StatusInitiative.objects.filter(id__in=last_status_initiatives, status__id__in=value.split(','))
 
-        return queryset.filter(initiative_statuses__in=last_status_initiatives)
+        return queryset.filter(initiative_statuses__in=last_filtered_status_initiatives)
 
 
     class Meta:
