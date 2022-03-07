@@ -196,8 +196,8 @@ export const actions = {
     }
     // statuses
     if (payload.status && payload.status.length > 0) {
-      // params.append('status', payload.status.join(','))
-      params.append('statuses', payload.status[payload.status.length - 1])
+      params.append('status', payload.status.join(','))
+      // params.append('statuses', payload.status[payload.status.length - 1])
     }
     const response = await this.$axios.get('v1/initiatives/?', { params })
     if (response.status === 200) {
@@ -233,6 +233,16 @@ export const actions = {
 
   async getZones (context, payload) {
     const response = await this.$axios.get('v1/zones/')
+    if (response.status === 200) {
+      return await response.data
+    } else {
+      // console.log('ni ok', responseData)
+      // throw error
+    }
+  },
+
+  async getStatuses (context, payload) {
+    const response = await this.$axios.get('v1/statuses/')
     if (response.status === 200) {
       return await response.data
     } else {
