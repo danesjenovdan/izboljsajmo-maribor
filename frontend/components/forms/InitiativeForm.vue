@@ -485,6 +485,7 @@ export default {
             lat: location.lat,
             lng: location.lon
           }
+          this.locationButtonDisabled = true
         }
       }
     },
