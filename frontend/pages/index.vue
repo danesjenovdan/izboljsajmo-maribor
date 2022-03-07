@@ -379,10 +379,10 @@ export default {
     async fetchStatuses () {
       const statuses = await this.$store.dispatch('getStatuses')
       if (statuses) {
-        const filteredStatuses = statuses.filter(st => {
+        this.statuses = statuses.filter(st => {
           return st.name !== "Zavrnjeno"
         })
-        this.statuses = filteredStatuses.sort((a, b) => parseInt(a['id']) > parseInt(b['id']))
+        this.statuses = this.statuses.sort((a, b) => a.id - b.id )
       }
     },
     switchType () {
