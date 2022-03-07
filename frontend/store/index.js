@@ -21,9 +21,6 @@ export const getters = {
   },
   initiativeTypes (state) {
     return state.initiativeTypes
-  },
-  initiativeStatuses (state) {
-    return state.initiativeStatuses
   }
 }
 
