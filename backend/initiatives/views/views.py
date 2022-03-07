@@ -23,7 +23,7 @@ from initiatives.serializers import (
 )
 from initiatives.models import (
     Zone, Area, FAQ, DescriptionDefinition, InitiativeType, Initiative, Reviwers, Vote, RestorePassword,
-    ConfirmEmail, User, NotificationType, Notification, Address, Status
+    ConfirmEmail, User, NotificationType, Notification, Address, Status, StatusInitiative
 )
 from initiatives.permissions import IsOwnerOrReadOnly, IsVerified, IsBlocked
 from initiatives.tasks import send_email_task
@@ -147,8 +147,12 @@ class InitiativeFilterSet(filters.FilterSet):
     statuses = filters.CharFilter(method='filter_statuses')
 
     def filter_statuses(self, queryset, name, value):
-        # TODO fix this filter
-        return queryset.filter(initiative_statuses__status__id=value.split(','))
+        last_status_initiatives = StatusInitiative.objects.filter(
+            publication_status=Published.PUBLISHED).order_by('initiative', '-created').distinct('initiative')
+
+        last_status_initiatives = last_status_initiatives.filter(status__id__in=value.split(','))
+
+        return queryset.filter(initiative_statuses__in=last_status_initiatives)
 
 
     class Meta:
