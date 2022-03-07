@@ -19,11 +19,11 @@ from behaviors.models import Published
 from initiatives.serializers import (
     UserSerializer, OrganizationSerializer, DescriptionDefinitionSerializer, ZoneSerializer,
     CommentSerializer, AreaSerializer, FAQSerializer, FileSerializer, ImageSerializer,
-    InitiativeDetailsSerializer, InitiativeListSerializer, AddressSerializer
+    InitiativeDetailsSerializer, InitiativeListSerializer, AddressSerializer, StatusSerializer
 )
 from initiatives.models import (
     Zone, Area, FAQ, DescriptionDefinition, InitiativeType, Initiative, Reviwers, Vote, RestorePassword,
-    ConfirmEmail, User, NotificationType, Notification, Address
+    ConfirmEmail, User, NotificationType, Notification, Address, Status
 )
 from initiatives.permissions import IsOwnerOrReadOnly, IsVerified, IsBlocked
 from initiatives.tasks import send_email_task
@@ -89,6 +89,12 @@ class AreaViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     queryset = Area.objects.all()
 
 
+class StatusViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
+    permission_classes = [permissions.AllowAny, ]
+    serializer_class = StatusSerializer
+    queryset = Status.objects.all()
+
+
 class ZoneViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     permission_classes = [permissions.AllowAny, ]
     serializer_class = ZoneSerializer
@@ -141,7 +147,7 @@ class InitiativeFilterSet(filters.FilterSet):
     statuses = filters.CharFilter(method='filter_statuses')
 
     def filter_statuses(self, queryset, name, value):
-        return queryset.filter(initiative_statuses__status__name=value)
+        return queryset.filter(initiative_statuses__status__id=value)
 
 
     class Meta:

@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from initiatives.models import (
     User, File, StatusInitiative, CompetentService, Organization, Comment,
     CommentStatus, Description, Area, FAQ, Image, DescriptionDefinition,
-    Zone, Rejection
+    Zone, Rejection, Status
 )
 from behaviors.models import Published
 import logging
@@ -80,6 +80,11 @@ class AreaSerializer(serializers.ModelSerializer):
         model = Area
         fields = ('id', 'name', 'note')
 
+
+class StatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Status
+        fields = ('id', 'name')
 
 
 class ZoneSerializer(serializers.ModelSerializer):

@@ -6,7 +6,7 @@ from .views import (
     UserViewSet, OrganizationViewSet, AreaViewSet, FAQViewSet, FilesViewSet, InitiativeViewSet,
     ImagesViewSet, DescriptionDefinitionViewSet, ZoneViewSet, InitiativeTypeApiView, MoveResponsibilityApiView,
     ArchiveApiView, RejectionViewSet, PrintInitiativesView, RestorePasswordApiView, ConfirmEmailApiView,
-    ExportApiView, AddressViewSet
+    ExportApiView, AddressViewSet, StatusViewSet
 )
 
 from about.views import AboutViewSet
@@ -27,6 +27,7 @@ router.register(r'description-definitions', DescriptionDefinitionViewSet, basena
 router.register(r'initiatives', InitiativeViewSet, basename='Initiative')
 router.register(r'rejections', RejectionViewSet, basename='Rejections')
 router.register(r'addresses', AddressViewSet, basename='Addresses')
+router.register(r'statuses', StatusViewSet, basename='Statuses')
 
 
 
