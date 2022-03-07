@@ -148,7 +148,7 @@ class InitiativeFilterSet(filters.FilterSet):
 
     def filter_statuses(self, queryset, name, value):
         last_status_initiatives = StatusInitiative.objects.filter(
-            is_published=True).order_by('initiative', '-created').distinct('initiative')
+            publication_status=Published.PUBLISHED).order_by('initiative', '-created').distinct('initiative')
 
         last_status_initiatives = last_status_initiatives.filter(status__id__in=value.split(','))
 
