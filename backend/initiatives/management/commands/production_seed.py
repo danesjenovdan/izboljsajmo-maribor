@@ -160,7 +160,12 @@ class Command(BaseCommand):
         ct = ContentType.objects.get_for_model(models.StatusInitiativeRejected)
         permissions = self.get_permissions('statusinitiativerejected', ct, self.options)
         area_admin_group.permissions.add(*permissions)
-
+        ct = ContentType.objects.get_for_model(models.Rejection)
+        permissions = self.get_permissions('rejection', ct, self.read)
+        area_admin_group.permissions.add(*permissions)
+        ct = ContentType.objects.get_for_model(models.Rejection)
+        permissions = self.get_permissions('rejection', ct, self.read)
+        area_admin_group.permissions.add(*permissions)
         ct = ContentType.objects.get_for_model(models.Area)
         permissions = self.get_permissions('area', ct, self.read)
         area_admin_group.permissions.add(*permissions)
