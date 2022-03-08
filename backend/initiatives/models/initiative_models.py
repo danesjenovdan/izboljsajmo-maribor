@@ -73,6 +73,7 @@ class Initiative(Timestamped, Authored):
         blank=True)
     location = geo_models.PointField(
         null=True,
+        verbose_name=_('Lokacija'),
         blank=True)
     address = models.CharField(
         _("Address of initiative"),
@@ -89,6 +90,7 @@ class Initiative(Timestamped, Authored):
     publisher = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        verbose_name=_('publisher'),
         related_name='published_initiatives',
         null=True,
         blank=True)
@@ -108,7 +110,8 @@ class Initiative(Timestamped, Authored):
         blank=True)
     archived = models.DateTimeField(
         null=True,
-        blank=True)
+        blank=True,
+        verbose_name='Arhivirano',)
     is_draft = models.BooleanField(
         _('In review'),
         default=False)
@@ -156,9 +159,10 @@ class Initiative(Timestamped, Authored):
             f'''<table>
             <tr>
                 <th>{_("Status")}</th>
-                <th>{_("Note")}</th>
-                <th>{_("Published status")}</th>
-                <th>{_("Status changed at")}</th>
+                <th>{_("Opis")}</th>
+                <th>{_("Status objace")}</th>
+                <th>{_("Status spremenjen dne")}</th>
+                <th>{_("Avtor")}</th>
             </tr>
                 {table_lines}
             </table>
@@ -238,6 +242,7 @@ class Initiative(Timestamped, Authored):
     comment_count.short_description = _("Št. komentarjev")
     status_history.short_description = _("Zgodovina statusov")
     images_preview.short_description = _("Predogled slik")
+    description.short_description = _("Opis")
 
 
 class ArchivedManager(models.Manager):

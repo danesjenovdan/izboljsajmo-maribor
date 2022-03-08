@@ -13,7 +13,7 @@ from initiatives.models import (
 )
 from initiatives.forms import (
     HearStatusInlineForm, EditingStatusInlineForm, ProgressStatusInlineForm, DoneStatusInlineForm,
-    FinishedStatusInlineForm, RejectedStatusInlineForm
+    FinishedStatusInlineForm, RejectedStatusInlineForm, UserLoginFrom
 )
 
 from admin_ordering.admin import OrderableAdmin
@@ -375,3 +375,5 @@ admin.site.register(FAQ, FAQAdmin)
 admin.site.register(Rejection, RejectionAdmin)
 
 admin.site.site_header = _('Izboljšajmo Maribor')
+
+admin.site.login_form = UserLoginFrom
