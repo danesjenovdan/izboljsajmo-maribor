@@ -64,11 +64,9 @@ export default {
       this.checkPassword()
       if (!this.errorPassword) {
         try {
-          console.log('password', this.password)
           const res = await this.$axios.patch(`v1/restore-password/${key}/`, {
             new_password: this.password
           })
-          console.log(res)
           this.success = true
         } catch (e) {
           this.error = true
