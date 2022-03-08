@@ -191,11 +191,11 @@ msgstr "Tip pobude"
 
 #: initiatives/models/initiative_models.py:33
 msgid "Reviewer role"
-msgstr "Reviewer role"
+msgstr "Vloga Skrbnika/izvajaleca"
 
 #: initiatives/models/initiative_models.py:39
 msgid "Reviewer"
-msgstr "Reviewer"
+msgstr "Skrbnik/Izvajalec"
 
 #: initiatives/models/initiative_models.py:51 initiatives/models/models.py:74
 msgid "Status of initiative"

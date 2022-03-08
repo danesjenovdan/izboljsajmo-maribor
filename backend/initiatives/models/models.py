@@ -63,7 +63,7 @@ class NotificationType(models.TextChoices):
     UPDATED = 'up', _('UPDATED')
 
 
-class StatusInitiative(Timestamped, Published):
+class StatusInitiative(Timestamped, Published, Authored):
     initiative = models.ForeignKey(
         'initiatives.Initiative',
         verbose_name=_('Initiative'),
@@ -103,7 +103,7 @@ class StatusInitiative(Timestamped, Published):
 
     def to_table_row(self):
         draft_style = 'style="background-color: coral;"' if self.draft else 'style="background-color: lightgreen;"'
-        return f'<tr><th>{self.status.name}</th><th>{self.note[:50] if self.note else ""}</th><th {draft_style}>{_("published") if self.published else _("draft")}</th><th>{self.created.date().isoformat() if self.created else 0}</th></tr>'
+        return f'<tr><th>{self.status.name}</th><th>{self.note[:50] if self.note else ""}</th><th {draft_style}>{_("objavleno") if self.published else _("osnutek")}</th><th>{self.created.date().isoformat() if self.created else 0}</th><th>{self.author.username}</th></tr>'
 
     def __str__(self):
         return f'{self.status.name}: {self.created}'
@@ -223,6 +223,7 @@ class StatusInitiativeRejected(StatusInitiative):
         verbose_name_plural = _('Statusi pobude zavrnjeno')
 
     def save(self, *args, **kwargs):
+        logger.warning(kwargs.keys())
         self.status = Status.objects.get(name='Zavrnjeno')
         return super().save(*args, **kwargs)
 
@@ -713,7 +714,13 @@ class Notification(Timestamped):
         indexes = [
             models.Index(fields=['created', 'is_sent',]),
         ]
+        verbose_name = _('Obvestila')
+        verbose_name_plural = _('Obvestila')
 
 
 class Address(Timestamped):
     name = models.CharField(max_length=128)
+
+    class Meta:
+        verbose_name = _('Naslov')
+        verbose_name_plural = _('Naslovi')

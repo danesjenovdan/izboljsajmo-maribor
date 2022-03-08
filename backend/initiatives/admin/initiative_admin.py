@@ -40,8 +40,30 @@ class PublicFilter(SimpleListFilter):
         else:
             return queryset
 
+class InitiativeParentAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
+    def save_formset(self, request, obj, formset, change):
+        instances = formset.save(commit=False)
+        for instance in instances:
+            instance.author = request.user
+            instance.save()
+            formset.save()
 
-class InitiativeAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
+    actions = ['printer']
+
+    def email(self, obj):
+        return obj.author.email
+
+    def printer(self, request, queryset):
+        return render(request, 'print/initiatives.html', {'initiatives': queryset})
+
+    def phone_number(self, obj):
+        return obj.author.phone_number
+
+    printer.short_description = "Print initiatives"
+    phone_number.short_description = _("Telefonska številka")
+
+
+class InitiativeAdmin(InitiativeParentAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
@@ -77,23 +99,10 @@ class InitiativeAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         StatusInitiativeRejectedInline,
         CommentInline)
 
-    actions = ['printer']
-
-    def printer(self, request, queryset):
-        return render(request, 'print/initiatives.html', {'initiatives': queryset})
-
-    def phone_number(self, obj):
-        return obj.author.phone_number
-
-    def email(self, obj):
-        return obj.author.email
-
-    printer.short_description = _("Print initiatives")
-
 
 # ---- ZANIMA ME -> interested in
 
-class InterestedInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
+class InterestedInitiativeSuperAdmin(InitiativeParentAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
@@ -123,20 +132,6 @@ class InterestedInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         StatusInitiativeRejectedAdminInline,
         CommentInline)
 
-    actions = ['printer']
-
-    def printer(self, request, queryset):
-        return render(request, 'print/initiatives.html', {'initiatives': queryset})
-
-    def phone_number(self, obj):
-        return obj.author.phone_number
-
-    def email(self, obj):
-        return obj.author.email
-
-    printer.short_description = "Print initiatives"
-
-
 
 class InterestedAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -147,7 +142,7 @@ class InterestedAdminForm(forms.ModelForm):
             area=self.instance.area)
 
 
-class InterestedInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
+class InterestedInitiativeAreaAdmin(InitiativeParentAdmin):
     form = InterestedAdminForm
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone', 'area']
@@ -178,27 +173,16 @@ class InterestedInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         StatusInitiativeRejectedInline,
         CommentInline)
 
-    actions = ['printer']
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         areas = request.user.area.all()
         #return qs.filter(area__in=areas)
-        return qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
-
-    def printer(self, request, queryset):
-        return render(request, 'print/initiatives.html', {'initiatives': queryset})
-
-    def phone_number(self, obj):
-        return obj.author.phone_number
-
-    def email(self, obj):
-        return obj.author.email
-
-    printer.short_description = "Print initiatives"
+        return qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas)).distinct('id')
 
 
-class InterestedInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
+
+class InterestedInitiativeAppraiserAdmin(InitiativeParentAdmin):
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer', 'phone_number', 'email', 'description']
     exclude = ['publisher', 'is_draft']
     search_fields = ['author__username', 'address', 'descriptions__content']
@@ -224,28 +208,16 @@ class InterestedInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin
         StatusInitiativeFinishedInline,
         CommentInline)
 
-    actions = ['printer']
-
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         areas = request.user.area.all()
         #return qs.filter(area__in=areas)
-        return qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
+        return qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas)).distinct('id')
 
-    def printer(self, request, queryset):
-        return render(request, 'print/initiatives.html', {'initiatives': queryset})
-
-    def phone_number(self, obj):
-        return obj.author.phone_number
-
-    def email(self, obj):
-        return obj.author.email
-
-    printer.short_description = "Print initiatives"
 
 # ---- IDEJA Idea
 
-class IdeaInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
+class IdeaInitiativeSuperAdmin(InitiativeParentAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
@@ -276,18 +248,6 @@ class IdeaInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         StatusInitiativeRejectedAdminInline,
         CommentInline)
 
-    actions = ['printer']
-
-    def printer(self, request, queryset):
-        return render(request, 'print/initiatives.html', {'initiatives': queryset})
-
-    def phone_number(self, obj):
-        return obj.author.phone_number
-
-    def email(self, obj):
-        return obj.author.email
-
-    printer.short_description = "Print initiatives"
 
 
 class IteaAdminForm(forms.ModelForm):
@@ -298,7 +258,7 @@ class IteaAdminForm(forms.ModelForm):
             role=Reviwers.get_order()[idx+1],
             area=self.instance.area)
 
-class IdeaInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
+class IdeaInitiativeAreaAdmin(InitiativeParentAdmin):
     form = IteaAdminForm
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone', 'area']
@@ -330,28 +290,17 @@ class IdeaInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         StatusInitiativeRejectedInline,
         CommentInline)
 
-    actions = ['printer']
-
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         areas = request.user.area.all()
         #return qs.filter(area__in=areas)
-        return qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
-        
-
-    def printer(self, request, queryset):
-        return render(request, 'print/initiatives.html', {'initiatives': queryset})
-
-    def phone_number(self, obj):
-        return obj.author.phone_number
-
-    def email(self, obj):
-        return obj.author.email
-
-    printer.short_description = _("Print initiatives")
+        #WORKAROUND aggregate() + distinct(fields) not implemented.
+        initiatives = qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
+        return qs.filter(id__in=initiatives)
 
 
-class IdeaInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
+
+class IdeaInitiativeAppraiserAdmin(InitiativeParentAdmin):
     form = IteaAdminForm
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email', 'description']
     exclude = ['publisher', 'is_draft']
@@ -380,27 +329,17 @@ class IdeaInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         StatusInitiativeFinishedInline,
         CommentInline)
 
-    actions = ['printer']
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         areas = request.user.area.all()
         #return qs.filter(area__in=areas)
-        return qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
-
-    def printer(self, request, queryset):
-        return render(request, 'print/initiatives.html', {'initiatives': queryset})
-
-    def phone_number(self, obj):
-        return obj.author.phone_number
-
-    def email(self, obj):
-        return obj.author.email
-
-    printer.short_description = "Print initiatives"
+        #WORKAROUND aggregate() + distinct(fields) not implemented.
+        initiatives = qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
+        return qs.filter(id__in=initiatives)
 
 
-class IdeaInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
+class IdeaInitiativeContractorAdmin(InitiativeParentAdmin):
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer', 'phone_number', 'email', 'description']
     exclude = ['publisher', 'is_draft']
     search_fields = ['author__username', 'address', 'descriptions__content']
@@ -428,27 +367,15 @@ class IdeaInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         StatusInitiativeFinishedInline,
         CommentInline)
 
-    actions = ['printer']
-
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.filter(reviewer_user_history=request.user)
 
-    def printer(self, request, queryset):
-        return render(request, 'print/initiatives.html', {'initiatives': queryset})
-
-    def phone_number(self, obj):
-        return obj.author.phone_number
-
-    def email(self, obj):
-        return obj.author.email
-
-    printer.short_description = "Print initiatives"
 
 
 # MOTI ME -> bothers me
 
-class BothersInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
+class BothersInitiativeSuperAdmin(InitiativeParentAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
@@ -479,18 +406,6 @@ class BothersInitiativeSuperAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         StatusInitiativeRejectedAdminInline,
         CommentInline)
 
-    actions = ['printer']
-
-    def printer(self, request, queryset):
-        return render(request, 'print/initiatives.html', {'initiatives': queryset})
-
-    def phone_number(self, obj):
-        return obj.author.phone_number
-
-    def email(self, obj):
-        return obj.author.email
-
-    printer.short_description = "Print initiatives"
 
 
 class BothersInitiativeForm(forms.ModelForm):
@@ -502,7 +417,7 @@ class BothersInitiativeForm(forms.ModelForm):
             area=self.instance.area)
 
 
-class BothersInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
+class BothersInitiativeAreaAdmin(InitiativeParentAdmin):
     form = BothersInitiativeForm
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['zone', 'area']
@@ -534,26 +449,14 @@ class BothersInitiativeAreaAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         StatusInitiativeRejectedInline,
         CommentInline)
 
-    actions = ['printer']
-
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        areas = request.user.area.all()
-        return qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
-
-    def printer(self, request, queryset):
-        return render(request, 'print/initiatives.html', {'initiatives': queryset})
-
-    def phone_number(self, obj):
-        return obj.author.phone_number
-
-    def email(self, obj):
-        return obj.author.email
-
-    printer.short_description = "Print initiatives"
+        #WORKAROUND aggregate() + distinct(fields) not implemented.
+        initiatives = qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
+        return qs.filter(id__in=initiatives)
 
 
-class BothersInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
+class BothersInitiativeAppraiserAdmin(InitiativeParentAdmin):
     form = BothersInitiativeForm
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email', 'description']
     exclude = ['publisher', 'is_draft']
@@ -582,26 +485,14 @@ class BothersInitiativeAppraiserAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         StatusInitiativeFinishedInline,
         CommentInline)
 
-    actions = ['printer']
-
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        areas = request.user.area.all()
-        return qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
-
-    def printer(self, request, queryset):
-        return render(request, 'print/initiatives.html', {'initiatives': queryset})
-
-    def phone_number(self, obj):
-        return obj.author.phone_number
-
-    def email(self, obj):
-        return obj.author.email
-
-    printer.short_description = "Print initiatives"
+        #WORKAROUND aggregate() + distinct(fields) not implemented.
+        initiatives = qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
+        return qs.filter(id__in=initiatives)
 
 
-class BothersInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
+class BothersInitiativeContractorAdmin(InitiativeParentAdmin):
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer', 'phone_number', 'email', 'description']
     modifiable = False
     exclude = ['publisher', 'is_draft']
@@ -629,22 +520,9 @@ class BothersInitiativeContractorAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
         StatusInitiativeFinishedInline,
         CommentInline)
 
-    actions = ['printer']
-
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.filter(reviewer_user_history=request.user)
-
-    def printer(self, request, queryset):
-        return render(request, 'print/initiatives.html', {'initiatives': queryset})
-
-    def phone_number(self, obj):
-        return obj.author.phone_number
-
-    def email(self, obj):
-        return obj.author.email
-
-    printer.short_description = "Print initiatives"
 
 
 admin.site.register(Initiative, InitiativeAdmin)
@@ -663,3 +541,4 @@ admin.site.register(BothersInitiativeSuper, BothersInitiativeSuperAdmin)
 admin.site.register(BothersInitiativeArea, BothersInitiativeAreaAdmin)
 admin.site.register(BothersInitiativeAppraiser, BothersInitiativeAppraiserAdmin)
 admin.site.register(BothersInitiativeContractor, BothersInitiativeContractorAdmin)
+admin.site.site_header = _('Izboljšajmo Maribor')

@@ -68,9 +68,11 @@ class Published(models.Model):
 
     publication_status = models.CharField(
         "Publication Status",
-        #verbose_name=_('Publication Status'),
         max_length=1,
-        choices=PUBLICATION_STATUS_CHOICES, default=DRAFT)
+        choices=PUBLICATION_STATUS_CHOICES,
+        default=DRAFT,
+        #verbose_name='Status objave',
+    )
 
     class Meta:
         abstract = True

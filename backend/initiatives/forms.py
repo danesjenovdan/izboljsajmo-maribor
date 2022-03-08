@@ -1,5 +1,7 @@
 from django import forms
 
+from django.contrib.admin.forms import AuthenticationForm
+
 from .models import (
     Status, StatusInitiativeHear, StatusInitiativeEditing, StatusInitiativeProgress, StatusInitiativeFinished, StatusInitiativeDone, StatusInitiativeRejected
 )
@@ -140,3 +142,20 @@ class RejectedStatusInlineForm(InlineForceSaveNew):
         super().__init__(
             *args, **kwargs
         )
+
+class PasswordInput(forms.PasswordInput):
+    input_type = "password"
+    template_name = "admin/forms/widgets/password.html"
+
+    def __init__(self, attrs=None, render_value=False):
+        super().__init__(attrs)
+        self.render_value = render_value
+
+    def get_context(self, name, value, attrs):
+        if not self.render_value:
+            value = None
+        return super().get_context(name, value, attrs)
+
+class UserLoginFrom(AuthenticationForm):
+    username = forms.CharField(max_length=254)
+    password = forms.CharField(widget=PasswordInput())
