@@ -178,7 +178,7 @@ class InterestedInitiativeAreaAdmin(InitiativeParentAdmin):
         qs = super().get_queryset(request)
         areas = request.user.area.all()
         #return qs.filter(area__in=areas)
-        return qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
+        return qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas)).distinct('id')
 
 
 
@@ -212,7 +212,7 @@ class InterestedInitiativeAppraiserAdmin(InitiativeParentAdmin):
         qs = super().get_queryset(request)
         areas = request.user.area.all()
         #return qs.filter(area__in=areas)
-        return qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
+        return qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas)).distinct('id')
 
 
 # ---- IDEJA Idea
@@ -294,7 +294,9 @@ class IdeaInitiativeAreaAdmin(InitiativeParentAdmin):
         qs = super().get_queryset(request)
         areas = request.user.area.all()
         #return qs.filter(area__in=areas)
-        return qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
+        #WORKAROUND aggregate() + distinct(fields) not implemented.
+        initiatives = qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
+        return qs.filter(id__in=initiatives)
 
 
 
@@ -332,7 +334,9 @@ class IdeaInitiativeAppraiserAdmin(InitiativeParentAdmin):
         qs = super().get_queryset(request)
         areas = request.user.area.all()
         #return qs.filter(area__in=areas)
-        return qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
+        #WORKAROUND aggregate() + distinct(fields) not implemented.
+        initiatives = qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
+        return qs.filter(id__in=initiatives)
 
 
 class IdeaInitiativeContractorAdmin(InitiativeParentAdmin):
@@ -447,9 +451,9 @@ class BothersInitiativeAreaAdmin(InitiativeParentAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        areas = request.user.area.all()
-        return qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
-
+        #WORKAROUND aggregate() + distinct(fields) not implemented.
+        initiatives = qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
+        return qs.filter(id__in=initiatives)
 
 
 class BothersInitiativeAppraiserAdmin(InitiativeParentAdmin):
@@ -483,8 +487,9 @@ class BothersInitiativeAppraiserAdmin(InitiativeParentAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        areas = request.user.area.all()
-        return qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
+        #WORKAROUND aggregate() + distinct(fields) not implemented.
+        initiatives = qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
+        return qs.filter(id__in=initiatives)
 
 
 class BothersInitiativeContractorAdmin(InitiativeParentAdmin):
