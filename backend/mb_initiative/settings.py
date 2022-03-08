@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.forms',
     'django.contrib.gis',
     'rest_framework',
     'django_filters',
@@ -157,6 +158,8 @@ STATIC_URL = os.getenv('STATIC_URL_BASE', '') + '/static/'
 MEDIA_URL = os.getenv('MEDIA_URL_BASE', '') + '/media/'
 
 ROOT_DIR = '/files/' if os.getenv('APP_ENV', 'development') == 'production' else BASE_DIR
+
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale')
