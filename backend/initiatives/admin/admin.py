@@ -78,18 +78,31 @@ class EmptyUserAdmin(UserAdmin):
 
 
 class AllAdminUserAdmin(UserAdmin):
-    fieldsets = ((None, {'fields': ('username', 'email', 'password')}),)
+    list_display = ['email', 'role', 'areas']
+    fieldsets = (
+        (None, {'fields': ('username', 'email', 'password')}),
+        (_('Permissions'), {
+            'fields': ('groups',),
+        }),
+        (_('MB datas'), {'fields': ('role', 'zones', 'area', 'phone_number')}),
+    )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
             'fields': ('username', 'email', 'password1', 'password2'),
         }),
+        (_('Permissions'), {
+            'fields': ('groups', 'user_permissions'),
+        }),
+        (_('MB datas'), {'fields': ('role', 'zones', 'area', 'phone_number')}),
     )
-    def get_model_perms(self, request):
-        """
-        Return empty perms dict thus hiding the model from admin index.
-        """
-        return {}
+    def areas(self, obj):
+        return ' '.join(obj.area.all().values_list('name', flat=True))
+    # def get_model_perms(self, request):
+    #     """
+    #     Return empty perms dict thus hiding the model from admin index.
+    #     """
+    #     return {}
 
 
 class SuperAdminUserAdmin(MBUserAdmin):
