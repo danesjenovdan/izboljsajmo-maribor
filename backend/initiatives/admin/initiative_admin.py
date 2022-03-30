@@ -250,7 +250,7 @@ class IdeaInitiativeSuperAdmin(InitiativeParentAdmin):
 
 
 
-class IteaAdminForm(forms.ModelForm):
+class IdeaAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         idx = Reviwers.get_order().index(self.instance.reviewer)
@@ -259,7 +259,7 @@ class IteaAdminForm(forms.ModelForm):
             area=self.instance.area)
 
 class IdeaInitiativeAreaAdmin(InitiativeParentAdmin):
-    form = IteaAdminForm
+    form = IdeaAdminForm
     search_fields = ['author__username', 'address', 'descriptions__content']
     autocomplete_fields = ['area', 'zone', 'area']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
@@ -301,7 +301,7 @@ class IdeaInitiativeAreaAdmin(InitiativeParentAdmin):
 
 
 class IdeaInitiativeAppraiserAdmin(InitiativeParentAdmin):
-    form = IteaAdminForm
+    form = IdeaAdminForm
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email', 'description']
     exclude = ['publisher', 'is_draft']
     search_fields = ['author__username', 'address', 'descriptions__content']
@@ -452,7 +452,7 @@ class BothersInitiativeAreaAdmin(InitiativeParentAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         #WORKAROUND aggregate() + distinct(fields) not implemented.
-        initiatives = qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
+        initiatives = qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=request.user.area.all()))
         return qs.filter(id__in=initiatives)
 
 
@@ -488,7 +488,7 @@ class BothersInitiativeAppraiserAdmin(InitiativeParentAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         #WORKAROUND aggregate() + distinct(fields) not implemented.
-        initiatives = qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=areas))
+        initiatives = qs.filter(Q(reviewer_user_history=request.user) | Q(area__in=request.user.area.all()))
         return qs.filter(id__in=initiatives)
 
 
