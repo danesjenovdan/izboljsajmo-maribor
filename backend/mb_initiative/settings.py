@@ -99,17 +99,17 @@ WSGI_APPLICATION = 'mb_initiative.wsgi.application'
 DATABASES = {
     'default': ({
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.getenv('SECRET_DB_NAME', ''),
-        'USER': os.getenv('SECRET_DB_USERNAME', ''),
-        'PASSWORD': os.getenv('SECRET_DB_PASSWORD', ''),
-        'HOST': os.getenv('POSTGIS_SERVICE_HOST', ''),
+        'NAME': os.getenv('POSTGRES_DB', ''),
+        'USER': os.getenv('POSTGRES_USER', ''),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
+        'HOST': os.getenv('POSTGIS_IM_SERVICE_HOST', ''),
         'PORT': '5432',
     } if os.getenv('APP_ENV', 'development') == 'production' else {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'HOST': 'postgis',
-        'NAME': 'mb-initiative',
-        'USER': 'postgres',
-        'PASSWORD': 'initititit'
+        'NAME': 'mbinitiative',
+        'USER': 'maribor',
+        'PASSWORD': 'maribor'
     })
 }
 
