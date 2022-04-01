@@ -1,39 +1,65 @@
+
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: postgis
+  name: postgis-im
   labels:
-    app: izboljsajmo-maribor-postgis
+    app: postgis-im
 spec:
+  serviceName: postgres-sfc
   replicas: 1
   selector:
     matchLabels:
-      app: izboljsajmo-maribor-postgis
+      app: postgis-im
   template:
     metadata:
       labels:
-        app: izboljsajmo-maribor-postgis
+        app: postgis-im
     spec:
       containers:
-      - name: izboljsajmo-maribor-postgis
-        image: mdillon/postgis
+      - name: postgis-im
+        image: postgis/postgis
+        resources:
+            requests:
+              memory: "300Mi"
+              cpu: "250m"
+            limits:
+              memory: "300Mi"
+              cpu: "250m"
         ports:
         - containerPort: 5432
-        env:
-          - name: POSTGRES_DB
-            value: mb-initiative
-          - name: POSTGRES_USER
-            value: postgres
-          - name: POSTGRES_PASS
-            value: initititit!
+        envFrom:
+          - secretRef:
+              name: izboljsajmo-maribor-credentials
+        volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgisdb
+              subPath: postgres
+      volumes:
+        - name: postgisdb
+          persistentVolumeClaim:
+            claimName: postgis-volumeclaim
+
+  volumeClaimTemplates:
+    - kind: PersistentVolumeClaim
+      apiVersion: v1
+      metadata:
+        name: postgisdb
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "1Gi"
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgis
+  name: postgis-im
 spec:
   selector:
-    app: izboljsajmo-maribor-postgis
+    app: postgis-im
   ports:
     - protocol: TCP
       port: 5432

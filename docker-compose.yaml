@@ -8,26 +8,25 @@ services:
      - '6379:6379'
 
   postgis:
-    image: mdillon/postgis
+    image: postgis/postgis
     ports:
       - "5430:5432"
     volumes:
       - db-data:/data
     environment:
-      - POSTGRES_DB=mb-initiative
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASS=initititit!
-
+      - POSTGRES_DB=mbinitiative
+      - POSTGRES_USER=maribor
+      - POSTGRES_PASSWORD=maribor
 
   mb-api:
     build: backend/.
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8080
     volumes:
         - ./backend:/app
         - ./backend/static:/static
         - .backend/media:/media
     ports:
-        - "8000:8000"
+        - "8080:8080"
     depends_on:
         - postgis
 
