@@ -59,6 +59,7 @@ spec:
   tls:
   - hosts:
     - izboljsajmo-maribor.k8s.djnd.si
+    - izboljsajmo.maribor.si
     secretName: izboljsajmo-maribor-frontend-tls
   rules:
   - host: izboljsajmo-maribor.k8s.djnd.si
