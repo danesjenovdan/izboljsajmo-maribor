@@ -71,3 +71,13 @@ spec:
             name: izboljsajmo-maribor-frontend
             port:
               number: 80
+  - host: izboljsajmo.maribor.si
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: izboljsajmo-maribor-frontend
+            port:
+              number: 80

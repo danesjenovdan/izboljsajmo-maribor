@@ -48,6 +48,7 @@ spec:
       spec:
         accessModes:
           - "ReadWriteOnce"
+        storageClassName: scw-bssd-retain
         resources:
           requests:
             storage: "1Gi"
