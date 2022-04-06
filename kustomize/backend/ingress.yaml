@@ -11,6 +11,7 @@ spec:
   tls:
   - hosts:
     - api.izboljsajmo-maribor.k8s.djnd.si
+    - api.izboljsajmo.maribor.si
     secretName: izboljsajmo-maribor-backend-tls
   rules:
   - host: api.izboljsajmo-maribor.k8s.djnd.si
@@ -45,6 +46,7 @@ spec:
   tls:
   - hosts:
     - files.izboljsajmo-maribor.k8s.djnd.si
+    - files.izboljsajmo.maribor.si
     secretName: izboljsajmo-maribor-nginx-tls
   rules:
   - host: files.izboljsajmo-maribor.k8s.djnd.si
