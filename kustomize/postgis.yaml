@@ -7,7 +7,6 @@ metadata:
     app: postgis-im
 spec:
   serviceName: postgres-sfc
-  replicas: 1
   selector:
     matchLabels:
       app: postgis-im
@@ -48,7 +47,7 @@ spec:
       spec:
         accessModes:
           - "ReadWriteOnce"
-        storageClassName: scw-bssd-retain
+        storageClassName: scw-bssd
         resources:
           requests:
             storage: "1Gi"
