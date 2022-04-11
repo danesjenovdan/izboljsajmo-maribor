@@ -1,3 +1,10 @@
-{{ name }}
+#{{ id }} - {{ name }}<br/>
 
-{{ id }}
+
+{{ instance.author.name }} <{{ instance.author.email }}> <br/>
+
+Področje: {{ instance.area.name }}<br/>
+Lokacija: {{ instance.address }}<br/>
+Geo točka: {{ instance.location.x }} {{ instance.location.y }}<br/>
+Opis: {{ instance.description_property }}
+Povezava do pobude za glavnega admina: https://api.izboljsajmo.maribor.si/{{ instance.get_super_admin_url }}

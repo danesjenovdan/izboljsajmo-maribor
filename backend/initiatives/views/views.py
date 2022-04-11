@@ -218,7 +218,8 @@ class InitiativeViewSet(
             'emails/new_initiative_log.html',
             {
                 'name': instance.title,
-                'id': instance.id
+                'id': instance.id,
+                'instance': instance
             }
         )
         if instance.type == InitiativeType.BOTHERS_ME:

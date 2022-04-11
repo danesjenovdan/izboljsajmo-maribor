@@ -14,6 +14,9 @@ from pathlib import Path
 
 import os
 
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -230,7 +233,7 @@ else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     FROM_EMAIL = 'dummy@email.com'
 
-LOG_EMAIL = 'tomaz@djnd.si'
+LOG_EMAIL = os.environ.get("LOGGING_EMAIL", "dummy@email.si")
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
@@ -281,3 +284,17 @@ if os.getenv('DJND_ENABLE_S3', False):
     AWS_S3_REGION_NAME = os.getenv('DJND_AWS_REGION_NAME', 'fr-par')
     AWS_S3_ENDPOINT_URL = os.getenv('DJND_AWS_S3_ENDPOINT_URL', 'https://s3.fr-par.scw.cloud')
     AWS_S3_SIGNATURE_VERSION = os.getenv('DJND_AWS_S3_SIGNATURE_VERSION', 's3v4')
+
+sentry_sdk.init(
+    dsn=os.environ.get("SENTRY_URL", ""),
+    integrations=[DjangoIntegration()],
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=1.0,
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)

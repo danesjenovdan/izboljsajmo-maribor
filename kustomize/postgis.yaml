@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: postgis-im
-        image: postgis/postgis
+        image: postgis/postgis:13-master
         resources:
             requests:
               memory: "300Mi"

@@ -177,6 +177,10 @@ class Initiative(Timestamped, Authored):
 
         return mark_safe(output)
 
+    @property
+    def description_property(self):
+        self.description()
+
     def images_preview(self):
         images = ""
         if self.cover_image:
@@ -215,6 +219,10 @@ class Initiative(Timestamped, Authored):
         type_str = self.get_type_url_key(self.type)
         logger.debug(f'admin:{type_str}initiative{role_str}_change')
         return reverse(f'admin:initiatives_{type_str}initiative{role_str}_change',  args=[self.id] )
+
+    @property
+    def get_super_admin_url(self):
+        return self.get_admin_url('SA')
 
     def get_role_url_key(self, key):
         return {
