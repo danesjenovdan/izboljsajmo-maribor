@@ -224,7 +224,9 @@ class InitiativeViewSet(
                 'location_x': instance.location.x,
                 'location_y': instance.location.y,
                 'description': instance.description_property,
-                'admin_url': instance.get_super_admin_url
+                'admin_url': instance.get_super_admin_url,
+                'author': instance.author.name,
+                'email': instance.author.email,
             }
         )
         if instance.type == InitiativeType.BOTHERS_ME:
