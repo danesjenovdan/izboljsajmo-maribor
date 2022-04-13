@@ -3,8 +3,8 @@
 
 {{ instance.author.name }} <{{ instance.author.email }}> <br/>
 
-Področje: {{ instance.area.name }}<br/>
-Lokacija: {{ instance.address }}<br/>
-Geo točka: {{ instance.location.x }} {{ instance.location.y }}<br/>
-Opis: {{ instance.description_property }}
-Povezava do pobude za glavnega admina: https://api.izboljsajmo.maribor.si/{{ instance.get_super_admin_url }}
+Področje: {{ area }}<br/>
+Lokacija: {{ address }}<br/>
+Geo točka: {{ location_y }} {{ location_x }}<br/>
+Opis: {{ description }}
+Povezava do pobude za glavnega admina: https://api.izboljsajmo.maribor.si/{{ admin_url }}
