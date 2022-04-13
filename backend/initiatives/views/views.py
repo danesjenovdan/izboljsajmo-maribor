@@ -221,11 +221,11 @@ class InitiativeViewSet(
                 'id': instance.id,
                 'area': instance.area.name,
                 'address': instance.address,
-                'location_x': instance.location.x,
-                'location_y': instance.location.y,
+                'location_x': instance.location.x if instance.location else '',
+                'location_y': instance.location.y if instance.location else '',
                 'description': instance.description_property,
                 'admin_url': instance.get_super_admin_url,
-                'author': instance.author.name,
+                'author': instance.author.username,
                 'email': instance.author.email,
             }
         )
