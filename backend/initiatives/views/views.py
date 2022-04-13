@@ -219,7 +219,14 @@ class InitiativeViewSet(
             {
                 'name': instance.title,
                 'id': instance.id,
-                'instance': instance
+                'area': instance.area.name,
+                'address': instance.address,
+                'location_x': instance.location.x,
+                'location_y': instance.location.y,
+                'description': instance.description_property,
+                'admin_url': instance.get_super_admin_url,
+                'author': instance.author.name,
+                'email': instance.author.email,
             }
         )
         if instance.type == InitiativeType.BOTHERS_ME:
