@@ -103,7 +103,7 @@ class StatusInitiative(Timestamped, Published, Authored):
 
     def to_table_row(self):
         draft_style = 'style="background-color: coral;"' if self.draft else 'style="background-color: lightgreen;"'
-        return f'<tr><th>{self.status.name}</th><th>{self.note[:50] if self.note else ""}</th><th {draft_style}>{_("objavleno") if self.published else _("osnutek")}</th><th>{self.created.date().isoformat() if self.created else 0}</th><th>{self.author.username}</th></tr>'
+        return f'<tr><th>{self.status.name}</th><th>{self.note[:50] if self.note else ""}</th><th {draft_style}>{_("objavljeno") if self.published else _("osnutek")}</th><th>{self.created.date().isoformat() if self.created else 0}</th><th>{self.author.username}</th></tr>'
 
     def __str__(self):
         return f'{self.status.name}: {self.created}'

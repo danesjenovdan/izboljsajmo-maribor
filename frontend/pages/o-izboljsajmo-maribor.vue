@@ -27,6 +27,12 @@
           >
             <iframe class="embed-responsive-item p-4" :src="youtubeEmbedLink(el.url)" allowfullscreen />
           </div>
+          <div
+            v-if="el.type === 'LINK'"
+            class="about-link"
+          >
+            <a :href="el.url" target="_blank">{{ el.content }}</a>
+          </div>
         </div>
       </b-col>
     </b-row>
@@ -74,6 +80,16 @@ h2 {
 img, .video {
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.about-link {
+  margin-bottom: 0.25rem;
+}
+
+.about-link a {
+  font-size: 20px;
+  font-weight: 500;
+  color: #ef7782;
 }
 
 </style>

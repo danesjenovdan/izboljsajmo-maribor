@@ -158,12 +158,12 @@ msgstr "Izboljšajmo Maribor"
 
 #: initiatives/admin/initiative_admin.py:28
 msgid "is publuc"
-msgstr "je objavleno"
+msgstr "je objavljeno"
 
 #: initiatives/admin/initiative_admin.py:33
 #: initiatives/models/initiative_models.py:222
 msgid "Objavleno"
-msgstr "Objavleno"
+msgstr "Objavljeno"
 
 #: initiatives/admin/initiative_admin.py:33
 msgid "Nepregledano"
@@ -636,7 +636,7 @@ msgstr "Vsi admini"
 
 #: initiatives/models/models.py:411 initiatives/models/models.py:412
 msgid "Super admin"
-msgstr "Nivo1 Superadmin"
+msgstr "Superadmin - nivo 1"
 
 #: initiatives/models/models.py:434
 msgid "Basic user"
