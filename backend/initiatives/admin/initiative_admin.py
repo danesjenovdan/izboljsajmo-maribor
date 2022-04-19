@@ -30,7 +30,7 @@ class PublicFilter(SimpleListFilter):
 
     def lookups(self, request, model_admin):
         statuses = list(set(list(model_admin.model.objects.all().values_list("initiative_statuses__status__name", flat=True))))
-        return [('Public', _('Objavleno')), ('Private', _('Nepregledano'))]
+        return [('Public', _('Objavljeno')), ('Private', _('Nepregledano'))]
 
     def queryset(self, request, queryset):
         if self.value() == 'Public':
@@ -529,6 +529,77 @@ class BothersInitiativeContractorAdmin(InitiativeParentAdmin):
         return qs.filter(reviewer_user_history=request.user)
 
 
+
+def get_app_list(self, request):
+    """
+    Return a sorted list of all the installed apps that have been
+    registered in this site.
+    """
+    ordering = {
+        "Pobude": 1,
+        "Arhivirane pobude": 2,
+        "Pobude zanima me (Superadmin - nivo 1)": 3,
+        "Pobude zanima me (Vodja področja - nivo 2)": 4,
+        "Pobude zanima me (Skrbnik področja - nivo 3)": 5,
+        "Pobude moti me (Superadmin - nivo 1)": 6,
+        "Pobude moti me (Vodja področja - nivo 2)": 7,
+        "Pobude moti me (Skrbnik področja - nivo 3)": 8,
+        "Pobude moti me (Izvajalci - nivo 4)": 9,
+        "Pobude imam idejo (Superadmin - nivo 1)": 10,
+        "Pobude imam idejo (Vodja področja - nivo 2)": 11,
+        "Pobude imam idejo (Skrbnik področja - nivo 3)": 12,
+        "Pobude imam idejo (Izvajalec - nivo 4)": 13,
+        "Zavrnitve": 14,
+        "Slike": 15,
+        "Datoteke": 16,
+        "Statusi": 17,
+        "Statusi pobud": 18,
+        "Območja": 19,
+        "Področja": 20,
+        "Komentarji": 21,
+        "Nivo1 Superadmin": 22,
+        "Superadmin - nivo 1": "22",
+        "Vodje področij - nivo 2": 23,
+        "Skrbniki področij - nivo 3": 24,
+        "Izvajaleci - nivo 4": 25,
+        "Vsi admini": 26,
+        "Navadni uporabniki": 27,
+        "Uporabniki": 28,
+        "Organizacija": 29,
+        "Competent services": 30,
+        "Naslovi": 31,
+        "Obvestila": 32,
+        "FAQ": 33,
+        "Predogled": 34,
+        "Youtube Embed": 35,
+        "Naslovi": 36,
+        "Naslovi 2": 37,
+        "Slike": 38,
+        "Vsebine": 39,
+        "Skupine": 40,
+        "Applications": 41,
+        "Grants": 42,
+        "Access tokens": 43,
+        "Refresh tokens": 44,
+        "Intervals": 45,
+        "Crontabs": 46,
+        "Solar events": 47,
+        "Clocked": 48,
+        "Periodic tasks": 49,
+        "User social auths": 50,
+        "Nonces": 51,
+        "Associations": 52,
+    }
+    app_dict = self._build_app_dict(request)
+    app_list = sorted(app_dict.values(), key=lambda x: x['name'].lower())
+
+    # Sort the models alphabetically within each app.
+    for app in app_list:
+        print(app['models'])
+        app['models'].sort(key=lambda x: ordering[x['name']])
+
+    return app_list
+
 admin.site.register(Initiative, InitiativeAdmin)
 admin.site.register(ArchivedInitiative)
 
@@ -545,4 +616,7 @@ admin.site.register(BothersInitiativeSuper, BothersInitiativeSuperAdmin)
 admin.site.register(BothersInitiativeArea, BothersInitiativeAreaAdmin)
 admin.site.register(BothersInitiativeAppraiser, BothersInitiativeAppraiserAdmin)
 admin.site.register(BothersInitiativeContractor, BothersInitiativeContractorAdmin)
+
 admin.site.site_header = _('Izboljšajmo Maribor')
+
+admin.AdminSite.get_app_list = get_app_list
