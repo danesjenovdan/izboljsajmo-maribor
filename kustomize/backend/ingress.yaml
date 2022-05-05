@@ -8,6 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "6m"
     nginx.org/client-max-body-size: "6m"
 spec:
+  ingressClassName: nginx
   tls:
   - hosts:
     - api.izboljsajmo-maribor.k8s.djnd.si
@@ -43,6 +44,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
     cert-manager.io/cluster-issuer: "letsencrypt-production"
 spec:
+  ingressClassName: nginx
   tls:
   - hosts:
     - files.izboljsajmo-maribor.k8s.djnd.si
