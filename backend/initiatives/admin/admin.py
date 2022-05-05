@@ -124,9 +124,27 @@ class AreaAdminUserAdmin(MBUserAdmin):
 class AreaAppraiserUserAdmin(MBUserAdmin):
     readonly_fields = ['role']
 
+    list_display = [
+        'username',
+        'areas',
+        'created',
+    ]
+
+    def areas(self, obj):
+        return ' '.join(obj.area.all().values_list('name', flat=True))
+
 
 class ContractorAppraiserUserAdmin(MBUserAdmin):
     readonly_fields = ['role']
+
+    list_display = [
+        'username',
+        'areas',
+        'created',
+    ]
+
+    def areas(self, obj):
+        return ' '.join(obj.area.all().values_list('name', flat=True))
 
 
 class UserOrganizationInline(admin.TabularInline):
