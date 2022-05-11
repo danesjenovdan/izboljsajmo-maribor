@@ -245,7 +245,7 @@ class Initiative(Timestamped, Authored):
     is_published = property(_is_published)
     needs_published = property(_needs_publish)
 
-    _is_published.short_description = _("Objavleno")
+    _is_published.short_description = _("Objavljeno")
     _needs_publish.short_description = _("Potrebuje pregled")
     comment_count.short_description = _("Št. komentarjev")
     status_history.short_description = _("Zgodovina statusov")
