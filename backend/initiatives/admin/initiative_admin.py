@@ -558,7 +558,7 @@ def get_app_list(self, request):
         "Področja": 20,
         "Komentarji": 21,
         "Nivo1 Superadmin": 22,
-        "Superadmin - nivo 1": "22",
+        "Superadmin - nivo 1": 22,
         "Vodje področij - nivo 2": 23,
         "Skrbniki področij - nivo 3": 24,
         "Izvajaleci - nivo 4": 25,
