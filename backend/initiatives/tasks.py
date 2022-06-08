@@ -81,7 +81,7 @@ def send_daily_notifications():
         if notification.for_user:
             email_initiatives[notification.for_user.email].append({
                 'initiative': initiative,
-                'role': Reviwers.AREA_ADMIN,
+                'role': notification.for_user.role,
                 'url': initiative.get_admin_url(Reviwers.AREA_ADMIN),
             })
         else:
