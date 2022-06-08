@@ -45,16 +45,17 @@ class ExportApiView(views.APIView):
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="export.csv"'
         writer = csv.writer(response)
-        writer.writerow([_('ID'), _('Created'), _('Is archived'), _('Title'), _('Author'), _('Last status'), _('Zone'), _('Address'), _('Area'), _('Description'), _('Status'), _('Status date'), _('Status note')])
+        #writer.writerow([_('ID'), _('Created'), _('Is archived'), _('Title'), _('Author'), _('Last status'), _('Zone'), _('Address'), _('Area'), _('Description'), _('Status'), _('Status date'), _('Status note')])
+        writer.writerow([_('ID'), _('Created'), _('Is archived'), _('Title'), _('Author'), _('Last status'), _('Zone'), _('Address'), _('Area'), _('Description')])
         initiatives = Initiative.objects.filter(is_draft=False).order_by('created')
         for initiative in initiatives:
-            statuses = initiative.initiative_statuses.all().order_by('created')
-            if statuses:
-                for status in statuses:
-                    writer.writerow(self.get_initiative_row(initiative) + self.get_status_row(status))
-
-            else:
-                writer.writerow(self.get_initiative_row(initiative) + [''] * 3)
+            #statuses = initiative.initiative_statuses.all().order_by('created')
+            #if statuses:
+            #    for status in statuses:
+            #        writer.writerow(self.get_initiative_row(initiative) + self.get_status_row(status))
+            #
+            #else:
+            writer.writerow(self.get_initiative_row(initiative) + [''] * 3)
         return response
 
     def get_initiative_row(self, initiative):
