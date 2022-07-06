@@ -63,9 +63,9 @@
                     type="text"
                     class="form-control"
                     placeholder="Iščite po naslovu ali vsebini pobud"
-                    @keyup.enter="fetchInitiatives"
+                    @keyup.enter="filter"
                   >
-                  <button class="search-button position-absolute" @click="fetchInitiatives">
+                  <button class="search-button position-absolute" @click="filter">
                     <SearchIcon />
                   </button>
                 </div>
@@ -91,7 +91,7 @@
                           id="filter-type-MM"
                           v-model="filterTypes"
                           value="MM"
-                          @change="fetchInitiatives"
+                          @change="filter"
                         >
                           MOTI ME!
                         </b-form-checkbox>
@@ -99,7 +99,7 @@
                           id="filter-type-II"
                           v-model="filterTypes"
                           value="II"
-                          @change="fetchInitiatives"
+                          @change="filter"
                         >
                           IMAM IDEJO!
                         </b-form-checkbox>
@@ -107,7 +107,7 @@
                           id="filter-type-ZM"
                           v-model="filterTypes"
                           value="ZM"
-                          @change="fetchInitiatives"
+                          @change="filter"
                         >
                           ZANIMA ME!
                         </b-form-checkbox>
@@ -137,7 +137,7 @@
                           :key="area.id"
                           v-model="filterAreas"
                           :value="area.id"
-                          @change="fetchInitiatives"
+                          @change="filter"
                         >
                           <div>{{ area.name }}</div>
                           <!-- <div>{{ area.note }}</div> -->
@@ -168,7 +168,7 @@
                           :key="zone.id"
                           v-model="filterZones"
                           :value="zone.id"
-                          @change="fetchInitiatives"
+                          @change="filter"
                         >
                           {{ zone.name }}
                         </b-form-checkbox>
@@ -199,7 +199,7 @@
                           :key="status.id"
                           v-model="filterStatuses"
                           :value="status.id"
-                          @change="fetchInitiatives"
+                          @change="filter"
                         >
                           {{ status.name }}
                         </b-form-checkbox>
@@ -246,6 +246,11 @@
               </div>
             </div>
           </client-only>
+          <b-row>
+            <b-col cols="12">
+              <Pagination v-if="maxPage > 1" :active="page" :max-page="maxPage" @go-to-page="goToPage" />
+            </b-col>
+          </b-row>
           <b-row v-if="sortedInitiatives.length === 0">
             <b-col cols="12" class="d-inline-flex justify-content-center mb-5">
               <div class="d-flex justify-content-center align-items-center mt-4 no-initiatives">
@@ -286,6 +291,7 @@
 </template>
 
 <script>
+import Pagination from '~/components/Pagination.vue'
 import ArrowRightIcon from '~/assets/img/icons/arrow-right.svg?inline'
 import ArrowDownIcon from '~/assets/img/icons/arrow-down.svg?inline'
 import DownArrowIcon from '~/assets/img/icons/down-arrow.svg?inline'
@@ -294,7 +300,7 @@ import SearchIcon from '~/assets/img/icons/search.svg?inline'
 import InitiativeCard from '~/components/InitiativeCard'
 
 export default {
-  components: { ArrowRightIcon, ArrowDownIcon, DownArrowIcon, FolderEmptyIcon, SearchIcon, InitiativeCard },
+  components: { ArrowRightIcon, ArrowDownIcon, DownArrowIcon, FolderEmptyIcon, SearchIcon, InitiativeCard, Pagination },
   data () {
     return {
       search: '',
@@ -314,12 +320,15 @@ export default {
       sortedInitiatives: [],
       map: null,
       mapIcon: null,
-      columns: 1
+      columns: 1,
+      page: 1,
+      maxPage: 1,
+      initiativesCount: 0
     }
   },
   computed: {
     initiativesNumber () {
-      const n = this.initiatives.length
+      const n = this.initiativesCount
       if (n === 1) { return '1 predlog' } else if (n === 2) { return '2 predloga' } else if (n === 3 || n === 4) { return `${n} predlogi` } else { return `${n} predlogov` }
     },
     initiativeMarkers () {
@@ -355,9 +364,12 @@ export default {
         type: this.filterTypes,
         area: this.filterAreas,
         zone: this.filterZones,
-        status: this.filterStatuses
+        status: this.filterStatuses,
+        page: this.page
       })
       this.initiatives = fetched.initiatives
+      this.initiativesCount = fetched.count
+      this.maxPage = Math.ceil(this.initiativesCount / 20)
       this.sortInitiatives()
     },
     sortInitiatives () {
@@ -367,6 +379,14 @@ export default {
       }
       this.sortedInitiatives = sortedByTime
       this.$nextTick(() => this.$redrawVueMasonry('masonry'))
+    },
+    goToPage (p) {
+      this.page = p
+      this.fetchInitiatives()
+    },
+    filter () {
+      this.page = 1
+      this.fetchInitiatives()
     },
     async fetchAreas () {
       this.areas = await this.$store.dispatch('getAreas')
@@ -379,10 +399,8 @@ export default {
     async fetchStatuses () {
       const statuses = await this.$store.dispatch('getStatuses')
       if (statuses) {
-        this.statuses = statuses.filter(st => {
-          return st.name !== "Zavrnjeno"
-        })
-        this.statuses = this.statuses.sort((a, b) => a.id - b.id )
+        this.statuses = statuses.filter(st => st.name !== 'Zavrnjeno')
+        this.statuses = this.statuses.sort((a, b) => a.id - b.id)
       }
     },
     switchType () {

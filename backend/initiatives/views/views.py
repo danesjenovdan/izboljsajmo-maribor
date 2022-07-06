@@ -34,6 +34,12 @@ import logging
 import json
 logger = logging.getLogger(__name__)
 
+
+class Pagination(pagination.PageNumberPagination):
+    page_size = 20
+    page_size_query_param = 'per_page'
+    max_page_size = 20
+
 class TokenView(TokenView):
     def create_token_response(self, request):
         """
@@ -68,19 +74,13 @@ class OrganizationViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
     serializer_class = OrganizationSerializer
 
 
-class AddressPagination(pagination.PageNumberPagination):
-    page_size = 20
-    page_size_query_param = 'per_page'
-    max_page_size = 20
-
-
 class AddressViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     permission_classes = [permissions.AllowAny, ]
     serializer_class = AddressSerializer
     filter_backends = (s_filters.SearchFilter,)
     search_fields = ['name']
     queryset = Address.objects.all().order_by('name')
-    pagination_class = AddressPagination
+    pagination_class = Pagination
 
 
 class AreaViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
@@ -173,6 +173,7 @@ class InitiativeViewSet(
     filter_backends = (filters.DjangoFilterBackend, s_filters.SearchFilter)
     filterset_class = InitiativeFilterSet
     search_fields = ['title', 'zone__name', 'area__name']
+    pagination_class = Pagination
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())

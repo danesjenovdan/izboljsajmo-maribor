@@ -196,9 +196,12 @@ export const actions = {
       params.append('statuses', payload.status.join(','))
       // params.append('statuses', payload.status[payload.status.length - 1])
     }
+    if (payload.page) {
+      params.append('page', payload.page)
+    }
     const response = await this.$axios.get('v1/initiatives/?', { params })
     if (response.status === 200) {
-      return { initiatives: response.data }
+      return { initiatives: response.data.results, count: response.data.count }
     } else {
       // console.log('ni ok', responseData)
       // throw error

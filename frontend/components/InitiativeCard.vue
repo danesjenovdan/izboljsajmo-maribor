@@ -10,7 +10,7 @@
       v-if="cover_image"
       class="cover-image"
       :src="cover_image.image"
-      alt=""
+      alt="Naslovna slika"
     >
     <div class="initiative-card-body">
       <h4>{{ title }}</h4>
