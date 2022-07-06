@@ -39,7 +39,10 @@ import IconSuccess from '~/assets/img/icons/success.svg?inline'
 export default {
   components: { ArrowRightIcon, IconDanger, IconSuccess },
   props: {
-    id: String
+    id: {
+      type: String,
+      required: true
+    }
   },
   data () {
     return {
