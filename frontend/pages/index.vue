@@ -78,7 +78,7 @@
                   @click="switchType"
                 >
                   Tip
-                  <ArrowDownIcon class="ml-2" />
+                  <ArrowDownIcon class="ml-2 filter-icon" />
                   <div
                     v-if="showType"
                     v-click-outside="closeTypeDropdown"
@@ -122,7 +122,7 @@
                   @click="switchArea"
                 >
                   Področje
-                  <ArrowDownIcon class="ml-2" />
+                  <ArrowDownIcon class="ml-2 filter-icon" />
                   <div
                     v-if="showArea"
                     v-click-outside="closeAreaDropdown"
@@ -153,7 +153,7 @@
                   @click="switchZone"
                 >
                   Območje
-                  <ArrowDownIcon class="ml-2" />
+                  <ArrowDownIcon class="ml-2 filter-icon" />
                   <div
                     v-if="showZone"
                     v-click-outside="closeZoneDropdown"
@@ -183,7 +183,7 @@
                   @click="switchStatus"
                 >
                   Status
-                  <ArrowDownIcon class="ml-2" />
+                  <ArrowDownIcon class="ml-2 filter-icon" />
                   <div
                     v-if="showStatus"
                     v-click-outside="closeStatusDropdown"
@@ -246,17 +246,24 @@
               </div>
             </div>
           </client-only>
-          <b-row>
-            <b-col cols="12">
-              <Pagination v-if="maxPage > 1" :active="page" :max-page="maxPage" @go-to-page="goToPage" />
-            </b-col>
-          </b-row>
-          <b-row v-if="sortedInitiatives.length === 0">
+          <b-row v-if="sortedInitiatives.length === 0 && !loading">
             <b-col cols="12" class="d-inline-flex justify-content-center mb-5">
               <div class="d-flex justify-content-center align-items-center mt-4 no-initiatives">
                 <FolderEmptyIcon />
                 <span class="ml-2">Za izbrane filtre ni oddane nobene pobude.</span>
               </div>
+            </b-col>
+          </b-row>
+          <b-row v-if="loading">
+            <b-col cols="12" class="d-inline-flex justify-content-center mb-5">
+              <div class="d-flex justify-content-center align-items-center mt-4">
+                <SpinnerIcon />
+              </div>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col cols="12">
+              <Pagination v-if="maxPage > 1" :active="page" :max-page="maxPage" @go-to-page="goToPage" />
             </b-col>
           </b-row>
         </div>
@@ -297,10 +304,11 @@ import ArrowDownIcon from '~/assets/img/icons/arrow-down.svg?inline'
 import DownArrowIcon from '~/assets/img/icons/down-arrow.svg?inline'
 import FolderEmptyIcon from '~/assets/img/icons/folder-question-mark.svg?inline'
 import SearchIcon from '~/assets/img/icons/search.svg?inline'
+import SpinnerIcon from '~/assets/img/icons/spinner.svg?inline'
 import InitiativeCard from '~/components/InitiativeCard'
 
 export default {
-  components: { ArrowRightIcon, ArrowDownIcon, DownArrowIcon, FolderEmptyIcon, SearchIcon, InitiativeCard, Pagination },
+  components: { ArrowRightIcon, ArrowDownIcon, DownArrowIcon, FolderEmptyIcon, SearchIcon, SpinnerIcon, InitiativeCard, Pagination },
   data () {
     return {
       search: '',
@@ -323,7 +331,8 @@ export default {
       columns: 1,
       page: 1,
       maxPage: 1,
-      initiativesCount: 0
+      initiativesCount: 0,
+      loading: true
     }
   },
   computed: {
@@ -359,6 +368,8 @@ export default {
       }, 1000)
     },
     async fetchInitiatives () {
+      // show spinner
+      this.loading = true
       const fetched = await this.$store.dispatch('getInitiatives', {
         search: this.search,
         type: this.filterTypes,
@@ -367,6 +378,8 @@ export default {
         status: this.filterStatuses,
         page: this.page
       })
+      // hide spinner
+      this.loading = false
       this.initiatives = fetched.initiatives
       this.initiativesCount = fetched.count
       this.maxPage = Math.ceil(this.initiativesCount / 20)
@@ -381,11 +394,21 @@ export default {
       this.$nextTick(() => this.$redrawVueMasonry('masonry'))
     },
     goToPage (p) {
+      // reset initiatives
+      this.initiatives = []
+      this.sortedInitiatives = []
+      // change page
       this.page = p
+      // fetch new initiatives
       this.fetchInitiatives()
     },
     filter () {
+      // reset initiatives
+      this.initiatives = []
+      this.sortedInitiatives = []
+      // reset page
       this.page = 1
+      // fetch new initiatives
       this.fetchInitiatives()
     },
     async fetchAreas () {
@@ -624,6 +647,10 @@ h4 {
       right: auto;
     }
   }
+}
+
+.filter-icon {
+  pointer-events: none;
 }
 
 .initiatives-no {
