@@ -369,6 +369,7 @@ class FileAdmin(OrderableAdmin, admin.ModelAdmin):
 class ImageAdmin(OrderableAdmin, admin.ModelAdmin):
     fileds = ('image', 'name', 'initiative')
     list_display = ('image', 'name', 'initiative')
+    search_fields = ['name']
 
     def initiative(self, obj):
         initiative = obj.initiative_before.first()
