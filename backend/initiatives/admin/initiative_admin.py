@@ -41,6 +41,7 @@ class PublicFilter(SimpleListFilter):
             return queryset
 
 class InitiativeParentAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
+    list_per_page = 20
     def save_formset(self, request, obj, formset, change):
         instances = formset.save(commit=False)
         for instance in instances:
@@ -48,11 +49,15 @@ class InitiativeParentAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
             instance.save()
             formset.save()
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request).prefetch_related('author', 'descriptions', 'zone', 'area')
+        return qs
+
     actions = ['printer']
 
     def email(self, obj):
         return obj.author.email
-
+ 
     def printer(self, request, queryset):
         return render(request, 'print/initiatives.html', {'initiatives': queryset})
 
@@ -65,7 +70,7 @@ class InitiativeParentAdmin(gis_admin.OSMGeoAdmin, admin.ModelAdmin):
 
 class InitiativeAdmin(InitiativeParentAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
+    autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user', 'cover_image', 'cover_image_after']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
     readonly_fields = ['status_history', 'created', 'images_preview', 'description']
@@ -104,7 +109,7 @@ class InitiativeAdmin(InitiativeParentAdmin):
 
 class InterestedInitiativeSuperAdmin(InitiativeParentAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
+    autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user', 'cover_image', 'cover_image_after']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
     readonly_fields = ['status_history', 'created', 'images_preview', 'phone_number', 'email', 'description']
@@ -145,7 +150,7 @@ class InterestedAdminForm(forms.ModelForm):
 class InterestedInitiativeAreaAdmin(InitiativeParentAdmin):
     form = InterestedAdminForm
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['area', 'zone', 'area']
+    autocomplete_fields = ['area', 'zone', 'area', 'cover_image', 'cover_image_after']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email', 'description']
@@ -188,7 +193,7 @@ class InterestedInitiativeAppraiserAdmin(InitiativeParentAdmin):
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer', 'phone_number', 'email', 'description']
     exclude = ['publisher', 'is_draft']
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['area', 'zone']
+    autocomplete_fields = ['area', 'zone', 'cover_image', 'cover_image_after']
     date_hierarchy = 'created'
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     modifiable = False
@@ -223,7 +228,7 @@ class InterestedInitiativeAppraiserAdmin(InitiativeParentAdmin):
 
 class IdeaInitiativeSuperAdmin(InitiativeParentAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
+    autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user', 'cover_image', 'cover_image_after']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
     readonly_fields = ['status_history', 'created', 'images_preview', 'phone_number', 'email', 'description']
@@ -265,7 +270,7 @@ class IdeaAdminForm(forms.ModelForm):
 class IdeaInitiativeAreaAdmin(InitiativeParentAdmin):
     form = IdeaAdminForm
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['area', 'zone', 'area']
+    autocomplete_fields = ['area', 'zone', 'area', 'cover_image', 'cover_image_after']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email', 'description']
@@ -309,7 +314,7 @@ class IdeaInitiativeAppraiserAdmin(InitiativeParentAdmin):
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email', 'description']
     exclude = ['publisher', 'is_draft']
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['area', 'zone']
+    autocomplete_fields = ['area', 'zone', 'cover_image', 'cover_image_after']
     date_hierarchy = 'created'
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     modifiable = False
@@ -347,7 +352,7 @@ class IdeaInitiativeContractorAdmin(InitiativeParentAdmin):
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'archived', 'address', 'publisher', 'zone', 'reviewer_user', 'reviewer', 'phone_number', 'email', 'description']
     exclude = ['publisher', 'is_draft']
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['area', 'zone']
+    autocomplete_fields = ['area', 'zone', 'cover_image', 'cover_image_after']
     date_hierarchy = 'created'
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     modifiable = False
@@ -381,7 +386,7 @@ class IdeaInitiativeContractorAdmin(InitiativeParentAdmin):
 
 class BothersInitiativeSuperAdmin(InitiativeParentAdmin):
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user']
+    autocomplete_fields = ['author', 'publisher', 'area', 'zone', 'reviewer_user', 'cover_image', 'cover_image_after']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
     readonly_fields = ['status_history', 'created', 'images_preview', 'phone_number', 'email', 'description']
@@ -424,7 +429,7 @@ class BothersInitiativeForm(forms.ModelForm):
 class BothersInitiativeAreaAdmin(InitiativeParentAdmin):
     form = BothersInitiativeForm
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['zone', 'area']
+    autocomplete_fields = ['zone', 'area', 'cover_image', 'cover_image_after']
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     date_hierarchy = 'created'
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email', 'description', 'description']
@@ -465,7 +470,7 @@ class BothersInitiativeAppraiserAdmin(InitiativeParentAdmin):
     readonly_fields = ['title', 'type', 'status_history', 'created', 'images_preview', 'author', 'modified', 'area', 'archived', 'address', 'publisher', 'zone', 'phone_number', 'email', 'description']
     exclude = ['publisher', 'is_draft']
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['area', 'zone']
+    autocomplete_fields = ['area', 'zone', 'cover_image', 'cover_image_after']
     date_hierarchy = 'created'
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     modifiable = False
@@ -501,7 +506,7 @@ class BothersInitiativeContractorAdmin(InitiativeParentAdmin):
     modifiable = False
     exclude = ['publisher', 'is_draft']
     search_fields = ['author__username', 'address', 'descriptions__content']
-    autocomplete_fields = ['area', 'zone']
+    autocomplete_fields = ['area', 'zone', 'cover_image', 'cover_image_after']
     date_hierarchy = 'created'
     list_filter = ['statuses', 'zone__name', 'area__name', 'type', PublicFilter]
     list_display = [
