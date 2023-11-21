@@ -29,13 +29,18 @@ export const mutations = {
 
 export const actions = {
   async login (context, payload) {
-    const loginData = {
-      username: payload.form.username,
-      password: payload.form.password,
-      client_secret: context.getters.client_secret,
-      client_id: context.getters.client_id
+    try {
+      const loginData = {
+        username: payload.form.username,
+        password: payload.form.password,
+        client_secret: context.getters.client_secret,
+        client_id: context.getters.client_id
+      }
+      let response = await this.$auth.loginWith('local', { data: loginData })
+      return {"success": true, "message": ""}
+    } catch (e) {
+      return {"success": false, "message": e.response.data.detail}
     }
-    await this.$auth.loginWith('local', { data: loginData })
   },
 
   async logout () {
