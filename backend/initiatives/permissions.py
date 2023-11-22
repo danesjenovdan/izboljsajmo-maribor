@@ -14,7 +14,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         return obj.author == request.user
 
 class IsVerified(permissions.BasePermission):
-    message = 'You need to confirm email.'
+    message = 'Vaš e-naslov ni potrjen.'
     def has_permission(self, request, view):
         user = request.user
         return user.email_confirmed
