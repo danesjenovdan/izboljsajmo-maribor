@@ -43,8 +43,8 @@
       </b-form-checkbox>
     </b-form-group>
     <p v-if="errorLogin" class="message error d-flex justify-content-center align-items-center position-relative">
-      <IconDanger />Prijava ni uspela.
-      <span class="position-absolute" @click="closeErrorMessage">Zapri</span>
+      <IconDanger /><span v-if="errorMessage">{{ errorMessage }}</span><span v-else>Prijava ni uspela.</span>
+      <span class="clickable position-absolute" @click="closeErrorMessage">Zapri</span>
     </p>
     <b-button type="submit" class="w-100 d-flex justify-content-center align-items-center position-relative">
       VSTOPI
@@ -76,7 +76,8 @@ export default {
       passwordVisibility: false,
       errorUsername: false,
       errorPassword: false,
-      errorLogin: false
+      errorLogin: false,
+      errorMessage: ""
     }
   },
   methods: {
@@ -87,10 +88,11 @@ export default {
       this.errorPassword = this.form.password.length === 0
     },
     async login (event) {
-      try {
-        await this.$store.dispatch('login', { form: this.form })
-      } catch (err) {
+      const response = await this.$store.dispatch('login', { form: this.form })
+      
+      if (!response.success) {
         this.errorLogin = true
+        this.errorMessage = response.message
       }
     },
     closeErrorMessage () {

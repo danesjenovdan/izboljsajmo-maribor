@@ -3,7 +3,7 @@ export default {
   head: {
     title: 'Izboljšajmo Maribor',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'sl'
     },
     meta: [
       { charset: 'utf-8' },

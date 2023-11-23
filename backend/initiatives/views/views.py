@@ -51,8 +51,12 @@ class TokenView(TokenView):
             body = json.loads(request._body)
             body['username'] = username
             request._body = bytes(json.dumps(body), 'utf-8')
-        return super(TokenView, self).create_token_response(request)
-
+        response = super(TokenView, self).create_token_response(request)
+        if response[3] == 400:
+            data = json.loads(response[2])
+            data['error_description'] = "Napačni prijavni podatki."
+            return (response[0], response[1], json.dumps(data), response[3])
+        return response
 class UserViewSet(
     viewsets.GenericViewSet,
     mixins.CreateModelMixin):
