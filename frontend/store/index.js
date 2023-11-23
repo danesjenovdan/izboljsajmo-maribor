@@ -39,7 +39,7 @@ export const actions = {
       let response = await this.$auth.loginWith('local', { data: loginData })
       return {"success": true, "message": ""}
     } catch (e) {
-      return {"success": false, "message": e.response.data.detail}
+      return {"success": false, "message": e.response.data.detail || e.response.data.error_description}
     }
   },
 
