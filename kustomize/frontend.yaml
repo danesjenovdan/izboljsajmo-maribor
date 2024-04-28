@@ -19,13 +19,13 @@ spec:
         image: frontend # kustomize thing
         ports:
         - containerPort: 3000
-        # resources:
-        #   requests:
-        #     memory: 1Gi
-        #     cpu: 700m
-        #   limits:
-        #     memory: 1Gi
-        #     cpu: 700m
+        resources:
+          requests:
+            memory: 100Mi
+            cpu: 100m
+          limits:
+            memory: 100Mi
+            cpu: 100m
         # env:
         #   - name: APP_ENV
         #     value: production
