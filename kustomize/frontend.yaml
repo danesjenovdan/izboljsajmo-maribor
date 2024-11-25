@@ -24,7 +24,7 @@ spec:
             memory: 100Mi
             cpu: 100m
           limits:
-            memory: 100Mi
+            memory: 200Mi
             cpu: 100m
         # env:
         #   - name: APP_ENV
