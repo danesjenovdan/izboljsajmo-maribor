@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('initiatives', '0019_auto_20210401_1838'),
+        ("initiatives", "0019_auto_20210401_1838"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='blocked_email_sent',
+            model_name="user",
+            name="blocked_email_sent",
             field=models.BooleanField(default=False),
         ),
     ]

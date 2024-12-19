@@ -6,51 +6,68 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('initiatives', '0005_auto_20210311_1539'),
+        ("initiatives", "0005_auto_20210311_1539"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='AreaAdminUser',
-            fields=[
-            ],
+            name="AreaAdminUser",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('initiatives.user',),
+            bases=("initiatives.user",),
         ),
         migrations.CreateModel(
-            name='AreaAppraiserUser',
-            fields=[
-            ],
+            name="AreaAppraiserUser",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('initiatives.user',),
+            bases=("initiatives.user",),
         ),
         migrations.CreateModel(
-            name='ContractorAppraiserUser',
-            fields=[
-            ],
+            name="ContractorAppraiserUser",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('initiatives.user',),
+            bases=("initiatives.user",),
         ),
         migrations.AddField(
-            model_name='user',
-            name='role',
-            field=models.CharField(choices=[('SA', 'SUPER ADMIN'), ('AA', 'AREA ADMIN'), ('AP', 'AREA APPRAISER'), ('CA', 'CONTRACTOR APPRAISER')], default='AA', max_length=2, verbose_name='Role'),
+            model_name="user",
+            name="role",
+            field=models.CharField(
+                choices=[
+                    ("SA", "SUPER ADMIN"),
+                    ("AA", "AREA ADMIN"),
+                    ("AP", "AREA APPRAISER"),
+                    ("CA", "CONTRACTOR APPRAISER"),
+                ],
+                default="AA",
+                max_length=2,
+                verbose_name="Role",
+            ),
         ),
         migrations.AlterField(
-            model_name='initiative',
-            name='reviewer',
-            field=models.CharField(choices=[('SA', 'SUPER ADMIN'), ('AA', 'AREA ADMIN'), ('AP', 'AREA APPRAISER'), ('CA', 'CONTRACTOR APPRAISER')], default='AA', max_length=2, verbose_name='Reviewer'),
+            model_name="initiative",
+            name="reviewer",
+            field=models.CharField(
+                choices=[
+                    ("SA", "SUPER ADMIN"),
+                    ("AA", "AREA ADMIN"),
+                    ("AP", "AREA APPRAISER"),
+                    ("CA", "CONTRACTOR APPRAISER"),
+                ],
+                default="AA",
+                max_length=2,
+                verbose_name="Reviewer",
+            ),
         ),
     ]

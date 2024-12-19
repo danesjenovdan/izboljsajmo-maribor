@@ -6,13 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('initiatives', '0002_auto_20210301_1212'),
+        ("initiatives", "0002_auto_20210301_1212"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='statusinitiative',
-            name='publication_status',
-            field=models.CharField(choices=[('d', 'Draft'), ('p', 'Published')], default='d', max_length=1, verbose_name='Publication Status'),
+            model_name="statusinitiative",
+            name="publication_status",
+            field=models.CharField(
+                choices=[("d", "Draft"), ("p", "Published")],
+                default="d",
+                max_length=1,
+                verbose_name="Publication Status",
+            ),
         ),
     ]

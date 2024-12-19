@@ -6,13 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('initiatives', '0022_auto_20210407_1425'),
+        ("initiatives", "0022_auto_20210407_1425"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='user',
-            name='email',
-            field=models.EmailField(blank=True, max_length=254, unique=True, verbose_name='elektronski naslov'),
+            model_name="user",
+            name="email",
+            field=models.EmailField(
+                blank=True,
+                max_length=254,
+                unique=True,
+                verbose_name="elektronski naslov",
+            ),
         ),
     ]

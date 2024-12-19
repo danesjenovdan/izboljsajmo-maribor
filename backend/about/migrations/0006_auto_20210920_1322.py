@@ -6,18 +6,32 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('about', '0005_auto_20210719_1713'),
+        ("about", "0005_auto_20210719_1713"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='about',
-            name='modified',
-            field=models.DateTimeField(blank=True, db_index=True, null=True, verbose_name='Urejano'),
+            model_name="about",
+            name="modified",
+            field=models.DateTimeField(
+                blank=True, db_index=True, null=True, verbose_name="Urejano"
+            ),
         ),
         migrations.AlterField(
-            model_name='about',
-            name='type',
-            field=models.CharField(choices=[('H2', 'Naslov'), ('H3', 'Naslov 2'), ('TXT', 'Besedilo'), ('IMG', 'Slika'), ('YT', 'Youtube Embed'), ('LINK', 'Povezava')], default='H2', max_length=5, verbose_name='O Izboljšajmo Maribor'),
+            model_name="about",
+            name="type",
+            field=models.CharField(
+                choices=[
+                    ("H2", "Naslov"),
+                    ("H3", "Naslov 2"),
+                    ("TXT", "Besedilo"),
+                    ("IMG", "Slika"),
+                    ("YT", "Youtube Embed"),
+                    ("LINK", "Povezava"),
+                ],
+                default="H2",
+                max_length=5,
+                verbose_name="O Izboljšajmo Maribor",
+            ),
         ),
     ]

@@ -6,28 +6,37 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('initiatives', '0003_statusinitiative_publication_status'),
+        ("initiatives", "0003_statusinitiative_publication_status"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ArchivedInitiative',
-            fields=[
-            ],
+            name="ArchivedInitiative",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('initiatives.initiative',),
+            bases=("initiatives.initiative",),
         ),
         migrations.RemoveField(
-            model_name='initiative',
-            name='reviwer',
+            model_name="initiative",
+            name="reviwer",
         ),
         migrations.AddField(
-            model_name='initiative',
-            name='reviewer',
-            field=models.CharField(choices=[('SA', 'SUPER ADMIN'), ('AA', 'AREA ADMIN'), ('AP', 'AREA APPRAISER'), ('CA', 'CONTRACTOR APPRAISER')], default='SA', max_length=2, verbose_name='Reviewer'),
+            model_name="initiative",
+            name="reviewer",
+            field=models.CharField(
+                choices=[
+                    ("SA", "SUPER ADMIN"),
+                    ("AA", "AREA ADMIN"),
+                    ("AP", "AREA APPRAISER"),
+                    ("CA", "CONTRACTOR APPRAISER"),
+                ],
+                default="SA",
+                max_length=2,
+                verbose_name="Reviewer",
+            ),
         ),
     ]

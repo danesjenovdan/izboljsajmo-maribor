@@ -6,24 +6,35 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('initiatives', '0015_auto_20210329_0757'),
+        ("initiatives", "0015_auto_20210329_0757"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='BasicUser',
-            fields=[
-            ],
+            name="BasicUser",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('initiatives.user',),
+            bases=("initiatives.user",),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='role',
-            field=models.CharField(blank=True, choices=[('SA', 'SUPER ADMIN'), ('AA', 'AREA ADMIN'), ('AP', 'AREA APPRAISER'), ('CA', 'CONTRACTOR APPRAISER')], default=None, max_length=2, null=True, verbose_name='Role'),
+            model_name="user",
+            name="role",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("SA", "SUPER ADMIN"),
+                    ("AA", "AREA ADMIN"),
+                    ("AP", "AREA APPRAISER"),
+                    ("CA", "CONTRACTOR APPRAISER"),
+                ],
+                default=None,
+                max_length=2,
+                null=True,
+                verbose_name="Role",
+            ),
         ),
     ]

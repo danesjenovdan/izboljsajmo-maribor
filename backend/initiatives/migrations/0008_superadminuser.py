@@ -6,19 +6,18 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('initiatives', '0007_auto_20210317_1448'),
+        ("initiatives", "0007_auto_20210317_1448"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='SuperAdminUser',
-            fields=[
-            ],
+            name="SuperAdminUser",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('initiatives.user',),
+            bases=("initiatives.user",),
         ),
     ]
