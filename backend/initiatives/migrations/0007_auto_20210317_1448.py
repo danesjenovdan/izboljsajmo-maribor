@@ -6,102 +6,94 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('initiatives', '0006_auto_20210315_1820'),
+        ("initiatives", "0006_auto_20210315_1820"),
     ]
 
     operations = [
         migrations.DeleteModel(
-            name='IdeaInitiative',
+            name="IdeaInitiative",
         ),
         migrations.DeleteModel(
-            name='InterestedInitiative',
+            name="InterestedInitiative",
         ),
         migrations.CreateModel(
-            name='BothersInitiativeContractor',
-            fields=[
-            ],
+            name="BothersInitiativeContractor",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('initiatives.initiative',),
+            bases=("initiatives.initiative",),
         ),
         migrations.CreateModel(
-            name='IdeaInitiativeAppraiser',
-            fields=[
-            ],
+            name="IdeaInitiativeAppraiser",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('initiatives.initiative',),
+            bases=("initiatives.initiative",),
         ),
         migrations.CreateModel(
-            name='IdeaInitiativeArea',
-            fields=[
-            ],
+            name="IdeaInitiativeArea",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('initiatives.initiative',),
+            bases=("initiatives.initiative",),
         ),
         migrations.CreateModel(
-            name='IdeaInitiativeContractor',
-            fields=[
-            ],
+            name="IdeaInitiativeContractor",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('initiatives.initiative',),
+            bases=("initiatives.initiative",),
         ),
         migrations.CreateModel(
-            name='IdeaInitiativeSuper',
-            fields=[
-            ],
+            name="IdeaInitiativeSuper",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('initiatives.initiative',),
+            bases=("initiatives.initiative",),
         ),
         migrations.CreateModel(
-            name='InterestedInitiativeAppraiser',
-            fields=[
-            ],
+            name="InterestedInitiativeAppraiser",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('initiatives.initiative',),
+            bases=("initiatives.initiative",),
         ),
         migrations.CreateModel(
-            name='InterestedInitiativeArea',
-            fields=[
-            ],
+            name="InterestedInitiativeArea",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('initiatives.initiative',),
+            bases=("initiatives.initiative",),
         ),
         migrations.CreateModel(
-            name='InterestedInitiativeSuper',
-            fields=[
-            ],
+            name="InterestedInitiativeSuper",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('initiatives.initiative',),
+            bases=("initiatives.initiative",),
         ),
     ]

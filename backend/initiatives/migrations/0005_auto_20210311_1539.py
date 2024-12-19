@@ -6,22 +6,21 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('initiatives', '0004_auto_20210311_1327'),
+        ("initiatives", "0004_auto_20210311_1327"),
     ]
 
     operations = [
         migrations.DeleteModel(
-            name='BothersInitiativeContractor',
+            name="BothersInitiativeContractor",
         ),
         migrations.CreateModel(
-            name='BothersInitiativeAppraiser',
-            fields=[
-            ],
+            name="BothersInitiativeAppraiser",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('initiatives.initiative',),
+            bases=("initiatives.initiative",),
         ),
     ]
