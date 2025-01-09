@@ -10,14 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
-import os
-
 import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
-
 from celery.schedules import crontab
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,95 +25,98 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '!qof+ch(!97u_q#@=t_x*ctj)&4xi%sf@v6btijm%$mtvkyeu&'
+SECRET_KEY = "!qof+ch(!97u_q#@=t_x*ctj)&4xi%sf@v6btijm%$mtvkyeu&"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['api.izboljsajmo-maribor.djnd.si', '*']
+ALLOWED_HOSTS = ["api.izboljsajmo-maribor.djnd.si", "*"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.forms',
-    'django.contrib.gis',
-    'rest_framework',
-    'django_filters',
-    'rest_framework_gis',
-    'oauth2_provider',
-    'social_django',
-    'drf_social_oauth2',
-    'corsheaders',
-    'admin_ordering',
-    'django_celery_beat',
-    'simple_history',
-    'initiatives',
-    'about',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django.forms",
+    "django.contrib.gis",
+    "rest_framework",
+    "django_filters",
+    "rest_framework_gis",
+    "oauth2_provider",
+    "social_django",
+    "drf_social_oauth2",
+    "corsheaders",
+    "admin_ordering",
+    "django_celery_beat",
+    "simple_history",
+    "initiatives",
+    "about",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
-    'simple_history.middleware.HistoryRequestMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
+    "simple_history.middleware.HistoryRequestMiddleware",
 ]
 
-ROOT_URLCONF = 'mb_initiative.urls'
+ROOT_URLCONF = "mb_initiative.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+                "social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'mb_initiative.wsgi.application'
+WSGI_APPLICATION = "mb_initiative.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': ({
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.getenv('POSTGRES_DB', ''),
-        'USER': os.getenv('POSTGRES_USER', ''),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
-        'HOST': os.getenv('POSTGIS_IM_SERVICE_HOST', ''),
-        'PORT': '5432',
-    } if os.getenv('APP_ENV', 'development') == 'production' else {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'HOST': 'postgis',
-        'NAME': 'mbinitiative',
-        'USER': 'maribor',
-        'PASSWORD': 'maribor'
-    })
+    "default": (
+        {
+            "ENGINE": "django.contrib.gis.db.backends.postgis",
+            "NAME": os.getenv("POSTGRES_DB", ""),
+            "USER": os.getenv("POSTGRES_USER", ""),
+            "PASSWORD": os.getenv("POSTGRES_PASSWORD", ""),
+            "HOST": os.getenv("POSTGIS_IM_SERVICE_HOST", ""),
+            "PORT": "5432",
+        }
+        if os.getenv("APP_ENV", "development") == "production"
+        else {
+            "ENGINE": "django.contrib.gis.db.backends.postgis",
+            "HOST": "postgis",
+            "NAME": "mbinitiative",
+            "USER": "maribor",
+            "PASSWORD": "maribor",
+        }
+    )
 }
-
 
 
 # Password validation
@@ -123,16 +124,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -140,9 +141,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'sl'
+LANGUAGE_CODE = "sl"
 
-TIME_ZONE = 'Europe/Ljubljana'
+TIME_ZONE = "Europe/Ljubljana"
 
 USE_I18N = True
 
@@ -153,85 +154,81 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static_files')
-]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static_files")]
 
-STATIC_URL = os.getenv('STATIC_URL_BASE', '') + '/static/'
-MEDIA_URL = os.getenv('MEDIA_URL_BASE', '') + '/media/'
+STATIC_URL = os.getenv("STATIC_URL_BASE", "") + "/static/"
+MEDIA_URL = os.getenv("MEDIA_URL_BASE", "") + "/media/"
 
-ROOT_DIR = '/files/' if os.getenv('APP_ENV', 'development') == 'production' else BASE_DIR
+ROOT_DIR = (
+    "/files/" if os.getenv("APP_ENV", "development") == "production" else BASE_DIR
+)
 
-FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
-LOCALE_PATHS = [
-    os.path.join(BASE_DIR, 'locale')
-]
+LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
 
-STATIC_ROOT = os.path.join(ROOT_DIR, 'static')
-MEDIA_ROOT = os.path.join(ROOT_DIR, 'media')
+STATIC_ROOT = os.path.join(ROOT_DIR, "static")
+MEDIA_ROOT = os.path.join(ROOT_DIR, "media")
 
 AUTH_USER_MODEL = "initiatives.User"
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
-        'drf_social_oauth2.authentication.SocialAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
+        "drf_social_oauth2.authentication.SocialAuthentication",
     ),
 }
 
 AUTHENTICATION_BACKENDS = (
     # Facebook OAuth2
-    'social_core.backends.facebook.FacebookAppOAuth2',
-    'social_core.backends.facebook.FacebookOAuth2',
-
+    "social_core.backends.facebook.FacebookAppOAuth2",
+    "social_core.backends.facebook.FacebookOAuth2",
     # Google OAuth2
-    'social_core.backends.google.GoogleOAuth2',
-
-    'drf_social_oauth2.backends.DjangoOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
+    "social_core.backends.google.GoogleOAuth2",
+    "drf_social_oauth2.backends.DjangoOAuth2",
+    "django.contrib.auth.backends.ModelBackend",
 )
 
 # Facebook configuration
-SOCIAL_AUTH_FACEBOOK_KEY = '290563391104397'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'b3fea1fb795be35953e003404675c3c4'
+SOCIAL_AUTH_FACEBOOK_KEY = "290563391104397"
+SOCIAL_AUTH_FACEBOOK_SECRET = "b3fea1fb795be35953e003404675c3c4"
 
 # Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from Facebook.
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-    'fields': 'id, name, email'
-}
+SOCIAL_AUTH_FACEBOOK_SCOPE = ["email"]
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {"fields": "id, name, email"}
 
 # Google configuration
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '751466585012-48dl84f6odf3bejj6t5p8uofp22mlphf.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '-pZ_G2ox72IG1LerwZc8uNtw'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = (
+    "751466585012-48dl84f6odf3bejj6t5p8uofp22mlphf.apps.googleusercontent.com"
+)
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "-pZ_G2ox72IG1LerwZc8uNtw"
 
 # Define SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE to get extra permissions from Google.
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
-    'https://www.googleapis.com/auth/userinfo.email',
-    'https://www.googleapis.com/auth/userinfo.profile',
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/userinfo.profile",
 ]
 
 OAUTH2_PROVIDER = {
-    'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore',
+    "OAUTH2_BACKEND_CLASS": "oauth2_provider.oauth2_backends.JSONOAuthLibCore",
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-FRONT_URL = os.getenv('FRONT_URL', 'http://localhost:3000/')
+FRONT_URL = os.getenv("FRONT_URL", "http://localhost:3000/")
 
-if os.getenv('APP_ENV', 'development') == 'production':
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = os.getenv('EMAIL_HOST', '')
-    EMAIL_PORT = os.getenv('EMAIL_PORT', '')
-    EMAIL_HOST_USER = os.getenv('EMAIL_USERNAME', '')
-    EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD', '')
+if os.getenv("APP_ENV", "development") == "production":
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = os.getenv("EMAIL_HOST", "")
+    EMAIL_PORT = os.getenv("EMAIL_PORT", "")
+    EMAIL_HOST_USER = os.getenv("EMAIL_USERNAME", "")
+    EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD", "")
     EMAIL_USE_TLS = True
-    FROM_EMAIL = os.getenv('FROM_EMAIL', 'dummy@email.com')
+    FROM_EMAIL = os.getenv("FROM_EMAIL", "dummy@email.com")
 
 else:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    FROM_EMAIL = 'dummy@email.com'
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    FROM_EMAIL = "dummy@email.com"
 
 LOG_EMAIL = os.environ.get("LOGGING_EMAIL", "dummy@email.si")
 
@@ -239,16 +236,16 @@ CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
 
 CELERY_BEAT_SCHEDULE = {
-    'send-daily-notifications': {
-        'task': 'initiatives.tasks.send_daily_notifications',
+    "send-daily-notifications": {
+        "task": "initiatives.tasks.send_daily_notifications",
         #'schedule': crontab(minute="0,15,30,45"),
-        'schedule': crontab(hour=5, minute=0, day_of_week='1,2,3,4,5'),
+        "schedule": crontab(hour=5, minute=0, day_of_week="1,2,3,4,5"),
     },
 }
 
 EMAIL_FOR_NEW_NOTIFICATIONS = os.environ.get("LOGGING_EMAIL", "dummy@email.si")
 
-BASE_URL = os.environ.get('BACK_URL', 'http://localhost:8000')
+BASE_URL = os.environ.get("BACK_URL", "http://localhost:8000")
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880
 
@@ -257,44 +254,46 @@ ACCESS_TOKEN_EXPIRE_SECONDS = 504000
 REFRESH_TOKEN_EXPIRE_SECONDS = 504000
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler'
-        },
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {"class": "logging.StreamHandler"},
     },
-    'loggers': {
-        '': {  # 'catch all' loggers by referencing it with the empty string
-            'handlers': ['console'],
-            'level': 'DEBUG',
+    "loggers": {
+        "": {  # 'catch all' loggers by referencing it with the empty string
+            "handlers": ["console"],
+            "level": "DEBUG",
         },
     },
 }
 
-if os.getenv('DJND_ENABLE_S3', False):
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
-    AWS_ACCESS_KEY_ID = os.getenv('DJND_AWS_ACCESS_KEY_ID', '')
-    AWS_SECRET_ACCESS_KEY = os.getenv('DJND_AWS_SECRET_ACCESS_KEY', '')
-    AWS_STORAGE_BUCKET_NAME = os.getenv('DJND_AWS_STORAGE_BUCKET_NAME', '')
-    AWS_DEFAULT_ACL = 'public-read' # if files are not public they won't show up for end users
-    AWS_QUERYSTRING_AUTH = False # query strings expire and don't play nice with the cache
-    AWS_LOCATION = os.getenv('DJND_AWS_LOCATION', '')
-    AWS_S3_REGION_NAME = os.getenv('DJND_AWS_REGION_NAME', 'fr-par')
-    AWS_S3_ENDPOINT_URL = os.getenv('DJND_AWS_S3_ENDPOINT_URL', 'https://s3.fr-par.scw.cloud')
-    AWS_S3_SIGNATURE_VERSION = os.getenv('DJND_AWS_S3_SIGNATURE_VERSION', 's3v4')
+if os.getenv("DJND_ENABLE_S3", False):
+    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
+    AWS_ACCESS_KEY_ID = os.getenv("DJND_AWS_ACCESS_KEY_ID", "")
+    AWS_SECRET_ACCESS_KEY = os.getenv("DJND_AWS_SECRET_ACCESS_KEY", "")
+    AWS_STORAGE_BUCKET_NAME = os.getenv("DJND_AWS_STORAGE_BUCKET_NAME", "")
+    AWS_DEFAULT_ACL = (
+        "public-read"  # if files are not public they won't show up for end users
+    )
+    AWS_QUERYSTRING_AUTH = (
+        False  # query strings expire and don't play nice with the cache
+    )
+    AWS_LOCATION = os.getenv("DJND_AWS_LOCATION", "")
+    AWS_S3_REGION_NAME = os.getenv("DJND_AWS_REGION_NAME", "fr-par")
+    AWS_S3_ENDPOINT_URL = os.getenv(
+        "DJND_AWS_S3_ENDPOINT_URL", "https://s3.fr-par.scw.cloud"
+    )
+    AWS_S3_SIGNATURE_VERSION = os.getenv("DJND_AWS_S3_SIGNATURE_VERSION", "s3v4")
 
 sentry_sdk.init(
     dsn=os.environ.get("SENTRY_URL", ""),
     integrations=[DjangoIntegration()],
-
     # Set traces_sample_rate to 1.0 to capture 100%
     # of transactions for performance monitoring.
     # We recommend adjusting this value in production.
-    traces_sample_rate=float(os.getenv('SENTRY_TRACES_SAMPLE_RATE', 0.001)),
-
+    traces_sample_rate=float(os.getenv("SENTRY_TRACES_SAMPLE_RATE", 0.001)),
     # If you wish to associate users to errors (assuming you are using
     # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True
+    send_default_pii=True,
 )

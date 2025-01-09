@@ -7,18 +7,25 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('initiatives', '0010_user_area'),
+        ("initiatives", "0010_user_area"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='initiative',
-            name='address',
-            field=models.CharField(blank=True, max_length=100, null=True, verbose_name='Address of initiative'),
+            model_name="initiative",
+            name="address",
+            field=models.CharField(
+                blank=True,
+                max_length=100,
+                null=True,
+                verbose_name="Address of initiative",
+            ),
         ),
         migrations.AlterField(
-            model_name='initiative',
-            name='location',
-            field=django.contrib.gis.db.models.fields.PointField(blank=True, null=True, srid=4326),
+            model_name="initiative",
+            name="location",
+            field=django.contrib.gis.db.models.fields.PointField(
+                blank=True, null=True, srid=4326
+            ),
         ),
     ]

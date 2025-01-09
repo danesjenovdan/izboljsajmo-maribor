@@ -6,49 +6,56 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('initiatives', '0001_initial'),
+        ("initiatives", "0001_initial"),
     ]
 
     operations = [
         migrations.DeleteModel(
-            name='BothersInitiative',
+            name="BothersInitiative",
         ),
         migrations.CreateModel(
-            name='BothersInitiativeArea',
-            fields=[
-            ],
+            name="BothersInitiativeArea",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('initiatives.initiative',),
+            bases=("initiatives.initiative",),
         ),
         migrations.CreateModel(
-            name='BothersInitiativeContractor',
-            fields=[
-            ],
+            name="BothersInitiativeContractor",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('initiatives.initiative',),
+            bases=("initiatives.initiative",),
         ),
         migrations.CreateModel(
-            name='BothersInitiativeSuper',
-            fields=[
-            ],
+            name="BothersInitiativeSuper",
+            fields=[],
             options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('initiatives.initiative',),
+            bases=("initiatives.initiative",),
         ),
         migrations.AddField(
-            model_name='initiative',
-            name='reviwer',
-            field=models.CharField(choices=[('SA', 'SUPER ADMIN'), ('AA', 'AREA ADMIN'), ('AP', 'AREA APPRAISER'), ('CA', 'CONTRACTOR APPRAISER')], default='SA', max_length=2, verbose_name='Reviwer'),
+            model_name="initiative",
+            name="reviwer",
+            field=models.CharField(
+                choices=[
+                    ("SA", "SUPER ADMIN"),
+                    ("AA", "AREA ADMIN"),
+                    ("AP", "AREA APPRAISER"),
+                    ("CA", "CONTRACTOR APPRAISER"),
+                ],
+                default="SA",
+                max_length=2,
+                verbose_name="Reviwer",
+            ),
         ),
     ]

@@ -6,20 +6,31 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('initiatives', '0029_auto_20210602_1610'),
+        ("initiatives", "0029_auto_20210602_1610"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Address',
+            name="Address",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('modified', models.DateTimeField(blank=True, db_index=True, null=True)),
-                ('name', models.CharField(max_length=128)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created", models.DateTimeField(auto_now_add=True, db_index=True)),
+                (
+                    "modified",
+                    models.DateTimeField(blank=True, db_index=True, null=True),
+                ),
+                ("name", models.CharField(max_length=128)),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
     ]

@@ -1,5 +1,6 @@
 from rest_framework import permissions
 
+
 class IsOwnerOrReadOnly(permissions.BasePermission):
     """
     Custom permission to only allow owners of an object to edit it.
@@ -13,14 +14,18 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         # Write permissions are only allowed to the owner of the snippet.
         return obj.author == request.user
 
+
 class IsVerified(permissions.BasePermission):
-    message = 'Vaš e-naslov ni potrjen.'
+    message = "Vaš e-naslov ni potrjen."
+
     def has_permission(self, request, view):
         user = request.user
         return user.email_confirmed
 
+
 class IsBlocked(permissions.BasePermission):
-    message = 'You are blocked.'
+    message = "You are blocked."
+
     def has_permission(self, request, view):
         user = request.user
         return not user.blocked
