@@ -101,11 +101,11 @@ spec:
               name: izboljsajmo-maribor-credentials
         resources:
           requests:
-            memory: 500Mi
+            memory: 400Mi
             cpu: 200m
           limits:
-            memory: 500Mi
-            cpu: 200m
+            memory: 800Mi
+            cpu: 400m
 ---
 apiVersion: apps/v1
 kind: Deployment
