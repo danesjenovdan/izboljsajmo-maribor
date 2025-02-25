@@ -32,7 +32,7 @@ SECRET_KEY = '!qof+ch(!97u_q#@=t_x*ctj)&4xi%sf@v6btijm%$mtvkyeu&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['api.izboljsajmo-maribor.djnd.si', '*']
+ALLOWED_HOSTS = ['api.izboljsajmo-maribor.lb.djnd.si', '*']
 
 
 # Application definition

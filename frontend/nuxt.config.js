@@ -57,7 +57,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'https://api.izboljsajmo-maribor.k8s.djnd.si'
+    baseURL: 'https://api.izboljsajmo-maribor.lb.djnd.si'
     // baseURL: 'http://localhost:8080/'
   },
 

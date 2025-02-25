@@ -20,9 +20,10 @@ spec:
         ports:
         - containerPort: 3000
         resources:
-          requests:
-            memory: 100Mi
-            cpu: 100m
+          # REMOVED DURING SHUTDOWN
+          # requests:
+          #   memory: 100Mi
+          #   cpu: 100m
           limits:
             memory: 200Mi
             cpu: 100m
@@ -59,11 +60,12 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - izboljsajmo-maribor.k8s.djnd.si
-    - izboljsajmo.maribor.si
+    - izboljsajmo-maribor.lb.djnd.si
+    # REMOVED DURING SHUTDOWN
+    # - izboljsajmo.maribor.si
     secretName: izboljsajmo-maribor-frontend-tls
   rules:
-  - host: izboljsajmo-maribor.k8s.djnd.si
+  - host: izboljsajmo-maribor.lb.djnd.si
     http:
       paths:
       - path: /
@@ -73,13 +75,14 @@ spec:
             name: izboljsajmo-maribor-frontend
             port:
               number: 80
-  - host: izboljsajmo.maribor.si
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: izboljsajmo-maribor-frontend
-            port:
-              number: 80
+  # REMOVED DURING SHUTDOWN
+  # - host: izboljsajmo.maribor.si
+  #   http:
+  #     paths:
+  #     - path: /
+  #       pathType: Prefix
+  #       backend:
+  #         service:
+  #           name: izboljsajmo-maribor-frontend
+  #           port:
+  #             number: 80

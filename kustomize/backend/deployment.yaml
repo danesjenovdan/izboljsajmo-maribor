@@ -26,9 +26,10 @@ spec:
           - secretRef:
               name: izboljsajmo-maribor-credentials
         resources:
-          requests:
-            memory: 200Mi
-            cpu: 200m
+          # REMOVED DURING SHUTDOWN
+          # requests:
+          #   memory: 200Mi
+          #   cpu: 200m
           limits:
             memory: 200Mi
             cpu: 200m
@@ -42,9 +43,10 @@ spec:
           - secretRef:
               name: izboljsajmo-maribor-credentials
         resources:
-          requests:
-            memory: 200Mi
-            cpu: 200m
+          # REMOVED DURING SHUTDOWN
+          # requests:
+          #   memory: 200Mi
+          #   cpu: 200m
           limits:
             memory: 200Mi
             cpu: 200m
@@ -58,9 +60,10 @@ spec:
           - secretRef:
               name: izboljsajmo-maribor-credentials
         resources:
-          requests:
-            memory: 200Mi
-            cpu: 200m
+          # REMOVED DURING SHUTDOWN
+          # requests:
+          #   memory: 200Mi
+          #   cpu: 200m
           limits:
             memory: 200Mi
             cpu: 200m
@@ -100,9 +103,10 @@ spec:
           - secretRef:
               name: izboljsajmo-maribor-credentials
         resources:
-          requests:
-            memory: 400Mi
-            cpu: 200m
+          # REMOVED DURING SHUTDOWN
+          # requests:
+          #   memory: 400Mi
+          #   cpu: 200m
           limits:
             memory: 800Mi
             cpu: 400m
@@ -131,9 +135,10 @@ spec:
           - secretRef:
               name: izboljsajmo-maribor-credentials
         resources:
-          requests:
-            memory: 400Mi
-            cpu: 200m
+          # REMOVED DURING SHUTDOWN
+          # requests:
+          #   memory: 400Mi
+          #   cpu: 200m
           limits:
             memory: 600Mi
             cpu: 200m

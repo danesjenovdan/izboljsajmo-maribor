@@ -11,11 +11,12 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - api.izboljsajmo-maribor.k8s.djnd.si
-    - api.izboljsajmo.maribor.si
+    - api.izboljsajmo-maribor.lb.djnd.si
+    # REMOVED DURING SHUTDOWN
+    # - api.izboljsajmo.maribor.si
     secretName: izboljsajmo-maribor-backend-tls
   rules:
-  - host: api.izboljsajmo-maribor.k8s.djnd.si
+  - host: api.izboljsajmo-maribor.lb.djnd.si
     http:
       paths:
       - path: /
@@ -25,16 +26,17 @@ spec:
             name: izboljsajmo-maribor-backend
             port:
               number: 80
-  - host: api.izboljsajmo.maribor.si
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: izboljsajmo-maribor-backend
-            port:
-              number: 80
+  # REMOVED DURING SHUTDOWN
+  # - host: api.izboljsajmo.maribor.si
+  #   http:
+  #     paths:
+  #     - path: /
+  #       pathType: Prefix
+  #       backend:
+  #         service:
+  #           name: izboljsajmo-maribor-backend
+  #           port:
+  #             number: 80
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -47,11 +49,12 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - files.izboljsajmo-maribor.k8s.djnd.si
-    - files.izboljsajmo.maribor.si
+    - files.izboljsajmo-maribor.lb.djnd.si
+    # REMOVED DURING SHUTDOWN
+    # - files.izboljsajmo.maribor.si
     secretName: izboljsajmo-maribor-nginx-tls
   rules:
-  - host: files.izboljsajmo-maribor.k8s.djnd.si
+  - host: files.izboljsajmo-maribor.lb.djnd.si
     http:
       paths:
       - path: /
@@ -61,13 +64,14 @@ spec:
             name: izboljsajmo-maribor-nginx
             port:
               number: 80
-  - host: files.izboljsajmo.maribor.si
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: izboljsajmo-maribor-nginx
-            port:
-              number: 80
+  # REMOVED DURING SHUTDOWN
+  # - host: files.izboljsajmo.maribor.si
+  #   http:
+  #     paths:
+  #     - path: /
+  #       pathType: Prefix
+  #       backend:
+  #         service:
+  #           name: izboljsajmo-maribor-nginx
+  #           port:
+  #             number: 80
