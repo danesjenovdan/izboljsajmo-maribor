@@ -2,24 +2,28 @@
 
 This code is here only as an archive. It is not deployed at [Danes je nov dan](https://danesjenovdan.si) anymore. The kustomize folder remains, but it is not applied. You can use it if you want to run this on your own cluster, but it might make more sense for you to run it in a different way. For any questions, feel free to contact us. Good luck!
 
+## DEPLOYMENT WARNING
+
+In order to deploy it, you'll also need a Redis. It is not included in kustomize files, since it was installed separately on our cluster. It is required by celery nad its secret (redis://url) is CELERY_BROKER.
+
 # izboljsajmo-maribor
 
-### INSTALL ###
+### INSTALL
 
-* docker-compose build
-* docker-compose up
-* docker-compose exec mb-api python manage.py migrate
-* docker-compose exec mb-api python manage.py createsuperuser
-* docker-compose exec mb-api python manage.py seed
-* restart docker-compose
+- docker-compose build
+- docker-compose up
+- docker-compose exec mb-api python manage.py migrate
+- docker-compose exec mb-api python manage.py createsuperuser
+- docker-compose exec mb-api python manage.py seed
+- restart docker-compose
 
+### RUN
 
-### RUN ###
-
-* docker-compose up
+- docker-compose up
 
 ###
-* mb-api -> localhost:8000
+
+- mb-api -> localhost:8000
 
 ## Deploy
 
