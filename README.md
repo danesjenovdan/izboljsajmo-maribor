@@ -1,3 +1,7 @@
+# DEPRECATION WARNING
+
+This code is here only as an archive. It is not deployed at [Danes je nov dan](https://danesjenovdan.si) anymore. The kustomize folder remains, but it is not applied. You can use it if you want to run this on your own cluster, but it might make more sense for you to run it in a different way. For any questions, feel free to contact us. Good luck!
+
 # izboljsajmo-maribor
 
 ### INSTALL ###
